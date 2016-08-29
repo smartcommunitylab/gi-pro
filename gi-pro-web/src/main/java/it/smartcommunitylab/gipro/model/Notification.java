@@ -8,6 +8,8 @@ public class Notification extends BaseObject {
 	private Date timestamp;
 	private String text;
 	private String state;
+	private String serviceOfferId;
+	private String serviceRequestId;
 	
 	public String getObjectId() {
 		return objectId;
@@ -38,5 +40,17 @@ public class Notification extends BaseObject {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getServiceOfferId() {
+		return serviceOfferId;
+	}
+	public void setServiceOfferId(String serviceOfferId) {
+		this.serviceOfferId = serviceOfferId;
+	}
+	public String getServiceRequestId() {
+		return serviceRequestId;
+	}
+	public void setServiceRequestId(String serviceRequestId) {
+		this.serviceRequestId = serviceRequestId;
 	}
 }

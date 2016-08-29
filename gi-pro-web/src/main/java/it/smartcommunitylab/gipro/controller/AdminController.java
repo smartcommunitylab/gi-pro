@@ -25,6 +25,7 @@ import it.smartcommunitylab.gipro.storage.DataSetSetup;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,13 +64,13 @@ public class AdminController {
 		return "PONG";
 	}
 	
-	@RequestMapping(value = "/dataset/{ownerId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/dataset/{applicationId}", method = RequestMethod.POST)
 	public @ResponseBody String updateDataSetInfo(@RequestBody DataSetInfo dataSetInfo, 
-			@PathVariable String ownerId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
-			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-		}
-		storage.saveAppToken(dataSetInfo.getOwnerId(), dataSetInfo.getToken());
+			@PathVariable String applicationId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		storage.saveAppToken(dataSetInfo.getApplicationId(), dataSetInfo.getToken());
 		storage.saveDataSetInfo(dataSetInfo);
 		dataSetSetup.init();
 		if(logger.isInfoEnabled()) {
@@ -78,12 +79,12 @@ public class AdminController {
 		return "{\"status\":\"OK\"}";
 	}
 	
-	@RequestMapping(value = "/reload/{ownerId}", method = RequestMethod.GET)
-	public @ResponseBody String reload(@PathVariable String ownerId, 
+	@RequestMapping(value = "/reload/{applicationId}", method = RequestMethod.GET)
+	public @ResponseBody String reload(@PathVariable String applicationId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
-			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-		}
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
 		dataSetSetup.init();
 		if(logger.isInfoEnabled()) {
 			logger.info("reload dataSet");
@@ -91,24 +92,19 @@ public class AdminController {
 		return "{\"status\":\"OK\"}";
 	}
 	
-	@RequestMapping(value = "/import/pois/{ownerId}/{datasetId}", method = RequestMethod.POST)
-	public @ResponseBody String importPoi(@PathVariable String ownerId, @PathVariable String datasetId,
-			@RequestBody String geoJson, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
-			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-		}
+	@RequestMapping(value = "/import/pois/{applicationId}/{datasetId}", method = RequestMethod.POST)
+	public @ResponseBody String importPoi(@PathVariable String applicationId, @PathVariable String datasetId,
+			@RequestBody List<Poi> poiList, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("importPoi[%s]", datasetId));
 		}
-		JsonNode rootNode = Utils.readJsonFromString(geoJson);
 		storage.cleanPoi(datasetId);
-		Iterator<JsonNode> elements = rootNode.get("features").elements();
-		while(elements.hasNext()) {
-			JsonNode featureNode = elements.next();
-			Poi poi = Converter.convertPoi(datasetId, featureNode);
-			if(poi != null) {
-				storage.addPoi(poi);
-			}
+		for(Poi poi : poiList) {
+			poi.setApplicationId(datasetId);
+			storage.addPoi(poi);
 		}
 		return "{\"status\":\"OK\"}";
 	}

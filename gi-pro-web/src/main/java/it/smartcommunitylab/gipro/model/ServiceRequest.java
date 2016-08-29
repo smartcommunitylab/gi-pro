@@ -15,6 +15,7 @@ public class ServiceRequest extends BaseObject {
 	private String state;
 	private String requesterId;
 	private List<ServiceApplication> applicants = Lists.newArrayList();
+	private List<String> recipients = Lists.newArrayList();
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
 	
 	public String getObjectId() {
@@ -64,5 +65,11 @@ public class ServiceRequest extends BaseObject {
 	}
 	public void setCustomProperties(Map<String, Object> customProperties) {
 		this.customProperties = customProperties;
+	}
+	public List<String> getRecipients() {
+		return recipients;
+	}
+	public void setRecipients(List<String> recipients) {
+		this.recipients = recipients;
 	}
 }

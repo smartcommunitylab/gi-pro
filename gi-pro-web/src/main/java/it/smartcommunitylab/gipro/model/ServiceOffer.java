@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ServiceOffer extends BaseObject {
 	private String objectId;
+	private String professionalId;
 	private String poiId;
 	private Date startTime;
 	private Date endTime;
@@ -38,5 +39,11 @@ public class ServiceOffer extends BaseObject {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getProfessionalId() {
+		return professionalId;
+	}
+	public void setProfessionalId(String professionalId) {
+		this.professionalId = professionalId;
 	}
 }

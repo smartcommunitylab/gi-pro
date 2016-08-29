@@ -1,6 +1,10 @@
 package it.smartcommunitylab.gipro.storage;
 
+import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.model.Poi;
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.ServiceOffer;
+import it.smartcommunitylab.gipro.model.ServiceRequest;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
 
@@ -44,7 +48,7 @@ public class RepositoryManager {
 	}
 	
 	public void saveDataSetInfo(DataSetInfo dataSetInfo) {
-		Query query = new Query(new Criteria("ownerId").is(dataSetInfo.getOwnerId()));
+		Query query = new Query(new Criteria("applicationId").is(dataSetInfo.getApplicationId()));
 		DataSetInfo appInfoDB = mongoTemplate.findOne(query, DataSetInfo.class);
 		if (appInfoDB == null) {
 			mongoTemplate.save(dataSetInfo);
@@ -76,9 +80,9 @@ public class RepositoryManager {
 			throws ClassNotFoundException {
 		Query query = null;
 		if (criteria != null) {
-			query = new Query(new Criteria("ownerId").is(ownerId).andOperator(criteria));
+			query = new Query(new Criteria("applicationId").is(ownerId).andOperator(criteria));
 		} else {
-			query = new Query(new Criteria("ownerId").is(ownerId));
+			query = new Query(new Criteria("applicationId").is(ownerId));
 		}
 		if (sort != null) {
 			query.with(sort);
@@ -92,15 +96,16 @@ public class RepositoryManager {
 			throws ClassNotFoundException {
 		Query query = null;
 		if (criteria != null) {
-			query = new Query(new Criteria("ownerId").is(ownerId).andOperator(criteria));
+			query = new Query(new Criteria("applicationId").is(ownerId).andOperator(criteria));
 		} else {
-			query = new Query(new Criteria("ownerId").is(ownerId));
+			query = new Query(new Criteria("applicationId").is(ownerId));
 		}
 		T result = mongoTemplate.findOne(query, entityClass);
 		return result;
 	}
 	
 	public Poi addPoi(Poi poi) {
+		poi.setObjectId(Utils.getUUID());
 		Date now = new Date();
 		poi.setCreationDate(now);
 		poi.setLastUpdate(now);
@@ -109,8 +114,71 @@ public class RepositoryManager {
 	}
 	
 	public void cleanPoi(String ownerId) {
-		Query query = new Query(new Criteria("ownerId").is(ownerId));
+		Query query = new Query(new Criteria("applicationId").is(ownerId));
 		mongoTemplate.remove(query, Poi.class);
+	}
+
+	public List<Professional> findProfessional(String applicationId, Integer page, Integer limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Professional> findProfessionalByIds(String applicationId, String[] idArray) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Poi> findPoi(String applicationId, Integer page, Integer limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Poi> findPoiByIds(String applicationId, String[] idArray) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<ServiceOffer> searchServiceOffer(String applicationId, Long startTime, Integer page,
+			Integer limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ServiceOffer saveServiceOffer(ServiceOffer serviceOffer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ServiceRequest savePublicServiceRequest(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ServiceRequest savePrivateServiceRequest(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<ServiceOffer> getServiceOffers(String applicationId, String professionalId,
+			Integer page, Integer limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<ServiceRequest> getServiceRequests(String applicationId, String professionalId,
+			Integer page, Integer limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ServiceOffer deleteServiceOffer(String applicationId, String objectId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ServiceRequest deleteServiceRequest(String applicationId, String objectId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

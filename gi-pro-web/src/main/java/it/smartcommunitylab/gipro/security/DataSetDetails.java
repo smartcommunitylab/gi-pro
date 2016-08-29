@@ -24,7 +24,7 @@ public class DataSetDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singletonList(new SimpleGrantedAuthority(dataset.getOwnerId()));
+		return Collections.singletonList(new SimpleGrantedAuthority(dataset.getApplicationId()));
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class DataSetDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return dataset.getOwnerId();
+		return dataset.getApplicationId();
 	}
 
 	@Override
