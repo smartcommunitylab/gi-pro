@@ -1,5 +1,6 @@
 package it.smartcommunitylab.gipro.storage;
 
+import it.smartcommunitylab.gipro.common.Const;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
@@ -8,6 +9,7 @@ import it.smartcommunitylab.gipro.model.ServiceRequest;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -76,13 +78,13 @@ public class RepositoryManager {
 		}
 	}
 	
-	public List<?> findData(Class<?> entityClass, Criteria criteria, Sort sort, String ownerId)
+	public List<?> findData(Class<?> entityClass, Criteria criteria, Sort sort, String applicationId)
 			throws ClassNotFoundException {
 		Query query = null;
 		if (criteria != null) {
-			query = new Query(new Criteria("applicationId").is(ownerId).andOperator(criteria));
+			query = new Query(new Criteria("applicationId").is(applicationId).andOperator(criteria));
 		} else {
-			query = new Query(new Criteria("applicationId").is(ownerId));
+			query = new Query(new Criteria("applicationId").is(applicationId));
 		}
 		if (sort != null) {
 			query.with(sort);
@@ -92,13 +94,13 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public <T> T findOneData(Class<T> entityClass, Criteria criteria, String ownerId)
+	public <T> T findOneData(Class<T> entityClass, Criteria criteria, String applicationId)
 			throws ClassNotFoundException {
 		Query query = null;
 		if (criteria != null) {
-			query = new Query(new Criteria("applicationId").is(ownerId).andOperator(criteria));
+			query = new Query(new Criteria("applicationId").is(applicationId).andOperator(criteria));
 		} else {
-			query = new Query(new Criteria("applicationId").is(ownerId));
+			query = new Query(new Criteria("applicationId").is(applicationId));
 		}
 		T result = mongoTemplate.findOne(query, entityClass);
 		return result;
@@ -113,35 +115,77 @@ public class RepositoryManager {
 		return poi;
 	}
 	
-	public void cleanPoi(String ownerId) {
-		Query query = new Query(new Criteria("applicationId").is(ownerId));
+	public Professional addProfessional(Professional professional) {
+		professional.setObjectId(Utils.getUUID());
+		Date now = new Date();
+		professional.setCreationDate(now);
+		professional.setLastUpdate(now);
+		mongoTemplate.save(professional);
+		return professional;
+	}
+	
+	public void cleanPoi(String applicationId) {
+		Query query = new Query(new Criteria("applicationId").is(applicationId));
 		mongoTemplate.remove(query, Poi.class);
 	}
 
-	public List<Professional> findProfessional(String applicationId, Integer page, Integer limit) {
-		// TODO Auto-generated method stub
-		return null;
+	public void cleanProfessional(String applicationId) {
+		Query query = new Query(new Criteria("applicationId").is(applicationId));
+		mongoTemplate.remove(query, Professional.class);
+	}
+	
+	public List<Professional> findProfessional(String applicationId, String type, Integer page, Integer limit) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("type").is(type);
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+		query.limit(limit);
+		query.skip((page - 1) * limit);
+		List<Professional> result = mongoTemplate.find(query, Professional.class);
+		return result;
 	}
 
 	public List<Professional> findProfessionalByIds(String applicationId, String[] idArray) {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> idList = Arrays.asList(idArray);
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(idList);
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+		List<Professional> result = mongoTemplate.find(query, Professional.class);
+		return result;
 	}
 
-	public List<Poi> findPoi(String applicationId, Integer page, Integer limit) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Poi> findPoi(String applicationId, String type, Integer page, Integer limit) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("type").is(type);
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.ASC, "name"));
+		query.limit(limit);
+		query.skip((page - 1) * limit);
+		List<Poi> result = mongoTemplate.find(query, Poi.class);
+		return result;
 	}
 
 	public List<Poi> findPoiByIds(String applicationId, String[] idArray) {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> idList = Arrays.asList(idArray);
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(idList);
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.ASC, "name"));
+		List<Poi> result = mongoTemplate.find(query, Poi.class);
+		return result;
 	}
 
-	public List<ServiceOffer> searchServiceOffer(String applicationId, Long startTime, Integer page,
-			Integer limit) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ServiceOffer> searchServiceOffer(String applicationId, String poiId,
+			Long startTime, Integer page,	Integer limit) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("poiId").is(poiId)
+				.and("state").is(Const.STATE_OPEN);
+		Criteria timeCriteria = new Criteria().andOperator(
+				Criteria.where("startTime").lte(new Date(startTime)),
+				Criteria.where("endTime").gte(new Date(startTime)));
+		criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.ASC, "creationDate"));
+		query.limit(limit);
+		query.skip((page - 1) * limit);
+		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
+		return result;
 	}
 
 	public ServiceOffer saveServiceOffer(ServiceOffer serviceOffer) {

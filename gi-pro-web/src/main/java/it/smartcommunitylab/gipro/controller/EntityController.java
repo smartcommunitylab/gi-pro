@@ -76,7 +76,7 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}
-		List<Professional> result = storageManager.findProfessional(applicationId, page, limit);
+		List<Professional> result = storageManager.findProfessional(applicationId, type, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getProfessionals[%s]:%d", applicationId, result.size()));
 		}
@@ -96,7 +96,7 @@ public class EntityController {
 		String[] idArray = ids.split(",");
 		List<Professional> result = storageManager.findProfessionalByIds(applicationId, idArray);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("getProfessionalsByIds[%s]:%d", applicationId, result.size()));
+			logger.info(String.format("getProfessionalsByIds[%s]:%s - %d", applicationId, ids, result.size()));
 		}
 		return result;
 	}
@@ -119,7 +119,7 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}
-		List<Poi> result = storageManager.findPoi(applicationId, page, limit);
+		List<Poi> result = storageManager.findPoi(applicationId, type, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getPois[%s]:%d", applicationId, result.size()));
 		}
@@ -129,7 +129,6 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/poi/byids", method = RequestMethod.GET)
 	public @ResponseBody List<Poi> getPoisByIds(@PathVariable String applicationId, 
 			@RequestParam String ids,  
-			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 //		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
 //			throw new UnauthorizedException("Unauthorized Exception: token not valid");
@@ -164,7 +163,7 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}		
-		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, startTime, page, limit);
+		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, poiId, startTime, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("searchServiceOffer[%s]:%d", applicationId, result.size()));
 		}

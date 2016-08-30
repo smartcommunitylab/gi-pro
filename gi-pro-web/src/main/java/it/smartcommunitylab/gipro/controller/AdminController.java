@@ -20,6 +20,7 @@ import it.smartcommunitylab.gipro.common.UnauthorizedException;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.converter.Converter;
 import it.smartcommunitylab.gipro.model.Poi;
+import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
@@ -92,7 +93,7 @@ public class AdminController {
 		return "{\"status\":\"OK\"}";
 	}
 	
-	@RequestMapping(value = "/import/pois/{applicationId}/{datasetId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/import/poi/{applicationId}/{datasetId}", method = RequestMethod.POST)
 	public @ResponseBody String importPoi(@PathVariable String applicationId, @PathVariable String datasetId,
 			@RequestBody List<Poi> poiList, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
@@ -105,6 +106,23 @@ public class AdminController {
 		for(Poi poi : poiList) {
 			poi.setApplicationId(datasetId);
 			storage.addPoi(poi);
+		}
+		return "{\"status\":\"OK\"}";
+	}
+	
+	@RequestMapping(value = "/import/professional/{applicationId}/{datasetId}", method = RequestMethod.POST)
+	public @ResponseBody String importProfessional(@PathVariable String applicationId, @PathVariable String datasetId,
+			@RequestBody List<Professional> professionalList, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("importProfessional[%s]", datasetId));
+		}
+		storage.cleanProfessional(datasetId);
+		for(Professional professional : professionalList) {
+			professional.setApplicationId(datasetId);
+			storage.addProfessional(professional);
 		}
 		return "{\"status\":\"OK\"}";
 	}
