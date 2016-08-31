@@ -20,6 +20,7 @@ import it.smartcommunitylab.gipro.common.EntityNotFoundException;
 import it.smartcommunitylab.gipro.common.UnauthorizedException;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.common.WrongRequestException;
+import it.smartcommunitylab.gipro.model.Notification;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
@@ -316,6 +317,90 @@ public class EntityController {
 		ServiceRequest result = storageManager.deleteServiceRequest(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("deleteServiceRequest[%s]:%s", applicationId, objectId));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/apply/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody ServiceRequest applyServiceApplication(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		ServiceRequest result = storageManager.applyToServiceRequest(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("applyServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/reject/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody ServiceRequest rejectServiceApplication(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		ServiceRequest result = storageManager.rejectServiceApplication(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("rejectServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/accept/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody ServiceRequest acceptServiceApplication(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		ServiceRequest result = storageManager.acceptServiceApplication(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("acceptServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/delete/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody ServiceRequest deleteServiceApplication(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		ServiceRequest result = storageManager.deleteServiceApplication(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("deleteServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/notification/{professionalId}", method = RequestMethod.GET)
+	public @ResponseBody List<Notification> getNotifications(@PathVariable String applicationId,
+			@PathVariable String professionalId,
+			@RequestParam(required=false) Long timestamp,
+			@RequestParam(required=false) Integer page, 
+			@RequestParam(required=false) Integer limit, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		if(page == null) {
+			page = 1;
+		}
+		if(limit == null) {
+			limit = 10;
+		}
+		List<Notification> result = storageManager.getNotifications(applicationId, professionalId, 
+				timestamp, page, limit);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("getNotifications[%s]:%d", applicationId, result.size()));
 		}
 		return result;
 	}

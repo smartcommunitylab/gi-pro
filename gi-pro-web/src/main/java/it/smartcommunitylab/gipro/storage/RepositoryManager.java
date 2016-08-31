@@ -212,6 +212,7 @@ public class RepositoryManager {
 		Date timestamp = new Date();
 		for(ServiceRequest serviceRequest : matchingRequests) {
 			Notification notification = new Notification();
+			notification.setApplicationId(serviceOffer.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceOffer.getProfessionalId());
 			notification.setType(Const.NEW_SERVICE_REQUEST);
@@ -253,6 +254,7 @@ public class RepositoryManager {
 		Date timestamp = new Date();
 		for(ServiceOffer serviceOffer : matchingOffers) {
 			Notification notification = new Notification();
+			notification.setApplicationId(serviceRequest.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceOffer.getProfessionalId());
 			notification.setType(Const.NEW_SERVICE_REQUEST);
@@ -276,6 +278,7 @@ public class RepositoryManager {
 		Date timestamp = new Date();
 		for(ServiceOffer serviceOffer : matchingOffers) {
 			Notification notification = new Notification();
+			notification.setApplicationId(serviceRequest.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceOffer.getProfessionalId());
 			notification.setType(Const.NEW_SERVICE_REQUEST);
@@ -365,6 +368,7 @@ public class RepositoryManager {
 						if(serviceApplication.getState().equals(Const.SERVICE_APP_REQUESTED) ||
 								serviceApplication.getState().equals(Const.SERVICE_APP_ACCEPTED)) {
 							Notification notification = new Notification();
+							notification.setApplicationId(applicationId);
 							notification.setTimestamp(timestamp);
 							notification.setProfessionalId(serviceApplication.getProfessionalId());
 							notification.setType(Const.SERVICE_REQUEST_DELETED);
@@ -408,5 +412,132 @@ public class RepositoryManager {
 		query.fields().include("customProperties");
 		query.fields().include("serviceType");
 	}
+
+	public ServiceRequest applyToServiceRequest(String applicationId, String objectId,
+			String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Query query = new Query(criteria);
+		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+		if(serviceRequest != null) {
+			Date timestamp = new Date();
+			//check if the professional hash already applyed
+			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+			if(serviceApplication == null) {
+				//add application
+				serviceApplication = new ServiceApplication();
+				serviceApplication.setTimestamp(timestamp);
+				serviceApplication.setState(Const.SERVICE_APP_REQUESTED);
+				serviceApplication.setProfessionalId(professionalId);
+				serviceRequest.getApplicants().put(professionalId, serviceApplication);
+				updateServiceApplication(query, serviceRequest);
+				//add notification
+				Notification notification = new Notification();
+				notification.setApplicationId(applicationId);
+				notification.setTimestamp(timestamp);
+				notification.setProfessionalId(serviceRequest.getRequesterId());
+				notification.setType(Const.NEW_APPLICATION);
+				notification.setServiceRequestId(serviceRequest.getObjectId());
+				addNotification(notification);
+			}
+			serviceRequest.getApplicants().clear();
+			serviceRequest.getApplicants().put(professionalId, serviceApplication);
+		}
+		return serviceRequest;
+	}
 	
+	public ServiceRequest rejectServiceApplication(String applicationId, String objectId,
+			String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Query query = new Query(criteria);
+		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+		if(serviceRequest != null) {
+			Date timestamp = new Date();
+			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+			if(serviceApplication != null) {
+				serviceApplication.setState(Const.SERVICE_APP_REJECTED);
+				updateServiceApplication(query, serviceRequest);
+				//add notification
+				Notification notification = new Notification();
+				notification.setApplicationId(applicationId);
+				notification.setTimestamp(timestamp);
+				notification.setProfessionalId(serviceApplication.getProfessionalId());
+				notification.setType(Const.APPLICATION_REJECTED);
+				notification.setServiceRequestId(serviceRequest.getObjectId());
+				addNotification(notification);
+			}
+		}
+		return serviceRequest;
+	}
+
+	public ServiceRequest acceptServiceApplication(String applicationId, String objectId,
+			String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Query query = new Query(criteria);
+		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+		if(serviceRequest != null) {
+			Date timestamp = new Date();
+			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+			if(serviceApplication != null) {
+				serviceApplication.setState(Const.SERVICE_APP_ACCEPTED);
+				updateServiceApplication(query, serviceRequest);
+				//add notification
+				Notification notification = new Notification();
+				notification.setApplicationId(applicationId);
+				notification.setTimestamp(timestamp);
+				notification.setProfessionalId(serviceApplication.getProfessionalId());
+				notification.setType(Const.APPLICATION_ACCEPTED);
+				notification.setServiceRequestId(serviceRequest.getObjectId());
+				addNotification(notification);				
+			}
+		}
+		return serviceRequest;
+	}
+	
+	public ServiceRequest deleteServiceApplication(String applicationId, String objectId,
+			String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Query query = new Query(criteria);
+		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+		if(serviceRequest != null) {
+			Date timestamp = new Date();
+			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+			if(serviceApplication != null) {
+				serviceApplication.setState(Const.SERVICE_APP_DELETED);
+				updateServiceApplication(query, serviceRequest);
+				//add notification
+				Notification notification = new Notification();
+				notification.setApplicationId(applicationId);
+				notification.setTimestamp(timestamp);
+				notification.setProfessionalId(serviceRequest.getRequesterId());
+				notification.setType(Const.APPLICATION_DELETED);
+				notification.setServiceRequestId(serviceRequest.getObjectId());
+				addNotification(notification);				
+			}
+		}
+		return serviceRequest;
+	}
+	
+	private void updateServiceApplication(Query query, ServiceRequest serviceRequest) {
+		Date now = new Date();
+		Update update = new Update();
+		update.set("applicants", serviceRequest.getApplicants());
+		update.set("lastUpdate", now);
+		mongoTemplate.updateFirst(query, update, ServiceRequest.class);
+	}
+
+	public List<Notification> getNotifications(String applicationId, String professionalId,
+			Long timestamp, Integer page, Integer limit) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("professionalId").is(professionalId);
+		if(timestamp != null) {
+			criteria = criteria.andOperator(new Criteria("timestamp").gte(new Date(timestamp)));
+		}
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		query.limit(limit);
+		query.skip((page - 1) * limit);
+		List<Notification> result = mongoTemplate.find(query, Notification.class);
+		return result;
+	}
+
 }
