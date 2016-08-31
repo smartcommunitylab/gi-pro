@@ -7,7 +7,7 @@ public class Notification extends BaseObject {
 	private String professionalId;
 	private Date timestamp;
 	private String text;
-	private String state;
+	private String type;
 	private String serviceOfferId;
 	private String serviceRequestId;
 	
@@ -35,12 +35,6 @@ public class Notification extends BaseObject {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
 	public String getServiceOfferId() {
 		return serviceOfferId;
 	}
@@ -52,5 +46,11 @@ public class Notification extends BaseObject {
 	}
 	public void setServiceRequestId(String serviceRequestId) {
 		this.serviceRequestId = serviceRequestId;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 }

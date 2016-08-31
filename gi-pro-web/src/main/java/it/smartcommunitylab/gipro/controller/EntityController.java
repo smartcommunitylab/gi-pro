@@ -147,6 +147,7 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/service/searchoffer", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceOffer> searchServiceOffer(@PathVariable String applicationId, 
 			@RequestParam String poiId,
+			@RequestParam String serviceType,
 			@RequestParam Long startTime,  
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
@@ -163,7 +164,7 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}		
-		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, poiId, startTime, page, limit);
+		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, serviceType, poiId, startTime, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("searchServiceOffer[%s]:%d", applicationId, result.size()));
 		}
@@ -218,6 +219,8 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceOffer> getServiceOffers(@PathVariable String applicationId,
 			@PathVariable String professionalId,
+			@RequestParam String serviceType,
+			@RequestParam(required=false) Long timestamp,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -230,7 +233,8 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}
-		List<ServiceOffer> result = storageManager.getServiceOffers(applicationId, professionalId, page, limit);
+		List<ServiceOffer> result = storageManager.getServiceOffers(applicationId, professionalId, 
+				serviceType, timestamp, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceOffers[%s]:%d", applicationId, result.size()));
 		}
@@ -240,6 +244,8 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceRequest> getServiceRequests(@PathVariable String applicationId,
 			@PathVariable String professionalId,
+			@RequestParam String serviceType,
+			@RequestParam(required=false) Long timestamp,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -252,12 +258,39 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}
-		List<ServiceRequest> result = storageManager.getServiceRequests(applicationId, professionalId, page, limit);
+		List<ServiceRequest> result = storageManager.getServiceRequests(applicationId, professionalId, 
+				serviceType, timestamp, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/api/{applicationId}/service/application/{professionalId}", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceRequest> getServiceRequestApplications(@PathVariable String applicationId,
+			@PathVariable String professionalId,
+			@RequestParam String serviceType,
+			@RequestParam(required=false) Long timestamp,
+			@RequestParam(required=false) Integer page, 
+			@RequestParam(required=false) Integer limit, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		if(page == null) {
+			page = 1;
+		}
+		if(limit == null) {
+			limit = 10;
+		}
+		List<ServiceRequest> result = storageManager.getServiceRequestApplications(applicationId, professionalId, 
+				serviceType, timestamp, page, limit);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("getServiceRequestApplications[%s]:%d", applicationId, result.size()));
+		}
+		return result;
+	}
+	
 	
 	@RequestMapping(value = "/api/{applicationId}/service/offer/{objectId}", method = RequestMethod.DELETE)
 	public @ResponseBody ServiceOffer deleteServiceOffer(@PathVariable String applicationId,

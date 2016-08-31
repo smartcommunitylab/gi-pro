@@ -9,6 +9,7 @@ public class ServiceOffer extends BaseObject {
 	private Date startTime;
 	private Date endTime;
 	private String state;
+	private String serviceType;
 	
 	public String getObjectId() {
 		return objectId;
@@ -45,5 +46,11 @@ public class ServiceOffer extends BaseObject {
 	}
 	public void setProfessionalId(String professionalId) {
 		this.professionalId = professionalId;
+	}
+	public String getServiceType() {
+		return serviceType;
+	}
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
 	}
 }
