@@ -13,7 +13,8 @@ public class Const {
 	public static final String SERVICE_APP_ACCEPTED = "ACCEPTED";
 	public static final String SERVICE_APP_DELETED = "DELETED";
 	
-	public static final String NEW_SERVICE_REQUEST = "NEW_SERVICE_REQUEST"; 
+	public static final String NEW_SERVICE_REQUEST = "NEW_SERVICE_REQUEST";
+	public static final String NEW_SERVICE_OFFER = "NEW_SERVICE_OFFER";
 	public static final String APPLICATION_ACCEPTED = "APPLICATION_ACCEPTED"; 
 	public static final String APPLICATION_REJECTED = "APPLICATION_REJECTED"; 
 	public static final String SERVICE_REQUEST_DELETED = "SERVICE_REQUEST_DELETED";  

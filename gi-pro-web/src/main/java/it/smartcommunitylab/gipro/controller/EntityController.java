@@ -20,10 +20,12 @@ import it.smartcommunitylab.gipro.common.EntityNotFoundException;
 import it.smartcommunitylab.gipro.common.UnauthorizedException;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.common.WrongRequestException;
+import it.smartcommunitylab.gipro.converter.Converter;
 import it.smartcommunitylab.gipro.model.Notification;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
+import it.smartcommunitylab.gipro.model.ServiceOfferUI;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
@@ -145,8 +147,9 @@ public class EntityController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/service/searchoffer", method = RequestMethod.GET)
-	public @ResponseBody List<ServiceOffer> searchServiceOffer(@PathVariable String applicationId, 
+	@RequestMapping(value = "/api/{applicationId}/service/searchoffer/{professionalId}", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceOfferUI> searchServiceOffer(@PathVariable String applicationId,
+			@PathVariable String professionalId,
 			@RequestParam String poiId,
 			@RequestParam String serviceType,
 			@RequestParam Long startTime,  
@@ -165,11 +168,13 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}		
-		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, serviceType, poiId, startTime, page, limit);
+		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, professionalId, 
+				serviceType, poiId, startTime, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("searchServiceOffer[%s]:%d", applicationId, result.size()));
 		}
-		return result;
+		List<ServiceOfferUI> resultUI = Converter.convertServiceOffer(storageManager, applicationId, result);
+		return resultUI;
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/offer", method = RequestMethod.POST)
@@ -221,7 +226,8 @@ public class EntityController {
 	public @ResponseBody List<ServiceOffer> getServiceOffers(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@RequestParam String serviceType,
-			@RequestParam(required=false) Long timestamp,
+			@RequestParam(required=false) Long timeFrom,
+			@RequestParam(required=false) Long timeTo,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -235,9 +241,25 @@ public class EntityController {
 			limit = 10;
 		}
 		List<ServiceOffer> result = storageManager.getServiceOffers(applicationId, professionalId, 
-				serviceType, timestamp, page, limit);
+				serviceType, timeFrom, timeTo, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceOffers[%s]:%d", applicationId, result.size()));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}/{objectId}", method = RequestMethod.GET)
+	public @ResponseBody ServiceOffer getServiceOfferById(@PathVariable String applicationId,
+			@PathVariable String professionalId,
+			@PathVariable String objectId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		ServiceOffer result = storageManager.getServiceOfferById(applicationId, professionalId, 
+				objectId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("getServiceOfferById[%s]:%s - %s", applicationId, professionalId, objectId));
 		}
 		return result;
 	}
@@ -246,7 +268,8 @@ public class EntityController {
 	public @ResponseBody List<ServiceRequest> getServiceRequests(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@RequestParam String serviceType,
-			@RequestParam(required=false) Long timestamp,
+			@RequestParam(required=false) Long timeFrom,
+			@RequestParam(required=false) Long timeTo,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -260,9 +283,25 @@ public class EntityController {
 			limit = 10;
 		}
 		List<ServiceRequest> result = storageManager.getServiceRequests(applicationId, professionalId, 
-				serviceType, timestamp, page, limit);
+				serviceType, timeFrom, timeTo, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}/{objectId}", method = RequestMethod.GET)
+	public @ResponseBody ServiceRequest getServiceRequestById(@PathVariable String applicationId,
+			@PathVariable String professionalId,
+			@PathVariable String objectId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		ServiceRequest result = storageManager.getServiceRequestById(applicationId, professionalId, 
+				objectId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("getServiceRequestById[%s]:%s - %s", applicationId, professionalId, objectId));
 		}
 		return result;
 	}
@@ -384,7 +423,10 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/notification/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<Notification> getNotifications(@PathVariable String applicationId,
 			@PathVariable String professionalId,
-			@RequestParam(required=false) Long timestamp,
+			@RequestParam(required=false) Long timeFrom,
+			@RequestParam(required=false) Long timeTo,
+			@RequestParam(required=false) String type,
+			@RequestParam(required=false) Boolean read,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -398,7 +440,7 @@ public class EntityController {
 			limit = 10;
 		}
 		List<Notification> result = storageManager.getNotifications(applicationId, professionalId, 
-				timestamp, page, limit);
+				timeFrom, timeTo, read, type, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getNotifications[%s]:%d", applicationId, result.size()));
 		}

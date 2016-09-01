@@ -2,8 +2,13 @@ package it.smartcommunitylab.gipro.converter;
 
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.model.Poi;
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.ServiceOffer;
+import it.smartcommunitylab.gipro.model.ServiceOfferUI;
+import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.google.common.collect.Lists;
 
 public class Converter {
 	private static final transient Logger logger = LoggerFactory.getLogger(Converter.class);
@@ -49,6 +55,24 @@ public class Converter {
 		}
 		
 		return poi;
+	}
+
+	public static List<ServiceOfferUI> convertServiceOffer(RepositoryManager storageManager,
+			String applicationId, List<ServiceOffer> offerList) {
+		List<ServiceOfferUI> result = Lists.newArrayList();
+		for(ServiceOffer serviceOffer : offerList) {
+			Professional professional = storageManager.findProfessionalById(applicationId, serviceOffer.getProfessionalId());
+			ServiceOfferUI serviceOfferUI = new ServiceOfferUI();
+			serviceOfferUI.setObjectId(serviceOffer.getObjectId());
+			serviceOfferUI.setPoiId(serviceOffer.getPoiId());
+			serviceOfferUI.setServiceType(serviceOffer.getServiceType());
+			serviceOfferUI.setState(serviceOffer.getState());
+			serviceOfferUI.setStartTime(serviceOffer.getStartTime());
+			serviceOfferUI.setEndTime(serviceOffer.getEndTime());
+			serviceOfferUI.setProfessional(professional);
+			result.add(serviceOfferUI);
+		}
+		return result;
 	}
 	
 }

@@ -151,6 +151,7 @@ public class RepositoryManager {
 		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
 		query.limit(limit);
 		query.skip((page - 1) * limit);
+		filterProfessionalFields(query);
 		List<Professional> result = mongoTemplate.find(query, Professional.class);
 		return result;
 	}
@@ -160,7 +161,16 @@ public class RepositoryManager {
 		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(idList);
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+		filterProfessionalFields(query);
 		List<Professional> result = mongoTemplate.find(query, Professional.class);
+		return result;
+	}
+	
+	public Professional findProfessionalById(String applicationId, String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(professionalId);
+		Query query = new Query(criteria);
+		filterProfessionalFields(query);
+		Professional result = mongoTemplate.findOne(query, Professional.class);
 		return result;
 	}
 
@@ -184,10 +194,13 @@ public class RepositoryManager {
 	}
 
 	public List<ServiceOffer> searchServiceOffer(String applicationId, 
-			String serviceType, String poiId,
+			String professionalId, String serviceType, String poiId,
 			Long startTime, Integer page,	Integer limit) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("poiId").is(poiId)
-				.and("serviceType").is(serviceType).and("state").is(Const.STATE_OPEN);
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("poiId").is(poiId)
+				.and("serviceType").is(serviceType)
+				.and("state").is(Const.STATE_OPEN)
+				.and("professionalId").ne(professionalId);
 		Criteria timeCriteria = new Criteria().andOperator(
 				Criteria.where("startTime").lte(new Date(startTime)),
 				Criteria.where("endTime").gte(new Date(startTime)));
@@ -298,27 +311,40 @@ public class RepositoryManager {
 			criteria = criteria.andOperator(new Criteria("professionalId").in(serviceRequest.getRecipients()));
 		}
 		Criteria timeCriteria = new Criteria().andOperator(
-				Criteria.where("startTime").gte(new Date()),
 				Criteria.where("startTime").lte(serviceRequest.getStartTime()),
 				Criteria.where("endTime").gte(serviceRequest.getStartTime()));
 		criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		query.with(new Sort(Sort.Direction.DESC, "startTime", "creationDate"));
 		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
 		return result;
 	}
 	
 	public List<ServiceOffer> getServiceOffers(String applicationId, String professionalId,
-			String serviceType, Long timestamp, Integer page, Integer limit) {
+			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("professionalId").is(professionalId).and("serviceType").is(serviceType);
-		if(timestamp != null) {
-			criteria = criteria.orOperator(new Criteria("startTime").exists(false), 
-					new Criteria("startTime").is(null), 
-					new Criteria("startTime").gte(new Date(timestamp)));
+				.and("professionalId").is(professionalId)
+				.and("serviceType").is(serviceType);
+		Criteria timeCriteria = null;
+		if((timeFrom != null) && (timeTo != null)) {
+			timeCriteria = new Criteria().andOperator(
+				new Criteria("startTime").gte(new Date(timeFrom)),
+				new Criteria("startTime").lte(new Date(timeTo))
+			);
+		} else if(timeFrom != null) {
+			timeCriteria = new Criteria().andOperator(new Criteria("startTime").lte(new Date(timeFrom)));
+		} else if(timeTo != null) {
+			timeCriteria = new Criteria().andOperator(new Criteria("startTime").gte(new Date(timeTo)));
 		}
+		if(timeCriteria != null) {
+			criteria = criteria.orOperator(
+					new Criteria("startTime").exists(false), 
+					new Criteria("startTime").is(null),
+					timeCriteria
+			);
+		}  
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		query.with(new Sort(Sort.Direction.DESC, "startTime", "creationDate"));
 		query.limit(limit);
 		query.skip((page - 1) * limit);
 		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
@@ -326,14 +352,21 @@ public class RepositoryManager {
 	}
 
 	public List<ServiceRequest> getServiceRequests(String applicationId, String professionalId,
-			String serviceType, Long timestamp, Integer page, Integer limit) {
+			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("requesterId").is(professionalId).and("serviceType").is(serviceType);
-		if(timestamp != null) {
-			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timestamp)));
+		if((timeFrom != null) && (timeTo != null)) {
+			criteria = criteria.andOperator(
+				new Criteria("startTime").gte(new Date(timeFrom)),
+				new Criteria("startTime").lte(new Date(timeTo))
+			);
+		} else if(timeFrom != null) {
+			criteria = criteria.andOperator(new Criteria("startTime").lte(new Date(timeFrom)));
+		} else if(timeTo != null) {
+			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timeTo)));
 		}
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		query.with(new Sort(Sort.Direction.DESC, "startTime"));
 		query.limit(limit);
 		query.skip((page - 1) * limit);
 		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
@@ -393,7 +426,7 @@ public class RepositoryManager {
 			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timestamp)));
 		}
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		query.with(new Sort(Sort.Direction.DESC, "startTime"));
 		query.limit(limit);
 		query.skip((page - 1) * limit);
 		filterServiceRequestFields(professionalId, query);
@@ -411,6 +444,11 @@ public class RepositoryManager {
 		query.fields().include("applicants." + professionalId);
 		query.fields().include("customProperties");
 		query.fields().include("serviceType");
+	}
+	
+	private void filterProfessionalFields(Query query) {
+		query.fields().exclude("username");
+		query.fields().exclude("passwordHash");
 	}
 
 	public ServiceRequest applyToServiceRequest(String applicationId, String objectId,
@@ -526,17 +564,49 @@ public class RepositoryManager {
 	}
 
 	public List<Notification> getNotifications(String applicationId, String professionalId,
-			Long timestamp, Integer page, Integer limit) {
+			Long timeFrom, Long timeTo, Boolean read, String type, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("professionalId").is(professionalId);
-		if(timestamp != null) {
-			criteria = criteria.andOperator(new Criteria("timestamp").gte(new Date(timestamp)));
+				.and("professionalId").is(professionalId)
+				.and("hidden").is(Boolean.FALSE);
+		if((timeFrom != null) && (timeTo != null)) {
+			criteria = criteria.andOperator(
+				new Criteria("timestamp").gte(new Date(timeFrom)),
+				new Criteria("timestamp").lte(new Date(timeTo))
+			);
+		} else if(timeFrom != null) {
+			criteria = criteria.andOperator(new Criteria("timestamp").lte(new Date(timeFrom)));
+		} else if(timeTo != null) {
+			criteria = criteria.andOperator(new Criteria("timestamp").gte(new Date(timeTo)));
+		}
+		if(read != null) {
+			criteria = criteria.andOperator(new Criteria("read").is(read));
+		}
+		if(Utils.isNotEmpty(type)) {
+			criteria = criteria.andOperator(new Criteria("type").is(type));
 		}
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		query.with(new Sort(Sort.Direction.DESC, "timestamp"));
 		query.limit(limit);
 		query.skip((page - 1) * limit);
 		List<Notification> result = mongoTemplate.find(query, Notification.class);
+		return result;
+	}
+
+	public ServiceOffer getServiceOfferById(String applicationId, String professionalId,
+			String objectId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId);
+		Query query = new Query(criteria);
+		ServiceOffer result = mongoTemplate.findOne(query, ServiceOffer.class);
+		return result;
+	}
+
+	public ServiceRequest getServiceRequestById(String applicationId, String professionalId,
+			String objectId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId);
+		Query query = new Query(criteria);
+		ServiceRequest result = mongoTemplate.findOne(query, ServiceRequest.class);
 		return result;
 	}
 

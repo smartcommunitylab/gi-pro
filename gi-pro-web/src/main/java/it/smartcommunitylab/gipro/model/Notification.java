@@ -10,6 +10,8 @@ public class Notification extends BaseObject {
 	private String type;
 	private String serviceOfferId;
 	private String serviceRequestId;
+	private boolean hidden;
+	private boolean read;
 	
 	public String getObjectId() {
 		return objectId;
@@ -52,5 +54,17 @@ public class Notification extends BaseObject {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public boolean isHidden() {
+		return hidden;
+	}
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+	public boolean isRead() {
+		return read;
+	}
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 }
