@@ -1,0 +1,26 @@
+<ion-view view-title="{{'app' | translate}}" class="searchresults">
+	<ion-nav-buttons side="right">
+		<!--<button class="button button-icon button-clear" ng-click=""></button>-->
+	</ion-nav-buttons>
+
+	<ion-content>
+		<h4 ng-if="!!searchResults && searchResults.length == 0">
+			{{'results_empty' | translate}}
+		</h4>
+		<ion-list>
+			<div class="card">
+				<a class="item item-thumbnail-left">
+					<img src="http://placekitten.com/200/200">
+					<h2>Name Surname</h2>
+					<p>Small description</p>
+					<button class="button button-small button-dark" ng-click="">
+						<i class="icon ion-email"></i>
+					</button>
+					<button class="button button-small button-dark" ng-click="">
+						<i class="icon ion-android-call"></i>
+					</button>
+				</a>
+			</div>
+		</ion-list>
+	</ion-content>
+</ion-view>

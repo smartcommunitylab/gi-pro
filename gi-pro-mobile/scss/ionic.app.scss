@@ -17,7 +17,89 @@ $dark:                            #444 !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
-
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+/* Buttons */
+
+.button.button-fab {
+	position: absolute;
+	width: 52px;
+	height: 52px;
+	top: auto;
+	right: 10px;
+	bottom: 10px;
+	left: auto;
+	padding: 0;
+	border-radius: 26px;
+	box-shadow: 2px 2px 2px #c8c8c8;
+}
+
+/* Menu */
+
+.menu {
+	/*background-color: transparent;*/
+	.list {
+		.item {
+			/*border-color: transparent;*/
+			/*color: white;*/
+		}
+		.item.item-complex .item-content {
+			/*background-color: transparent;*/
+		}
+		.item.active {
+			/*color: $t_orange;*/
+		}
+	}
+}
+
+/* Tabs */
+
+.tab-item {
+	/*opacity: 1;*/
+}
+
+/*
+.tab-item.tab-item-active,
+.tab-item.active,
+.tab-item.activated {
+	color: $t_orange;
+}
+*/
+
+.tabs-striped .tabs {
+	/*border-color: transparent;*/
+}
+.tabs-top.tabs-striped .tab-item {
+	max-width: none;
+	/*text-transform: uppercase;*/
+}
+.tabs-top.tabs-striped .tab-item.tab-item-active,
+.tabs-top.tabs-striped .tab-item.active,
+.tabs-top.tabs-striped .tab-item.activated {
+	/*border-width: 0px 0px 3px 0px !important;*/
+}
+
+/*
+ * HOME
+ */
+.home {
+	.scroll-view {
+		height: 100%;
+	}
+}
+
+/*
+ * SEARCH
+ */
+
+.search {
+	.bar-footer {
+		background: none;
+		/*padding: 0;*/
+		.button.button-block {
+			margin: 0;
+			/*border-radius: 0;*/
+		}
+	}
+}
