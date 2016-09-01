@@ -2,9 +2,9 @@ package it.smartcommunitylab.gipro.model;
 
 import java.util.Date;
 
-public class ServiceOffer extends BaseObject {
+public class ServiceOfferUI {
 	private String objectId;
-	private String professionalId;
+	private Professional professional;
 	private String poiId;
 	private Date startTime;
 	private Date endTime;
@@ -41,16 +41,16 @@ public class ServiceOffer extends BaseObject {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getProfessionalId() {
-		return professionalId;
-	}
-	public void setProfessionalId(String professionalId) {
-		this.professionalId = professionalId;
-	}
 	public String getServiceType() {
 		return serviceType;
 	}
 	public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
+	}
+	public Professional getProfessional() {
+		return professional;
+	}
+	public void setProfessional(Professional professional) {
+		this.professional = professional;
 	}
 }

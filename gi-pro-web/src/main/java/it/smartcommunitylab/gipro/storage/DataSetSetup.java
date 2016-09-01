@@ -45,7 +45,7 @@ public class DataSetSetup {
 		if (dataSetMap == null) {
 			dataSetMap = new HashMap<String, DataSetInfo>();
 			for (DataSetInfo app : dataSetList) {
-				dataSetMap.put(app.getOwnerId(), app);
+				dataSetMap.put(app.getApplicationId(), app);
 			}
 		}
 		return dataSetMap.get(username);

@@ -19,6 +19,8 @@ package it.smartcommunitylab.gipro.config;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +38,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 
@@ -43,6 +51,7 @@ import com.mongodb.MongoException;
 @ComponentScan("it.smartcommunitylab.gipro")
 @PropertySource("classpath:gipro.properties")
 @EnableWebMvc
+@EnableSwagger2
 public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
@@ -52,7 +61,35 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	@Value("${defaultLang}")
 	private String defaultLang;
+	
+	@Autowired
+	@Value("${swagger.title}")
+	private String swaggerTitle;
+	
+	@Autowired
+	@Value("${swagger.desc}")
+	private String swaggerDesc;
 
+	@Autowired
+	@Value("${swagger.version}")
+	private String swaggerVersion;
+	
+	@Autowired
+	@Value("${swagger.tos.url}")
+	private String swaggerTosUrl;
+	
+	@Autowired
+	@Value("${swagger.contact}")
+	private String swaggerContact;
+
+	@Autowired
+	@Value("${swagger.license}")
+	private String swaggerLicense;
+
+	@Autowired
+	@Value("${swagger.license.url}")
+	private String swaggerLicenseUrl;
+	
 	public AppConfig() {
 	}
 
@@ -81,8 +118,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/apps/**").addResourceLocations(
-				"/apps/");
+		registry.addResourceHandler("/*").addResourceLocations(
+				"/resources/");
 		registry.addResourceHandler("/resources/*").addResourceLocations(
 				"/resources/");
 		registry.addResourceHandler("/css/**").addResourceLocations(
@@ -105,4 +142,28 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	public MultipartResolver multipartResolver() {
 		return new CommonsMultipartResolver();
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Bean
+  public Docket swaggerSpringMvcPlugin() {
+		ApiInfo apiInfo = new ApiInfo(swaggerTitle, swaggerDesc, swaggerVersion, swaggerTosUrl, swaggerContact, 
+				swaggerLicense, swaggerLicenseUrl);
+     return new Docket(DocumentationType.SWAGGER_2)
+     	.groupName("api")
+     	.select()
+     		.paths(PathSelectors.regex("/api/.*"))
+     		.build()
+        .apiInfo(apiInfo)
+        .produces(getContentTypes());
+//        .securityContexts(securityContexts())
+//        .securitySchemes(getSecuritySchemes());
+        
+  }
+	
+	private Set<String> getContentTypes() {
+		Set<String> result = new HashSet<String>();
+		result.add("application/json");
+    return result;
+  }
+	
 }

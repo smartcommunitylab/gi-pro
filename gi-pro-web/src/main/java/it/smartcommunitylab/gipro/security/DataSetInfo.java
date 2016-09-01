@@ -5,20 +5,15 @@ import java.io.Serializable;
 public class DataSetInfo implements Serializable {
 	private static final long serialVersionUID = -130084868920590202L;
 
-	private String ownerId;
+	private String applicationId;
 	private String password;
 	private String token;
-	private String gameId;
 	
-	public String getOwnerId() {
-		return ownerId;
+	public String getApplicationId() {
+		return applicationId;
 	}
-
-	public void setOwnerId(String appId) {
-		this.ownerId = appId;
-	}
-
-	public String getPassword() {
+	
+ 	public String getPassword() {
 		return password;
 	}
 
@@ -28,7 +23,7 @@ public class DataSetInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return ownerId + "=" + password;
+		return applicationId + "=" + password;
 	}
 
 	public String getToken() {
@@ -37,14 +32,6 @@ public class DataSetInfo implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
-	}
-
-	public String getGameId() {
-		return gameId;
-	}
-
-	public void setGameId(String gameId) {
-		this.gameId = gameId;
 	}
 
 }

@@ -7,7 +7,11 @@ public class Notification extends BaseObject {
 	private String professionalId;
 	private Date timestamp;
 	private String text;
-	private String state;
+	private String type;
+	private String serviceOfferId;
+	private String serviceRequestId;
+	private boolean hidden;
+	private boolean read;
 	
 	public String getObjectId() {
 		return objectId;
@@ -33,10 +37,34 @@ public class Notification extends BaseObject {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public String getState() {
-		return state;
+	public String getServiceOfferId() {
+		return serviceOfferId;
 	}
-	public void setState(String state) {
-		this.state = state;
+	public void setServiceOfferId(String serviceOfferId) {
+		this.serviceOfferId = serviceOfferId;
+	}
+	public String getServiceRequestId() {
+		return serviceRequestId;
+	}
+	public void setServiceRequestId(String serviceRequestId) {
+		this.serviceRequestId = serviceRequestId;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public boolean isHidden() {
+		return hidden;
+	}
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+	public boolean isRead() {
+		return read;
+	}
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 }
