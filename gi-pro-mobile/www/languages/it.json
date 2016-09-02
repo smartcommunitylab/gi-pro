@@ -2,6 +2,7 @@
 	"app": "Toga",
 	"ok": "OK",
 	"close": "Chiudi",
+	"cancel": "Annulla",
 	"home": "Home",
 	"notifications": "Notifiche",
 	"history": "Storico",
@@ -10,5 +11,11 @@
 	"logout": "Esci",
 	"home_tab_1": "Richieste",
 	"home_tab_2": "Offerte",
+	"poi_type": "Tipo",
+	"poi_type_placeholder": "Tocca per selezionare il tipo",
+	"poi_region": "Regione",
+	"poi_region_placeholder": "Tocca per selezionare la regione",
+	"poi_region_placeholder_notneeded": "Regione non necessaria per questo tipo",
+	"poi_filter_placeholder": "Filtra...",
 	"results_empty": "Nessuna offerta trovata"
 }

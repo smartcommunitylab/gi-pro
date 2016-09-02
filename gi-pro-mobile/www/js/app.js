@@ -1,10 +1,12 @@
 angular.module('toga', [
 	'ionic',
+	'ionic.wizard',
 	'ngCordova',
 	'ngSanitize',
 	'toga.services.utils',
 	'toga.services.config',
 	'pascalprecht.translate',
+	'toga.services.data',
 	'toga.controllers.main',
 	'toga.controllers.home'
 ])
@@ -64,7 +66,7 @@ angular.module('toga', [
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/search.html',
-				controller: 'SearchCtrl'
+				controller: 'SearchOffersCtrl'
 			}
 		}
 	})
@@ -74,7 +76,7 @@ angular.module('toga', [
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/searchresults.html',
-				controller: 'SearchResultsCtrl'
+				controller: 'SearchOffersResultsCtrl'
 			}
 		}
 	})

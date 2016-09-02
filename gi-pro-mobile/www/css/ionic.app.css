@@ -9828,6 +9828,18 @@ a.button {
   border-radius: 26px;
   box-shadow: 2px 2px 2px #c8c8c8; }
 
+/* Form */
+input[readonly] {
+  background-color: transparent !important; }
+
+/* Footer */
+.bar-footer {
+  background: none;
+  /*padding: 0;*/ }
+  .bar-footer .button.button-block {
+    margin: 0;
+    /*border-radius: 0;*/ }
+
 /* Menu */
 .menu {
   /*background-color: transparent;*/ }
@@ -9871,9 +9883,8 @@ a.button {
 /*
  * SEARCH
  */
-.search .bar-footer {
-  background: none;
-  /*padding: 0;*/ }
-  .search .bar-footer .button.button-block {
-    margin: 0;
-    /*border-radius: 0;*/ }
+/*
+ * POIS MODAL, TYPES/REGIONS POPUPS
+ */
+.popup-types .item, .popup-regions .item {
+  white-space: normal; }

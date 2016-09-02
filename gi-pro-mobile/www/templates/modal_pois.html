@@ -1,0 +1,30 @@
+<ion-modal-view>
+	<ion-header-bar>
+		<div class="title">Ricerca POI</div>
+		<button class="button button-stable button-clear icon ion-close" ng-click="closePoisModal()"></button>
+	</ion-header-bar>
+
+	<ion-content>
+		<div class="item item-input item-stacked-label" ng-click="openTypesPopup()">
+			<span class="input-label">{{'poi_type' | translate}}</span>
+			<input type="text" readonly placeholder="{{'poi_type_placeholder' | translate}}" ng-model="search.type.name">
+		</div>
+		<div class="item item-input item-stacked-label" ng-click="openRegionsPopup()">
+			<span class="input-label">{{'poi_region' | translate}}</span>
+			<input type="text" readonly placeholder="{{(search.type.region == false ? 'poi_region_placeholder_notneeded' : 'poi_region_placeholder') | translate}}" ng-model="search.region">
+		</div>
+		<div class="item item-input">
+			<input type="text" placeholder="{{'poi_filter_placeholder' | translate}}" ng-model="search.text">
+		</div>
+
+		<ion-list>
+			<ion-radio ng-repeat="poi in pois | filter:search.text:strict" ng-model="search.poi">
+				<h5>poi.name</h5>
+			</ion-radio>
+		</ion-list>
+	</ion-content>
+
+	<ion-footer-bar>
+		<button class="button button-dark button-block" ng-click="closePoisModal(getSelectedPoi)">{{'ok' | translate}}</button>
+	</ion-footer-bar>
+</ion-modal-view>
