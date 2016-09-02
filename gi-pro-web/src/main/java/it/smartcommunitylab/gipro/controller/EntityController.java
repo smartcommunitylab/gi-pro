@@ -30,17 +30,27 @@ import it.smartcommunitylab.gipro.model.ServiceRequest;
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,11 +59,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
 public class EntityController {
 	private static final transient Logger logger = LoggerFactory.getLogger(EntityController.class);
+	
+	@Autowired
+	@Value("${image.upload.dir}")
+	private String imageUploadDir;
 	
 	@Autowired
 	private RepositoryManager storageManager;
@@ -107,6 +122,7 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/poi/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Poi> getPois(@PathVariable String applicationId, 
 			@RequestParam String type,
+			@RequestParam(required=false) String region,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -116,13 +132,13 @@ public class EntityController {
 		if(Utils.isEmpty(type)) {
 			throw new WrongRequestException("bad parameters");
 		}
-		if(page == null) {
-			page = 1;
-		}
-		if(limit == null) {
-			limit = 10;
-		}
-		List<Poi> result = storageManager.findPoi(applicationId, type, page, limit);
+//		if(page == null) {
+//			page = 1;
+//		}
+//		if(limit == null) {
+//			limit = 10;
+//		}
+		List<Poi> result = storageManager.findPoi(applicationId, type, region, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getPois[%s]:%d", applicationId, result.size()));
 		}
@@ -332,30 +348,32 @@ public class EntityController {
 	}
 	
 	
-	@RequestMapping(value = "/api/{applicationId}/service/offer/{objectId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/{applicationId}/service/offer/{objectId}/{professionalId}", method = RequestMethod.DELETE)
 	public @ResponseBody ServiceOffer deleteServiceOffer(@PathVariable String applicationId,
 			@PathVariable String objectId,
+			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 //		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
 //			throw new UnauthorizedException("Unauthorized Exception: token not valid");
 //		}
-		ServiceOffer result = storageManager.deleteServiceOffer(applicationId, objectId);
+		ServiceOffer result = storageManager.deleteServiceOffer(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("deleteServiceOffer[%s]:%s", applicationId, objectId));
+			logger.info(String.format("deleteServiceOffer[%s]:%s - %s", applicationId, objectId, professionalId));
 		}
 		return result;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}", method = RequestMethod.DELETE)
 	public @ResponseBody ServiceRequest deleteServiceRequest(@PathVariable String applicationId,
 			@PathVariable String objectId,
+			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 //		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
 //			throw new UnauthorizedException("Unauthorized Exception: token not valid");
 //		}
-		ServiceRequest result = storageManager.deleteServiceRequest(applicationId, objectId);
+		ServiceRequest result = storageManager.deleteServiceRequest(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("deleteServiceRequest[%s]:%s", applicationId, objectId));
+			logger.info(String.format("deleteServiceRequest[%s]:%s - %s", applicationId, objectId, professionalId));
 		}
 		return result;
 	}
@@ -445,6 +463,82 @@ public class EntityController {
 			logger.info(String.format("getNotifications[%s]:%d", applicationId, result.size()));
 		}
 		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/notification/{objectId}/read/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody Notification readNotification(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		Notification result = storageManager.readNotification(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("readNotification[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/notification/{objectId}/hidden/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody Notification hiddenNotification(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
+//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+//		}
+		Notification result = storageManager.hiddenNotification(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("hiddenNotification[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/image/download/{imageType}/{objectId}", method = RequestMethod.GET)
+	public @ResponseBody HttpEntity<byte[]> downloadImage(@PathVariable String applicationId,
+			@PathVariable String imageType, 
+			@PathVariable String objectId, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String name = objectId + "." + imageType;
+		String path = imageUploadDir + "/" + name;
+		if(logger.isInfoEnabled()) {
+			logger.info("downloadImage:" + name);
+		}
+		FileInputStream in = new FileInputStream(new File(path));
+		byte[] image = IOUtils.toByteArray(in);
+		HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.IMAGE_PNG);
+		if(imageType.toLowerCase().equals("png")) {
+			headers.setContentType(MediaType.IMAGE_PNG);
+		} else if(imageType.toLowerCase().equals("gif")) {
+			headers.setContentType(MediaType.IMAGE_GIF);
+		} else if(imageType.toLowerCase().equals("jpg")) {
+			headers.setContentType(MediaType.IMAGE_JPEG);
+		} else if(imageType.toLowerCase().equals("jpeg")) {
+			headers.setContentType(MediaType.IMAGE_JPEG);
+		}
+    headers.setContentLength(image.length);
+    return new HttpEntity<byte[]>(image, headers);
+	}
+	
+	@RequestMapping(value = "/api/{applicationId}/image/upload/{imageType}/{objectId}", method = RequestMethod.POST)
+	public @ResponseBody String uploadImage(@PathVariable String applicationId,
+			@PathVariable String imageType, 
+			@PathVariable String objectId,
+			@RequestParam("file") MultipartFile file,
+			HttpServletRequest request) throws Exception {
+		String name = objectId + "." + imageType;
+		if(logger.isInfoEnabled()) {
+			logger.info("uploadImage:" + name);
+		}
+		if (!file.isEmpty()) {
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(
+					new File(imageUploadDir + "/" + name)));
+			FileCopyUtils.copy(file.getInputStream(), stream);
+			stream.close();
+		}
+		return "{\"status\":\"OK\"}";
 	}
 	
 	@ExceptionHandler(WrongRequestException.class)

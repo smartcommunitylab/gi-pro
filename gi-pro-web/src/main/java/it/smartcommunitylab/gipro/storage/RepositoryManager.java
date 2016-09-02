@@ -174,12 +174,20 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public List<Poi> findPoi(String applicationId, String type, Integer page, Integer limit) {
+	public List<Poi> findPoi(String applicationId, String type, String region, 
+			Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId).and("type").is(type);
+		if(Utils.isNotEmpty(region)) {
+			criteria = criteria.andOperator(new Criteria("region").is(region));
+		}
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.ASC, "name"));
-		query.limit(limit);
-		query.skip((page - 1) * limit);
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
 		List<Poi> result = mongoTemplate.find(query, Poi.class);
 		return result;
 	}
@@ -227,8 +235,8 @@ public class RepositoryManager {
 			Notification notification = new Notification();
 			notification.setApplicationId(serviceOffer.getApplicationId());
 			notification.setTimestamp(timestamp);
-			notification.setProfessionalId(serviceOffer.getProfessionalId());
-			notification.setType(Const.NEW_SERVICE_REQUEST);
+			notification.setProfessionalId(serviceRequest.getRequesterId());
+			notification.setType(Const.NEW_SERVICE_OFFER);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
 			addNotification(notification);
@@ -373,9 +381,12 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public ServiceOffer deleteServiceOffer(String applicationId, String objectId) {
+	public ServiceOffer deleteServiceOffer(String applicationId, String objectId,
+			String professionalId) {
 		ServiceOffer result = null;
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId)
+				.and("professionalId").is(professionalId);
 		Query query = new Query(criteria);
 		try {
 			result = mongoTemplate.findOne(query, ServiceOffer.class);
@@ -388,9 +399,12 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public ServiceRequest deleteServiceRequest(String applicationId, String objectId) {
+	public ServiceRequest deleteServiceRequest(String applicationId, String objectId,
+			String professionalId) {
 		ServiceRequest result = null;
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId)
+				.and("requesterId").is(professionalId);
 		Query query = new Query(criteria);
 		try {
 			result = mongoTemplate.findOne(query, ServiceRequest.class);
@@ -533,7 +547,8 @@ public class RepositoryManager {
 	
 	public ServiceRequest deleteServiceApplication(String applicationId, String objectId,
 			String professionalId) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId);
 		Query query = new Query(criteria);
 		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
 		if(serviceRequest != null) {
@@ -610,4 +625,39 @@ public class RepositoryManager {
 		return result;
 	}
 
+	public Notification readNotification(String applicationId, String objectId, String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId)
+				.and("professionalId").is(professionalId);
+		Query query = new Query(criteria);
+		Notification notification = mongoTemplate.findOne(query, Notification.class);
+		if(notification != null) {
+			notification.setRead(true);
+			updateNotification(query, notification);
+		}
+		return notification;
+	}
+
+	public Notification hiddenNotification(String applicationId, String objectId,
+			String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId)
+				.and("professionalId").is(professionalId);
+		Query query = new Query(criteria);
+		Notification notification = mongoTemplate.findOne(query, Notification.class);
+		if(notification != null) {
+			notification.setHidden(true);
+			updateNotification(query, notification);
+		}
+		return notification;
+	}
+
+	private void updateNotification(Query query, Notification notification) {
+		Date now = new Date();
+		Update update = new Update();
+		update.set("hidden", notification.isHidden());
+		update.set("read", notification.isRead());
+		update.set("lastUpdate", now);
+		mongoTemplate.updateFirst(query, update, Notification.class);
+	}
 }

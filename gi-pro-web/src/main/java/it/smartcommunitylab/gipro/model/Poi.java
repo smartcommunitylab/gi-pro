@@ -4,6 +4,7 @@ public class Poi extends BaseObject {
 	private String objectId;
 	private String name;
 	private String address;
+	private String region;
 	private String type;
 	private double[] coordinates;
 	
@@ -36,5 +37,11 @@ public class Poi extends BaseObject {
 	}
 	public void setCoordinates(double[] coordinates) {
 		this.coordinates = coordinates;
+	}
+	public String getRegion() {
+		return region;
+	}
+	public void setRegion(String region) {
+		this.region = region;
 	}
 }
