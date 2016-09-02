@@ -1,19 +1,42 @@
 <ion-view view-title="{{'app' | translate}}" class="home">
 	<ion-nav-buttons side="right">
-		<!--<button class="button button-icon button-clear" ng-click=""></button>-->
+		<button class="button button-icon button-clear ion-search" ng-click="goTo('app.search')" ng-if="selectedTab() == 0"></button>
+		<button class="button button-icon button-clear ion-ios-bell" ng-click="goTo('app.notifications', {}, true, true, true)"></button>
 	</ion-nav-buttons>
 
 	<ion-tabs class="tabs-stable">
-		<ion-tab title="1">
+		<ion-tab title="{{'home_tab_1' | translate}}">
 			<ion-pane>
-				<ion-content>
+				<ion-content scroll="false">
+					<ion-scroll>
+						<h4 ng-if="!!requests && requests.length == 0">
+							{{'results_empty' | translate}}
+						</h4>
+
+						<ion-list>
+							<h4 ng-repeat="i in [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] track by $index">RICHIESTA {{$index + 1}}</h4>
+						</ion-list>
+					</ion-scroll>
+					<button class="button button-dark button-fab" ng-click="goTo('app.newrequest')">
+						<i class="icon ion-plus"></i>
+					</button>
 				</ion-content>
 			</ion-pane>
 		</ion-tab>
 
-		<ion-tab title="2">
+		<ion-tab title="{{'home_tab_2' | translate}}">
 			<ion-pane>
-				<ion-content>
+				<ion-content scroll="false">
+					<ion-scroll>
+						<h4 ng-if="!!requests && requests.length == 0">{{'results_empty' | translate}}</h4>
+
+						<ion-list>
+							<h4 ng-repeat="i in [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] track by $index">OFFERTA {{$index + 1}}</h4>
+						</ion-list>
+					</ion-scroll>
+					<button class="button button-dark button-fab" ng-click="goTo('app.newoffer')">
+						<i class="icon ion-plus"></i>
+					</button>
 				</ion-content>
 			</ion-pane>
 		</ion-tab>

@@ -3,6 +3,12 @@
 	"ok": "OK",
 	"close": "Chiudi",
 	"home": "Home",
+	"notifications": "Notifiche",
+	"history": "Storico",
+	"profile": "Profilo",
 	"login": "Accedi",
-	"logout": "Esci"
+	"logout": "Esci",
+	"home_tab_1": "Richieste",
+	"home_tab_2": "Offerte",
+	"results_empty": "Nessuna offerta trovata"
 }

@@ -26,6 +26,10 @@ angular.module('toga', [
 })
 
 .config(function ($ionicConfigProvider, $translateProvider) {
+	$ionicConfigProvider.tabs.position('top');
+	$ionicConfigProvider.tabs.style('striped');
+	$ionicConfigProvider.backButton.previousTitleText(false).text('');
+
 	//$translateProvider.translations('it', {});
 	$translateProvider.preferredLanguage('it');
 	$translateProvider.useStaticFilesLoader({
@@ -35,11 +39,6 @@ angular.module('toga', [
 	//$translateProvider.useSanitizeValueStrategy('sanitize');
 	//$translateProvider.useSanitizeValueStrategy('sanitizeParameters');
 	$translateProvider.useSanitizeValueStrategy('escapeParameters');
-
-	$ionicConfigProvider.tabs.position('top');
-	$ionicConfigProvider.tabs.style('striped');
-
-	//$ionicConfigProvider.backButton.previousTitleText(false).text('');
 })
 
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -56,6 +55,76 @@ angular.module('toga', [
 			'menuContent': {
 				templateUrl: 'templates/home.html',
 				controller: 'HomeCtrl'
+			}
+		}
+	})
+
+	.state('app.search', {
+		url: '/search',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/search.html',
+				controller: 'SearchCtrl'
+			}
+		}
+	})
+
+	.state('app.searchresults', {
+		url: '/search/results',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/searchresults.html',
+				controller: 'SearchResultsCtrl'
+			}
+		}
+	})
+
+	.state('app.newrequest', {
+		url: '/request/new',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/form_request.html',
+				controller: 'NewRequestCtrl'
+			}
+		}
+	})
+
+	.state('app.newoffer', {
+		url: '/offer/new',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/form_offer.html',
+				controller: 'NewOfferCtrl'
+			}
+		}
+	})
+
+	.state('app.notifications', {
+		url: '/notifications',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/notifications.html',
+				controller: 'NotificationsCtrl'
+			}
+		}
+	})
+
+	.state('app.history', {
+		url: '/history',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/history.html',
+				controller: 'HistoryCtrl'
+			}
+		}
+	})
+
+	.state('app.profile', {
+		url: '/profile',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/profile.html',
+				controller: 'ProfileCtrl'
 			}
 		}
 	});
