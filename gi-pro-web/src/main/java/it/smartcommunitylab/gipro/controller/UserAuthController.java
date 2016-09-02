@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class UserAuthController {
 	private static final transient Logger logger = LoggerFactory.getLogger(UserAuthController.class);
-			
+	
 	@RequestMapping("/userloginsuccess")
 	public String success(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		return "userloginsuccess";
@@ -39,4 +39,6 @@ public class UserAuthController {
 	public String error(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		return "userloginerror";
 	}
+	
+	
 }
