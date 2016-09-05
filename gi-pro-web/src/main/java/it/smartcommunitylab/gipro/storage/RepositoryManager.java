@@ -149,8 +149,12 @@ public class RepositoryManager {
 		Criteria criteria = new Criteria("applicationId").is(applicationId).and("type").is(type);
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
-		query.limit(limit);
-		query.skip((page - 1) * limit);
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
 		filterProfessionalFields(query);
 		List<Professional> result = mongoTemplate.find(query, Professional.class);
 		return result;
@@ -215,8 +219,12 @@ public class RepositoryManager {
 		criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
-		query.limit(limit);
-		query.skip((page - 1) * limit);
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
 		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
 		return result;
 	}
@@ -353,8 +361,12 @@ public class RepositoryManager {
 		}  
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "startTime", "creationDate"));
-		query.limit(limit);
-		query.skip((page - 1) * limit);
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
 		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
 		return result;
 	}
@@ -375,8 +387,12 @@ public class RepositoryManager {
 		}
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "startTime"));
-		query.limit(limit);
-		query.skip((page - 1) * limit);
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
 		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
 		return result;
 	}
@@ -441,8 +457,12 @@ public class RepositoryManager {
 		}
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "startTime"));
-		query.limit(limit);
-		query.skip((page - 1) * limit);
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
 		filterServiceRequestFields(professionalId, query);
 		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
 		return result;
@@ -601,8 +621,12 @@ public class RepositoryManager {
 		}
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "timestamp"));
-		query.limit(limit);
-		query.skip((page - 1) * limit);
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
 		List<Notification> result = mongoTemplate.find(query, Notification.class);
 		return result;
 	}

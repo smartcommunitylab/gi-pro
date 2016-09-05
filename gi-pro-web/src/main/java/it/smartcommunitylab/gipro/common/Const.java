@@ -26,6 +26,7 @@ public class Const {
 		"Sezione distaccata corte d'appello",
 		"Corte di assise",
 		"Corte di assise di appello",
+		"Sezione distaccata corte di assise di appello",
 		"Corte Suprema di Cassazione",
 		"Giudice di Pace",
 		"Tribunale",
