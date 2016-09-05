@@ -93,7 +93,7 @@ public class AdminController {
 		return "{\"status\":\"OK\"}";
 	}
 	
-	@RequestMapping(value = "/import/poi/{applicationId}/{datasetId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/import/{applicationId}/poi/{datasetId}", method = RequestMethod.POST)
 	public @ResponseBody String importPoi(@PathVariable String applicationId, @PathVariable String datasetId,
 			@RequestBody List<Poi> poiList, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
@@ -110,7 +110,7 @@ public class AdminController {
 		return "{\"status\":\"OK\"}";
 	}
 	
-	@RequestMapping(value = "/import/professional/{applicationId}/{datasetId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/import/{applicationId}/professional/{datasetId}", method = RequestMethod.POST)
 	public @ResponseBody String importProfessional(@PathVariable String applicationId, @PathVariable String datasetId,
 			@RequestBody List<Professional> professionalList, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {

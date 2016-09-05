@@ -3,6 +3,7 @@ package it.smartcommunitylab.gipro.model;
 public class Poi extends BaseObject {
 	private String objectId;
 	private String name;
+	private String description;
 	private String address;
 	private String region;
 	private String type;
@@ -43,5 +44,11 @@ public class Poi extends BaseObject {
 	}
 	public void setRegion(String region) {
 		this.region = region;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
