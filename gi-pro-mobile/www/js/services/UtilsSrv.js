@@ -1,6 +1,6 @@
 angular.module('toga.services.utils', [])
 
-.factory('Utils', function ($rootScope, $window, $timeout, $ionicLoading, $ionicPopup, $cordovaToast) {
+.factory('Utils', function ($rootScope, $filter, $window, $timeout, $ionicLoading, $ionicPopup, $cordovaToast) {
 	var utilsService = {};
 
 	utilsService.roundDecimalPlaces = function (num, decimalPlaces) {

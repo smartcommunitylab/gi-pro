@@ -9815,6 +9815,81 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+/* IonicDatePicker, IonicTimePicker */
+.toga-app .ionic_datepicker_popup .today {
+  border: 1px solid #444;
+  /*border-radius: 50%;*/ }
+
+.toga-app .ionic_datepicker_popup .selected_date {
+  background-color: #444;
+  /*border-radius: 50%;*/
+  color: #ffffff;
+  /*font-weight: bold;*/ }
+
+.toga-app .ionic_datepicker_popup .popup-head {
+  background-color: #444;
+  /*display: none;*/ }
+
+.toga-app .ionic_datepicker_popup .popup-body .selected_date_full {
+  background-color: #444; }
+
+.toga-app .ionic_datepicker_popup .popup-body .month_select,
+.toga-app .ionic_datepicker_popup .popup-body .year_select {
+  /*border: none;*/
+  border-bottom: 1px solid #444;
+  /*padding: 0;*/ }
+
+.toga-app .ionic_datepicker_popup .popup-body .month_select:after,
+.toga-app .ionic_datepicker_popup .popup-body .year_select:after {
+  /*right: 5px;*/
+  color: #444; }
+
+.toga-app .ionic_datepicker_popup .popup-body .button-clear {
+  color: #444; }
+
+.toga-app .ionic_datepicker_popup .popup-buttons button {
+  background-color: #444;
+  /*border-radius: 0;
+		margin-right: 1px;*/
+  color: #ffffff; }
+
+.toga-app .ionic_datepicker_modal .header,
+.toga-app .ionic_datepicker_modal .footer {
+  background-color: #444; }
+  .toga-app .ionic_datepicker_modal .header .title,
+  .toga-app .ionic_datepicker_modal .header .button,
+  .toga-app .ionic_datepicker_modal .footer .title,
+  .toga-app .ionic_datepicker_modal .footer .button {
+    color: #ffffff; }
+
+.toga-app .ionic_datepicker_modal .today {
+  border: 1px solid #444; }
+
+.toga-app .ionic_datepicker_modal .selected_date {
+  background-color: #444;
+  color: #fff;
+  /*font-weight: bold;*/ }
+
+.toga-app .ionic_datepicker_modal .button-clear {
+  color: #444; }
+
+.toga-app .ionic_datepicker_modal .month_select,
+.toga-app .ionic_datepicker_modal .year_select {
+  /*border: none;*/
+  border-bottom: 1px solid #444;
+  /*padding: 0;*/ }
+
+.toga-app .ionic_datepicker_modal .month_select:after,
+.toga-app .ionic_datepicker_modal .year_select:after {
+  /*right: 5px;*/
+  color: #444; }
+
+.toga-app .ionic_timepicker_popup .popup-body .heading {
+  background-color: #444; }
+
+.toga-app .ionic_timepicker_popup .popup-buttons .button {
+  background-color: #444; }
+
 /* Buttons */
 .button.button-fab {
   position: absolute;
@@ -9886,5 +9961,18 @@ input[readonly] {
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS
  */
-.popup-types .item, .popup-regions .item {
+.modal-pois .list-pois .item-radio .radio-content .item-content {
+  white-space: normal; }
+
+.popup-types .popup-head,
+.popup-regions .popup-head {
+  display: none; }
+
+.popup-types .popup-body,
+.popup-regions .popup-body {
+  padding: 0;
+  overflow-x: hidden; }
+
+.popup-types .item,
+.popup-regions .item {
   white-space: normal; }

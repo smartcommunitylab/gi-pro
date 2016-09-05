@@ -1,8 +1,9 @@
 angular.module('toga', [
 	'ionic',
-	'ionic.wizard',
 	'ngCordova',
 	'ngSanitize',
+	'ionic-datepicker',
+	'ionic-timepicker',
 	'toga.services.utils',
 	'toga.services.config',
 	'pascalprecht.translate',
@@ -41,6 +42,30 @@ angular.module('toga', [
 	//$translateProvider.useSanitizeValueStrategy('sanitize');
 	//$translateProvider.useSanitizeValueStrategy('sanitizeParameters');
 	$translateProvider.useSanitizeValueStrategy('escapeParameters');
+})
+
+.config(function (ionicDatePickerProvider, ionicTimePickerProvider) {
+	// FIXME language fixed to 'it' dev only!
+	moment.locale('it');
+
+	var datePickerObj = {
+		inputDate: new Date(),
+		mondayFirst: true,
+		weeksList: moment.weekdaysMin(),
+		monthsList: moment.monthsShort(),
+		templateType: 'popup',
+		from: new Date(),
+		showTodayButton: true,
+		dateFormat: 'dd MMMM yyyy',
+	};
+	ionicDatePickerProvider.configDatePicker(datePickerObj);
+
+	var timePickerObj = {
+		inputTime: (((new Date()).getHours() * 60 * 60) + ((new Date()).getMinutes() * 60)),
+		format: 24,
+		step: 1
+	};
+	ionicTimePickerProvider.configTimePicker(timePickerObj);
 })
 
 .config(function ($stateProvider, $urlRouterProvider) {
