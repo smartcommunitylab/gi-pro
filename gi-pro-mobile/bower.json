@@ -17,7 +17,8 @@
 			"ngCordova": "bower_components/ngCordova/dist/ng-cordova.min.js",
 			"angular-i18n": "bower_components/angular-i18n/angular-locale_it-it.js",
 			"angular-translate": "bower_components/angular-translate/angular-translate.min.js",
-			"angular-translate-loader-static-files": "bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"
+			"angular-translate-loader-static-files": "bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
+			"ionic-wizard": "bower_components/ionic-wizard/dist/ion-wizard.min.js"
 		}
 	}
 }

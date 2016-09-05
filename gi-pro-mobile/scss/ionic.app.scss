@@ -35,6 +35,22 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 	box-shadow: 2px 2px 2px #c8c8c8;
 }
 
+/* Form */
+input[readonly] {
+	background-color: transparent !important;
+}
+
+/* Footer */
+
+.bar-footer {
+	background: none;
+	/*padding: 0;*/
+	.button.button-block {
+		margin: 0;
+		/*border-radius: 0;*/
+	}
+}
+
 /* Menu */
 
 .menu {
@@ -83,6 +99,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 /*
  * HOME
  */
+
 .home {
 	.scroll-view {
 		height: 100%;
@@ -93,13 +110,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
  * SEARCH
  */
 
-.search {
-	.bar-footer {
-		background: none;
-		/*padding: 0;*/
-		.button.button-block {
-			margin: 0;
-			/*border-radius: 0;*/
-		}
+.search {}
+
+/*
+ * POIS MODAL, TYPES/REGIONS POPUPS
+ */
+.popup-types, .popup-regions {
+	.item {
+		white-space: normal;
 	}
 }

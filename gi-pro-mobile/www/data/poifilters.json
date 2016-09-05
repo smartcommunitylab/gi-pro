@@ -1,0 +1,73 @@
+{
+	"regions": ["Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia Romagna", "Friuli Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"],
+	"types": [
+		{
+			"name": "Corte d'appello",
+			"region": true
+		},
+		{
+			"name": "Sezione distaccata corte d'appello",
+			"region": true
+		},
+		{
+			"name": "Corte di assise",
+			"region": true
+		},
+		{
+			"name": "Corte di assise di appello",
+			"region": true
+		},
+		{
+			"name": "Sezione distaccata corte di assise di appello",
+			"region": true
+		},
+		{
+			"name": "Corte Suprema di Cassazione",
+			"region": false
+		},
+		{
+			"name": "Giudice di Pace",
+			"region": true
+		},
+		{
+			"name": "Tribunale",
+			"region": true
+		},
+		{
+			"name": "Sezione staccata di Tribunale",
+			"region": true
+		},
+		{
+			"name": "Tribunale di sorveglianza",
+			"region": true
+		},
+		{
+			"name": "Tribunale per i minorenni",
+			"region": true
+		},
+		{
+			"name": "Tribunale regionale Acque Pubbliche",
+			"region": true
+		},
+		{
+			"name": "Tribunale nazionale Acque pubbliche",
+			"region": false
+		},
+		{
+			"name": "Tribunale Amministrativo Regionale",
+			"region": true
+		},
+		{
+			"name": "Consiglio di Stato",
+			"region": false
+		},
+		{
+			"name": "Commissione Regionali Tributarie",
+			"region": true
+		},
+		{
+			"name": "Commissione Provinciali Tributarie",
+			"region": true
+		}
+	]
+}

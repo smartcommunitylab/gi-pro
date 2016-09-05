@@ -6,11 +6,15 @@ angular.module('toga.controllers.home', [])
 	};
 })
 
-.controller('SearchCtrl', function ($scope) {})
+.controller('SearchOffersCtrl', function ($scope, DataSrv) {})
 
-.controller('SearchResultsCtrl', function ($scope) {})
+.controller('SearchOffersResultsCtrl', function ($scope) {})
 
-.controller('NewRequestCtrl', function ($scope) {})
+.controller('NewRequestCtrl', function ($scope) {
+	$scope.getSelectedPoi = function (poi) {
+		console.log(poi);
+	};
+})
 
 .controller('NewOfferCtrl', function ($scope) {})
 
