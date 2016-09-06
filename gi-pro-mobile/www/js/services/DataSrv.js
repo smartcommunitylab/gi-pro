@@ -40,16 +40,26 @@ angular.module('toga.services.data', [])
 	};
 
 	/* POIs */
-	dataService.getPOIs = function () {
+	dataService.getPois = function (type, region, page, limit) {
 		var deferred = $q.defer();
 
 		var httpConfWithParams = angular.copy(Config.HTTP_CONFIG);
 		httpConfWithParams.params = {};
 
-		// TODO params
+		// type is required
+		if (!type) {
+			deferred.reject('Invalid type');
+		}
 
-		//$http.get(Config.SERVER_URL + '/api/chargingPoints/' + Config.OWNER_ID, httpConfWithParams)
-		$http.get('data/pois.json', httpConfWithParams)
+		httpConfWithParams.params = {
+			type: type
+		};
+
+		if (!!region) {
+			httpConfWithParams.params.region = region;
+		}
+
+		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/poi/bypage', httpConfWithParams)
 
 		.then(
 			function (response) {

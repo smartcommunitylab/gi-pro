@@ -3,7 +3,7 @@ angular.module('toga.controllers.main', [])
 /*
  * App generic controller
  */
-.controller('AppCtrl', function ($scope, $state, $ionicHistory, $ionicModal, $ionicPopup, $filter, DataSrv) {
+.controller('AppCtrl', function ($scope, $state, $ionicHistory, $ionicModal, $ionicPopup, $filter, Utils, DataSrv) {
 	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot) {
 		var options = {};
 
@@ -38,7 +38,11 @@ angular.module('toga.controllers.main', [])
 		}
 	);
 
-	$scope.openPoisModal = function () {
+	$scope.openPoisModal = function (getSelectedPoi) {
+		if (angular.isFunction(getSelectedPoi)) {
+			$scope.getSelectedPoi = getSelectedPoi;
+		}
+
 		$scope.poisModal.show();
 
 		$scope.types = null;
@@ -53,9 +57,10 @@ angular.module('toga.controllers.main', [])
 		});
 
 		$scope.search = {
-			type: {},
-			region: null,
-			text: '',
+			params: {
+				type: null,
+				region: null
+			},
 			poi: null
 		};
 
@@ -63,6 +68,7 @@ angular.module('toga.controllers.main', [])
 			var typesPopup = $ionicPopup.show({
 				templateUrl: 'templates/popup_types.html',
 				scope: $scope,
+				cssClass: 'popup-types',
 				buttons: [
 					{
 						text: $filter('translate')('cancel')
@@ -71,10 +77,11 @@ angular.module('toga.controllers.main', [])
 			});
 
 			$scope.selectType = function (type) {
-				$scope.search.type = type;
+				$scope.search.poi = null;
+				$scope.search.params.type = type;
 
-				if (!$scope.search.type.region) {
-					$scope.search.region = null;
+				if (!$scope.search.params.type.region) {
+					$scope.search.params.region = null;
 				}
 
 				typesPopup.close();
@@ -82,10 +89,11 @@ angular.module('toga.controllers.main', [])
 		};
 
 		$scope.openRegionsPopup = function () {
-			if ($scope.search.type.region) {
+			if (!$scope.search.params.type || $scope.search.params.type.region) {
 				var regionsPopup = $ionicPopup.show({
 					templateUrl: 'templates/popup_regions.html',
 					scope: $scope,
+					cssClass: 'popup-regions',
 					buttons: [
 						{
 							text: $filter('translate')('cancel')
@@ -94,16 +102,58 @@ angular.module('toga.controllers.main', [])
 				});
 
 				$scope.selectRegion = function (region) {
-					$scope.search.region = region;
+					$scope.search.poi = null;
+					$scope.search.params.region = region;
 					regionsPopup.close();
 				};
 			}
 		};
+
+		$scope.unregisterPoiWatch = $scope.$watch('search.params', function (params, oldParams) {
+			if (!!params.type) {
+				if (params.type.region && !!params.region) {
+					// search by type and region
+					console.log(params.type.name + ' | ' + params.type.region + ' | ' + params.region);
+
+					Utils.loading();
+					DataSrv.getPois($scope.search.params.type.name, $scope.search.params.region).then(
+						function (pois) {
+							$scope.pois = pois;
+							Utils.loaded();
+						},
+						function (reason) {
+							console.log(reason);
+							Utils.loaded();
+						}
+					);
+				} else if (params.type.region && !params.region) {
+					$scope.pois = null;
+				} else if (!params.type.region) {
+					// search by type only
+					console.log(params.type.name + ' | ' + params.type.region + ' | ' + params.region);
+
+					Utils.loading();
+					DataSrv.getPois(params.type.name).then(
+						function (pois) {
+							$scope.pois = pois;
+							Utils.loaded();
+						},
+						function (reason) {
+							console.log(reason);
+							Utils.loaded();
+						}
+					);
+				}
+			}
+		}, true);
 	};
 
-	$scope.closePoisModal = function (action) {
-		if (angular.isFunction(action) && !!$scope.search.poi) {
-			$scope.poisModal.hide().then(action($scope.search.poi));
+	$scope.closePoisModal = function () {
+		$scope.unregisterPoiWatch();
+		$scope.pois = null;
+
+		if (angular.isFunction($scope.getSelectedPoi) && !!$scope.search.poi) {
+			$scope.poisModal.hide().then($scope.getSelectedPoi($scope.search.poi));
 		} else {
 			$scope.poisModal.hide();
 		}
