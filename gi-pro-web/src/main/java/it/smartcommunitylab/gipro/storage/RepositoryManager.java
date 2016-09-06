@@ -1,10 +1,14 @@
 package it.smartcommunitylab.gipro.storage;
 
+import it.smartcommunitylab.gipro.common.AlreadyRegisteredException;
 import it.smartcommunitylab.gipro.common.Const;
+import it.smartcommunitylab.gipro.common.PasswordHash;
+import it.smartcommunitylab.gipro.common.RegistrationException;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.model.Notification;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.Registration;
 import it.smartcommunitylab.gipro.model.ServiceApplication;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
@@ -12,6 +16,7 @@ import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -133,6 +138,14 @@ public class RepositoryManager {
 		notification.setLastUpdate(now);
 		mongoTemplate.save(notification);
 		return notification;
+	}
+	
+	public Registration addRegistration(Registration registration) {
+		Date now = new Date();
+		registration.setCreationDate(now);
+		registration.setLastUpdate(now);
+		mongoTemplate.save(registration);
+		return registration;
 	}
 	
 	public void cleanPoi(String applicationId) {
@@ -684,4 +697,52 @@ public class RepositoryManager {
 		update.set("lastUpdate", now);
 		mongoTemplate.updateFirst(query, update, Notification.class);
 	}
+
+	public Registration registerUser(Registration registration) 
+			throws AlreadyRegisteredException, RegistrationException {
+		try {
+			Criteria criteria = new Criteria("applicationId").is(registration.getApplicationId())
+					.and("cf").is(registration.getCf());
+			Query query = new Query(criteria);
+			Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
+			if(dbRegistration != null) {
+				throw new AlreadyRegisteredException("user already registered");
+			}
+			registration.setConfirmed(false);
+			Calendar c = Calendar.getInstance();
+			c.add(Calendar.DATE, 1);
+			registration.setConfirmationDeadline(c.getTime());
+			String confirmationKey = Utils.getUUID();
+			registration.setConfirmationKey(confirmationKey);
+			registration.setPassword(PasswordHash.createHash(registration.getPassword()));
+			if(Utils.isEmpty(registration.getLang())) {
+				registration.setLang("it");
+			}
+			addRegistration(registration);
+			return registration;
+		} catch (Exception e) {
+			throw new RegistrationException(e);
+		}
+	}
+	
+	public Registration confirmUser(String confirmationKey) throws RegistrationException {
+		Date now = new Date();
+		Criteria criteria = new Criteria("confirmationKey").is(confirmationKey);
+		Query query = new Query(criteria);
+		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
+		if(dbRegistration == null) {
+			throw new RegistrationException("confirmationKey not found");
+		}
+		if(dbRegistration.getConfirmationDeadline().before(now)) {
+			throw new RegistrationException("confirmationKey exipired");
+		}
+		Update update = new Update();
+		update.set("confirmed", Boolean.TRUE);
+		update.set("confirmationKey", null);
+		update.set("confirmationDeadline", null);
+		update.set("lastUpdate", now);
+		mongoTemplate.updateFirst(query, update, Registration.class);
+		return dbRegistration;
+	}
+
 }

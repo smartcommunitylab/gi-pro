@@ -3,6 +3,7 @@ package it.smartcommunitylab.gipro.converter;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.Registration;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceOfferUI;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
@@ -73,6 +74,21 @@ public class Converter {
 			result.add(serviceOfferUI);
 		}
 		return result;
+	}
+	
+	public static Professional convertProfessional(Registration registration) {
+		Professional professional = new Professional();
+		professional.setApplicationId(registration.getApplicationId());
+		professional.setCf(registration.getCf());
+		professional.setName(registration.getName());
+		professional.setSurname(registration.getSurname());
+		professional.setMail(registration.getMail());
+		professional.setPec(registration.getPec());
+		professional.setPhone(registration.getPhone());
+		professional.setPiva(registration.getPiva());
+		professional.setUsername(registration.getUsername());
+		professional.setPasswordHash(registration.getPassword());
+		return professional;
 	}
 	
 }

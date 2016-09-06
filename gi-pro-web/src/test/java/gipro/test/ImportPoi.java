@@ -42,7 +42,8 @@ import com.google.common.collect.Lists;
 public class ImportPoi {
 	public static String path = "C:\\Users\\micnori\\Documents\\Progetti\\gi-pro\\xml";
 	public static String applicatinID = "DEMO";
-	public static String importUrl = "http://localhost:8080/gi-pro/import/ADMIN/poi/";
+	//public static String importUrl = "http://localhost:8080/gi-pro/import/ADMIN/poi/";
+	public static String importUrl = "https://dev.smartcommunitylab.it/gi-pro/import/ADMIN/poi/";
 	
 	public static final String[] FILE_HEADER = {"type", "name","region", "address", "description"};
 	
