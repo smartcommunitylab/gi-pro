@@ -127,6 +127,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 input[readonly] {
 	background-color: transparent !important;
 }
+/*.item-stacked-label {
+	border: 0;
+	.input-value {
+		color: black;
+		font-size: 14px;
+		white-space: normal;
+	}
+	.input-value.placeholder {
+		color: gray;
+	}
+}
+.item-toggle {
+	border: 0;
+}*/
 
 /* Footer */
 
