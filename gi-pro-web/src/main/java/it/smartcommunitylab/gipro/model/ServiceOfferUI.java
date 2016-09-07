@@ -5,7 +5,7 @@ import java.util.Date;
 public class ServiceOfferUI {
 	private String objectId;
 	private Professional professional;
-	private String poiId;
+	private Poi poi;
 	private Date startTime;
 	private Date endTime;
 	private String state;
@@ -16,12 +16,6 @@ public class ServiceOfferUI {
 	}
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
-	}
-	public String getPoiId() {
-		return poiId;
-	}
-	public void setPoiId(String poiId) {
-		this.poiId = poiId;
 	}
 	public Date getStartTime() {
 		return startTime;
@@ -52,5 +46,11 @@ public class ServiceOfferUI {
 	}
 	public void setProfessional(Professional professional) {
 		this.professional = professional;
+	}
+	public Poi getPoi() {
+		return poi;
+	}
+	public void setPoi(Poi poi) {
+		this.poi = poi;
 	}
 }

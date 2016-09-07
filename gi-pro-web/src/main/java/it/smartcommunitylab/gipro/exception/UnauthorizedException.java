@@ -1,4 +1,4 @@
-package it.smartcommunitylab.gipro.common;
+package it.smartcommunitylab.gipro.exception;
 
 public class UnauthorizedException extends Exception {
 	private static final long serialVersionUID = 2830818885667911753L;

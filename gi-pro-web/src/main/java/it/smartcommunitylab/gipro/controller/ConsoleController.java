@@ -54,10 +54,10 @@ public class ConsoleController {
 		return "upload";
 	}
 
-	@RequestMapping(value = "/login")
-	public String login() {
-		return "login";
-	}		
+//	@RequestMapping(value = "/login")
+//	public String login() {
+//		return "login";
+//	}		
 	
 	@RequestMapping(value = "/console")
 	public String console() {

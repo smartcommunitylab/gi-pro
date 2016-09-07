@@ -24,11 +24,13 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -37,6 +39,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -53,7 +57,6 @@ import com.mongodb.MongoException;
 @EnableWebMvc
 @EnableSwagger2
 public class AppConfig extends WebMvcConfigurerAdapter {
-
 	@Autowired
 	@Value("${db.name}")
 	private String dbName;
@@ -104,6 +107,19 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	}
 	
 	@Bean
+	TemplateEngine getTemplateEngine() {
+		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setPrefix("/templates/");
+		templateResolver.setSuffix(".html");
+		templateResolver.setCharacterEncoding("UTF-8");
+		templateResolver.setTemplateMode("HTML5");
+		
+		TemplateEngine templateEngine = new TemplateEngine();
+		templateEngine.setTemplateResolver(templateResolver);
+		return templateEngine;
+	}
+	
+	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
@@ -111,9 +127,16 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public ViewResolver getViewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/resources/");
-		resolver.setSuffix(".html");
+		resolver.setPrefix("/WEB-INF/jsp/");
+		resolver.setSuffix(".jsp");
 		return resolver;
+	}
+	
+	@Bean
+	public MessageSource getMessageSource() {
+		ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
+		resourceBundleMessageSource.setBasename("locale/messages");
+		return resourceBundleMessageSource;
 	}
 
 	@Override
@@ -136,6 +159,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 				"/resources/html/");
 		registry.addResourceHandler("/file/**").addResourceLocations(
 				"/resources/file/");
+		registry.addResourceHandler("/templates/**").addResourceLocations(
+				"/resources/templates/");
 	}
 
 	@Bean

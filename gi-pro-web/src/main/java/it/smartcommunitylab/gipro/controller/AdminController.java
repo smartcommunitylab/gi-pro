@@ -16,9 +16,9 @@
 
 package it.smartcommunitylab.gipro.controller;
 
-import it.smartcommunitylab.gipro.common.UnauthorizedException;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.converter.Converter;
+import it.smartcommunitylab.gipro.exception.UnauthorizedException;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
