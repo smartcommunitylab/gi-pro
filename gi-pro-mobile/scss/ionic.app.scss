@@ -107,6 +107,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		}
 	}
 }
+
 /* Buttons */
 
 .button.button-fab {
@@ -127,7 +128,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 input[readonly] {
 	background-color: transparent !important;
 }
-/*.item-stacked-label {
+.item-stacked-label {
 	border: 0;
 	.input-value {
 		color: black;
@@ -140,7 +141,7 @@ input[readonly] {
 }
 .item-toggle {
 	border: 0;
-}*/
+}
 
 /* Footer */
 
@@ -212,7 +213,25 @@ input[readonly] {
  * SEARCH
  */
 
+.search {
+	.row,
+	.col {
+		padding: 0;
+	}
+}
 .search {}
+
+/*
+ * FORMS
+ */
+
+.form-request,
+.form-offer {
+	.row,
+	.col {
+		padding: 0;
+	}
+}
 
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS

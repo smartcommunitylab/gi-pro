@@ -9907,20 +9907,18 @@ a.button {
 input[readonly] {
   background-color: transparent !important; }
 
-/*.item-stacked-label {
-	border: 0;
-	.input-value {
-		color: black;
-		font-size: 14px;
-		white-space: normal;
-	}
-	.input-value.placeholder {
-		color: gray;
-	}
-}
+.item-stacked-label {
+  border: 0; }
+  .item-stacked-label .input-value {
+    color: black;
+    font-size: 14px;
+    white-space: normal; }
+  .item-stacked-label .input-value.placeholder {
+    color: gray; }
+
 .item-toggle {
-	border: 0;
-}*/
+  border: 0; }
+
 /* Footer */
 .bar-footer {
   background: none;
@@ -9972,6 +9970,19 @@ input[readonly] {
 /*
  * SEARCH
  */
+.search .row,
+.search .col {
+  padding: 0; }
+
+/*
+ * FORMS
+ */
+.form-request .row,
+.form-request .col,
+.form-offer .row,
+.form-offer .col {
+  padding: 0; }
+
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS
  */

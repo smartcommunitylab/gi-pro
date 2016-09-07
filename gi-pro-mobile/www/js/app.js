@@ -9,7 +9,9 @@ angular.module('toga', [
 	'pascalprecht.translate',
 	'toga.services.data',
 	'toga.controllers.main',
-	'toga.controllers.home'
+	'toga.controllers.home',
+	'toga.controllers.search',
+	'toga.controllers.new'
 ])
 
 .run(function ($ionicPlatform) {
@@ -26,6 +28,22 @@ angular.module('toga', [
 			StatusBar.styleDefault();
 		}
 	});
+})
+
+.config(function ($ionicConfigProvider, $translateProvider) {
+	$ionicConfigProvider.tabs.position('top');
+	$ionicConfigProvider.tabs.style('striped');
+	$ionicConfigProvider.backButton.previousTitleText(false).text('');
+
+	//$translateProvider.translations('it', {});
+	$translateProvider.preferredLanguage('it');
+	$translateProvider.useStaticFilesLoader({
+		prefix: 'languages/',
+		suffix: '.json'
+	});
+	//$translateProvider.useSanitizeValueStrategy('sanitize');
+	//$translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+	$translateProvider.useSanitizeValueStrategy('escapeParameters');
 })
 
 .config(function ($ionicConfigProvider, $translateProvider) {
@@ -78,6 +96,10 @@ angular.module('toga', [
 
 	.state('app.home', {
 		url: '/home',
+		params: {
+			'tab': 0,
+			'reload': false
+		},
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/home.html',
@@ -98,6 +120,9 @@ angular.module('toga', [
 
 	.state('app.searchresults', {
 		url: '/search/results',
+		params: {
+			'results': null
+		},
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/searchresults.html',

@@ -8,11 +8,13 @@
 		<div class="list list-inputs">
 			<div class="item item-input item-stacked-label" ng-click="openTypesPopup()">
 				<span class="input-label">{{'poi_type' | translate}}</span>
-				<input type="text" readonly placeholder="{{'poi_type_placeholder' | translate}}" ng-model="search.params.type.name">
+				<!--<input type="text" readonly placeholder="{{'poi_type_placeholder' | translate}}" ng-model="search.params.type.name">-->
+				<div class="input-value" ng-class="{'placeholder': !search.params.type}">{{!!search.params.type ? search.params.type.name : ('poi_type_placeholder' | translate)}}</div>
 			</div>
 			<div class="item item-input item-stacked-label" ng-click="openRegionsPopup()">
 				<span class="input-label">{{'poi_region' | translate}}</span>
-				<input type="text" readonly placeholder="{{(search.params.type.region == false ? 'poi_region_placeholder_notneeded' : 'poi_region_placeholder') | translate}}" ng-model="search.params.region">
+				<!--<input type="text" readonly placeholder="{{(search.params.type.region == false ? 'poi_region_placeholder_notneeded' : 'poi_region_placeholder') | translate}}" ng-model="search.params.region">-->
+				<div class="input-value" ng-class="{'placeholder': !search.params.region}">{{!!search.params.region ? search.params.region : ((search.params.type.region == false ? 'poi_region_placeholder_notneeded' : 'poi_region_placeholder') | translate)}}</div>
 			</div>
 		</div>
 
