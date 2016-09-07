@@ -6,15 +6,15 @@ import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.Registration;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceOfferUI;
+import it.smartcommunitylab.gipro.model.ServiceRequest;
+import it.smartcommunitylab.gipro.model.ServiceRequestUI;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.collect.Lists;
@@ -65,13 +65,35 @@ public class Converter {
 			Professional professional = storageManager.findProfessionalById(applicationId, serviceOffer.getProfessionalId());
 			ServiceOfferUI serviceOfferUI = new ServiceOfferUI();
 			serviceOfferUI.setObjectId(serviceOffer.getObjectId());
-			serviceOfferUI.setPoiId(serviceOffer.getPoiId());
 			serviceOfferUI.setServiceType(serviceOffer.getServiceType());
 			serviceOfferUI.setState(serviceOffer.getState());
 			serviceOfferUI.setStartTime(serviceOffer.getStartTime());
 			serviceOfferUI.setEndTime(serviceOffer.getEndTime());
 			serviceOfferUI.setProfessional(professional);
+			Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
+			serviceOfferUI.setPoi(poi);
 			result.add(serviceOfferUI);
+		}
+		return result;
+	}
+	
+	public static List<ServiceRequestUI> convertServiceRequest(RepositoryManager storageManager,
+			String applicationId, List<ServiceRequest> requestList) {
+		List<ServiceRequestUI> result = Lists.newArrayList();
+		for(ServiceRequest serviceRequest : requestList) {
+			ServiceRequestUI serviceRequestUI = new ServiceRequestUI();
+			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
+			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
+			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
+			serviceRequestUI.setPrivateRequest(serviceRequest.isPrivateRequest());
+			serviceRequestUI.setApplicants(serviceRequest.getApplicants());
+			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
+			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
+			serviceRequestUI.setRequesterId(serviceRequest.getRequesterId());
+			serviceRequestUI.setState(serviceRequest.getState());
+			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
+			serviceRequestUI.setPoi(poi);
+			result.add(serviceRequestUI);
 		}
 		return result;
 	}

@@ -27,6 +27,7 @@ import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceOfferUI;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
+import it.smartcommunitylab.gipro.model.ServiceRequestUI;
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
@@ -239,7 +240,7 @@ public class EntityController {
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}", method = RequestMethod.GET)
-	public @ResponseBody List<ServiceOffer> getServiceOffers(@PathVariable String applicationId,
+	public @ResponseBody List<ServiceOfferUI> getServiceOffers(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@RequestParam String serviceType,
 			@RequestParam(required=false) Long timeFrom,
@@ -261,7 +262,8 @@ public class EntityController {
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceOffers[%s]:%d", applicationId, result.size()));
 		}
-		return result;
+		List<ServiceOfferUI> resultUI = Converter.convertServiceOffer(storageManager, applicationId, result);
+		return resultUI;
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}/{objectId}", method = RequestMethod.GET)
@@ -281,7 +283,7 @@ public class EntityController {
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}", method = RequestMethod.GET)
-	public @ResponseBody List<ServiceRequest> getServiceRequests(@PathVariable String applicationId,
+	public @ResponseBody List<ServiceRequestUI> getServiceRequests(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@RequestParam String serviceType,
 			@RequestParam(required=false) Long timeFrom,
@@ -303,7 +305,8 @@ public class EntityController {
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
 		}
-		return result;
+		List<ServiceRequestUI> resultUI = Converter.convertServiceRequest(storageManager, applicationId, result);
+		return resultUI;
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}/{objectId}", method = RequestMethod.GET)

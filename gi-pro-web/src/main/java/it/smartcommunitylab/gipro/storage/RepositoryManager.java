@@ -247,6 +247,13 @@ public class RepositoryManager {
 		List<Poi> result = mongoTemplate.find(query, Poi.class);
 		return result;
 	}
+	
+	public Poi findPoiById(String applicationId, String poiId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(poiId);
+		Query query = new Query(criteria);
+		Poi result = mongoTemplate.findOne(query, Poi.class);
+		return result;
+	}
 
 	public List<ServiceOffer> searchServiceOffer(String applicationId, 
 			String professionalId, String serviceType, String poiId,
