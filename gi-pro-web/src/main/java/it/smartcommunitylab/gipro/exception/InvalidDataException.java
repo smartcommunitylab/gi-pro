@@ -14,20 +14,28 @@
  *    limitations under the License.
  ******************************************************************************/
 
-package it.smartcommunitylab.gipro.common;
+package it.smartcommunitylab.gipro.exception;
 
 /**
  * @author raman
  *
  */
-public class AlreadyRegisteredException extends RegistrationException {
+public class InvalidDataException extends RegistrationException {
 	private static final long serialVersionUID = 3481701175901182216L;
 	
-	public AlreadyRegisteredException() {
+	public InvalidDataException() {
 		super();
 	}
-	
-	public AlreadyRegisteredException(String message) {
+
+	public InvalidDataException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public InvalidDataException(String message) {
 		super(message);
+	}
+
+	public InvalidDataException(Throwable cause) {
+		super(cause);
 	}
 }

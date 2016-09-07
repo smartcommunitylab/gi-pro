@@ -76,7 +76,7 @@ public class Converter {
 		return result;
 	}
 	
-	public static Professional convertProfessional(Registration registration) {
+	public static Professional convertRegistrationToProfessional(Registration registration) {
 		Professional professional = new Professional();
 		professional.setApplicationId(registration.getApplicationId());
 		professional.setCf(registration.getCf());
@@ -89,6 +89,23 @@ public class Converter {
 		professional.setUsername(registration.getUsername());
 		professional.setPasswordHash(registration.getPassword());
 		return professional;
+	}
+	
+	public static Registration convertProfessionalToRegistration(Professional professional, 
+			String password, String lang) {
+		Registration registration = new Registration();
+		registration.setApplicationId(professional.getApplicationId());
+		registration.setCf(professional.getCf());
+		registration.setLang(lang);
+		registration.setMail(professional.getMail());
+		registration.setName(professional.getName());
+		registration.setPassword(password);
+		registration.setPec(professional.getPec());
+		registration.setPhone(professional.getPhone());
+		registration.setPiva(professional.getPiva());
+		registration.setSurname(professional.getSurname());
+		registration.setUsername(professional.getUsername());
+		return registration;
 	}
 	
 }

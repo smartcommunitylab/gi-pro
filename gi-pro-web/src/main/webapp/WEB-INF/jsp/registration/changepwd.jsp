@@ -18,7 +18,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<fmt:setBundle basename="resources.internal" var="res"/>
+<fmt:setBundle basename="locale.messages" var="res"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,20 +46,15 @@
         <div class="row">
           <div class="col-md-offset-4 col-md-4">
             <div class="panel panel-default">
-            <form:form modelAttribute="reg" action="changepwd">
+            <form:form action="changepwd">
                 <div>&nbsp;</div>
                 <c:if test="${error != null}"><div class="error"><fmt:message bundle="${res}" key="${error}" /></div></c:if>
                 <div>&nbsp;</div>
-                  <form:input type="hidden" path="email" value="<%=request.getSession().getAttribute(\"changePwdEmail\") %>"/>
-<%--                 <div class="col-md-12 form-group">
-                  <label> <fmt:message bundle="${res}" key="lbl_user" />*: </label>
-                  <form:input cssClass="form-control" path="email"/>
-                  <form:errors cssClass="error" path="email"/>
-                </div>
- --%>                <div class="col-md-12 form-group">
+                <input type="hidden" name="cf" value='<%= request.getSession().getAttribute("changePwdCF") %>'/>
+                <input type="hidden" name="confirmationCode" value='<%= request.getSession().getAttribute("confirmationCode") %>'/>
+                <div class="col-md-12 form-group">
                   <label> <fmt:message bundle="${res}" key="lbl_pwd" />*: </label>
-                  <form:input class="form-control" type="password" path="password"/>
-                  <form:errors cssClass="error" path="password"/>
+                  <input class="form-control" type="password" name="password"/>
                 </div>
                 <div class="col-md-12 form-group">
                   <button class="btn btn-primary"><fmt:message bundle="${res}" key="lbl_reg_btn" /></button>

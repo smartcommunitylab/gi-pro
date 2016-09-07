@@ -16,7 +16,7 @@
 
 package it.smartcommunitylab.gipro.mail;
 
-import it.smartcommunitylab.gipro.common.RegistrationException;
+import it.smartcommunitylab.gipro.exception.RegistrationException;
 import it.smartcommunitylab.gipro.model.Registration;
 
 import java.io.IOException;
@@ -75,6 +75,7 @@ public class MailSender {
 	private TemplateEngine templateEngine;
 
 	public MailSender() throws IOException {
+		//TODO usare message resource
 		mailSender = new org.springframework.mail.javamail.JavaMailSenderImpl();
 
 	}
@@ -105,6 +106,15 @@ public class MailSender {
 		sendEmail(reg.getMail(), "confirmation_" + lang, subject, vars);
 	}
 
+	public void sendResetMail(Registration reg) throws RegistrationException {
+		String lang = reg.getLang();
+		Map<String, Object> vars = new HashMap<String, Object>();
+		vars.put("user", reg);
+		vars.put("url", applicationURL + "/changepwd?cf=" + reg.getCf() + "&confirmationCode=" + reg.getConfirmationKey());
+		String subject = messageProps.getProperty("reset.subject");
+		sendEmail(reg.getMail(), "reset_" + lang, subject, vars);
+	}
+	
 	public void sendEmail(String email, String template, String subject, Map<String, Object> vars)
 			throws RegistrationException {
 
@@ -132,4 +142,5 @@ public class MailSender {
 			throw new RegistrationException(e);
 		}
 	}
+
 }

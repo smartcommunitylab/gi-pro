@@ -17,7 +17,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<fmt:setBundle basename="resources.internal" var="res"/>
+<fmt:setBundle basename="locale.messages" var="res"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,8 +49,7 @@
             <c:if test="${error != null}"><div class="error"><fmt:message bundle="${res}" key="${error}" /></div></c:if>
             <div>&nbsp;</div>
             <div class="col-md-12 form-group">
-              <a class="btn" href="resend
-              "><fmt:message bundle="${res}" key="lbl_resend" /></a>
+              <a class="btn" href="resend"><fmt:message bundle="${res}" key="lbl_resend" /></a>
             </div>
             <div>&nbsp;</div>
             </div>

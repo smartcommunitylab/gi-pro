@@ -17,7 +17,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<fmt:setBundle basename="resources.internal" var="res"/>
+<fmt:setBundle basename="locale.messages" var="res"/>
 
 <!DOCTYPE html>
 <html lang="en">

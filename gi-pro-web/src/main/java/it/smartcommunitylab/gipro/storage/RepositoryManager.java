@@ -1,10 +1,12 @@
 package it.smartcommunitylab.gipro.storage;
 
-import it.smartcommunitylab.gipro.common.AlreadyRegisteredException;
 import it.smartcommunitylab.gipro.common.Const;
 import it.smartcommunitylab.gipro.common.PasswordHash;
-import it.smartcommunitylab.gipro.common.RegistrationException;
 import it.smartcommunitylab.gipro.common.Utils;
+import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
+import it.smartcommunitylab.gipro.exception.InvalidDataException;
+import it.smartcommunitylab.gipro.exception.NotRegisteredException;
+import it.smartcommunitylab.gipro.exception.RegistrationException;
 import it.smartcommunitylab.gipro.model.Notification;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
@@ -129,6 +131,34 @@ public class RepositoryManager {
 		professional.setLastUpdate(now);
 		mongoTemplate.save(professional);
 		return professional;
+	}
+	
+	public void saveProfessionalbyCF(Professional professional) {
+		Criteria criteria = new Criteria("applicationId").is(professional.getApplicationId())
+				.and("cf").is(professional.getCf());
+		Query query = new Query(criteria);
+		Professional dbProfessional = mongoTemplate.findOne(query, Professional.class);
+		if(dbProfessional == null) {
+			professional.setObjectId(Utils.getUUID());
+			Date now = new Date();
+			professional.setCreationDate(now);
+			professional.setLastUpdate(now);
+			mongoTemplate.save(professional);
+		}
+	}
+	
+	private void updateProfessionalPasswordByCF(String applicationId, String cf, String passwordHash) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("cf").is(cf);
+		Query query = new Query(criteria);
+		Professional dbProfessional = mongoTemplate.findOne(query, Professional.class);
+		if(dbProfessional != null) {
+			Date now = new Date();
+			Update update = new Update();
+			update.set("passwordHash", passwordHash);
+			update.set("lastUpdate", now);
+			mongoTemplate.updateFirst(query, update, Professional.class);
+		}
 	}
 	
 	public Notification addNotification(Notification notification) {
@@ -698,6 +728,18 @@ public class RepositoryManager {
 		mongoTemplate.updateFirst(query, update, Notification.class);
 	}
 
+	public Registration registerUser(String applicationId, String cf, String password, String name,
+			String surname, String mail) throws AlreadyRegisteredException, RegistrationException {
+		Registration registration = new Registration();
+		registration.setApplicationId(applicationId);
+		registration.setCf(cf);
+		registration.setPassword(password);
+		registration.setName(name);
+		registration.setSurname(surname);
+		registration.setMail(mail);
+		return registerUser(registration);
+	}
+	
 	public Registration registerUser(Registration registration) 
 			throws AlreadyRegisteredException, RegistrationException {
 		try {
@@ -725,16 +767,16 @@ public class RepositoryManager {
 		}
 	}
 	
-	public Registration confirmUser(String confirmationKey) throws RegistrationException {
+	public Registration confirmUser(String confirmationKey) throws Exception {
 		Date now = new Date();
 		Criteria criteria = new Criteria("confirmationKey").is(confirmationKey);
 		Query query = new Query(criteria);
 		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 		if(dbRegistration == null) {
-			throw new RegistrationException("confirmationKey not found");
+			throw new NotRegisteredException("confirmationKey not found");
 		}
 		if(dbRegistration.getConfirmationDeadline().before(now)) {
-			throw new RegistrationException("confirmationKey exipired");
+			throw new InvalidDataException("confirmationKey exipired");
 		}
 		Update update = new Update();
 		update.set("confirmed", Boolean.TRUE);
@@ -742,7 +784,82 @@ public class RepositoryManager {
 		update.set("confirmationDeadline", null);
 		update.set("lastUpdate", now);
 		mongoTemplate.updateFirst(query, update, Registration.class);
+		dbRegistration.setConfirmed(true);
+		dbRegistration.setConfirmationKey(null);
+		dbRegistration.setConfirmationDeadline(null);
 		return dbRegistration;
+	}
+
+	public Registration resendConfirm(String cf) throws Exception {
+		Date now = new Date();
+		Criteria criteria = new Criteria("cf").is(cf).and("confirmed").is(Boolean.FALSE);
+		Query query = new Query(criteria);
+		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
+		if(dbRegistration == null) {
+			throw new NotRegisteredException("confirmationKey not found");
+		}
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 1);
+		String confirmationKey = Utils.getUUID();
+		Update update = new Update();
+		update.set("confirmationDeadline", c.getTime());
+		update.set("confirmationKey", confirmationKey);
+		update.set("lastUpdate", now);
+		mongoTemplate.updateFirst(query, update, Registration.class);
+		dbRegistration.setConfirmationDeadline(c.getTime());
+		dbRegistration.setConfirmationKey(confirmationKey);
+		return dbRegistration;
+	}
+
+	public Registration resetPassword(String cf) throws Exception {
+		Date now = new Date();
+		Criteria criteria = new Criteria("cf").is(cf).and("confirmed").is(Boolean.TRUE);
+		Query query = new Query(criteria);
+		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
+		if(dbRegistration == null) {
+			throw new NotRegisteredException("confirmationKey not found");
+		}
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 1);
+		String confirmationKey = Utils.getUUID();
+		Update update = new Update();
+		update.set("confirmationDeadline", c.getTime());
+		update.set("confirmationKey", confirmationKey);
+		update.set("password", null);
+		update.set("confirmed", Boolean.FALSE);
+		update.set("lastUpdate", now);
+		mongoTemplate.updateFirst(query, update, Registration.class);
+		dbRegistration.setConfirmationDeadline(c.getTime());
+		dbRegistration.setConfirmationKey(confirmationKey);
+		dbRegistration.setPassword(null);
+		dbRegistration.setConfirmed(false);
+		return dbRegistration;
+	}
+
+	public void updatePassword(String cf, String password, 
+			String confirmationCode) throws Exception {
+		Date now = new Date();
+		Criteria criteria = new Criteria("cf").is(cf)
+				.and("confirmationKey").is(confirmationCode)
+				.and("confirmed").is(Boolean.FALSE);
+		Query query = new Query(criteria);
+		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
+		if(dbRegistration == null) {
+			throw new NotRegisteredException("confirmationKey not found");
+		}
+		try {
+			String newPassword = PasswordHash.createHash(password);
+			Update update = new Update();
+			update.set("confirmed", Boolean.TRUE);
+			update.set("confirmationKey", null);
+			update.set("confirmationDeadline", null);
+			update.set("password", newPassword);
+			update.set("lastUpdate", now);
+			mongoTemplate.updateFirst(query, update, Registration.class);
+			updateProfessionalPasswordByCF(dbRegistration.getApplicationId(), cf, newPassword);
+		} catch (Exception e) {
+			throw new RegistrationException(e.getMessage());
+		}
 	}
 
 }

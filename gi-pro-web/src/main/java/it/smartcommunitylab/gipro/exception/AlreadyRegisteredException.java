@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2012-2013 Trento RISE
+ * Copyright 2015 Fondazione Bruno Kessler
  * 
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,30 +14,20 @@
  *    limitations under the License.
  ******************************************************************************/
 
-package it.smartcommunitylab.gipro.common;
+package it.smartcommunitylab.gipro.exception;
 
 /**
  * @author raman
  *
  */
-public class RegistrationException extends Exception {
-	private static final long serialVersionUID = -3713058847321448029L;
-
-	public RegistrationException() {
+public class AlreadyRegisteredException extends RegistrationException {
+	private static final long serialVersionUID = 3481701175901182216L;
+	
+	public AlreadyRegisteredException() {
 		super();
 	}
-
-	public RegistrationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public RegistrationException(String message) {
+	
+	public AlreadyRegisteredException(String message) {
 		super(message);
 	}
-
-	public RegistrationException(Throwable cause) {
-		super(cause);
-	}
-
-	
 }
