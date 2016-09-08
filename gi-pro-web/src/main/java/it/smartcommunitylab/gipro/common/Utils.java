@@ -1,5 +1,7 @@
 package it.smartcommunitylab.gipro.common;
 
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.security.AppUserDetails;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
@@ -16,6 +18,8 @@ import java.util.UUID;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -140,6 +144,26 @@ public class Utils {
 		return result;
 	}
 	
+	public static String getContextPrincipal() {
+		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String) {
+			String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return principal;
+		} else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof AppUserDetails) {
+			AppUserDetails appDetail = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return appDetail.getUsername();
+		}
+		return null;
+	}
+	
+	public static String getContextProfessionalId() {
+		if(SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof Professional) {
+			Professional professional = (Professional) SecurityContextHolder.getContext().getAuthentication().getDetails();
+			return professional.getObjectId();
+		}
+		return null;
+	}
+	
+
 	public static Map<String,String> handleError(Exception exception) {
 		Map<String,String> errorMap = new HashMap<String,String>();
 		errorMap.put(Const.ERRORTYPE, exception.getClass().toString());

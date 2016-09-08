@@ -62,6 +62,8 @@ public class ImportPoi {
 		XPathExpression ufficioElement = this.xPath.compile("./ufficio");
 		XPathExpression nameElement = this.xPath.compile("./@nomeufficio");
 		XPathExpression addressElement = this.xPath.compile("./indirizzo");
+		XPathExpression capElement = this.xPath.compile("./cap");
+		XPathExpression comuneElement = this.xPath.compile("./comune");
 		XPathExpression infoElement = this.xPath.compile("./infoaggiuntive");
 		File folder = new File(ImportPoi.path);
 		List<Poi> poiList = Lists.newArrayList();
@@ -88,6 +90,8 @@ public class ImportPoi {
 							ufficioNode.getParentNode().removeChild(ufficioNode);
 							String name = (String) nameElement.evaluate(ufficioNode, XPathConstants.STRING);
 							String address = (String) addressElement.evaluate(ufficioNode, XPathConstants.STRING);
+							String comune = (String) comuneElement.evaluate(ufficioNode, XPathConstants.STRING);
+							String cap = (String) capElement.evaluate(ufficioNode, XPathConstants.STRING);
 							String description = (String) infoElement.evaluate(ufficioNode, XPathConstants.STRING);
 							String type = getPoiType(name);
 							countTot++;
@@ -98,7 +102,7 @@ public class ImportPoi {
 							ufficio.setApplicationId(ImportPoi.applicatinID);
 							ufficio.setRegion(regione);
 							ufficio.setName(name);
-							ufficio.setAddress(address);
+							ufficio.setAddress(address + " " + cap + " " + comune);
 							ufficio.setDescription(description);
 							ufficio.setType(type);
 							poiList.add(ufficio);

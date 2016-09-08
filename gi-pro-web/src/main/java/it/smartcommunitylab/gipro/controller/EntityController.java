@@ -21,6 +21,7 @@ import it.smartcommunitylab.gipro.converter.Converter;
 import it.smartcommunitylab.gipro.exception.EntityNotFoundException;
 import it.smartcommunitylab.gipro.exception.UnauthorizedException;
 import it.smartcommunitylab.gipro.exception.WrongRequestException;
+import it.smartcommunitylab.gipro.integration.CNF;
 import it.smartcommunitylab.gipro.model.Notification;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
@@ -77,15 +78,27 @@ public class EntityController {
 	@Autowired
 	private DataSetSetup dataSetSetup;
 	
+	@RequestMapping(value = "/api/{applicationId}/profile", method = RequestMethod.GET)
+	public @ResponseBody Professional getProfile(@PathVariable String applicationId, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String cf = Utils.getContextPrincipal();
+		Professional profile = CNF.getProfile(applicationId, cf, null);
+		if(profile == null) {
+			throw new UnauthorizedException("profile not found");
+		}
+		profile = storageManager.findProfessionalByCF(applicationId, cf);
+		if(profile == null) {
+			throw new UnauthorizedException("profile not found");
+		}
+		return profile;
+	}
+
 	@RequestMapping(value = "/api/{applicationId}/professional/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionals(@PathVariable String applicationId, 
 			@RequestParam String type,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
 		if(Utils.isEmpty(type)) {
 			throw new WrongRequestException("bad parameters");
 		}
@@ -106,9 +119,6 @@ public class EntityController {
 	public @ResponseBody List<Professional> getProfessionalsByIds(@PathVariable String applicationId, 
 			@RequestParam String ids, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
 		if(Utils.isEmpty(ids)) {
 			throw new WrongRequestException("bad parameters");
 		}
@@ -127,9 +137,6 @@ public class EntityController {
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
 		if(Utils.isEmpty(type)) {
 			throw new WrongRequestException("bad parameters");
 		}
@@ -150,9 +157,6 @@ public class EntityController {
 	public @ResponseBody List<Poi> getPoisByIds(@PathVariable String applicationId, 
 			@RequestParam String ids,  
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
 		if(Utils.isEmpty(ids)) {
 			throw new WrongRequestException("bad parameters");
 		}
@@ -173,9 +177,7 @@ public class EntityController {
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		if(Utils.isEmpty(poiId) || (startTime == null)) {
 			throw new WrongRequestException("bad parameters");
 		}
@@ -198,10 +200,9 @@ public class EntityController {
 	public @ResponseBody ServiceOffer addServiceOffer(@PathVariable String applicationId,
 			@RequestBody ServiceOffer serviceOffer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
 		serviceOffer.setApplicationId(applicationId);
+		String professionalId = Utils.getContextProfessionalId();
+		serviceOffer.setProfessionalId(professionalId);
 		ServiceOffer result = storageManager.saveServiceOffer(serviceOffer);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("addServiceOffer[%s]:%s", applicationId, result.getObjectId()));
@@ -213,10 +214,9 @@ public class EntityController {
 	public @ResponseBody ServiceRequest addPublicServiceRequest(@PathVariable String applicationId,
 			@RequestBody ServiceRequest serviceRequest,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
 		serviceRequest.setApplicationId(applicationId);
+		String professionalId = Utils.getContextProfessionalId();
+		serviceRequest.setRequesterId(professionalId);
 		ServiceRequest result = storageManager.savePublicServiceRequest(serviceRequest);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("addPublicServiceRequest[%s]:%s", applicationId, result.getObjectId()));
@@ -228,10 +228,9 @@ public class EntityController {
 	public @ResponseBody ServiceRequest addPrivateServiceRequest(@PathVariable String applicationId,
 			@RequestBody ServiceRequest serviceRequest,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
 		serviceRequest.setApplicationId(applicationId);
+		String professionalId = Utils.getContextProfessionalId();
+		serviceRequest.setRequesterId(professionalId);
 		ServiceRequest result = storageManager.savePrivateServiceRequest(serviceRequest);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("addPrivateServiceRequest[%s]:%s", applicationId, result.getObjectId()));
@@ -248,9 +247,7 @@ public class EntityController {
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		if(page == null) {
 			page = 1;
 		}
@@ -271,9 +268,7 @@ public class EntityController {
 			@PathVariable String professionalId,
 			@PathVariable String objectId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceOffer result = storageManager.getServiceOfferById(applicationId, professionalId, 
 				objectId);
 		if(logger.isInfoEnabled()) {
@@ -291,9 +286,7 @@ public class EntityController {
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		if(page == null) {
 			page = 1;
 		}
@@ -314,9 +307,7 @@ public class EntityController {
 			@PathVariable String professionalId,
 			@PathVariable String objectId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest result = storageManager.getServiceRequestById(applicationId, professionalId, 
 				objectId);
 		if(logger.isInfoEnabled()) {
@@ -333,9 +324,7 @@ public class EntityController {
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		if(page == null) {
 			page = 1;
 		}
@@ -356,9 +345,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceOffer result = storageManager.deleteServiceOffer(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("deleteServiceOffer[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -371,9 +358,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest result = storageManager.deleteServiceRequest(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("deleteServiceRequest[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -386,9 +371,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest result = storageManager.applyToServiceRequest(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("applyServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -401,9 +384,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest result = storageManager.rejectServiceApplication(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("rejectServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -416,9 +397,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest result = storageManager.acceptServiceApplication(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("acceptServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -431,9 +410,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest result = storageManager.deleteServiceApplication(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("deleteServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -451,9 +428,7 @@ public class EntityController {
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		if(page == null) {
 			page = 1;
 		}
@@ -473,9 +448,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		Notification result = storageManager.readNotification(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("readNotification[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -488,9 +461,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storageManager)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		professionalId = Utils.getContextProfessionalId();
 		Notification result = storageManager.hiddenNotification(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("hiddenNotification[%s]:%s - %s", applicationId, objectId, professionalId));
