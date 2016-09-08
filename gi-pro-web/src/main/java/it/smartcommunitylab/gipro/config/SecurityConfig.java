@@ -1,5 +1,7 @@
 package it.smartcommunitylab.gipro.config;
 
+import it.smartcommunitylab.gipro.security.AppUserDetails;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebMvcSecurity
@@ -50,6 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.headers()
 			.frameOptions().disable();
+		
+		http
+		.authorizeRequests()
+		.antMatchers("/api/**")
+		.hasAnyAuthority(AppUserDetails.GIPRO)
+		.and()
+		.addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
 		
 		http
       .csrf()

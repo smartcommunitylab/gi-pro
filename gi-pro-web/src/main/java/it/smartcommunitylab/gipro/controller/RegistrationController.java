@@ -10,6 +10,7 @@ import it.smartcommunitylab.gipro.integration.CNF;
 import it.smartcommunitylab.gipro.mail.MailSender;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.Registration;
+import it.smartcommunitylab.gipro.security.PermissionsManager;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import java.util.Map;
@@ -40,14 +41,40 @@ public class RegistrationController {
 	private RepositoryManager storageManager;
 	
 	@Autowired
+	private PermissionsManager permissionsManager; 
+	
+	@Autowired
 	private MailSender mailSender;	
 
-	@RequestMapping("/login")
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage(HttpServletRequest req) {
 		return "registration/login";
 	}
-
-	@RequestMapping("/register")
+	
+	@RequestMapping(value = "/login/{applicationId}", method = RequestMethod.POST)
+	public @ResponseBody Professional login(@PathVariable String applicationId,
+			@RequestParam String cf, 
+			@RequestParam String password,
+			Model model, HttpServletRequest request, HttpServletResponse response) 
+					throws Exception {
+		try {
+			Professional profile = CNF.getProfile(applicationId, cf, null);
+			if(profile == null) {
+				throw new UnauthorizedException("profile not found");
+			}
+			profile = storageManager.loginByCF(applicationId, cf, password);
+			if(profile == null) {
+				throw new UnauthorizedException("profile not found or invalid credentials");
+			}
+			permissionsManager.authenticateByCF(request, response, profile);
+			return profile;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new UnauthorizedException("profile not found");
+		}
+	}
+	
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String regPage(Model model, HttpServletRequest req) {
 		model.addAttribute("reg", new Registration());
 		return "registration/register";

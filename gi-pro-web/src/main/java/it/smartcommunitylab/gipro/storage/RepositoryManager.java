@@ -7,6 +7,7 @@ import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
 import it.smartcommunitylab.gipro.exception.InvalidDataException;
 import it.smartcommunitylab.gipro.exception.NotRegisteredException;
 import it.smartcommunitylab.gipro.exception.RegistrationException;
+import it.smartcommunitylab.gipro.exception.UnauthorizedException;
 import it.smartcommunitylab.gipro.model.Notification;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
@@ -214,13 +215,23 @@ public class RepositoryManager {
 	}
 	
 	public Professional findProfessionalById(String applicationId, String professionalId) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(professionalId);
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(professionalId);
 		Query query = new Query(criteria);
 		filterProfessionalFields(query);
 		Professional result = mongoTemplate.findOne(query, Professional.class);
 		return result;
 	}
-
+	
+	public Professional findProfessionalByCF(String applicationId, String cf) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("cf").is(cf);
+		Query query = new Query(criteria);
+		filterProfessionalFields(query);
+		Professional result = mongoTemplate.findOne(query, Professional.class);
+		return result;
+	}
+	
 	public List<Poi> findPoi(String applicationId, String type, String region, 
 			Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId).and("type").is(type);
@@ -868,5 +879,28 @@ public class RepositoryManager {
 			throw new RegistrationException(e.getMessage());
 		}
 	}
+
+	public Professional loginByCF(String applicationId, String cf, String password) 
+			throws Exception {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("cf").is(cf)
+				.and("confirmed").is(Boolean.TRUE);
+		Query query = new Query(criteria);
+		Registration registration = mongoTemplate.findOne(query, Registration.class);
+		if(registration == null) {
+			throw new NotRegisteredException("profile not found");
+		}
+		boolean matches = PasswordHash.validatePassword(password, registration.getPassword());
+		if (!matches) {
+			throw new UnauthorizedException("invalid password");
+		}
+		criteria = new Criteria("applicationId").is(applicationId)
+				.and("cf").is(cf);
+		query = new Query(criteria);
+		filterProfessionalFields(query);
+		Professional professional = mongoTemplate.findOne(query, Professional.class);
+		return professional;
+	}
+
 
 }

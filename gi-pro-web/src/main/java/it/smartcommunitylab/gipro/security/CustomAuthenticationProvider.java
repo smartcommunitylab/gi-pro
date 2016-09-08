@@ -1,6 +1,7 @@
 package it.smartcommunitylab.gipro.security;
 
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
+import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +17,9 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
 	@Autowired
 	private DataSetSetup datasetSetup;
+	
+	@Autowired
+	private RepositoryManager storageManager;
 	
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
