@@ -210,6 +210,46 @@ input[readonly] {
 }
 
 /*
+ * DETAILS
+ */
+
+.details {
+	.datetime {
+		padding: 10px 0;
+		text-align: center;
+		font-size: larger;
+		.date {}
+		.time {}
+	}
+	.professional {
+		padding: 10px 0;
+		.name {
+			font-weight: bold;
+		}
+		.type {
+			font-style: italic;
+		}
+		span {
+			color: gray;
+		}
+		.address {}
+		.phone {}
+		.mail {}
+	}
+	.poi {
+		padding-top: 10px;
+		.type {
+			font-style: italic;
+		}
+		.name {
+			font-weight: bold;
+		}
+		.description {}
+		.address {}
+	}
+}
+
+/*
  * SEARCH
  */
 

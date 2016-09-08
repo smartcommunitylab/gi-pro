@@ -9968,6 +9968,30 @@ input[readonly] {
   height: 100%; }
 
 /*
+ * DETAILS
+ */
+.details .datetime {
+  padding: 10px 0;
+  text-align: center;
+  font-size: larger; }
+
+.details .professional {
+  padding: 10px 0; }
+  .details .professional .name {
+    font-weight: bold; }
+  .details .professional .type {
+    font-style: italic; }
+  .details .professional span {
+    color: gray; }
+
+.details .poi {
+  padding-top: 10px; }
+  .details .poi .type {
+    font-style: italic; }
+  .details .poi .name {
+    font-weight: bold; }
+
+/*
  * SEARCH
  */
 .search .row,

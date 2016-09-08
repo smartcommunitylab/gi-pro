@@ -54,7 +54,7 @@ angular.module('toga.controllers.new', [])
 				$scope.goTo('app.home', {
 					'reload': true,
 					'tab': 0
-				});
+				}, false, true, true);
 				Utils.toast($filter('translate')('newrequest_done'));
 			},
 			function (reason) {}
@@ -116,7 +116,6 @@ angular.module('toga.controllers.new', [])
 	}, true);
 
 	$scope.createNewOffer = function () {
-		// TODO if ok then unregisterNewOfferWatch()
 		var serviceOffer = {
 			serviceType: Config.SERVICE_TYPE,
 			poiId: $scope.newOffer.poi.objectId,
@@ -134,7 +133,7 @@ angular.module('toga.controllers.new', [])
 				$scope.goTo('app.home', {
 					'reload': true,
 					'tab': 1
-				});
+				}, false, true, true);
 				Utils.toast($filter('translate')('newoffer_done'));
 			},
 			function (reason) {}

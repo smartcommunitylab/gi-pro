@@ -10,6 +10,7 @@ angular.module('toga', [
 	'toga.services.data',
 	'toga.controllers.main',
 	'toga.controllers.home',
+	'toga.controllers.details',
 	'toga.controllers.search',
 	'toga.controllers.new'
 ])
@@ -104,6 +105,34 @@ angular.module('toga', [
 			'menuContent': {
 				templateUrl: 'templates/home.html',
 				controller: 'HomeCtrl'
+			}
+		}
+	})
+
+	.state('app.requestdetails', {
+		url: '/request/{objectId}',
+		params: {
+			'objectId': null,
+			'request': null
+		},
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/request.html',
+				controller: 'RequestDetailsCtrl'
+			}
+		}
+	})
+
+	.state('app.offerdetails', {
+		url: '/offer/{objectId}',
+		params: {
+			'objectId': null,
+			'offer': null
+		},
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/offer.html',
+				controller: 'OfferDetailsCtrl'
 			}
 		}
 	})

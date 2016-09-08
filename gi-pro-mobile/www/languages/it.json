@@ -11,6 +11,7 @@
 	"logout": "Esci",
 	"search": "Cerca",
 	"create": "Crea",
+	"delete": "Elimina",
 	"set": "Imposta",
 	"today": "Oggi",
 	"home_tab_1": "Richieste",
@@ -38,5 +39,17 @@
 	"poi_region_placeholder_notneeded": "Regione non necessaria per questo tipo",
 	"poi_filter_placeholder": "Filtra...",
 	"requests_empty": "Nessuna richiesta trovata",
-	"offers_empty": "Nessuna offerta trovata"
+	"request_detail": "Dettaglio richiesta",
+	"request_delete_confirm_title": "Conferma eliminazione",
+	"request_delete_confirm_text": "Vuoi davvero eliminare questa richiesta?",
+	"request_delete_done": "Richiesta eliminata",
+	"offers_empty": "Nessuna offerta trovata",
+	"offer_detail": "Dettaglio offerta",
+	"offer_delete_confirm_title": "Conferma eliminazione",
+	"offer_delete_confirm_text": "Vuoi davvero eliminare questa offerta?",
+	"offer_delete_done": "Offerta eliminata",
+	"professional_phone": "Telefono",
+	"professional_mail": "Email",
+	"professional_pec": "PEC",
+	"professional_type_LAWYER": "avvocato"
 }

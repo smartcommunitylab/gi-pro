@@ -1,7 +1,7 @@
 <ion-view view-title="{{'app' | translate}}" class="home">
 	<ion-nav-buttons side="right">
 		<button class="button button-icon button-clear ion-search" ng-click="goTo('app.search')" ng-if="selectedTab() == 0"></button>
-		<button class="button button-icon button-clear ion-ios-bell" ng-click="goTo('app.notifications', {}, true, true, true)"></button>
+		<button class="button button-icon button-clear ion-ios-bell" ng-click="goTo('app.notifications', {}, true, true, true)" ng-disabled="true"></button>
 	</ion-nav-buttons>
 
 	<ion-tabs class="tabs-stable">
@@ -9,9 +9,9 @@
 			<ion-pane>
 				<ion-content scroll="false">
 					<ion-scroll>
-						<h4 ng-if="!!requests && requests.length == 0">{{'requests_empty' | translate}}</h4>
+						<h4 class="padding" ng-if="!!requests && requests.length == 0">{{'requests_empty' | translate}}</h4>
 
-						<div class="card" ng-repeat="request in requests" ng-if="!!requests && requests.length > 0">
+						<div class="card" ng-repeat="request in requests" ng-if="!!requests && requests.length > 0" ng-click="openRequestDetails(request)">
 							<div class="item item-text-wrap">
 								<h2>{{request.poi.name}}</h2>
 								<h3>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
@@ -29,12 +29,14 @@
 			<ion-pane>
 				<ion-content scroll="false">
 					<ion-scroll>
-						<h4 ng-if="!!offers && offers.length == 0">{{'offers_empty' | translate}}</h4>
+						<h4 class="padding" ng-if="!!offers && offers.length == 0">{{'offers_empty' | translate}}</h4>
 
-						<div class="card" ng-repeat="offer in offers" ng-if="!!offers && offers.length > 0">
+						<div class="card" ng-repeat="offer in offers" ng-if="!!offers && offers.length > 0" ng-click="openOfferDetails(offer)">
 							<div class="item item-text-wrap">
 								<h2>{{offer.poi.name}}</h2>
-								<h3>{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}</h3>
+								<h3 ng-if="!!offer.startTime && !!offer.endTime">
+									{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}
+								</h3>
 							</div>
 						</div>
 					</ion-scroll>

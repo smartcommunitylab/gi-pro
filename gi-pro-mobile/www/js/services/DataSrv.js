@@ -94,10 +94,7 @@ angular.module('toga.services.data', [])
 
 		.then(
 			function (response) {
-				// POIs list
-				//deferred.resolve(response.data);
-
-				// FIXME dev only POIs array to map
+				// POIs array to map
 				var poisMap = {};
 				angular.forEach(response.data, function (poi) {
 					poisMap[poi.objectId] = poi;
@@ -158,6 +155,24 @@ angular.module('toga.services.data', [])
 		.then(
 			function (response) {
 				// offer created
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
+
+	/* delete offer */
+	dataService.deleteOffer = function (objectId, professionalId) {
+		var deferred = $q.defer();
+
+		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + objectId + '/' + professionalId, Config.HTTP_CONFIG)
+
+		.then(
+			function (response) {
 				deferred.resolve(response.data);
 			},
 			function (reason) {
@@ -261,6 +276,24 @@ angular.module('toga.services.data', [])
 		.then(
 			function (response) {
 				// request created
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
+
+	/* delete request */
+	dataService.deleteRequest = function (objectId, professionalId) {
+		var deferred = $q.defer();
+
+		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + objectId + '/' + professionalId, Config.HTTP_CONFIG)
+
+		.then(
+			function (response) {
 				deferred.resolve(response.data);
 			},
 			function (reason) {
