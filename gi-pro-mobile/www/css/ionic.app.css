@@ -9921,11 +9921,14 @@ input[readonly] {
 
 /* Footer */
 .bar-footer {
-  background: none;
-  /*padding: 0;*/ }
+  background: none; }
   .bar-footer .button.button-block {
-    margin: 0;
-    /*border-radius: 0;*/ }
+    margin: 0; }
+  .bar-footer .row {
+    padding: 0; }
+    .bar-footer .row .col {
+      padding-top: 0;
+      padding-bottom: 0; }
 
 /* Menu */
 .menu {
@@ -9978,7 +9981,8 @@ input[readonly] {
 .details .professional {
   padding: 10px 0; }
   .details .professional .name {
-    font-weight: bold; }
+    font-weight: bold;
+    font-size: larger; }
   .details .professional .type {
     font-style: italic; }
   .details .professional span {
@@ -9997,6 +10001,17 @@ input[readonly] {
 .search .row,
 .search .col {
   padding: 0; }
+
+.searchresults p {
+  margin: 0; }
+
+.searchresults .card .item ul {
+  padding-top: 5px;
+  font-size: smaller; }
+
+.searchresults .card .actions {
+  padding: 5px;
+  text-align: right; }
 
 /*
  * FORMS

@@ -47,7 +47,7 @@ angular.module('toga.controllers.details', [])
 
 	$scope.isMine = function () {
 		// TODO check if is mine
-		return true;
+		return false;
 	};
 
 	$scope.deleteOffer = function () {

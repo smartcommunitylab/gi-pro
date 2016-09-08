@@ -16,6 +16,19 @@
 			<li class="email"><span>{{'professional_pec' | translate}}:</span> {{offer.professional.pec}}</li>
 		</ul>
 
+		<div class="row" ng-if="!isMine()">
+			<div class="col col-50">
+				<a class="button button-block button-dark button-outline icon-left ion-android-call" ng-href="tel:{{offer.professional.phone}}">
+					{{'call' | translate}}
+				</a>
+			</div>
+			<div class="col col-50">
+				<a class="button button-block button-dark button-outline icon-left ion-email" ng-href="mailto:{{offer.professional.mail}}">
+					{{'email' | translate}}
+				</a>
+			</div>
+		</div>
+
 		<ul class="poi">
 			<li class="type">{{offer.poi.type}}</li>
 			<li class="name">{{offer.poi.name}}</li>
@@ -29,4 +42,20 @@
 			{{'delete' | translate}}
 		</button>
 	</ion-footer-bar>
+
+	<!--
+	<ion-footer-bar>
+		<button ng-if="isMine()" class="button button-assertive button-outline button-block" ng-click="deleteOffer()">
+			{{'delete' | translate}}
+		</button>
+		<div class="row" ng-if="!isMine()">
+			<div class="col col-50">
+				<button class="button button-block button-dark button-outline icon-left ion-android-call">{{'call' | translate}}</button>
+			</div>
+			<div class="col col-50">
+				<button class="button button-block button-dark button-outline icon-left ion-email">{{'email' | translate}}</button>
+			</div>
+		</div>
+	</ion-footer-bar>
+	-->
 </ion-view>
