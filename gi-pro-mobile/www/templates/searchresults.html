@@ -4,15 +4,15 @@
 	</ion-nav-buttons>
 
 	<ion-content>
-		<h4 ng-if="!!searchResults && searchResults.length == 0">
+		<h4 ng-if="!!results && results.length == 0">
 			{{'results_empty' | translate}}
 		</h4>
-		<ion-list>
-			<div class="card">
+		<ion-list ng-if="!!results && results.length > 0">
+			<div class="card" ng-repeat="result in results">
 				<a class="item item-thumbnail-left">
 					<img src="http://placekitten.com/200/200">
-					<h2>Name Surname</h2>
-					<p>Small description</p>
+					<h2>{{result.professional.name}} {{result.professional.surname}}</h2>
+					<p>{{result.professional}}</p>
 					<button class="button button-small button-dark" ng-click="">
 						<i class="icon ion-email"></i>
 					</button>

@@ -13,5 +13,11 @@ angular.module('toga.services.config', [])
 		}
 	};
 
+	configService.SERVICE_TYPE = 'sostituzione';
+
+	// FIXME dev purpose only
+	configService.PROFESSIONAL_ID_1 = 'AVV_01';
+	configService.PROFESSIONAL_ID_2 = 'AVV_02';
+
 	return configService;
 });

@@ -107,6 +107,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		}
 	}
 }
+
 /* Buttons */
 
 .button.button-fab {
@@ -127,7 +128,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 input[readonly] {
 	background-color: transparent !important;
 }
-/*.item-stacked-label {
+.item-stacked-label {
 	border: 0;
 	.input-value {
 		color: black;
@@ -140,7 +141,7 @@ input[readonly] {
 }
 .item-toggle {
 	border: 0;
-}*/
+}
 
 /* Footer */
 
@@ -209,10 +210,68 @@ input[readonly] {
 }
 
 /*
+ * DETAILS
+ */
+
+.details {
+	.datetime {
+		padding: 10px 0;
+		text-align: center;
+		font-size: larger;
+		.date {}
+		.time {}
+	}
+	.professional {
+		padding: 10px 0;
+		.name {
+			font-weight: bold;
+		}
+		.type {
+			font-style: italic;
+		}
+		span {
+			color: gray;
+		}
+		.address {}
+		.phone {}
+		.mail {}
+	}
+	.poi {
+		padding-top: 10px;
+		.type {
+			font-style: italic;
+		}
+		.name {
+			font-weight: bold;
+		}
+		.description {}
+		.address {}
+	}
+}
+
+/*
  * SEARCH
  */
 
+.search {
+	.row,
+	.col {
+		padding: 0;
+	}
+}
 .search {}
+
+/*
+ * FORMS
+ */
+
+.form-request,
+.form-offer {
+	.row,
+	.col {
+		padding: 0;
+	}
+}
 
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS

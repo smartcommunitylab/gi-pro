@@ -5,7 +5,11 @@ angular.module('toga.controllers.main', [])
  */
 .controller('AppCtrl', function ($scope, $state, $ionicHistory, $ionicModal, $ionicPopup, $filter, Utils, DataSrv) {
 	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot) {
-		var options = {};
+		var options = {
+			disableAnimate: false,
+			disableBack: false,
+			historyRoot: false
+		};
 
 		if (disableAnimate) {
 			options.disableAnimate = disableAnimate;

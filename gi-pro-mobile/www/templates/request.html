@@ -1,0 +1,32 @@
+<ion-view view-title="{{'app' | translate}}" class="request details">
+	<ion-nav-buttons side="right">
+	</ion-nav-buttons>
+
+	<ion-content class="padding">
+		<div class="datetime" ng-if="!!request.startTime">
+			<span class="date">{{request.startTime | date:'longDate'}}</span>, <span class="time">{{request.startTime | date:'shortTime'}}</span>
+		</div>
+
+		<ul class="professional" ng-if="!isMine()">
+			<li class="name">{{request.professional.name}} {{request.professional.surname}}</li>
+			<li class="type">{{'professional_type_' + request.professional.type | translate}}</li>
+			<li class="address">{{request.professional.address}}</li>
+			<li class="phone"><span>{{'professional_phone' | translate}}:</span> {{request.professional.phone}}</li>
+			<li class="email"><span>{{'professional_mail' | translate}}:</span> {{request.professional.mail}}</li>
+			<li class="email"><span>{{'professional_pec' | translate}}:</span> {{request.professional.pec}}</li>
+		</ul>
+
+		<ul class="poi">
+			<li class="type">{{request.poi.type}}</li>
+			<li class="name">{{request.poi.name}}</li>
+			<li class="description">{{request.poi.description}}</li>
+			<li class="address">{{request.poi.address}}</li>
+		</ul>
+	</ion-content>
+
+	<ion-footer-bar ng-if="isMine()">
+		<button class="button button-assertive button-outline button-block" ng-click="deleteRequest()">
+			{{'delete' | translate}}
+		</button>
+	</ion-footer-bar>
+</ion-view>

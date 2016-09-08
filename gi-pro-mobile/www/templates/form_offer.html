@@ -1,37 +1,59 @@
-<ion-view view-title="{{'app' | translate}}" class="form-offer">
+<ion-view view-title="{{'newoffer_title' | translate}}" class="form-offer">
 	<ion-nav-buttons side="right">
 		<!--<button class="button button-icon button-clear" ng-click=""></button>-->
 	</ion-nav-buttons>
 
-	<ion-content>
-		<h4>Nuova offerta</h4>
-		<div class="item item-input item-stacked-label" ng-click="openPoisModal()">
-			<span class="input-label">{{'new_poi' | translate}}</span>
-			<!--<input type="text" readonly placeholder="{{'new_poi_placeholder' | translate}}" ng-model="newOffer.poi.name" />-->
-			<div class="input-value" ng-class="{'placeholder': !newOffer.poi}">{{newOffer.poi.name ? newOffer.poi.name : ('new_poi_placeholder' | translate)}}</div>
-		</div>
+	<ion-content class="padding">
+		<p>{{'newoffer_desc' | translate}}</p>
 
-		<div class="item item-toggle">
-			{{'new_datetime' | translate}}
-			<label class="toggle toggle-dark">
-				<input type="checkbox" ng-model="newOffer.useDateTime">
-				<div class="track">
-					<div class="handle"></div>
-				</div>
-			</label>
-		</div>
-
-		<div class="row" ng-if="newOffer.useDateTime">
-			<div class="col col-60">
-				<div class="item item-input item-stacked-label" ng-click="openDatePicker()">
-					<span class="input-label">{{'new_date' | translate}}</span>
-					<div class="input-value" ng-class="{'placeholder': !newOffer.date}">{{newOffer.date ? (newOffer.date | date:'longDate') : ('new_date_placeholder' | translate)}}</div>
+		<div class="list">
+			<div class="item item-input item-stacked-label" ng-click="openPoisModal()">
+				<span class="input-label">{{'form_poi' | translate}}</span>
+				<!--<input type="text" readonly placeholder="{{'form_poi_placeholder' | translate}}" ng-model="newOffer.poi.name" />-->
+				<div class="input-value" ng-class="{'placeholder': !newOffer.poi}">
+					{{newOffer.poi.name ? newOffer.poi.name : ('form_poi_placeholder' | translate)}}
 				</div>
 			</div>
-			<div class="col col-40">
-				<div class="item item-input item-stacked-label" ng-click="openTimePicker()">
-					<span class="input-label">{{'new_time' | translate}}</span>
-					<div class="input-value" ng-class="{'placeholder': !newOffer.time}">{{newOffer.time ? (newOffer.time | date:'HH:mm') : ('new_time_placeholder' | translate)}}</div>
+
+			<div class="item item-toggle">
+				{{'form_datetime' | translate}}
+				<label class="toggle toggle-dark">
+					<input type="checkbox" ng-model="newOffer.useDateTime">
+					<div class="track">
+						<div class="handle"></div>
+					</div>
+				</label>
+			</div>
+
+			<div ng-if="newOffer.useDateTime">
+				<div class="row">
+					<div class="col">
+						<div class="item item-stacked-label" ng-click="openDatePicker()">
+							<span class="input-label">{{'form_date' | translate}}</span>
+							<div class="input-value" ng-class="{'placeholder': !newOffer.date}">
+								{{newOffer.date ? (newOffer.date | date:'longDate') : ('form_date_placeholder' | translate)}}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col col-50">
+						<div class="item item-stacked-label" ng-click="openTimePicker('from')">
+							<span class="input-label">{{'form_time_from' | translate}}</span>
+							<div class="input-value" ng-class="{'placeholder': !newOffer.fromTime}">
+								{{newOffer.fromTime ? (newOffer.fromTime | date:'shortTime':'GMT') : ('form_time_placeholder' | translate)}}
+							</div>
+						</div>
+					</div>
+					<div class="col col-50">
+						<div class="item item-stacked-label" ng-click="openTimePicker('to')">
+							<span class="input-label">{{'form_time_to' | translate}}</span>
+							<div class="input-value" ng-class="{'placeholder': !newOffer.toTime}">
+								{{newOffer.toTime ? (newOffer.toTime | date:'shortTime':'GMT') : ('form_time_placeholder' | translate)}}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -39,5 +61,10 @@
 		<!--<button class="button button-block button-dark" ng-click="openPoisModal()">Apri POIs Modal</button>-->
 		<!--<button class="button button-block button-dark" ng-click="openDatePicker()">Apri DatePicker</button>-->
 		<!--<button class="button button-block button-dark" ng-click="openTimePicker()">Apri TimePicker</button>-->
+		<!--<button class="button button-block button-dark" ng-click="goTo('app.home')">app.home</button>-->
 	</ion-content>
+
+	<ion-footer-bar>
+		<button class="button button-dark button-block" ng-disabled="!isFormValid" ng-click="createNewOffer()">{{'create' | translate}}</button>
+	</ion-footer-bar>
 </ion-view>

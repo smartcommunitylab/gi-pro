@@ -1,0 +1,32 @@
+<ion-view view-title="{{'offer_detail' | translate}}" class="offer details">
+	<ion-nav-buttons side="right">
+	</ion-nav-buttons>
+
+	<ion-content class="padding">
+		<div class="datetime" ng-if="!!offer.startTime && !!offer.endTime">
+			<span class="date">{{offer.startTime | date:'longDate'}}</span>, <span class="time">{{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}</span>
+		</div>
+
+		<ul class="professional" ng-if="!isMine()">
+			<li class="name">{{offer.professional.name}} {{offer.professional.surname}}</li>
+			<li class="type">{{'professional_type_' + offer.professional.type | translate}}</li>
+			<li class="address">{{offer.professional.address}}</li>
+			<li class="phone"><span>{{'professional_phone' | translate}}:</span> {{offer.professional.phone}}</li>
+			<li class="email"><span>{{'professional_mail' | translate}}:</span> {{offer.professional.mail}}</li>
+			<li class="email"><span>{{'professional_pec' | translate}}:</span> {{offer.professional.pec}}</li>
+		</ul>
+
+		<ul class="poi">
+			<li class="type">{{offer.poi.type}}</li>
+			<li class="name">{{offer.poi.name}}</li>
+			<li class="description">{{offer.poi.description}}</li>
+			<li class="address">{{offer.poi.address}}</li>
+		</ul>
+	</ion-content>
+
+	<ion-footer-bar ng-if="isMine()">
+		<button class="button button-assertive button-outline button-block" ng-click="deleteOffer()">
+			{{'delete' | translate}}
+		</button>
+	</ion-footer-bar>
+</ion-view>

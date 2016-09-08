@@ -9,7 +9,10 @@ angular.module('toga', [
 	'pascalprecht.translate',
 	'toga.services.data',
 	'toga.controllers.main',
-	'toga.controllers.home'
+	'toga.controllers.home',
+	'toga.controllers.details',
+	'toga.controllers.search',
+	'toga.controllers.new'
 ])
 
 .run(function ($ionicPlatform) {
@@ -26,6 +29,22 @@ angular.module('toga', [
 			StatusBar.styleDefault();
 		}
 	});
+})
+
+.config(function ($ionicConfigProvider, $translateProvider) {
+	$ionicConfigProvider.tabs.position('top');
+	$ionicConfigProvider.tabs.style('striped');
+	$ionicConfigProvider.backButton.previousTitleText(false).text('');
+
+	//$translateProvider.translations('it', {});
+	$translateProvider.preferredLanguage('it');
+	$translateProvider.useStaticFilesLoader({
+		prefix: 'languages/',
+		suffix: '.json'
+	});
+	//$translateProvider.useSanitizeValueStrategy('sanitize');
+	//$translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+	$translateProvider.useSanitizeValueStrategy('escapeParameters');
 })
 
 .config(function ($ionicConfigProvider, $translateProvider) {
@@ -78,10 +97,42 @@ angular.module('toga', [
 
 	.state('app.home', {
 		url: '/home',
+		params: {
+			'tab': 0,
+			'reload': false
+		},
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/home.html',
 				controller: 'HomeCtrl'
+			}
+		}
+	})
+
+	.state('app.requestdetails', {
+		url: '/request/{objectId}',
+		params: {
+			'objectId': null,
+			'request': null
+		},
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/request.html',
+				controller: 'RequestDetailsCtrl'
+			}
+		}
+	})
+
+	.state('app.offerdetails', {
+		url: '/offer/{objectId}',
+		params: {
+			'objectId': null,
+			'offer': null
+		},
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/offer.html',
+				controller: 'OfferDetailsCtrl'
 			}
 		}
 	})
@@ -98,6 +149,9 @@ angular.module('toga', [
 
 	.state('app.searchresults', {
 		url: '/search/results',
+		params: {
+			'results': null
+		},
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/searchresults.html',

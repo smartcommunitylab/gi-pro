@@ -1,80 +1,68 @@
 angular.module('toga.controllers.home', [])
 
-.controller('HomeCtrl', function ($scope, $ionicTabsDelegate) {
+.controller('HomeCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv) {
+	$scope.requests = null;
+	$scope.offers = null;
+
+	var reload = function () {
+		Utils.loading();
+		DataSrv.getRequests(Config.PROFESSIONAL_ID_1, Config.SERVICE_TYPE).then(
+			function (requests) {
+				$scope.requests = requests;
+				Utils.loaded();
+			},
+			function (reason) {
+				// TODO handle error
+			}
+		);
+
+		Utils.loading();
+		DataSrv.getOffers(Config.PROFESSIONAL_ID_1, Config.SERVICE_TYPE).then(
+			function (offers) {
+				$scope.offers = offers;
+				Utils.loaded();
+			},
+			function (reason) {
+				Utils.loaded();
+				// TODO handle error
+				Utils.toast();
+			}
+		);
+	};
+
+	if (!$stateParams.reload) {
+		// prevent double load (WHY?!?!?)
+		reload();
+		console.log('LOAD');
+	}
+
+	$scope.$on('$ionicView.beforeEnter', function (event, args) {
+		if (!!args.stateParams.reload) {
+			reload();
+			console.log('RELOAD');
+		}
+
+		if (!!args.stateParams.tab) {
+			$ionicTabsDelegate.select(args.stateParams.tab);
+		}
+	});
+
 	$scope.selectedTab = function () {
 		return $ionicTabsDelegate.selectedIndex();
 	};
-})
 
-.controller('SearchOffersCtrl', function ($scope, DataSrv) {})
-
-.controller('SearchOffersResultsCtrl', function ($scope) {})
-
-.controller('NewRequestCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker) {
-	var datePickerCfg = {
-		setLabel: $filter('translate')('set'),
-		todayLabel: $filter('translate')('today'),
-		closeLabel: $filter('translate')('close'),
-		callback: function (val) {}
-	};
-	$scope.openDatePicker = function () {
-		ionicDatePicker.openDatePicker(datePickerCfg);
+	$scope.openRequestDetails = function (request) {
+		$scope.goTo('app.requestdetails', {
+			'objectId': request.objectId,
+			'request': request
+		});
 	};
 
-	var timePickerCfg = {
-		setLabel: $filter('translate')('set'),
-		closeLabel: $filter('translate')('close'),
-		callback: function (val) {}
-	};
-	$scope.openTimePicker = function () {
-		ionicTimePicker.openTimePicker(timePickerCfg);
-	};
-
-	var getSelectedPoi = function (poi) {
-		console.log(poi);
-	};
-
-	$scope.openPoisModal = function () {
-		$scope.$parent.openPoisModal(getSelectedPoi);
-	};
-})
-
-.controller('NewOfferCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker) {
-	$scope.newOffer = {
-		poi: null
-	};
-
-	var getSelectedPoi = function (poi) {
-		console.log(poi);
-		$scope.newOffer.poi = poi;
-	};
-
-	$scope.openPoisModal = function () {
-		$scope.$parent.openPoisModal(getSelectedPoi);
-	};
-
-	var datePickerCfg = {
-		setLabel: $filter('translate')('set'),
-		todayLabel: $filter('translate')('today'),
-		closeLabel: $filter('translate')('close'),
-		callback: function (val) {
-			$scope.newOffer.date = val;
-		}
-	};
-	$scope.openDatePicker = function () {
-		ionicDatePicker.openDatePicker(datePickerCfg);
-	};
-
-	var timePickerCfg = {
-		setLabel: $filter('translate')('set'),
-		closeLabel: $filter('translate')('close'),
-		callback: function (val) {
-			console.log(moment(val));
-			$scope.newOffer.time = val;
-		}
-	};
-	$scope.openTimePicker = function () {
-		ionicTimePicker.openTimePicker(timePickerCfg);
+	$scope.openOfferDetails = function (offer) {
+		$scope.goTo('app.offerdetails', {
+			'objectId': offer.objectId,
+			'offer': offer
+		});
 	};
 })
 
