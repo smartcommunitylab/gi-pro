@@ -16,6 +16,7 @@
 
 package it.smartcommunitylab.gipro.config;
 
+import it.smartcommunitylab.gipro.integration.CNF;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import java.net.UnknownHostException;
@@ -104,6 +105,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	RepositoryManager getRepositoryManager() throws UnknownHostException, MongoException {
 		return new RepositoryManager(getMongo(), defaultLang);
+	}
+	
+	@Bean
+	CNF getCNFService() {
+		return new CNF();
 	}
 	
 	@Bean

@@ -63,4 +63,12 @@ public class Const {
 		"Valle d'Aosta"
 	};
 	
+	public static final String LawyerDataNascita = "LawyerDataNascita";
+	public static final String LawyerLuogoNascita = "LawyerLuogoNascita";
+	public static final String LawyerStudioRiferimento = "LawyerStudioRiferimento";
+	public static final String LawyerDataIscrizioneOrdine = "LawyerDataIscrizioneOrdine";
+	public static final String LawyerDataIscrizioneAlbo = "LawyerDataIscrizioneAlbo";
+	public static final String LawyerCassazionista = "LawyerCassazionista";
+	public static final String LawyerOrdineCompetenza = "LawyerOrdineCompetenza";
+	
 }
