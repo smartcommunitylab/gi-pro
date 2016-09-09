@@ -10040,3 +10040,11 @@ input[readonly] {
 .popup-types .item,
 .popup-regions .item {
   white-space: normal; }
+
+/*
+ * LOGIN AND REGISTRATION
+ */
+.login {
+  text-align: center; }
+  .login .registration {
+    margin-top: 20px; }

@@ -9,6 +9,7 @@ angular.module('toga', [
 	'pascalprecht.translate',
 	'toga.services.data',
 	'toga.controllers.main',
+	'toga.controllers.login',
 	'toga.controllers.home',
 	'toga.controllers.details',
 	'toga.controllers.search',
@@ -206,6 +207,16 @@ angular.module('toga', [
 			'menuContent': {
 				templateUrl: 'templates/profile.html',
 				controller: 'ProfileCtrl'
+			}
+		}
+	})
+
+	.state('app.login', {
+		url: '/login',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/login.html',
+				controller: 'LoginCtrl'
 			}
 		}
 	});
