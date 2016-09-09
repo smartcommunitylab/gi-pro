@@ -29,7 +29,6 @@ import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceOfferUI;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
 import it.smartcommunitylab.gipro.model.ServiceRequestUI;
-import it.smartcommunitylab.gipro.storage.DataSetSetup;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import java.io.BufferedOutputStream;
@@ -74,15 +73,15 @@ public class EntityController {
 	
 	@Autowired
 	private RepositoryManager storageManager;
-
-	@Autowired
-	private DataSetSetup dataSetSetup;
 	
+	@Autowired
+	private CNF cnfService;
+
 	@RequestMapping(value = "/api/{applicationId}/profile", method = RequestMethod.GET)
 	public @ResponseBody Professional getProfile(@PathVariable String applicationId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String cf = Utils.getContextPrincipal();
-		Professional profile = CNF.getProfile(applicationId, cf, null);
+		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found");
 		}

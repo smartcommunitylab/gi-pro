@@ -44,7 +44,10 @@ public class RegistrationController {
 	private PermissionsManager permissionsManager; 
 	
 	@Autowired
-	private MailSender mailSender;	
+	private MailSender mailSender;
+	
+	@Autowired
+	private CNF cnfService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage(HttpServletRequest req) {
@@ -58,7 +61,7 @@ public class RegistrationController {
 			Model model, HttpServletRequest request, HttpServletResponse response) 
 					throws Exception {
 		try {
-			Professional profile = CNF.getProfile(applicationId, cf, null);
+			Professional profile = cnfService.getProfile(applicationId, cf);
 			if(profile == null) {
 				throw new UnauthorizedException("profile not found");
 			}
@@ -84,12 +87,11 @@ public class RegistrationController {
 	public @ResponseBody void registerREST(@PathVariable String applicationId,
 			@RequestParam String cf,
 			@RequestParam String password,
-			@RequestParam String mail,
 			@RequestParam String lang,
 			@RequestParam(required=false) String name,			
 			@RequestParam(required=false) String surname,
 			HttpServletResponse res) throws Exception {
-		Professional profile = CNF.getProfile(applicationId, cf, mail);
+		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found");
 		}
@@ -103,8 +105,7 @@ public class RegistrationController {
 		try {
 			Registration confirmUser = storageManager.confirmUser(confirmationCode);
 			Professional professional = Converter.convertRegistrationToProfessional(confirmUser);
-			Professional profile = CNF.getProfile(professional.getApplicationId(), 
-					professional.getCf(), professional.getMail());
+			Professional profile = cnfService.getProfile(professional.getApplicationId(),	professional.getCf());
 			professional.setAddress(profile.getAddress());
 			professional.setFax(profile.getFax());
 			professional.setPiva(profile.getPiva());
