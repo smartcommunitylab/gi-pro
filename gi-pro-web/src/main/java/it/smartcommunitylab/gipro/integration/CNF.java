@@ -98,7 +98,7 @@ public class CNF {
 				professional.setName(getName(nominativo));
 				professional.setSurname(getSurname(nominativo));
 				professional.setAddress(address);
-				professional.setCf(cfCnf);
+				professional.setCf(cf);
 				professional.setType(qualifica.trim());
 				professional.getCustomProperties().put(Const.LawyerDataNascita, dataNascita);
 				professional.getCustomProperties().put(Const.LawyerLuogoNascita, luogoNascita);
