@@ -147,10 +147,15 @@ input[readonly] {
 
 .bar-footer {
 	background: none;
-	/*padding: 0;*/
 	.button.button-block {
 		margin: 0;
-		/*border-radius: 0;*/
+	}
+	.row {
+		padding: 0;
+		.col {
+			padding-top: 0;
+			padding-bottom: 0;
+		}
 	}
 }
 
@@ -225,6 +230,7 @@ input[readonly] {
 		padding: 10px 0;
 		.name {
 			font-weight: bold;
+			font-size: larger;
 		}
 		.type {
 			font-style: italic;
@@ -259,7 +265,23 @@ input[readonly] {
 		padding: 0;
 	}
 }
-.search {}
+.searchresults {
+	p {
+		margin: 0;
+	}
+	.card {
+		.item {
+			ul {
+				padding-top: 5px;
+				font-size: smaller;
+			}
+		}
+		.actions {
+			padding: 5px;
+			text-align: right;
+		}
+	}
+}
 
 /*
  * FORMS

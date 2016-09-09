@@ -59,5 +59,12 @@ angular.module('toga.controllers.search', [])
 })
 
 .controller('SearchOffersResultsCtrl', function ($scope, $stateParams) {
-	$scope.results = $stateParams['results'];
+	$scope.offers = $stateParams['results'];
+
+	$scope.openOfferDetails = function (offer) {
+		$scope.goTo('app.offerdetails', {
+			'objectId': offer.objectId,
+			'offer': offer
+		});
+	};
 })
