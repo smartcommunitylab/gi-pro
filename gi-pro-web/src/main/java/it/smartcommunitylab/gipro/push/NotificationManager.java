@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
@@ -45,6 +46,7 @@ import eu.trentorise.smartcampus.communicator.model.UserSignature;
  * @author raman
  *
  */
+@PropertySource("classpath:gipro.properties")
 @Component
 public class NotificationManager {
 	private static final Logger logger = LoggerFactory.getLogger(NotificationManager.class);
