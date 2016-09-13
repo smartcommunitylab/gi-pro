@@ -62,8 +62,8 @@
                 </div>
                 <div class="col-md-12 form-group">
                   <label> <fmt:message bundle="${res}" key="lbl_user" />*: </label>
-                  <form:input cssClass="form-control" path="email"/>
-                  <form:errors cssClass="error" path="email"/>
+                  <form:input cssClass="form-control" path="mail"/>
+                  <form:errors cssClass="error" path="mail"/>
                 </div>
                 <div class="col-md-12 form-group">
                   <label> <fmt:message bundle="${res}" key="lbl_pwd" />*: </label>
