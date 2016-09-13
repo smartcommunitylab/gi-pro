@@ -15,6 +15,7 @@ import it.smartcommunitylab.gipro.model.Registration;
 import it.smartcommunitylab.gipro.model.ServiceApplication;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
+import it.smartcommunitylab.gipro.push.NotificationManager;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
 
@@ -25,6 +26,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.GeospatialIndex;
@@ -34,6 +36,9 @@ import org.springframework.data.mongodb.core.query.Update;
 
 public class RepositoryManager {
 	private static final transient Logger logger = LoggerFactory.getLogger(RepositoryManager.class);
+	
+	@Autowired
+	private NotificationManager notificationManager;
 	
 	private MongoTemplate mongoTemplate;
 	private String defaultLang;
@@ -162,12 +167,13 @@ public class RepositoryManager {
 		}
 	}
 	
-	public Notification addNotification(Notification notification) {
+	private Notification addNotification(Notification notification) {
 		notification.setObjectId(Utils.getUUID());
 		Date now = new Date();
 		notification.setCreationDate(now);
 		notification.setLastUpdate(now);
 		mongoTemplate.save(notification);
+		push(notification);
 		return notification;
 	}
 	
@@ -620,10 +626,19 @@ public class RepositoryManager {
 				notification.setProfessionalId(serviceApplication.getProfessionalId());
 				notification.setType(Const.APPLICATION_ACCEPTED);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification);				
+				addNotification(notification);	
 			}
 		}
 		return serviceRequest;
+	}
+
+	private void push(Notification notification) {
+		try {
+			notificationManager.sendNotification(notification, notification.getProfessionalId());
+		} catch (Exception e) {
+			logger.error("Error sending push notification: "+ e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	public ServiceRequest deleteServiceApplication(String applicationId, String objectId,

@@ -29,6 +29,7 @@ import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceOfferUI;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
 import it.smartcommunitylab.gipro.model.ServiceRequestUI;
+import it.smartcommunitylab.gipro.push.NotificationManager;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 import java.io.BufferedOutputStream;
@@ -76,6 +77,9 @@ public class EntityController {
 	
 	@Autowired
 	private CNF cnfService;
+	
+	@Autowired
+	private NotificationManager notificationManager;
 
 	@RequestMapping(value = "/api/{applicationId}/profile", method = RequestMethod.GET)
 	public @ResponseBody Professional getProfile(@PathVariable String applicationId, 
@@ -92,6 +96,22 @@ public class EntityController {
 		return profile;
 	}
 
+	@RequestMapping(value = "/api/{applicationId}/pushregister", method = RequestMethod.POST)
+	public @ResponseBody void registerPush(@PathVariable String applicationId, @RequestParam String registrationId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String cf = Utils.getContextPrincipal();
+		Professional profile = cnfService.getProfile(applicationId, cf);
+		if(profile == null) {
+			throw new UnauthorizedException("profile not found");
+		}
+		profile = storageManager.findProfessionalByCF(applicationId, cf);
+		if(profile == null) {
+			throw new UnauthorizedException("profile not found");
+		}
+		
+		notificationManager.registerUser(profile.getObjectId(), registrationId);
+		
+	}
 	@RequestMapping(value = "/api/{applicationId}/professional/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionals(@PathVariable String applicationId, 
 			@RequestParam String type,
