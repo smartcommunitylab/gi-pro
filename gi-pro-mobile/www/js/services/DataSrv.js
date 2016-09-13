@@ -43,7 +43,7 @@ angular.module('toga.services.data', [])
 	dataService.getPois = function (type, region, page, limit) {
 		var deferred = $q.defer();
 
-		var httpConfWithParams = angular.copy(Config.HTTP_CONFIG);
+		var httpConfWithParams = Config.getHTTPConfig();
 		httpConfWithParams.params = {};
 
 		// type is required
@@ -80,7 +80,7 @@ angular.module('toga.services.data', [])
 	dataService.getPoisByIds = function (ids) {
 		var deferred = $q.defer();
 
-		var httpConfWithParams = angular.copy(Config.HTTP_CONFIG);
+		var httpConfWithParams = Config.getHTTPConfig();
 		httpConfWithParams.params = {};
 
 		// type is required
@@ -114,7 +114,7 @@ angular.module('toga.services.data', [])
 	dataService.getOffers = function (professionalId, serviceType, timeFrom, timeTo, page, limit) {
 		var deferred = $q.defer();
 
-		var httpConfWithParams = angular.copy(Config.HTTP_CONFIG);
+		var httpConfWithParams = Config.getHTTPConfig();
 		httpConfWithParams.params = {};
 
 		// professionalId is required
@@ -187,7 +187,7 @@ angular.module('toga.services.data', [])
 	dataService.searchOffers = function (professionalId, poiId, serviceType, startTime) {
 		var deferred = $q.defer();
 
-		var httpConfWithParams = angular.copy(Config.HTTP_CONFIG);
+		var httpConfWithParams = Config.getHTTPConfig();
 		httpConfWithParams.params = {};
 
 		// professionalId is required
@@ -235,7 +235,7 @@ angular.module('toga.services.data', [])
 	dataService.getRequests = function (professionalId, serviceType, timeFrom, timeTo, page, limit) {
 		var deferred = $q.defer();
 
-		var httpConfWithParams = angular.copy(Config.HTTP_CONFIG);
+		var httpConfWithParams = Config.getHTTPConfig();
 		httpConfWithParams.params = {};
 
 		// professionalId is required

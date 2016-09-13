@@ -3,7 +3,7 @@ angular.module('toga.controllers.main', [])
 /*
  * App generic controller
  */
-.controller('AppCtrl', function ($scope, $state, $ionicHistory, $ionicModal, $ionicPopup, $filter, Utils, DataSrv) {
+.controller('AppCtrl', function ($scope, $state, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Utils, DataSrv, Login) {
 	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot) {
 		var options = {
 			disableAnimate: false,
@@ -173,4 +173,15 @@ angular.module('toga.controllers.main', [])
 
 	// Execute action on remove modal
 	$scope.$on('modal.removed', function () {});
+
+    $scope.logout = function() {
+      $timeout(function(){
+        Login.logout();
+        $ionicHistory.nextViewOptions({
+          historyRoot: true,
+          disableBack: true
+        });
+        $state.go('app.login');
+      });
+    }
 });

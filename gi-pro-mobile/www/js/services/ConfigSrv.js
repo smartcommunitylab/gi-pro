@@ -6,12 +6,16 @@ angular.module('toga.services.config', [])
 	configService.SERVER_URL = CONF.SERVER_URL;
 	configService.APPLICATION_ID = CONF.APPLICATION_ID;
 
-	configService.HTTP_CONFIG = {
+	var HTTP_CONFIG = {
 		timeout: 5000,
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8'
 		}
 	};
+
+    configService.getHTTPConfig = function() {
+      return angular.copy(HTTP_CONFIG);
+    }
 
 	configService.SERVICE_TYPE = 'sostituzione';
 

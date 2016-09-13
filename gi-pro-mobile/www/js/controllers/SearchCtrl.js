@@ -29,9 +29,13 @@ angular.module('toga.controllers.search', [])
 	};
 
 	$scope.openTimePicker = function () {
+      var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
+      epochs = Math.floor(epochs / 15) * 15 * 60;
 		var timePickerCfg = {
 			setLabel: $filter('translate')('set'),
 			closeLabel: $filter('translate')('close'),
+            inputTime: epochs,
+            step: 15,
 			callback: function (val) {
 				console.log(val);
 				$scope.searchOffer.time = val * 1000;

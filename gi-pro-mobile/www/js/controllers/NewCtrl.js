@@ -28,9 +28,13 @@ angular.module('toga.controllers.new', [])
 	};
 
 	$scope.openTimePicker = function (field) {
+        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
+        epochs = Math.floor(epochs / 15) * 15 * 60;
 		var timePickerCfg = {
 			setLabel: $filter('translate')('set'),
 			closeLabel: $filter('translate')('close'),
+            step: 15,
+            inputTime: epochs,
 			callback: function (val) {
 				$scope.newRequest.time = val * 1000;
 			}
@@ -92,9 +96,13 @@ angular.module('toga.controllers.new', [])
 	};
 
 	$scope.openTimePicker = function (field) {
+        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
+        epochs = Math.floor(epochs / 15) * 15 * 60;
 		var timePickerCfg = {
 			setLabel: $filter('translate')('set'),
 			closeLabel: $filter('translate')('close'),
+            step: 15,
+            inputTime: epochs,
 			callback: function (val) {
 				$scope.newOffer[field + 'Time'] = val * 1000;
 			}

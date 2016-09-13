@@ -5,6 +5,7 @@ angular.module('toga', [
 	'ionic-datepicker',
 	'ionic-timepicker',
 	'toga.services.utils',
+	'toga.services.login',
 	'toga.services.config',
 	'pascalprecht.translate',
 	'toga.services.data',
@@ -32,8 +33,13 @@ angular.module('toga', [
 	});
 })
 
-.config(function ($ionicConfigProvider, $translateProvider) {
-	$ionicConfigProvider.tabs.position('top');
+.config(function ($ionicConfigProvider, $httpProvider, $translateProvider) {
+    $httpProvider.defaults.withCredentials = true;
+
+    // PROBLEM WITH SCROLL RESIZE ON OLD ANDROID DEVICES
+    $ionicConfigProvider.scrolling.jsScrolling(ionic.Platform.isIOS() || (ionic.Platform.isAndroid() && parseFloat(ionic.Platform.version()) < 4.4));
+
+    $ionicConfigProvider.tabs.position('top');
 	$ionicConfigProvider.tabs.style('striped');
 	$ionicConfigProvider.backButton.previousTitleText(false).text('');
 
@@ -87,6 +93,7 @@ angular.module('toga', [
 	};
 	ionicTimePickerProvider.configTimePicker(timePickerObj);
 })
+
 
 .config(function ($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('app', {
@@ -212,6 +219,7 @@ angular.module('toga', [
 	})
 
 	.state('app.login', {
+        cache: false,
 		url: '/login',
 		views: {
 			'menuContent': {
@@ -222,5 +230,22 @@ angular.module('toga', [
 	});
 
 	// if none of the above states are matched, use this as the fallback
-	$urlRouterProvider.otherwise('/app/home');
+	$urlRouterProvider.otherwise(function ($injector) {
+        //var StorageSrv = $injector.get('StorageSrv');
+        //var $rootScope = $injector.get('$rootScope');
+        //var logged = $injector.get('LoginSrv').userIsLogged();
+        /*
+        if (!logged || StorageSrv.getUserId() == null || !StorageSrv.isProfileComplete()) {
+            $rootScope.initialSetup = true;
+            return '/app/profilo';
+        }
+        */
+        var logged = $injector.get('Login').getUser();
+        if (!logged) {
+            return '/app/login';
+        } else {
+          $injector.get('$rootScope').user = logged;
+        }
+        return '/app/home';
+    });
 });
