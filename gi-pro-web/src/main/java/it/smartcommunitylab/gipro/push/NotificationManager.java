@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
@@ -46,50 +47,52 @@ import eu.trentorise.smartcampus.communicator.model.UserSignature;
  * @author raman
  *
  */
-@PropertySource("classpath:gipro.properties")
 @Component
 public class NotificationManager {
 	private static final Logger logger = LoggerFactory.getLogger(NotificationManager.class);
 
 	@Autowired
-	@Value("${push.clientId}")
-	private String clientId;
-	@Autowired
-	@Value("${push.clientSecret}")
-	private String clientSecret;
-	@Autowired
-	@Value("${push.clientApp}")
-	private String clientApp;
-	@Autowired
-	@Value("${push.senderApiKey}")
-	private String senderApiKey;
-	@Autowired
-	@Value("${push.senderId}")
-	private String senderId;
+	private Environment env;
 
-	@Autowired
-	@Value("${communicatorURL}")
-	private String communicatorURL;		
-	@Autowired
-	@Value("${ext.aacURL}")
-	private String aacUrl;
+//	@Autowired
+//	@Value("${push.clientId}")
+//	private String clientId;
+//	@Autowired
+//	@Value("${push.clientSecret}")
+//	private String clientSecret;
+//	@Autowired
+//	@Value("${push.clientApp}")
+//	private String clientApp;
+//	@Autowired
+//	@Value("${push.senderApiKey}")
+//	private String senderApiKey;
+//	@Autowired
+//	@Value("${push.senderId}")
+//	private String senderId;
+//
+//	@Autowired
+//	@Value("${communicatorURL}")
+//	private String communicatorURL;		
+//	@Autowired
+//	@Value("${ext.aacURL}")
+//	private String aacUrl;
 
 	private CommunicatorConnector communicator;
 	private AACService service;
 
 	@PostConstruct
 	public void init() throws CommunicatorConnectorException {
-		service = new AACService(aacUrl, clientId, clientSecret);
-		communicator = new CommunicatorConnector(communicatorURL);
+		service = new AACService(env.getProperty("ext.aacURL"), env.getProperty("push.clientId"), env.getProperty("push.clientSecret"));
+		communicator = new CommunicatorConnector(env.getProperty("communicatorURL"));
 		registerApps();
 
 	}
 
 	public void registerUser(String userId, String registrationId) throws CommunicatorConnectorException, AACException {
 		UserSignature signature = new UserSignature();
-		signature.setAppName(clientApp);
+		signature.setAppName(env.getProperty("push.appName"));
 		signature.setRegistrationId(registrationId);
-		communicator.registerUserToPush(signature, clientApp, userId, getAppToken());
+		communicator.registerUserToPush(signature, env.getProperty("push.appName"), userId, getAppToken());
 
 	}
 	
@@ -106,7 +109,7 @@ public class NotificationManager {
 		eu.trentorise.smartcampus.communicator.model.Notification notification = prepareMessage(n.getText(), content);
 		notification.setTitle(n.getText());
 		
-		communicator.sendAppNotification(notification, clientApp, userIds, getAppToken());
+		communicator.sendAppNotification(notification, env.getProperty("push.appName"), userIds, getAppToken());
 	}
 	
 	private eu.trentorise.smartcampus.communicator.model.Notification prepareMessage(String text, Map<String, Object> content) {
@@ -135,19 +138,19 @@ public class NotificationManager {
 				AppSignature signature = new AppSignature();
 				
 				Map<String, Object> map = Maps.newHashMap();
-				map.put("GCM_SENDER_API_KEY", senderApiKey);
+				map.put("GCM_SENDER_API_KEY", env.getProperty("push.senderApiKey"));
 				signature.setPrivateKey(map);
 				
 				map = Maps.newHashMap();
-				map.put("GCM_SENDER_ID", senderId);
+				map.put("GCM_SENDER_ID", env.getProperty("push.senderId"));
 				signature.setPublicKey(map);
 				
 				boolean ok = true;
 
 				do {
 					try {
-						signature.setAppId(clientApp);
-						communicator.registerApp(signature, clientApp, token);
+						signature.setAppId(env.getProperty("push.appName"));
+						communicator.registerApp(signature, env.getProperty("push.appName"), token);
 						ok = true;
 					} catch (CommunicatorConnectorException e) {
 						ok = false;
