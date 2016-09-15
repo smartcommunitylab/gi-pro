@@ -448,9 +448,9 @@ public class RepositoryManager {
 				new Criteria("startTime").lte(new Date(timeTo))
 			);
 		} else if(timeFrom != null) {
-			criteria = criteria.andOperator(new Criteria("startTime").lte(new Date(timeFrom)));
+			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timeFrom)));
 		} else if(timeTo != null) {
-			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timeTo)));
+			criteria = criteria.andOperator(new Criteria("startTime").lte(new Date(timeTo)));
 		}
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "startTime"));
@@ -685,9 +685,9 @@ public class RepositoryManager {
 				new Criteria("timestamp").lte(new Date(timeTo))
 			);
 		} else if(timeFrom != null) {
-			criteria = criteria.andOperator(new Criteria("timestamp").lte(new Date(timeFrom)));
+			criteria = criteria.andOperator(new Criteria("timestamp").gte(new Date(timeFrom)));
 		} else if(timeTo != null) {
-			criteria = criteria.andOperator(new Criteria("timestamp").gte(new Date(timeTo)));
+			criteria = criteria.andOperator(new Criteria("timestamp").lte(new Date(timeTo)));
 		}
 		if(read != null) {
 			criteria = criteria.andOperator(new Criteria("read").is(read));
