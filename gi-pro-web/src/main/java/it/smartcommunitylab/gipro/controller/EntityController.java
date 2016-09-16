@@ -540,8 +540,7 @@ public class EntityController {
 					new File(imageUploadDir + "/" + name)));
 			FileCopyUtils.copy(file.getInputStream(), stream);
 			stream.close();
-			profile.setImageUrl("/"+imageType+ "/" + objectId);
-			storageManager.saveProfessionalbyCF(profile);
+			storageManager.updateProfessionalImageByCF(applicationId, profile.getCf(), "/"+imageType+ "/" + objectId);
 		}
 		return "{\"status\":\"OK\"}";
 	}

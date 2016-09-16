@@ -153,6 +153,20 @@ public class RepositoryManager {
 		}
 	}
 	
+	public void updateProfessionalImageByCF(String applicationId, String cf, String image) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("cf").is(cf);
+		Query query = new Query(criteria);
+		Professional dbProfessional = mongoTemplate.findOne(query, Professional.class);
+		if(dbProfessional != null) {
+			Date now = new Date();
+			Update update = new Update();
+			update.set("imageUrl", image);
+			update.set("lastUpdate", now);
+			mongoTemplate.updateFirst(query, update, Professional.class);
+		}
+	}
+
 	private void updateProfessionalPasswordByCF(String applicationId, String cf, String passwordHash) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("cf").is(cf);
