@@ -224,7 +224,7 @@ public class EntityController {
 		serviceOffer.setProfessionalId(professionalId);
 		ServiceOffer result = storageManager.saveServiceOffer(serviceOffer);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("addServiceOffer[%s]:%s", applicationId, result.getObjectId()));
+			logger.info(String.format("addServiceOffer[%s]: user %s", applicationId, professionalId));
 		}
 		return result;		
 	}
@@ -238,7 +238,7 @@ public class EntityController {
 		serviceRequest.setRequesterId(professionalId);
 		ServiceRequest result = storageManager.savePublicServiceRequest(serviceRequest);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("addPublicServiceRequest[%s]:%s", applicationId, result.getObjectId()));
+			logger.info(String.format("addPublicServiceRequest[%s]: user %s", applicationId, professionalId));
 		}
 		return result;		
 	}
