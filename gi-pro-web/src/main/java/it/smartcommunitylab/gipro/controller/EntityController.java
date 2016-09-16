@@ -521,6 +521,16 @@ public class EntityController {
 			@PathVariable String objectId,
 			@RequestParam("file") MultipartFile file,
 			HttpServletRequest request) throws Exception {
+		
+		String cf = Utils.getContextPrincipal();
+		Professional profile = storageManager.findProfessionalByCF(applicationId, cf);
+		if(profile == null) {
+			throw new UnauthorizedException("profile not found");
+		}
+		if(!profile.getObjectId().equals(objectId)) {
+			throw new UnauthorizedException("Not authorized");
+		}
+		
 		String name = objectId + "." + imageType;
 		if(logger.isInfoEnabled()) {
 			logger.info("uploadImage:" + name);
@@ -530,6 +540,8 @@ public class EntityController {
 					new File(imageUploadDir + "/" + name)));
 			FileCopyUtils.copy(file.getInputStream(), stream);
 			stream.close();
+			profile.setImageUrl("/"+imageType+ "/" + objectId);
+			storageManager.saveProfessionalbyCF(profile);
 		}
 		return "{\"status\":\"OK\"}";
 	}
