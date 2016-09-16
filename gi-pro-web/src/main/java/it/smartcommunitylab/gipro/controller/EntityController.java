@@ -84,14 +84,14 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/profile", method = RequestMethod.GET)
 	public @ResponseBody Professional getProfile(@PathVariable String applicationId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String cf = Utils.getContextCF();
-		Professional profile = cnfService.getProfile(applicationId, cf);
+		String professionalId = Utils.getContextProfessionalId();
+		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
-			throw new UnauthorizedException("cnf profile not found: "+cf);
+			throw new UnauthorizedException("local profile not found: "+professionalId);
 		}
-		profile = storageManager.findProfessionalByCF(applicationId, cf);
+		profile = cnfService.getProfile(applicationId, profile.getCf());
 		if(profile == null) {
-			throw new UnauthorizedException("local profile not found: "+cf);
+			throw new UnauthorizedException("cnf profile not found: "+professionalId);
 		}
 		return profile;
 	}
@@ -522,8 +522,8 @@ public class EntityController {
 			@RequestParam("file") MultipartFile file,
 			HttpServletRequest request) throws Exception {
 		
-		String cf = Utils.getContextCF();
-		Professional profile = storageManager.findProfessionalByCF(applicationId, cf);
+		String professionalId = Utils.getContextProfessionalId();
+		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found");
 		}

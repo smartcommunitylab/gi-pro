@@ -1,7 +1,6 @@
 package it.smartcommunitylab.gipro.common;
 
 import it.smartcommunitylab.gipro.model.Professional;
-import it.smartcommunitylab.gipro.security.AppUserDetails;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
@@ -142,17 +141,6 @@ public class Utils {
 			}
 		}
 		return result;
-	}
-	
-	public static String getContextCF() {
-		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String) {
-			String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return principal;
-		} else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof AppUserDetails) {
-			AppUserDetails appDetail = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return appDetail.getPassword();
-		}
-		return null;
 	}
 	
 	public static String getContextProfessionalId() {
