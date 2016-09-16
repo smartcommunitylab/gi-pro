@@ -87,11 +87,11 @@ public class EntityController {
 		String cf = Utils.getContextCF();
 		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
-			throw new UnauthorizedException("profile not found");
+			throw new UnauthorizedException("cnf profile not found: "+cf);
 		}
 		profile = storageManager.findProfessionalByCF(applicationId, cf);
 		if(profile == null) {
-			throw new UnauthorizedException("profile not found");
+			throw new UnauthorizedException("local profile not found: "+cf);
 		}
 		return profile;
 	}
@@ -563,6 +563,7 @@ public class EntityController {
 	@ResponseStatus(value=HttpStatus.FORBIDDEN)
 	@ResponseBody
 	public Map<String,String> handleUnauthorizedError(HttpServletRequest request, Exception exception) {
+		logger.error(exception.getMessage());
 		return Utils.handleError(exception);
 	}
 	
