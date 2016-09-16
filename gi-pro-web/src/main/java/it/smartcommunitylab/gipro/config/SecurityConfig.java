@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.RememberMeAuthenticationProvider;
@@ -49,29 +48,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.csrf()
-		.disable()
 		.rememberMe();	
 		
 		http
-			.csrf()
-			.disable()
 			.headers()
 			.frameOptions().disable();
 		
 		http
-		.csrf()
-		.disable()
 		.authorizeRequests()
-		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+//		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 		.antMatchers("/api/**")
 		.hasAnyAuthority(AppUserDetails.GIPRO)
 		.and()
 		.addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
 		
 		http
-			.csrf()
-			.disable()
+	      .csrf()
+				.disable()
 			.authorizeRequests()
 			.antMatchers("/", "/console/**", "/upload/**")
 			.authenticated()
