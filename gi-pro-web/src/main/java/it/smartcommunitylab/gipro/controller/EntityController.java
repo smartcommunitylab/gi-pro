@@ -84,7 +84,7 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/profile", method = RequestMethod.GET)
 	public @ResponseBody Professional getProfile(@PathVariable String applicationId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String cf = Utils.getContextPrincipal();
+		String cf = Utils.getContextCF();
 		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found");
@@ -99,7 +99,7 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/pushregister", method = RequestMethod.POST)
 	public @ResponseBody void registerPush(@PathVariable String applicationId, @RequestParam String registrationId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String cf = Utils.getContextPrincipal();
+		String cf = Utils.getContextProfessionalId();
 		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found");
@@ -522,7 +522,7 @@ public class EntityController {
 			@RequestParam("file") MultipartFile file,
 			HttpServletRequest request) throws Exception {
 		
-		String cf = Utils.getContextPrincipal();
+		String cf = Utils.getContextCF();
 		Professional profile = storageManager.findProfessionalByCF(applicationId, cf);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found");

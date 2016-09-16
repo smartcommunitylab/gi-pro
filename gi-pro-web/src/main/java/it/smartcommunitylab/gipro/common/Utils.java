@@ -144,13 +144,13 @@ public class Utils {
 		return result;
 	}
 	
-	public static String getContextPrincipal() {
+	public static String getContextCF() {
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String) {
 			String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			return principal;
 		} else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof AppUserDetails) {
 			AppUserDetails appDetail = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return appDetail.getUsername();
+			return appDetail.getPassword();
 		}
 		return null;
 	}
@@ -159,6 +159,9 @@ public class Utils {
 		if(SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof Professional) {
 			Professional professional = (Professional) SecurityContextHolder.getContext().getAuthentication().getDetails();
 			return professional.getObjectId();
+		} else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String) {
+				String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				return principal;
 		}
 		return null;
 	}
