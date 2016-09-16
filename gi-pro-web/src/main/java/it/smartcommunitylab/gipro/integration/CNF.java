@@ -15,6 +15,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -66,6 +67,7 @@ public class CNF {
 	}
 	
 	public Professional getProfile(String applicationId, String cf) {
+		if (StringUtils.isEmpty(url)) return new Professional();
 		HttpClient httpClient = new HttpClient();
 		GetMethod getMethod = new GetMethod(url + cf);
 		try {

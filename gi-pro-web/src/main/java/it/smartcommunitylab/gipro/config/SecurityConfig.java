@@ -7,21 +7,22 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
-@EnableWebMvcSecurity
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -48,21 +49,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-    .rememberMe();	
+		.csrf()
+		.disable()
+		.rememberMe();	
 		
 		http
+			.csrf()
+			.disable()
 			.headers()
 			.frameOptions().disable();
 		
 		http
+		.csrf()
+		.disable()
 		.authorizeRequests()
+		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 		.antMatchers("/api/**")
 		.hasAnyAuthority(AppUserDetails.GIPRO)
 		.and()
 		.addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
 		
 		http
-      .csrf()
+			.csrf()
 			.disable()
 			.authorizeRequests()
 			.antMatchers("/", "/console/**", "/upload/**")
