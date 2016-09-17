@@ -51,15 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.rememberMe();	
 		
-//		http
-//			.headers()
-//			.frameOptions().disable();
+		http
+			.headers()
+			.frameOptions().disable();
 		
 		http
-//		.csrf()
-//		.disable()
+		.csrf()
+		.disable()
 		.authorizeRequests()
-//		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 		.antMatchers("/api/**")
 		.hasAnyAuthority(AppUserDetails.GIPRO)
 		.and()
