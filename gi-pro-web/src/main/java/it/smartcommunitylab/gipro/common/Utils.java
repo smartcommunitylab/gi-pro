@@ -1,6 +1,5 @@
 package it.smartcommunitylab.gipro.common;
 
-import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
 import it.smartcommunitylab.gipro.storage.DataSetSetup;
@@ -19,6 +18,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -144,14 +144,16 @@ public class Utils {
 	}
 	
 	public static String getContextProfessionalId() {
-		if(SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof Professional) {
-			Professional professional = (Professional) SecurityContextHolder.getContext().getAuthentication().getDetails();
-			return professional.getObjectId();
-		} else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String) {
-				String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-				return principal;
-		}
-		return null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return (principal instanceof UserDetails) ? ((UserDetails) principal).getUsername() : principal.toString();
+	//		if(SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof Professional) {
+//			Professional professional = (Professional) SecurityContextHolder.getContext().getAuthentication().getDetails();
+//			return professional.getObjectId();
+//		} else if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String) {
+//				String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//				return principal;
+//		}
+//		return null;
 	}
 	
 
