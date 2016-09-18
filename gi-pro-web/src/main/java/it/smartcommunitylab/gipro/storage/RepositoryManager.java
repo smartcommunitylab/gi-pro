@@ -321,11 +321,21 @@ public class RepositoryManager {
 		List<ServiceRequest> matchingRequests = getMatchingRequests(serviceOffer);
 		Date timestamp = new Date();
 		for(ServiceRequest serviceRequest : matchingRequests) {
+			// notify requestor
 			Notification notification = new Notification();
 			notification.setApplicationId(serviceOffer.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceRequest.getRequesterId());
 			notification.setType(Const.NEW_SERVICE_OFFER);
+			notification.setServiceOfferId(serviceOffer.getObjectId());
+			notification.setServiceRequestId(serviceRequest.getObjectId());
+			addNotification(notification);
+			// notify myself about existing requests
+			notification = new Notification();
+			notification.setApplicationId(serviceOffer.getApplicationId());
+			notification.setTimestamp(timestamp);
+			notification.setProfessionalId(serviceOffer.getProfessionalId());
+			notification.setType(Const.NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
 			addNotification(notification);
