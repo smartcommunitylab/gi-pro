@@ -2,6 +2,7 @@ package it.smartcommunitylab.gipro.storage;
 
 import it.smartcommunitylab.gipro.common.Const;
 import it.smartcommunitylab.gipro.common.PasswordHash;
+import it.smartcommunitylab.gipro.common.TranslationHelper;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
 import it.smartcommunitylab.gipro.exception.InvalidDataException;
@@ -21,6 +22,7 @@ import it.smartcommunitylab.gipro.security.Token;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +41,9 @@ public class RepositoryManager {
 	
 	@Autowired
 	private NotificationManager notificationManager;
+	
+	@Autowired
+	private TranslationHelper translationHelper;
 	
 	private MongoTemplate mongoTemplate;
 	private String defaultLang;
@@ -181,11 +186,13 @@ public class RepositoryManager {
 		}
 	}
 	
-	private Notification addNotification(Notification notification) {
+	private Notification addNotification(Notification notification, String professionalId) {
 		notification.setObjectId(Utils.getUUID());
 		Date now = new Date();
 		notification.setCreationDate(now);
 		notification.setLastUpdate(now);
+		Professional professional = findProfessionalById(notification.getApplicationId(), professionalId);
+		notification.setText(translationHelper.getNotificationText(professional.getLang(), notification));
 		mongoTemplate.save(notification);
 		push(notification);
 		return notification;
@@ -329,7 +336,7 @@ public class RepositoryManager {
 			notification.setType(Const.NEW_SERVICE_OFFER);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification);
+			addNotification(notification, serviceRequest.getRequesterId());
 			// notify myself about existing requests
 			notification = new Notification();
 			notification.setApplicationId(serviceOffer.getApplicationId());
@@ -338,7 +345,7 @@ public class RepositoryManager {
 			notification.setType(Const.NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification);
+			addNotification(notification, serviceOffer.getProfessionalId());
 		}
 		return serviceOffer;
 	}
@@ -360,6 +367,17 @@ public class RepositoryManager {
 		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
 		return result;
 	}
+	
+	public List<ServiceRequest> getMatchingRequests(String applicationId, String professionalId, String objectId) {
+		ServiceOffer offer = getServiceOfferById(applicationId, professionalId, objectId);
+		if (offer == null) return Collections.emptyList();
+		return getMatchingRequests(offer);
+	}
+	public List<ServiceOffer> getMatchingOffers(String applicationId, String professionalId, String objectId) {
+		ServiceRequest request = getServiceRequestById(applicationId, professionalId, objectId);
+		if (request == null) return Collections.emptyList();
+		return getMatchingOffers(request);
+	}
 
 	public ServiceRequest savePublicServiceRequest(ServiceRequest serviceRequest) {
 		serviceRequest.setObjectId(Utils.getUUID());
@@ -380,7 +398,7 @@ public class RepositoryManager {
 			notification.setType(Const.NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification);
+			addNotification(notification,serviceOffer.getProfessionalId());
 		}
 		return serviceRequest;
 	}
@@ -404,7 +422,7 @@ public class RepositoryManager {
 			notification.setType(Const.NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification);
+			addNotification(notification,serviceOffer.getProfessionalId());
 		}
 		return serviceRequest;
 	}
@@ -527,7 +545,7 @@ public class RepositoryManager {
 							notification.setProfessionalId(serviceApplication.getProfessionalId());
 							notification.setType(Const.SERVICE_REQUEST_DELETED);
 							notification.setServiceRequestId(result.getObjectId());
-							addNotification(notification);
+							addNotification(notification,serviceApplication.getProfessionalId());
 						}
 					}
 				}
@@ -600,7 +618,7 @@ public class RepositoryManager {
 				notification.setProfessionalId(serviceRequest.getRequesterId());
 				notification.setType(Const.NEW_APPLICATION);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification);
+				addNotification(notification,serviceRequest.getRequesterId());
 			}
 			serviceRequest.getApplicants().clear();
 			serviceRequest.getApplicants().put(professionalId, serviceApplication);
@@ -626,7 +644,7 @@ public class RepositoryManager {
 				notification.setProfessionalId(serviceApplication.getProfessionalId());
 				notification.setType(Const.APPLICATION_REJECTED);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification);
+				addNotification(notification, serviceApplication.getProfessionalId());
 			}
 		}
 		return serviceRequest;
@@ -650,7 +668,7 @@ public class RepositoryManager {
 				notification.setProfessionalId(serviceApplication.getProfessionalId());
 				notification.setType(Const.APPLICATION_ACCEPTED);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification);	
+				addNotification(notification, professionalId);	
 			}
 		}
 		return serviceRequest;
@@ -684,7 +702,7 @@ public class RepositoryManager {
 				notification.setProfessionalId(serviceRequest.getRequesterId());
 				notification.setType(Const.APPLICATION_DELETED);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification);				
+				addNotification(notification, serviceRequest.getRequesterId());				
 			}
 		}
 		return serviceRequest;
@@ -940,6 +958,5 @@ public class RepositoryManager {
 		Professional professional = mongoTemplate.findOne(query, Professional.class);
 		return professional;
 	}
-
 
 }

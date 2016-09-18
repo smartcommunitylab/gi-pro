@@ -17,6 +17,7 @@ public class Professional extends BaseObject {
 	private String username;
 	private String passwordHash;
 	private String type;
+	private String lang;
 	
 	private String imageUrl;
 	
@@ -112,6 +113,13 @@ public class Professional extends BaseObject {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+	public String getLang() {
+		return lang;
+	}
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
 
+	
 	
 }
