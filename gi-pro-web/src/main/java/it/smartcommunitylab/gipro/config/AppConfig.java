@@ -138,10 +138,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 	
-	@Bean
+	@Bean(name="messages")
 	public MessageSource getMessageSource() {
 		ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
-		resourceBundleMessageSource.setBasename("locale/messages");
+		resourceBundleMessageSource.setBasename("/locale/messages");
 		return resourceBundleMessageSource;
 	}
 

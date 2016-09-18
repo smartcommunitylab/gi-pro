@@ -22,6 +22,7 @@ import java.util.Locale;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -39,12 +40,14 @@ public class TranslationHelper{
 	private String defaultLang;
 	
 	@Autowired
+	@Qualifier("messages")
     private MessageSource messageSource;
 
 	
 	@PostConstruct
 	public void init() {
 		defaultLang = env.getProperty("defaultLang");
+		System.err.println(messageSource.getMessage("notif_NEW_SERVICE_OFFER", null, Locale.forLanguageTag("it")));
 	}
 	
 	
