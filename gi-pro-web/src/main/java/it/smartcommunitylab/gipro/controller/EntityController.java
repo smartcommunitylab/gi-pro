@@ -265,6 +265,7 @@ public class EntityController {
 			@RequestParam(required=false) Long timeTo,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
+			@RequestParam(required=false) Boolean withTime,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		if(page == null) {
@@ -274,7 +275,7 @@ public class EntityController {
 			limit = 10;
 		}
 		List<ServiceOffer> result = storageManager.getServiceOffers(applicationId, professionalId, 
-				serviceType, timeFrom, timeTo, page, limit);
+				serviceType, timeFrom, timeTo, withTime, page, limit);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceOffers[%s]:%d", applicationId, result.size()));
 		}

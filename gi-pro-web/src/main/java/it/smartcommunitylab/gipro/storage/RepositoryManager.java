@@ -446,7 +446,7 @@ public class RepositoryManager {
 	}
 	
 	public List<ServiceOffer> getServiceOffers(String applicationId, String professionalId,
-			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
+			String serviceType, Long timeFrom, Long timeTo, Boolean withTime, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("professionalId").is(professionalId)
 				.and("serviceType").is(serviceType);
@@ -461,13 +461,23 @@ public class RepositoryManager {
 		} else if(timeTo != null) {
 			timeCriteria = new Criteria().andOperator(new Criteria("startTime").gte(new Date(timeTo)));
 		}
-		if(timeCriteria != null) {
-			criteria = criteria.orOperator(
-					new Criteria("startTime").exists(false), 
-					new Criteria("startTime").is(null),
-					timeCriteria
-			);
-		}  
+		if (withTime == null) {
+			if(timeCriteria != null) {
+				criteria = criteria.orOperator(
+						new Criteria("startTime").exists(false), 
+						new Criteria("startTime").is(null),
+						timeCriteria
+				);
+			}  
+		} else if (withTime){
+			if(timeCriteria != null) {
+				criteria = criteria.andOperator(timeCriteria); 
+			} else {
+				criteria = criteria.and("startTime").exists(true);
+			}
+		} else {
+			criteria = criteria.and("startTime").exists(false);
+		}
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "startTime", "creationDate"));
 		if(limit != null) {
