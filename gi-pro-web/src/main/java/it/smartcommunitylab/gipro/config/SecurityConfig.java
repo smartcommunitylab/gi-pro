@@ -49,15 +49,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+		.csrf()
+		.disable();
+		
+		http
 		.rememberMe();	
 		
-		http
-			.headers()
-			.frameOptions().disable();
+//		http
+//			.headers()
+//			.frameOptions().disable();
 		
 		http
-		.csrf()
-		.disable()
+//		.csrf()
+//		.disable()
 		.authorizeRequests()
 		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 		.antMatchers("/api/**")
@@ -66,8 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
 		
 		http
-			.csrf()
-			.disable()
+//			.csrf()
+//			.disable()
 			.authorizeRequests()
 			.antMatchers("/", "/console/**", "/upload/**")
 			.authenticated()

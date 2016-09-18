@@ -28,7 +28,7 @@ public class PermissionsManager {
 	
 	public void authenticateByCF(HttpServletRequest request, HttpServletResponse response, Professional profile) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-				profile.getObjectId(), null, AppUserDetails.GIPRO_AUTHORITIES);
+				profile.getObjectId(), profile.getObjectId(), AppUserDetails.GIPRO_AUTHORITIES);
 		token.setDetails(profile);
 		Authentication authenticatedUser = authenticationManager.authenticate(token);
 		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
