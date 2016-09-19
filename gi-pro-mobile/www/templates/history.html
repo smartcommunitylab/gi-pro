@@ -1,9 +1,59 @@
-<ion-view view-title="{{'app' | translate}}" class="history">
+<ion-view view-title="{{'history' | translate}}" class="history">
 	<ion-nav-buttons side="right">
 		<!--<button class="button button-icon button-clear" ng-click=""></button>-->
 	</ion-nav-buttons>
 
-	<ion-content>
-		<h4>{{'history' | translate}}</h4>
-	</ion-content>
+	<ion-tabs class="tabs-stable">
+		<ion-tab title="{{'home_tab_1' | translate}}">
+			<ion-pane>
+				<ion-content scroll="false">
+					<ion-scroll>
+                      <ion-refresher
+                          pulling-text="{{'refresh' | translate}}"
+                          on-refresh="refreshRequests()">
+                        </ion-refresher>
+						<h4 class="padding" ng-if="!!requests && requests.length == 0">{{'requests_empty' | translate}}</h4>
+
+						<div class="card" ng-repeat="request in requests" ng-if="!!requests && requests.length > 0" ng-click="openRequestDetails(request)">
+							<div class="item item-text-wrap">
+								<h2>{{request.poi.name}}</h2>
+								<h3>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
+							</div>
+						</div>
+                        <ion-infinite-scroll
+                            on-infinite="loadMoreRequests()"
+                            distance="1%">
+                          </ion-infinite-scroll>
+                  </ion-scroll>
+				</ion-content>
+			</ion-pane>
+		</ion-tab>
+
+		<ion-tab title="{{'home_tab_2' | translate}}">
+			<ion-pane>
+				<ion-content scroll="false">
+					<ion-scroll>
+                      <ion-refresher
+                          pulling-text="{{'refresh' | translate}}"
+                          on-refresh="refreshOffers()">
+                        </ion-refresher>
+						<h4 class="padding" ng-if="!!offers && offers.length == 0">{{'offers_empty' | translate}}</h4>
+
+						<div class="card" ng-repeat="offer in offers track by $index" ng-if="!!offers && offers.length > 0" ng-click="openOfferDetails(offer)">
+							<div class="item item-text-wrap">
+								<h2>{{offer.poi.name}}</h2>
+								<h3 ng-if="!!offer.startTime && !!offer.endTime">
+									{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}
+								</h3>
+							</div>
+						</div>
+                        <ion-infinite-scroll
+                            on-infinite="loadMoreOffers()"
+                            distance="1%">
+                          </ion-infinite-scroll>
+					</ion-scroll>
+				</ion-content>
+			</ion-pane>
+		</ion-tab>
+	</ion-tabs>
 </ion-view>

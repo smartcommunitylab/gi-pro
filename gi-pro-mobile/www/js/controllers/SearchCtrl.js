@@ -1,10 +1,11 @@
 angular.module('toga.controllers.search', [])
 
-.controller('SearchOffersCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker, Config, Utils, DataSrv) {
+.controller('SearchOffersCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker, Config, Utils, Prefs, DataSrv, Login) {
+
 	$scope.searchOffer = {
-		poi: null,
-		date: null,
-		time: null
+		poi: Prefs.lastPOI(),
+		date: moment().startOf('date').valueOf(),
+		time: Utils.roundTime()
 	};
 
 	var getSelectedPoi = function (poi) {
@@ -29,12 +30,10 @@ angular.module('toga.controllers.search', [])
 	};
 
 	$scope.openTimePicker = function () {
-      var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
-      epochs = Math.floor(epochs / 15) * 15 * 60;
 		var timePickerCfg = {
 			setLabel: $filter('translate')('set'),
 			closeLabel: $filter('translate')('close'),
-            inputTime: epochs,
+            inputTime: Math.floor($scope.searchOffer.time),
             step: 15,
 			callback: function (val) {
 				console.log(val);
@@ -49,15 +48,12 @@ angular.module('toga.controllers.search', [])
 		var startTime = $scope.searchOffer.date + $scope.searchOffer.time;
 
 		// FIXME dev only: hardcoded professionalId
-		DataSrv.searchOffers(Config.PROFESSIONAL_ID_2, $scope.searchOffer.poi.objectId, Config.SERVICE_TYPE, startTime).then(
+		DataSrv.searchOffers(Login.getUser().objectId, $scope.searchOffer.poi.objectId, Config.SERVICE_TYPE, startTime).then(
 			function (results) {
 				$scope.goTo('app.searchresults', {
 					'results': results
 				});
-			},
-			function (reason) {
-				// TODO handle error
-			}
+			}, Utils.commError
 		);
 	};
 })

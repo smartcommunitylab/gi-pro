@@ -39,10 +39,27 @@ angular.module('toga.services.utils', [])
 		);
 	};
 
+    utilsService.isOnline = function() {
+      if (navigator && navigator.connection) {
+        return (navigator.connection.type !== Connection.NONE);
+      }
+      return true;
+    }
+
+    utilsService.commError = function(error) {
+      utilsService.loaded();
+      if (utilsService.isOnline()) {
+        utilsService.toast($filter('translate')('ERR_SERVER'));
+      } else {
+        utilsService.toast($filter('translate')('ERR_NETWORK'));
+      }
+    };
+
+
 	utilsService.toast = function (message, duration, position) {
 		message = message || 'There was a problem...';
 		duration = duration || 'short';
-		position = position || 'top';
+		position = position || 'bottom';
 
 		if (!!$window.cordova) {
 			// Use the Cordova Toast plugin
@@ -87,5 +104,30 @@ angular.module('toga.services.utils', [])
 		$ionicLoading.hide();
 	};
 
+    utilsService.roundTime = function() {
+      var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
+      epochs = Math.floor(epochs / 15) * 15 * 60;
+      return epochs * 1000;
+    }
+
 	return utilsService;
-});
+})
+
+
+.factory('Prefs', function ($rootScope, $filter, $window, $timeout, $ionicLoading, $ionicPopup, $cordovaToast, Config) {
+  var prefService = {};
+
+  var varPrefix = function(pref) {
+    return 'toga-app-'+pref+'-'+Config.APPLICATION_ID;
+  }
+
+  prefService.lastPOI = function(poi) {
+    if (poi) {
+      localStorage.setItem(varPrefix('poi'), JSON.stringify(poi));
+    }
+    return JSON.parse(localStorage.getItem(varPrefix('poi')) || "null");
+  }
+
+  return prefService;
+})
+;

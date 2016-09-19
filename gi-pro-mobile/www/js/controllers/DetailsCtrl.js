@@ -1,6 +1,6 @@
 angular.module('toga.controllers.details', [])
 
-.controller('RequestDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv) {
+.controller('RequestDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login) {
 	$scope.request = null;
 
 	if (!!$stateParams['request']) {
@@ -8,8 +8,10 @@ angular.module('toga.controllers.details', [])
 	}
 
 	$scope.isMine = function () {
-		// TODO check if is mine
-		return true;
+		return $scope.request.requesterId == Login.getUser().objectId;
+	};
+	$scope.isEditable = function () {
+		return $scope.isMine() && (!$scope.request.startTime || $scope.request.startTime > moment().startOf('date').valueOf());
 	};
 
 	$scope.deleteRequest = function () {
@@ -24,30 +26,33 @@ angular.module('toga.controllers.details', [])
 
 		confirmPopup.then(function (yes) {
 			if (yes) {
-				DataSrv.deleteRequest($scope.request.objectId, Config.PROFESSIONAL_ID_1).then(
+				DataSrv.deleteRequest($scope.request.objectId, Login.getUser().objectId).then(
 					function (data) {
 						$scope.goTo('app.home', {
 							'reload': true,
 							'tab': 0
 						}, false, true, true);
 						Utils.toast($filter('translate')('request_delete_done'));
-					}
+					}, Utils.commError
 				);
 			}
 		});
 	};
 })
 
-.controller('OfferDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv) {
+.controller('OfferDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login) {
 	$scope.offer = null;
 
 	if (!!$stateParams['offer']) {
 		$scope.offer = $stateParams['offer'];
 	}
 
+
 	$scope.isMine = function () {
-		// TODO check if is mine
-		return false;
+		return $scope.offer.professional.objectId == Login.getUser().objectId;
+	};
+	$scope.isEditable = function () {
+		return $scope.isMine() && (!$scope.offer.startTime || $scope.offer.startTime > moment().startOf('date').valueOf());
 	};
 
 	$scope.deleteOffer = function () {
@@ -62,14 +67,14 @@ angular.module('toga.controllers.details', [])
 
 		confirmPopup.then(function (yes) {
 			if (yes) {
-				DataSrv.deleteOffer($scope.offer.objectId, Config.PROFESSIONAL_ID_1).then(
+				DataSrv.deleteOffer($scope.offer.objectId, Login.getUser().objectId).then(
 					function (data) {
 						$scope.goTo('app.home', {
 							'reload': true,
 							'tab': 1
 						}, false, true, true);
 						Utils.toast($filter('translate')('offer_delete_done'));
-					}
+					}, Utils.commError
 				);
 			}
 		});

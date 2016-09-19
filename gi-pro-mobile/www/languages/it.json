@@ -59,5 +59,11 @@
 	"professional_phone": "Telefono",
 	"professional_mail": "Email",
 	"professional_pec": "PEC",
-	"professional_type_LAWYER": "avvocato"
+	"professional_type_LAWYER": "avvocato",
+    "ERR_SERVER": "Errore di comunicazione con il server",
+    "ERR_NETWORK": "Nessun connessione",
+    "error_signin": "Codice fiscale / password sbagliato",
+    "error_popup_title": "Errore di login",
+    "refresh" : "Aggiorna i dati",
+    "notifications_empty": "Nessuna notifica trovata"
 }

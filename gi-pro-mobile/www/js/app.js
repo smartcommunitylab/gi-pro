@@ -17,7 +17,7 @@ angular.module('toga', [
 	'toga.controllers.new'
 ])
 
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform, Login) {
 	$ionicPlatform.ready(function () {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -40,22 +40,6 @@ angular.module('toga', [
     $ionicConfigProvider.scrolling.jsScrolling(ionic.Platform.isIOS() || (ionic.Platform.isAndroid() && parseFloat(ionic.Platform.version()) < 4.4));
 
     $ionicConfigProvider.tabs.position('top');
-	$ionicConfigProvider.tabs.style('striped');
-	$ionicConfigProvider.backButton.previousTitleText(false).text('');
-
-	//$translateProvider.translations('it', {});
-	$translateProvider.preferredLanguage('it');
-	$translateProvider.useStaticFilesLoader({
-		prefix: 'languages/',
-		suffix: '.json'
-	});
-	//$translateProvider.useSanitizeValueStrategy('sanitize');
-	//$translateProvider.useSanitizeValueStrategy('sanitizeParameters');
-	$translateProvider.useSanitizeValueStrategy('escapeParameters');
-})
-
-.config(function ($ionicConfigProvider, $translateProvider) {
-	$ionicConfigProvider.tabs.position('top');
 	$ionicConfigProvider.tabs.style('striped');
 	$ionicConfigProvider.backButton.previousTitleText(false).text('');
 

@@ -23,7 +23,10 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
     "cordova-plugin-x-toast",
-    "cordova-plugin-inappbrowser"
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-network-information",
+    "cordova-plugin-camera",
+    "cordova-plugin-file-transfer"
   ],
   "cordovaPlatforms": [
     "android"

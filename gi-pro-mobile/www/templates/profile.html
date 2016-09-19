@@ -1,9 +1,36 @@
-<ion-view view-title="{{'app' | translate}}" class="profile">
+<ion-view view-title="{{'profile' | translate}}" class="profile">
 	<ion-nav-buttons side="right">
 		<!--<button class="button button-icon button-clear" ng-click=""></button>-->
 	</ion-nav-buttons>
 
 	<ion-content>
-		<h4>{{'profile' | translate}}</h4>
+      <div class="row">
+        <div class="col col-33">
+          <div class="profile-image-container" ng-click="uploadImage()">
+            <div class="profile-image-placeholder" ng-if="!profile.imageUrl">
+              <div class="upload"><i class="icon ion-camera"></i></div>
+            </div>
+            <div class="profile-image" ng-if="!!profile.imageUrl"><img ng-src="{{imageUrlPrefix + profile.imageUrl}}"></div>
+          </div>
+        </div>
+        <div class="col col-66">
+          <div class="contact"><i class="icon ion-android-call"></i><span>{{profile.phone}}</span></div>
+          <div class="contact"><i class="icon ion-email"></i><span>{{profile.mail}}</span></div>
+          <div class="contact"><i class="icon ion-email-unread"></i><span>{{profile.pec}}</span></div>
+        </div>
+      </div>
+
+      <div class="padding">
+        <div class="name">
+          {{profile.name}} {{profile.surname}}
+        </div>
+        <div class="title">
+          {{profile.type}}
+        </div>
+        <div class="address">
+          {{profile.address}}
+        </div>
+      </div>
+
 	</ion-content>
 </ion-view>

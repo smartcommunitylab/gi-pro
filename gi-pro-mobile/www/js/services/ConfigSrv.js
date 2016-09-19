@@ -7,7 +7,7 @@ angular.module('toga.services.config', [])
 	configService.APPLICATION_ID = CONF.APPLICATION_ID;
 
 	var HTTP_CONFIG = {
-		timeout: 5000,
+		timeout: 50000,
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8'
 		}
@@ -18,10 +18,6 @@ angular.module('toga.services.config', [])
     }
 
 	configService.SERVICE_TYPE = 'sostituzione';
-
-	// FIXME dev purpose only
-	configService.PROFESSIONAL_ID_1 = 'AVV_01';
-	configService.PROFESSIONAL_ID_2 = 'AVV_02';
 
 	return configService;
 });

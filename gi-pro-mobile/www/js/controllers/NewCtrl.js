@@ -1,10 +1,10 @@
 angular.module('toga.controllers.new', [])
 
-.controller('NewRequestCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker, Config, Utils, DataSrv) {
+.controller('NewRequestCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker, Config, Utils, Prefs, DataSrv, Login) {
 	$scope.newRequest = {
-		poi: null,
-		date: null,
-		time: null
+		poi: Prefs.lastPOI(),
+		date: moment().startOf('date').valueOf(),
+		time: Utils.roundTime()
 	};
 
 	var getSelectedPoi = function (poi) {
@@ -47,7 +47,7 @@ angular.module('toga.controllers.new', [])
 		var serviceRequest = {
 			poiId: $scope.newRequest.poi.objectId,
 			privateRequest: false,
-			requesterId: Config.PROFESSIONAL_ID_1,
+			requesterId: Login.getUser().objectId,
 			serviceType: Config.SERVICE_TYPE,
 			startTime: $scope.newRequest.date + $scope.newRequest.time,
 			customProperties: {},
@@ -60,19 +60,18 @@ angular.module('toga.controllers.new', [])
 					'tab': 0
 				}, false, true, true);
 				Utils.toast($filter('translate')('newrequest_done'));
-			},
-			function (reason) {}
+			}, Utils.commError
 		);
 	};
 })
 
-.controller('NewOfferCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker, Config, Utils, DataSrv) {
+.controller('NewOfferCtrl', function ($scope, $filter, ionicDatePicker, ionicTimePicker, Config, Utils, Prefs, DataSrv, Login) {
 	$scope.newOffer = {
-		poi: null,
+		poi: Prefs.lastPOI(),
 		useDateTime: false,
-		date: null,
-		fromTime: null,
-		toTime: null
+		date: moment().startOf('date').valueOf(),
+		fromTime: Utils.roundTime(),
+		toTime: Utils.roundTime() + 60 * 60 * 1000
 	};
 
 	var getSelectedPoi = function (poi) {
@@ -127,7 +126,7 @@ angular.module('toga.controllers.new', [])
 		var serviceOffer = {
 			serviceType: Config.SERVICE_TYPE,
 			poiId: $scope.newOffer.poi.objectId,
-			professionalId: Config.PROFESSIONAL_ID_1
+			professionalId: Login.getUser().objectId
 		};
 
 		if ($scope.newOffer.useDateTime) {
@@ -144,7 +143,7 @@ angular.module('toga.controllers.new', [])
 				}, false, true, true);
 				Utils.toast($filter('translate')('newoffer_done'));
 			},
-			function (reason) {}
+			Utils.commError
 		);
 	};
 });

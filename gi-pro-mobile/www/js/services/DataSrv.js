@@ -111,7 +111,7 @@ angular.module('toga.services.data', [])
 	};
 
 	/* get offers */
-	dataService.getOffers = function (professionalId, serviceType, timeFrom, timeTo, page, limit) {
+	dataService.getOffers = function (professionalId, serviceType, timeFrom, timeTo, withTime, page, limit) {
 		var deferred = $q.defer();
 
 		var httpConfWithParams = Config.getHTTPConfig();
@@ -129,7 +129,22 @@ angular.module('toga.services.data', [])
 
 		httpConfWithParams.params['serviceType'] = serviceType;
 
-		// TODO handle timeFrom, timeTo, page, limit
+        if (!!timeFrom) {
+          httpConfWithParams.params['timeFrom'] = timeFrom;
+        }
+        if (!!timeTo) {
+          httpConfWithParams.params['timeTo'] = timeTo;
+        }
+        if (!!page) {
+          httpConfWithParams.params['page'] = page;
+        }
+        if (!!limit) {
+          httpConfWithParams.params['limit'] = limit;
+        }
+		if (withTime != null) {
+		httpConfWithParams.params['withTime'] = withTime;
+		}
+
 
 		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + professionalId, httpConfWithParams)
 
@@ -184,7 +199,7 @@ angular.module('toga.services.data', [])
 	};
 
 	/* search offers */
-	dataService.searchOffers = function (professionalId, poiId, serviceType, startTime) {
+	dataService.searchOffers = function (professionalId, poiId, serviceType, startTime, page, limit) {
 		var deferred = $q.defer();
 
 		var httpConfWithParams = Config.getHTTPConfig();
@@ -214,7 +229,12 @@ angular.module('toga.services.data', [])
 		httpConfWithParams.params['serviceType'] = serviceType;
 		httpConfWithParams.params['startTime'] = startTime;
 
-		// TODO handle pagination
+        if (!!page) {
+          httpConfWithParams.params['page'] = page;
+        }
+        if (!!limit) {
+          httpConfWithParams.params['limit'] = limit;
+        }
 
 		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/searchoffer/' + professionalId, httpConfWithParams)
 
@@ -250,7 +270,18 @@ angular.module('toga.services.data', [])
 
 		httpConfWithParams.params['serviceType'] = serviceType;
 
-		// TODO handle timeFrom, timeTo, page, limit
+        if (!!timeFrom) {
+          httpConfWithParams.params['timeFrom'] = timeFrom;
+        }
+        if (!!timeTo) {
+          httpConfWithParams.params['timeTo'] = timeTo;
+        }
+        if (!!page) {
+          httpConfWithParams.params['page'] = page;
+        }
+        if (!!limit) {
+          httpConfWithParams.params['limit'] = limit;
+        }
 
 		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + professionalId, httpConfWithParams)
 
@@ -304,5 +335,52 @@ angular.module('toga.services.data', [])
 		return deferred.promise;
 	};
 
+
+  	/* get notifications */
+	dataService.getNotifications = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
+		var deferred = $q.defer();
+
+		var httpConfWithParams = Config.getHTTPConfig();
+		httpConfWithParams.params = {};
+
+		// professionalId is required
+		if (!professionalId || !angular.isString(professionalId)) {
+			deferred.reject('Invalid professionalId');
+		}
+
+        if (!!timeFrom) {
+          httpConfWithParams.params['type'] = type;
+        }
+        if (!!timeFrom) {
+          httpConfWithParams.params['timeFrom'] = timeFrom;
+        }
+        if (!!timeTo) {
+          httpConfWithParams.params['timeTo'] = timeTo;
+        }
+        if (!!page) {
+          httpConfWithParams.params['page'] = page;
+        }
+        if (!!limit) {
+          httpConfWithParams.params['limit'] = limit;
+        }
+        if (read != 0) {
+          httpConfWithParams.params['read'] = read > 0 ? true : false;
+        }
+
+
+		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/notification/' + professionalId, httpConfWithParams)
+
+		.then(
+			function (response) {
+				// offers
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
 	return dataService;
 });

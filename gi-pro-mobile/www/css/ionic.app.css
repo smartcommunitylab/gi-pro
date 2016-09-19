@@ -10048,3 +10048,53 @@ input[readonly] {
   text-align: center; }
   .login .registration {
     margin-top: 20px; }
+
+/*
+ *PROFILE
+ */
+.profile .profile-image-container {
+  min-width: 100px;
+  width: 100px;
+  min-height: 100px;
+  height: 100px;
+  display: block; }
+  .profile .profile-image-container .profile-image img {
+    width: 100px;
+    height: auto; }
+  .profile .profile-image-container .profile-image-placeholder {
+    display: block;
+    border-radius: 8px;
+    height: 100%;
+    background-color: #f8f8f8;
+    position: relative; }
+    .profile .profile-image-container .profile-image-placeholder .upload {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      font-size: 28px;
+      color: #444; }
+
+.profile .contact {
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 28px;
+  text-overflow: ellipsis; }
+  .profile .contact i {
+    font-size: 28px;
+    color: #444;
+    padding: 0 12px; }
+
+.profile .name {
+  font-size: 20px;
+  font-weight: 500;
+  color: #444;
+  padding-bottom: 8px; }
+
+.profile .title {
+  font-size: 14px;
+  color: #444;
+  font-style: italic; }
+
+.profile .address {
+  padding-top: 16px;
+  color: #444; }

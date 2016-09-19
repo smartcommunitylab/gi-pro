@@ -24,7 +24,7 @@
 		</ul>
 	</ion-content>
 
-	<ion-footer-bar ng-if="isMine()">
+	<ion-footer-bar ng-if="isEditable()">
 		<button class="button button-assertive button-outline button-block" ng-click="deleteRequest()">
 			{{'delete' | translate}}
 		</button>

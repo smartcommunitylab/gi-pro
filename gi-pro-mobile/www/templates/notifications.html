@@ -1,8 +1,21 @@
 <ion-view view-title="{{'notifications' | translate}}" class="notifications">
-	<ion-nav-buttons side="right">
-	</ion-nav-buttons>
+  <ion-nav-buttons side="right">
+  </ion-nav-buttons>
 
-	<ion-content>
-		<h4>{{'notifications' | translate}}</h4>
-	</ion-content>
+  <ion-content scroll="false">
+    <ion-scroll>
+      <ion-refresher pulling-text="{{'refresh' | translate}}" on-refresh="refresh()">
+      </ion-refresher>
+      <h4 class="padding" ng-if="!!notifications && notifications.length == 0">{{'notifications_empty' | translate}}</h4>
+
+      <div class="card" ng-repeat="notification in notifications" ng-if="!!notifications && notifications.length > 0" ng-click="openNotificationDetails(notification)">
+        <div class="item item-text-wrap">
+          <h2>{{notification.type}}</h2>
+          <h3>{{notification.text}}</h3>
+        </div>
+      </div>
+      <ion-infinite-scroll on-infinite="loadMore()" distance="1%">
+      </ion-infinite-scroll>
+    </ion-scroll>
+  </ion-content>
 </ion-view>
