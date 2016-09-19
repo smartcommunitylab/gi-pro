@@ -15,6 +15,14 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+// Custom colors
+$t_blue: #4e7499;
+$t_darkwine: #652648;
+$t_wine: #8a567a;
+$t_lightwine: #b99aaf;
+// Ionic overrides
+$dark: $t_wine !default;
+$calm: $t_blue !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
@@ -181,27 +189,28 @@ input[readonly] {
 
 .tab-item {
 	/*opacity: 1;*/
+	text-transform: uppercase;
+	font-weight: bold;
 }
-
-/*
 .tab-item.tab-item-active,
 .tab-item.active,
 .tab-item.activated {
-	color: $t_orange;
+	/*color: $t_darkwine !important;*/
+	color: $t_lightwine !important;
 }
-*/
-
 .tabs-striped .tabs {
-	/*border-color: transparent;*/
+	border-color: transparent;
 }
 .tabs-top.tabs-striped .tab-item {
 	max-width: none;
-	/*text-transform: uppercase;*/
+	color: white;
 }
 .tabs-top.tabs-striped .tab-item.tab-item-active,
 .tabs-top.tabs-striped .tab-item.active,
 .tabs-top.tabs-striped .tab-item.activated {
-	/*border-width: 0px 0px 3px 0px !important;*/
+	border-width: 0px 0px 3px 0px !important;
+	/*border-color: $t_darkwine;*/
+	border-color: $t_lightwine;
 }
 
 /*
@@ -332,66 +341,60 @@ input[readonly] {
 /*
  *PROFILE
  */
+
 .profile {
-  .profile-image-container {
-    min-width: 100px;
-    width: 100px;
-    min-height: 100px;
-    height: 100px;
-    display: block;
-
-    .profile-image {
-      img {
-        width: 100px;
-        height: auto;
-      }
-    }
-
-    .profile-image-placeholder {
-      display: block;
-      border-radius: 8px;
-      height: 100%;
-      background-color: $stable;
-      position: relative;
-
-      .upload {
-        position: absolute;
-        bottom: 4px;
-        right: 8px;
-        font-size: 28px;
-        color: $dark;
-      }
-    }
-  }
-
-  .contact {
-    overflow: hidden;
-    white-space: nowrap;
-    line-height: 28px;
-    text-overflow: ellipsis;
-
-    i {
-      font-size: 28px;
-      color: $dark;
-      padding: 0 12px;
-    }
-    span {
-    }
-  }
-
-  .name {
-    font-size: 20px;
-    font-weight: 500;
-    color: $dark;
-    padding-bottom: 8px;
-  }
-  .title {
-    font-size: 14px;
-    color: $dark;
-    font-style: italic;
-  }
-  .address {
-    padding-top: 16px;
-    color: $dark;
-  }
+	.profile-image-container {
+		min-width: 100px;
+		width: 100px;
+		min-height: 100px;
+		height: 100px;
+		display: block;
+		.profile-image {
+			img {
+				width: 100px;
+				height: auto;
+			}
+		}
+		.profile-image-placeholder {
+			display: block;
+			border-radius: 8px;
+			height: 100%;
+			background-color: $stable;
+			position: relative;
+			.upload {
+				position: absolute;
+				bottom: 4px;
+				right: 8px;
+				font-size: 28px;
+				color: $dark;
+			}
+		}
+	}
+	.contact {
+		overflow: hidden;
+		white-space: nowrap;
+		line-height: 28px;
+		text-overflow: ellipsis;
+		i {
+			font-size: 28px;
+			color: $dark;
+			padding: 0 12px;
+		}
+		span {}
+	}
+	.name {
+		font-size: 20px;
+		font-weight: 500;
+		color: $dark;
+		padding-bottom: 8px;
+	}
+	.title {
+		font-size: 14px;
+		color: $dark;
+		font-style: italic;
+	}
+	.address {
+		padding-top: 16px;
+		color: $dark;
+	}
 }
