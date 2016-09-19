@@ -32,40 +32,40 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .toga-app .ionic_datepicker_popup {
 	.today {
-		border: 1px solid $dark;
+		border: 1px solid $t_wine;
 		/*border-radius: 50%;*/
 	}
 	.selected_date {
-		background-color: $dark;
+		background-color: $t_wine;
 		/*border-radius: 50%;*/
 		color: #ffffff;
 		/*font-weight: bold;*/
 	}
 	.popup-head {
-		background-color: $dark;
+		background-color: $t_wine;
 		/*display: none;*/
 	}
 	.popup-body {
 		.selected_date_full {
-			background-color: $dark;
+			background-color: $t_wine;
 		}
 		.month_select,
 		.year_select {
 			/*border: none;*/
-			border-bottom: 1px solid $dark;
+			border-bottom: 1px solid $t_wine;
 			/*padding: 0;*/
 		}
 		.month_select:after,
 		.year_select:after {
 			/*right: 5px;*/
-			color: $dark;
+			color: $t_wine;
 		}
 		.button-clear {
-			color: $dark;
+			color: $t_wine;
 		}
 	}
 	.popup-buttons button {
-		background-color: $dark;
+		background-color: $t_blue;
 		/*border-radius: 0;
 		margin-right: 1px;*/
 		color: #ffffff;
@@ -74,44 +74,44 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .toga-app .ionic_datepicker_modal {
 	.header,
 	.footer {
-		background-color: $dark;
+		background-color: $t_wine;
 		.title,
 		.button {
 			color: #ffffff;
 		}
 	}
 	.today {
-		border: 1px solid $dark;
+		border: 1px solid $t_wine;
 	}
 	.selected_date {
-		background-color: $dark;
+		background-color: $t_wine;
 		color: #fff;
 		/*font-weight: bold;*/
 	}
 	.button-clear {
-		color: $dark;
+		color: $t_wine;
 	}
 	.month_select,
 	.year_select {
 		/*border: none;*/
-		border-bottom: 1px solid $dark;
+		border-bottom: 1px solid $t_wine;
 		/*padding: 0;*/
 	}
 	.month_select:after,
 	.year_select:after {
 		/*right: 5px;*/
-		color: $dark;
+		color: $t_wine;
 	}
 }
 .toga-app .ionic_timepicker_popup {
 	.popup-body {
 		.heading {
-			background-color: $dark;
+			background-color: $t_wine;
 		}
 	}
 	.popup-buttons {
 		.button {
-			background-color: $dark;
+			background-color: $t_blue;
 		}
 	}
 }
@@ -136,11 +136,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 input[readonly] {
 	background-color: transparent !important;
 }
-
-/*.input-label {
-	color: black;
-}*/
-
+.input-label {
+	/*color: black;*/
+	font-weight: bold;
+}
 .item-stacked-label {
 	border: 0;
 	.input-value {
@@ -162,6 +161,8 @@ input[readonly] {
 	background: none;
 	.button.button-block {
 		margin: 0;
+		text-transform: uppercase;
+		font-weight: bold;
 	}
 	.row {
 		padding: 0;
@@ -201,8 +202,8 @@ input[readonly] {
 .tab-item.tab-item-active,
 .tab-item.active,
 .tab-item.activated {
-	/*color: $t_darkwine !important;*/
-	color: $t_lightwine !important;
+	color: $t_darkwine !important;
+	/*color: $t_lightwine !important;*/
 }
 .tabs-striped .tabs {
 	border-color: transparent;
@@ -215,8 +216,8 @@ input[readonly] {
 .tabs-top.tabs-striped .tab-item.active,
 .tabs-top.tabs-striped .tab-item.activated {
 	border-width: 0px 0px 3px 0px !important;
-	/*border-color: $t_darkwine;*/
-	border-color: $t_lightwine;
+	border-color: $t_darkwine;
+	/*border-color: $t_lightwine;*/
 }
 
 /*
@@ -236,10 +237,12 @@ input[readonly] {
 .details {
 	.datetime {
 		padding: 10px 0;
-		text-align: center;
-		font-size: larger;
-		.date {}
-		.time {}
+		/*text-align: center;*/
+		/*font-size: larger;*/
+		.date,
+		.time {
+			font-weight: bold;
+		}
 	}
 	.professional {
 		padding: 10px 0;
@@ -266,7 +269,9 @@ input[readonly] {
 			font-weight: bold;
 		}
 		.description {}
-		.address {}
+		.address {
+			font-style: italic;
+		}
 	}
 }
 
@@ -315,8 +320,21 @@ input[readonly] {
  */
 
 .modal-pois {
-	.list-pois .item-radio .radio-content .item-content {
-		white-space: normal;
+	.list-container {
+		.input-label {
+			width: 100%;
+			padding-left: 16px;
+			margin: 0;
+			max-width: none;
+		}
+		.list {
+			.list-pois .item-radio .radio-content .item-content {
+				white-space: normal;
+			}
+		}
+	}
+	.list-container > .list {
+		margin-top: 5px;
 	}
 }
 .popup-types,

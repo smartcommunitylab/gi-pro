@@ -35,12 +35,12 @@ angular.module('toga', [
 })
 
 .config(function ($ionicConfigProvider, $httpProvider, $translateProvider) {
-    $httpProvider.defaults.withCredentials = true;
+	$httpProvider.defaults.withCredentials = true;
 
-    // PROBLEM WITH SCROLL RESIZE ON OLD ANDROID DEVICES
-    $ionicConfigProvider.scrolling.jsScrolling(ionic.Platform.isIOS() || (ionic.Platform.isAndroid() && parseFloat(ionic.Platform.version()) < 4.4));
+	// PROBLEM WITH SCROLL RESIZE ON OLD ANDROID DEVICES
+	$ionicConfigProvider.scrolling.jsScrolling(ionic.Platform.isIOS() || (ionic.Platform.isAndroid() && parseFloat(ionic.Platform.version()) < 4.4));
 
-    $ionicConfigProvider.tabs.position('top');
+	$ionicConfigProvider.tabs.position('top');
 	$ionicConfigProvider.tabs.style('striped');
 	$ionicConfigProvider.backButton.previousTitleText(false).text('');
 
@@ -203,8 +203,17 @@ angular.module('toga', [
 		}
 	})
 
+	.state('app.credits', {
+		url: '/credits',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/credits.html'
+			}
+		}
+	})
+
 	.state('app.login', {
-        cache: false,
+		cache: false,
 		url: '/login',
 		views: {
 			'menuContent': {
@@ -216,29 +225,29 @@ angular.module('toga', [
 
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise(function ($injector) {
-        //var StorageSrv = $injector.get('StorageSrv');
-        //var $rootScope = $injector.get('$rootScope');
-        //var logged = $injector.get('LoginSrv').userIsLogged();
-        /*
-        if (!logged || StorageSrv.getUserId() == null || !StorageSrv.isProfileComplete()) {
-            $rootScope.initialSetup = true;
-            return '/app/profilo';
-        }
-        */
-        var LoginSrv = $injector.get('Login');
-        var logged = LoginSrv.getUser();
-        if (!logged) {
-            return '/app/login';
-        } else {
-          $injector.get('$rootScope').user = logged;
-          LoginSrv.updateUser().then(function() {}, function(errCode) {
-            if (errCode == LoginSrv.USER_ERRORS.NO_USER) {
-              LoginSrv.logout();
-              $scope.goTo('app.login', {}, false, true, true);
-            }
-          });
+		//var StorageSrv = $injector.get('StorageSrv');
+		//var $rootScope = $injector.get('$rootScope');
+		//var logged = $injector.get('LoginSrv').userIsLogged();
+		/*
+		if (!logged || StorageSrv.getUserId() == null || !StorageSrv.isProfileComplete()) {
+		    $rootScope.initialSetup = true;
+		    return '/app/profilo';
+		}
+		*/
+		var LoginSrv = $injector.get('Login');
+		var logged = LoginSrv.getUser();
+		if (!logged) {
+			return '/app/login';
+		} else {
+			$injector.get('$rootScope').user = logged;
+			LoginSrv.updateUser().then(function () {}, function (errCode) {
+				if (errCode == LoginSrv.USER_ERRORS.NO_USER) {
+					LoginSrv.logout();
+					$scope.goTo('app.login', {}, false, true, true);
+				}
+			});
 
-        }
-        return '/app/home';
-    });
+		}
+		return '/app/home';
+	});
 });

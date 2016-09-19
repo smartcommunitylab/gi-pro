@@ -3,10 +3,6 @@
 	</ion-nav-buttons>
 
 	<ion-content class="padding">
-		<div class="datetime" ng-if="!!request.startTime">
-			<span class="date">{{request.startTime | date:'longDate'}}</span>, <span class="time">{{request.startTime | date:'shortTime'}}</span>
-		</div>
-
 		<ul class="professional" ng-if="!isMine()">
 			<li class="name">{{request.professional.name}} {{request.professional.surname}}</li>
 			<li class="type">{{'professional_type_' + request.professional.type | translate}}</li>
@@ -16,16 +12,24 @@
 			<li class="email"><span>{{'professional_pec' | translate}}:</span> {{request.professional.pec}}</li>
 		</ul>
 
-		<ul class="poi">
-			<li class="type">{{request.poi.type}}</li>
-			<li class="name">{{request.poi.name}}</li>
-			<li class="description">{{request.poi.description}}</li>
-			<li class="address">{{request.poi.address}}</li>
-		</ul>
+		<div class="poi">
+			<div>{{'request_detail_poi' | translate}}:</div>
+			<ul>
+				<!--<li class="type">{{request.poi.type}}</li>-->
+				<li class="name">{{request.poi.name}}</li>
+				<li class="description">{{request.poi.description}}</li>
+				<li class="address">{{request.poi.address}}</li>
+			</ul>
+		</div>
+
+		<div class="datetime" ng-if="!!request.startTime">
+			<div>{{'request_detail_date' | translate}}:</div>
+			<span class="date">{{request.startTime | date:'longDate'}}</span>, <span class="time">{{request.startTime | date:'shortTime'}}</span>
+		</div>
 	</ion-content>
 
 	<ion-footer-bar ng-if="isEditable()">
-		<button class="button button-assertive button-outline button-block" ng-click="deleteRequest()">
+		<button class="button button-assertive button-block" ng-click="deleteRequest()">
 			{{'delete' | translate}}
 		</button>
 	</ion-footer-bar>

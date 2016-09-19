@@ -302,7 +302,9 @@ angular.module('toga.services.data', [])
 	dataService.createRequestPublic = function (serviceRequest) {
 		var deferred = $q.defer();
 
-		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/public', serviceRequest, Config.HTTP_CONFIG)
+		var httpConfWithParams = Config.getHTTPConfig();
+
+		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/public', serviceRequest, httpConfWithParams)
 
 		.then(
 			function (response) {
@@ -321,7 +323,9 @@ angular.module('toga.services.data', [])
 	dataService.deleteRequest = function (objectId, professionalId) {
 		var deferred = $q.defer();
 
-		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + objectId + '/' + professionalId, Config.HTTP_CONFIG)
+		var httpConfWithParams = Config.getHTTPConfig();
+
+		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + objectId + '/' + professionalId, httpConfWithParams)
 
 		.then(
 			function (response) {
