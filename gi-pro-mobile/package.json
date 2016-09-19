@@ -26,9 +26,20 @@
     "cordova-plugin-inappbrowser",
     "cordova-plugin-network-information",
     "cordova-plugin-camera",
-    "cordova-plugin-file-transfer"
+    "cordova-plugin-file-transfer",
+    {
+      "variables": {
+        "SENDER_ID": "453601816446"
+      },
+      "locator": "phonegap-plugin-push",
+      "id": "phonegap-plugin-push"
+    }
   ],
   "cordovaPlatforms": [
-    "android"
+    {
+      "platform": "android",
+      "version": "5.0.0",
+      "locator": "android@5.0.0"
+    }
   ]
 }

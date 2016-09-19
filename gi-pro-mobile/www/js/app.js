@@ -7,6 +7,7 @@ angular.module('toga', [
 	'toga.services.utils',
 	'toga.services.login',
 	'toga.services.config',
+	'toga.services.push',
 	'pascalprecht.translate',
 	'toga.services.data',
 	'toga.controllers.main',
@@ -224,11 +225,19 @@ angular.module('toga', [
             return '/app/profilo';
         }
         */
-        var logged = $injector.get('Login').getUser();
+        var LoginSrv = $injector.get('Login');
+        var logged = LoginSrv.getUser();
         if (!logged) {
             return '/app/login';
         } else {
           $injector.get('$rootScope').user = logged;
+          LoginSrv.updateUser().then(function() {}, function(errCode) {
+            if (errCode == LoginSrv.USER_ERRORS.NO_USER) {
+              LoginSrv.logout();
+              $scope.goTo('app.login', {}, false, true, true);
+            }
+          });
+
         }
         return '/app/home';
     });

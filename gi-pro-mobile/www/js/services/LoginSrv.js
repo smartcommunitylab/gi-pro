@@ -1,9 +1,10 @@
 angular.module('toga.services.login', [])
 
-.factory('Login', function ($rootScope, $http, $q, Utils, Config) {
+.factory('Login', function ($rootScope, $http, $q, Utils, Config, PushSrv) {
     var loginService = {};
 
     var userVarName = 'toga-app-user-'+Config.APPLICATION_ID;
+    var userVarToken= 'toga-app-usertoken-'+Config.APPLICATION_ID;
 
   	/* Login call */
 	loginService.login = function (cf, pwd) {
@@ -23,7 +24,9 @@ angular.module('toga.services.login', [])
                   return;
                 }
                 localStorage.setItem(userVarName, JSON.stringify(user));
+                localStorage.setItem(userVarToken, user.passwordHash);
                 $rootScope.user = user;
+                PushSrv.init();
 				deferred.resolve(user);
 			},
 			function (reason) {
@@ -54,6 +57,7 @@ angular.module('toga.services.login', [])
           }
           localStorage.setItem(userVarName, JSON.stringify(user));
           $rootScope.user = user;
+          PushSrv.init();
           deferred.resolve(user);
       }, function(reason) {
         if (reason.status == 401 || reason.status == 403) {
@@ -72,7 +76,9 @@ angular.module('toga.services.login', [])
 
     loginService.logout = function() {
       localStorage.setItem(userVarName, null);
+      localStorage.setItem(userVarToken, null);
       $rootScope.user = null;
+      PushSrv.unreg();
     }
 
     return loginService;

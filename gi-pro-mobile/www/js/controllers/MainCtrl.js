@@ -4,17 +4,6 @@ angular.module('toga.controllers.main', [])
  * App generic controller
  */
 .controller('AppCtrl', function ($scope, $rootScope, $state, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Utils, Prefs, DataSrv, Login) {
-    if ($rootScope.user) {
-      Login.updateUser().then(function() {}, function(errCode) {
-        if (errCode == Login.USER_ERRORS.NO_USER) {
-          Login.logout();
-          $scope.goTo('app.login', {}, false, true, true);
-        }
-      });
-
-    }
-
-
 	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot) {
 		var options = {
 			disableAnimate: false,
