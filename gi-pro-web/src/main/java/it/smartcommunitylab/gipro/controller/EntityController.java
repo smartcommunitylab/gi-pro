@@ -99,14 +99,10 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/pushregister", method = RequestMethod.POST)
 	public @ResponseBody void registerPush(@PathVariable String applicationId, @RequestParam String registrationId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String cf = Utils.getContextProfessionalId();
-		Professional profile = cnfService.getProfile(applicationId, cf);
+		String professionalId = Utils.getContextProfessionalId();
+		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
-			throw new UnauthorizedException("profile not found");
-		}
-		profile = storageManager.findProfessionalByCF(applicationId, cf);
-		if(profile == null) {
-			throw new UnauthorizedException("profile not found");
+			throw new UnauthorizedException("profile not found: "+professionalId);
 		}
 		
 		notificationManager.registerUser(profile.getObjectId(), registrationId);
