@@ -47,7 +47,6 @@ public class TranslationHelper{
 	@PostConstruct
 	public void init() {
 		defaultLang = env.getProperty("defaultLang");
-		System.err.println(messageSource.getMessage("notif_NEW_SERVICE_OFFER", null, Locale.forLanguageTag("it")));
 	}
 	
 	

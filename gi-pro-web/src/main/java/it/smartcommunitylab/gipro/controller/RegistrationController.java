@@ -10,6 +10,7 @@ import it.smartcommunitylab.gipro.integration.CNF;
 import it.smartcommunitylab.gipro.mail.MailSender;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.Registration;
+import it.smartcommunitylab.gipro.security.JwtUtils;
 import it.smartcommunitylab.gipro.security.PermissionsManager;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
@@ -48,6 +49,9 @@ public class RegistrationController {
 	
 	@Autowired
 	private CNF cnfService;
+	
+	@Autowired
+	private JwtUtils jwtUtils;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage(HttpServletRequest req) {
@@ -69,7 +73,9 @@ public class RegistrationController {
 			if(profile == null) {
 				throw new UnauthorizedException("profile not found or invalid credentials");
 			}
-			permissionsManager.authenticateByCF(request, response, profile);
+			String token = jwtUtils.generateToken(profile);
+			profile.setPasswordHash(token);
+//			permissionsManager.authenticateByCF(request, response, profile);
 			return profile;
 		} catch (Exception e) {
 			logger.error(e.getMessage());

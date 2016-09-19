@@ -23,8 +23,8 @@ public class PermissionsManager {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	@Autowired
-	private RememberMeServices rememberMeServices;
+//	@Autowired
+//	private RememberMeServices rememberMeServices;
 	
 	public void authenticateByCF(HttpServletRequest request, HttpServletResponse response, Professional profile) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
@@ -32,6 +32,6 @@ public class PermissionsManager {
 		token.setDetails(profile);
 		Authentication authenticatedUser = authenticationManager.authenticate(token);
 		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
-		rememberMeServices.loginSuccess(request, response, authenticatedUser);
+//		rememberMeServices.loginSuccess(request, response, authenticatedUser);
 	}
 }

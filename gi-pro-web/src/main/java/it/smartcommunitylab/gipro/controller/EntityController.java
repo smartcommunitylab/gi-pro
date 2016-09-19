@@ -85,12 +85,13 @@ public class EntityController {
 	public @ResponseBody Professional getProfile(@PathVariable String applicationId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String professionalId = Utils.getContextProfessionalId();
+
 		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
 			throw new UnauthorizedException("local profile not found: "+professionalId);
 		}
-		profile = cnfService.getProfile(applicationId, profile.getCf());
-		if(profile == null) {
+		Professional cnfProfile = cnfService.getProfile(applicationId, profile.getCf());
+		if(cnfProfile == null) {
 			throw new UnauthorizedException("cnf profile not found: "+professionalId);
 		}
 		return profile;
@@ -99,14 +100,10 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/pushregister", method = RequestMethod.POST)
 	public @ResponseBody void registerPush(@PathVariable String applicationId, @RequestParam String registrationId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String cf = Utils.getContextProfessionalId();
-		Professional profile = cnfService.getProfile(applicationId, cf);
+		String professionalId = Utils.getContextProfessionalId();
+		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
-			throw new UnauthorizedException("profile not found");
-		}
-		profile = storageManager.findProfessionalByCF(applicationId, cf);
-		if(profile == null) {
-			throw new UnauthorizedException("profile not found");
+			throw new UnauthorizedException("profile not found: "+professionalId);
 		}
 		
 		notificationManager.registerUser(profile.getObjectId(), registrationId);
