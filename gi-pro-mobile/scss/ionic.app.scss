@@ -21,7 +21,7 @@ $t_darkwine: #652648;
 $t_wine: #8a567a;
 $t_lightwine: #b99aaf;
 // Ionic overrides
-$dark: $t_wine !default;
+$royal: $t_wine !default;
 $calm: $t_blue !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -136,6 +136,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 input[readonly] {
 	background-color: transparent !important;
 }
+
+/*.input-label {
+	color: black;
+}*/
+
 .item-stacked-label {
 	border: 0;
 	.input-value {
@@ -170,17 +175,18 @@ input[readonly] {
 /* Menu */
 
 .menu {
-	/*background-color: transparent;*/
+	background-color: $t_darkwine;
 	.list {
 		.item {
-			/*border-color: transparent;*/
-			/*color: white;*/
+			color: white;
+			border-color: transparent;
+			background-color: $t_darkwine;
 		}
 		.item.item-complex .item-content {
-			/*background-color: transparent;*/
+			background-color: transparent;
 		}
 		.item.active {
-			/*color: $t_orange;*/
+			background-color: $t_wine;
 		}
 	}
 }

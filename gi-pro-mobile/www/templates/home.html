@@ -1,10 +1,10 @@
 <ion-view view-title="{{'app' | translate}}" class="home">
 	<ion-nav-buttons side="right">
 		<button class="button button-icon button-clear ion-search" ng-click="goTo('app.search')" ng-if="selectedTab() == 0"></button>
-		<button class="button button-icon button-clear ion-ios-bell" ng-click="goTo('app.notifications', {}, true, true, true)" ng-disabled="true"></button>
+		<button class="button button-icon button-clear ion-ios-bell" ng-click="goTo('app.notifications', {}, true, true, true)"></button>
 	</ion-nav-buttons>
 
-	<ion-tabs class="tabs-dark">
+	<ion-tabs class="tabs-royal">
 		<ion-tab title="{{'home_tab_1' | translate}}">
 			<ion-pane>
 				<ion-content scroll="false">
@@ -40,7 +40,7 @@
 							</div>
 						</div>
 					</ion-scroll>
-					<button class="button button-dark button-fab" ng-click="goTo('app.newoffer')">
+					<button class="button button-calm button-fab" ng-click="goTo('app.newoffer')">
 						<i class="icon ion-plus"></i>
 					</button>
 				</ion-content>
