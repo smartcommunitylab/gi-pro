@@ -165,7 +165,7 @@ angular.module('toga.services.data', [])
 	dataService.createOffer = function (serviceOffer) {
 		var deferred = $q.defer();
 
-		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer', serviceOffer, Config.HTTP_CONFIG)
+		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer', serviceOffer, Config.getHTTPConfig())
 
 		.then(
 			function (response) {
@@ -184,7 +184,7 @@ angular.module('toga.services.data', [])
 	dataService.deleteOffer = function (objectId, professionalId) {
 		var deferred = $q.defer();
 
-		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + objectId + '/' + professionalId, Config.HTTP_CONFIG)
+		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + objectId + '/' + professionalId, Config.getHTTPConfig())
 
 		.then(
 			function (response) {
@@ -302,9 +302,7 @@ angular.module('toga.services.data', [])
 	dataService.createRequestPublic = function (serviceRequest) {
 		var deferred = $q.defer();
 
-		var httpConfWithParams = Config.getHTTPConfig();
-
-		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/public', serviceRequest, httpConfWithParams)
+		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/public', serviceRequest, Config.getHTTPConfig())
 
 		.then(
 			function (response) {
@@ -323,9 +321,7 @@ angular.module('toga.services.data', [])
 	dataService.deleteRequest = function (objectId, professionalId) {
 		var deferred = $q.defer();
 
-		var httpConfWithParams = Config.getHTTPConfig();
-
-		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + objectId + '/' + professionalId, httpConfWithParams)
+		$http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + objectId + '/' + professionalId, Config.getHTTPConfig())
 
 		.then(
 			function (response) {
