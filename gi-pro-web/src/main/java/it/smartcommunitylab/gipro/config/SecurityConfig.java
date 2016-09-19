@@ -1,6 +1,7 @@
 package it.smartcommunitylab.gipro.config;
 
 import it.smartcommunitylab.gipro.security.AppUserDetails;
+import it.smartcommunitylab.gipro.security.TokenAuthFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,15 +11,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
@@ -29,17 +27,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private Environment env;	
 	
-	@Autowired
-	private UserDetailsService userDetailsServiceImpl;
+//	@Autowired
+//	private UserDetailsService userDetailsServiceImpl;
 	
+//	@Autowired
+//	@Qualifier("customProvider")
+//	private AuthenticationProvider customAuthenticationProvider;
 	@Autowired
-	private AuthenticationProvider customAuthenticationProvider;
+//	@Qualifier("jwtProvider")
+	private AuthenticationProvider tokenAuthProvider;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
-		.authenticationProvider(customAuthenticationProvider)
-		.authenticationProvider(rememberMeAuthenticationProvider());
+//		.authenticationProvider(customAuthenticationProvider)
+		.authenticationProvider(tokenAuthProvider);
 	}
 	
 	@Autowired
@@ -52,8 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.csrf()
 		.disable();
 		
-		http
-		.rememberMe();	
+//		http
+//		.rememberMe();	
 		
 //		http
 //			.headers()
@@ -67,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/api/**")
 		.hasAnyAuthority(AppUserDetails.GIPRO)
 		.and()
-		.addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class);
+		.addFilterBefore(tokenFilter(), BasicAuthenticationFilter.class)
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 		http
 //			.csrf()
@@ -80,24 +83,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.formLogin().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("rememberme","JSESSIONID");
 	}
-	
+
 	@Bean 
-	public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception{
-		 return new RememberMeAuthenticationFilter(authenticationManager(), tokenBasedRememberMeService());
+	public TokenAuthFilter tokenFilter() throws Exception{
+		 return new TokenAuthFilter();
 	}
+
+//	@Bean 
+//	public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception{
+//		 return new RememberMeAuthenticationFilter(authenticationManager(), tokenBasedRememberMeService());
+//	}
 	
-	public RememberMeAuthenticationProvider rememberMeAuthenticationProvider(){
-		 return new RememberMeAuthenticationProvider(tokenBasedRememberMeService().getKey());
-	}
+//	public RememberMeAuthenticationProvider rememberMeAuthenticationProvider(){
+//		 return new RememberMeAuthenticationProvider(tokenBasedRememberMeService().getKey());
+//	}
 	
-	@Bean 
-	public TokenBasedRememberMeServices tokenBasedRememberMeService(){
-		 TokenBasedRememberMeServices service = new TokenBasedRememberMeServices(env.getProperty("rememberme.key"), userDetailsServiceImpl);
-		 service.setAlwaysRemember(true);
-		 service.setCookieName("rememberme");
-		 service.setTokenValiditySeconds(3600*24*365*1);
-		 return service;
-	}
+//	@Bean 
+//	public TokenBasedRememberMeServices tokenBasedRememberMeService(){
+//		 TokenBasedRememberMeServices service = new TokenBasedRememberMeServices(env.getProperty("rememberme.key"), userDetailsServiceImpl);
+//		 service.setAlwaysRemember(true);
+//		 service.setCookieName("rememberme");
+//		 service.setTokenValiditySeconds(3600*24*365*1);
+//		 return service;
+//	}
 	
 	@Bean
 	@Override

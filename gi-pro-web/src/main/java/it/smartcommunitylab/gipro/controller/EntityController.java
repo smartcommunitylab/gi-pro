@@ -85,12 +85,13 @@ public class EntityController {
 	public @ResponseBody Professional getProfile(@PathVariable String applicationId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String professionalId = Utils.getContextProfessionalId();
+
 		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
 			throw new UnauthorizedException("local profile not found: "+professionalId);
 		}
-		profile = cnfService.getProfile(applicationId, profile.getCf());
-		if(profile == null) {
+		Professional cnfProfile = cnfService.getProfile(applicationId, profile.getCf());
+		if(cnfProfile == null) {
 			throw new UnauthorizedException("cnf profile not found: "+professionalId);
 		}
 		return profile;
