@@ -18,7 +18,7 @@ angular.module('toga', [
 	'toga.controllers.new'
 ])
 
-.run(function ($ionicPlatform, Login) {
+.run(function ($ionicPlatform, $rootScope, Login, PushSrv) {
 	$ionicPlatform.ready(function () {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -32,7 +32,12 @@ angular.module('toga', [
 			StatusBar.styleDefault();
 		}
 	});
+
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
+    PushSrv.fgOf();
+  });
 })
+
 
 .config(function ($ionicConfigProvider, $httpProvider, $translateProvider) {
 	$httpProvider.defaults.withCredentials = true;

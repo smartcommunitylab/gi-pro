@@ -1,6 +1,6 @@
 angular.module('toga.controllers.home', [])
 
-.controller('HomeCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login) {
+.controller('HomeCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login, PushSrv) {
 	$scope.requests = null;
 	$scope.offers = null;
 
@@ -56,9 +56,13 @@ angular.module('toga.controllers.home', [])
 			'offer': offer
 		});
 	};
+
+    PushSrv.fgOn(function(notification) {
+      console.log('Show event in home', notification);
+    });
 })
 
-.controller('NotificationsCtrl', function ($scope, Utils, Login, Config, DataSrv) {
+.controller('NotificationsCtrl', function ($scope, Utils, Login, Config, DataSrv, PushSrv) {
     var limit = 10;
 
   	$scope.notifications = null;
@@ -101,6 +105,10 @@ angular.module('toga.controllers.home', [])
       $scope.hasMore = true;
       $scope.loadMore();
   };
+
+  PushSrv.fgOn(function(notification) {
+    $scope.refresh();
+  });
 
 })
 

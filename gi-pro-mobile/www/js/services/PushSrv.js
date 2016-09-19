@@ -4,6 +4,8 @@ angular.module('toga.services.push', [])
   var pushService = {};
   var push = null;
 
+  var fgListener = null;
+
   var register = function(data){
 		var httpConfWithParams = Config.getHTTPConfig();
 		httpConfWithParams.params = {};
@@ -29,18 +31,19 @@ angular.module('toga.services.push', [])
   };
   var notification = function(data){
     console.log('push data', data);
+    var n = toNotification(data.additionalData);
     // in foreground save data to DB and call the UI function if defined in current scope
     if (data.additionalData.foreground) {
-      NotifDB.insert(data.additionalData);
-      if ($rootScope.updateUIWithNotification) {
-        $rootScope.updateUIWithNotification(data.additionalData);
+      NotifDB.insert(n);
+      if (fgListener) {
+        fgListener(n);
       }
     } else {
-      NotifDB.getById(data.additionalData['content.objectId']).then(function(n){
-        console.log('found', n);
+      NotifDB.getById(n.objectId).then(function(nDB){
+        console.log('found', nDB);
         // first call, do only insertion
-        if (n == null) {
-          NotifDB.insert(data.additionalData);
+        if (nDB == null) {
+          NotifDB.insert(n);
         // second call, open the link
         } else {
 
@@ -50,6 +53,18 @@ angular.module('toga.services.push', [])
       });
     }
   };
+
+  var toNotification = function(notification) {
+    var n = {};
+    n.objectId = notification['content.messageId'];
+    n.timestamp = new Date().getTime();
+    n.text = notification.description;
+    n.type = notification['content.type'];
+    n.serviceOfferId = notification['content.offerId'];
+    n.serviceRequestId = notification['content.requestId'];
+    return n;
+  };
+
 
   pushService.init = function() {
     $ionicPlatform.ready(function () {
@@ -80,6 +95,13 @@ angular.module('toga.services.push', [])
 
   pushService.unreg = function() {
     push.unregister();
+  }
+
+  pushService.fgOn = function(listener){
+    fgListener = listener;
+  };
+  pushService.fgOf = function() {
+    fgListener = null;
   }
 
   return pushService;
@@ -122,7 +144,7 @@ angular.module('toga.services.push', [])
   notifDB.insert = function(notification) {
     db.transaction(function (tx) {
        tx.executeSql('INSERT INTO notification (id, timestamp, text, type, offerId, requestId, fromUserId, read) VALUES (?,?,?,?,?,?,?,?)',
-                     [notification['content.messageId'], new Date().getTime(), notification.description, notification['content.type'], notification['content.offerId'], notification['content.requestId'], null, false]);
+                     [notification.objectId, new Date().getTime(), notification.text, notification.type, notification.serviceOfferId, notification.serviceRequestId, null, false]);
     });
   }
   notifDB.markAsRead = function(id) {
