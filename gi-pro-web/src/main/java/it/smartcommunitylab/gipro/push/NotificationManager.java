@@ -94,7 +94,7 @@ public class NotificationManager {
 
 	}
 	
-	public void sendNotification(Notification n, String userId) throws CommunicatorConnectorException, AACException {
+	public void sendNotification(String title, Notification n, String userId) throws CommunicatorConnectorException, AACException {
 		List<String> userIds = Collections.singletonList(userId);
 		
 		Map<String, Object> content = new TreeMap<String, Object>();
@@ -104,16 +104,19 @@ public class NotificationManager {
 		content.put("messageId", n.getObjectId());
 		content.put("professionalId", n.getProfessionalId());
 
-		eu.trentorise.smartcampus.communicator.model.Notification notification = prepareMessage(n.getText(), content);
+		eu.trentorise.smartcampus.communicator.model.Notification notification = prepareMessage(title, n.getText(), content);
 		notification.setTitle(n.getText());
 		
-		communicator.sendAppNotification(notification, env.getProperty("push.appName"), userIds, getAppToken());
+		String token = getAppToken();
+		
+		communicator.sendAppNotification(notification, env.getProperty("push.appName"), userIds, token);
 	}
 	
-	private eu.trentorise.smartcampus.communicator.model.Notification prepareMessage(String text, Map<String, Object> content) {
+	private eu.trentorise.smartcampus.communicator.model.Notification prepareMessage(String title, String text, Map<String, Object> content) {
 		eu.trentorise.smartcampus.communicator.model.Notification not = new eu.trentorise.smartcampus.communicator.model.Notification();
 		not.setDescription(text);
 		not.setContent(content);
+		not.setTitle(title);
 		long when = System.currentTimeMillis();
 		not.setTimestamp(when);
 		return not;

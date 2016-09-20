@@ -15,8 +15,8 @@
  ******************************************************************************/
 package it.smartcommunitylab.gipro.common;
 
-import it.smartcommunitylab.gipro.model.Notification;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +43,7 @@ public class TranslationHelper{
 	@Qualifier("messages")
     private MessageSource messageSource;
 
+	private static final String FORMAT_DATE_TIME = "dd/MM/yyyy, HH:mm";
 	
 	@PostConstruct
 	public void init() {
@@ -50,8 +51,18 @@ public class TranslationHelper{
 	}
 	
 	
-	public String getNotificationText(String lang, Notification n) {
+	public String getNotificationText(String lang, String type, String serviceType, Object ... params) {
 		if (lang == null) lang = defaultLang;
-		return messageSource.getMessage("notif_"+n.getType(), null, Locale.forLanguageTag(lang));
+		return messageSource.getMessage("notif_text_"+type+"_"+serviceType, params, Locale.forLanguageTag(lang));
+	}
+
+
+	public String getNotificationTitle(String lang, String type, String serviceType) {
+		return messageSource.getMessage("notif_"+type+"_"+serviceType, null, Locale.forLanguageTag(lang));
+	}
+	
+	public String dateTime(Date d, String lang) {
+		if (d == null) return "";
+		return new SimpleDateFormat(FORMAT_DATE_TIME, Locale.forLanguageTag(lang)).format(d);
 	}
 }

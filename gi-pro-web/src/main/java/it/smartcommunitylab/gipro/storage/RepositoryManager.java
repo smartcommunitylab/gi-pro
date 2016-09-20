@@ -186,18 +186,48 @@ public class RepositoryManager {
 		}
 	}
 	
-	private Notification addNotification(Notification notification, String professionalId) {
+	private Notification addNotification(Notification notification, String professionalId, String serviceType) {
 		notification.setObjectId(Utils.getUUID());
 		Date now = new Date();
 		notification.setCreationDate(now);
 		notification.setLastUpdate(now);
 		Professional professional = findProfessionalById(notification.getApplicationId(), professionalId);
-		notification.setText(translationHelper.getNotificationText(professional.getLang(), notification));
+		String title = translationHelper.getNotificationTitle(professional.getLang(), notification.getType(), serviceType);
+		String text = notificationText(professional.getLang(), notification.getType(), serviceType, notification.getApplicationId(), notification.getServiceOfferId(), notification.getServiceRequestId());
+		notification.setText(text);
+		
+		push(notification, title);
 		mongoTemplate.save(notification);
-		push(notification);
 		return notification;
 	}
 	
+	private String notificationText(String lang, String type, String serviceType, String applicationId, String serviceOfferId, String serviceRequestId) {
+		Object[] params = null;
+		switch(type) {
+			// name/surname of the offering person; poi name, date/time of the request
+			case Const.NT_NEW_SERVICE_OFFER: 
+			case Const.NT_NEW_SERVICE_REQUEST: {
+				ServiceOffer offer = getServiceOfferById(applicationId, null, serviceOfferId);
+				Professional p = findProfessionalById(applicationId, offer.getProfessionalId());
+				ServiceRequest request = getServiceRequestById(applicationId, null, serviceRequestId);
+				Poi poi = findPoiById(applicationId, request.getPoiId());
+				params = new String[]{ 
+						p.getName(), 
+						p.getSurname(), 
+						poi.getName(),
+						translationHelper.dateTime(request.getStartTime(), lang)
+						};
+			}
+			// TODO
+			case Const.NT_SERVICE_REQUEST_DELETED:
+			case Const.NT_NEW_APPLICATION: 
+			case Const.NT_APPLICATION_ACCEPTED: 
+			case Const.NT_APPLICATION_REJECTED: 
+			case Const.NT_APPLICATION_DELETED: 
+		}
+		return translationHelper.getNotificationText(lang, type, serviceType, params);
+	}
+
 	public Registration addRegistration(Registration registration) {
 		Date now = new Date();
 		registration.setCreationDate(now);
@@ -333,19 +363,19 @@ public class RepositoryManager {
 			notification.setApplicationId(serviceOffer.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceRequest.getRequesterId());
-			notification.setType(Const.NEW_SERVICE_OFFER);
+			notification.setType(Const.NT_NEW_SERVICE_OFFER);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification, serviceRequest.getRequesterId());
+			addNotification(notification, serviceRequest.getRequesterId(), serviceRequest.getServiceType());
 			// notify myself about existing requests
 			notification = new Notification();
 			notification.setApplicationId(serviceOffer.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceOffer.getProfessionalId());
-			notification.setType(Const.NEW_SERVICE_REQUEST);
+			notification.setType(Const.NT_NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification, serviceOffer.getProfessionalId());
+			addNotification(notification, serviceOffer.getProfessionalId(), serviceOffer.getServiceType());
 		}
 		return serviceOffer;
 	}
@@ -395,10 +425,10 @@ public class RepositoryManager {
 			notification.setApplicationId(serviceRequest.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceOffer.getProfessionalId());
-			notification.setType(Const.NEW_SERVICE_REQUEST);
+			notification.setType(Const.NT_NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification,serviceOffer.getProfessionalId());
+			addNotification(notification,serviceOffer.getProfessionalId(), serviceOffer.getServiceType());
 		}
 		return serviceRequest;
 	}
@@ -419,10 +449,10 @@ public class RepositoryManager {
 			notification.setApplicationId(serviceRequest.getApplicationId());
 			notification.setTimestamp(timestamp);
 			notification.setProfessionalId(serviceOffer.getProfessionalId());
-			notification.setType(Const.NEW_SERVICE_REQUEST);
+			notification.setType(Const.NT_NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification,serviceOffer.getProfessionalId());
+			addNotification(notification,serviceOffer.getProfessionalId(), serviceOffer.getServiceType());
 		}
 		return serviceRequest;
 	}
@@ -531,6 +561,7 @@ public class RepositoryManager {
 		} catch (Exception e) {
 			logger.warn("deleteServiceOffer:" + e.getMessage());
 		} 
+		// TODO : consider notification for service offer deleted?
 		return result;
 	}
 
@@ -553,9 +584,9 @@ public class RepositoryManager {
 							notification.setApplicationId(applicationId);
 							notification.setTimestamp(timestamp);
 							notification.setProfessionalId(serviceApplication.getProfessionalId());
-							notification.setType(Const.SERVICE_REQUEST_DELETED);
+							notification.setType(Const.NT_SERVICE_REQUEST_DELETED);
 							notification.setServiceRequestId(result.getObjectId());
-							addNotification(notification,serviceApplication.getProfessionalId());
+							addNotification(notification,serviceApplication.getProfessionalId(), result.getServiceType());
 						}
 					}
 				}
@@ -626,9 +657,9 @@ public class RepositoryManager {
 				notification.setApplicationId(applicationId);
 				notification.setTimestamp(timestamp);
 				notification.setProfessionalId(serviceRequest.getRequesterId());
-				notification.setType(Const.NEW_APPLICATION);
+				notification.setType(Const.NT_NEW_APPLICATION);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification,serviceRequest.getRequesterId());
+				addNotification(notification,serviceRequest.getRequesterId(), serviceRequest.getServiceType());
 			}
 			serviceRequest.getApplicants().clear();
 			serviceRequest.getApplicants().put(professionalId, serviceApplication);
@@ -652,9 +683,9 @@ public class RepositoryManager {
 				notification.setApplicationId(applicationId);
 				notification.setTimestamp(timestamp);
 				notification.setProfessionalId(serviceApplication.getProfessionalId());
-				notification.setType(Const.APPLICATION_REJECTED);
+				notification.setType(Const.NT_APPLICATION_REJECTED);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification, serviceApplication.getProfessionalId());
+				addNotification(notification, serviceApplication.getProfessionalId(), serviceRequest.getServiceType());
 			}
 		}
 		return serviceRequest;
@@ -676,17 +707,20 @@ public class RepositoryManager {
 				notification.setApplicationId(applicationId);
 				notification.setTimestamp(timestamp);
 				notification.setProfessionalId(serviceApplication.getProfessionalId());
-				notification.setType(Const.APPLICATION_ACCEPTED);
+				notification.setType(Const.NT_APPLICATION_ACCEPTED);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification, professionalId);	
+				addNotification(notification, professionalId, serviceRequest.getServiceType());	
 			}
 		}
 		return serviceRequest;
 	}
 
-	private void push(Notification notification) {
+	private void push(Notification notification, String title) {
 		try {
-			notificationManager.sendNotification(notification, notification.getProfessionalId());
+			notificationManager.sendNotification(
+					title,
+					notification, 
+					notification.getProfessionalId());
 		} catch (Exception e) {
 			logger.error("Error sending push notification: "+ e.getMessage());
 			e.printStackTrace();
@@ -710,9 +744,9 @@ public class RepositoryManager {
 				notification.setApplicationId(applicationId);
 				notification.setTimestamp(timestamp);
 				notification.setProfessionalId(serviceRequest.getRequesterId());
-				notification.setType(Const.APPLICATION_DELETED);
+				notification.setType(Const.NT_APPLICATION_DELETED);
 				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification, serviceRequest.getRequesterId());				
+				addNotification(notification, serviceRequest.getRequesterId(), serviceRequest.getServiceType());				
 			}
 		}
 		return serviceRequest;
