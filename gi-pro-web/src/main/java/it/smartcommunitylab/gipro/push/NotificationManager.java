@@ -105,7 +105,6 @@ public class NotificationManager {
 		content.put("professionalId", n.getProfessionalId());
 
 		eu.trentorise.smartcampus.communicator.model.Notification notification = prepareMessage(title, n.getText(), content);
-		notification.setTitle(n.getText());
 		
 		String token = getAppToken();
 		
