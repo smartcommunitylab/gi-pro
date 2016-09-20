@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * @author raman
@@ -38,6 +39,7 @@ public class TranslationHelper{
 	private Environment env;
 
 	private String defaultLang;
+	private Locale defaultLocale;
 	
 	@Autowired
 	@Qualifier("messages")
@@ -48,21 +50,26 @@ public class TranslationHelper{
 	@PostConstruct
 	public void init() {
 		defaultLang = env.getProperty("defaultLang");
+		defaultLocale = Locale.forLanguageTag(defaultLang);
 	}
 	
+	private Locale toLang(String lang) {
+		if (StringUtils.hasText(lang)) return Locale.forLanguageTag(lang);
+		else return defaultLocale;
+	}
 	
 	public String getNotificationText(String lang, String type, String serviceType, Object ... params) {
 		if (lang == null) lang = defaultLang;
-		return messageSource.getMessage("notif_text_"+type+"_"+serviceType, params, Locale.forLanguageTag(lang));
+		return messageSource.getMessage("notif_text_"+type+"_"+serviceType, params, toLang(lang));
 	}
 
 
 	public String getNotificationTitle(String lang, String type, String serviceType) {
-		return messageSource.getMessage("notif_"+type+"_"+serviceType, null, Locale.forLanguageTag(lang));
+		return messageSource.getMessage("notif_"+type+"_"+serviceType, null, toLang(lang));
 	}
 	
 	public String dateTime(Date d, String lang) {
 		if (d == null) return "";
-		return new SimpleDateFormat(FORMAT_DATE_TIME, Locale.forLanguageTag(lang)).format(d);
+		return new SimpleDateFormat(FORMAT_DATE_TIME, toLang(lang)).format(d);
 	}
 }
