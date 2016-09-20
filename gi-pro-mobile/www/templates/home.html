@@ -15,6 +15,7 @@
 							<div class="item item-text-wrap">
 								<h2>{{request.poi.name}}</h2>
 								<h3>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
+								<span class="badge badge-calm" ng-if="!!requestsNotifications[request.objectId]">{{requestsNotifications[request.objectId].length}}</span>
 							</div>
 						</div>
 					</ion-scroll>
@@ -37,6 +38,7 @@
 								<h3 ng-if="!!offer.startTime && !!offer.endTime">
 									{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}
 								</h3>
+								<span class="badge badge-calm" ng-if="!!offersNotifications[offer.objectId]">{{offersNotifications[offer.objectId].length}}</span>
 							</div>
 						</div>
 					</ion-scroll>

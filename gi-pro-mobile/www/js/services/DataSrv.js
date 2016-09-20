@@ -129,20 +129,20 @@ angular.module('toga.services.data', [])
 
 		httpConfWithParams.params['serviceType'] = serviceType;
 
-        if (!!timeFrom) {
-          httpConfWithParams.params['timeFrom'] = timeFrom;
-        }
-        if (!!timeTo) {
-          httpConfWithParams.params['timeTo'] = timeTo;
-        }
-        if (!!page) {
-          httpConfWithParams.params['page'] = page;
-        }
-        if (!!limit) {
-          httpConfWithParams.params['limit'] = limit;
-        }
+		if (!!timeFrom) {
+			httpConfWithParams.params['timeFrom'] = timeFrom;
+		}
+		if (!!timeTo) {
+			httpConfWithParams.params['timeTo'] = timeTo;
+		}
+		if (!!page) {
+			httpConfWithParams.params['page'] = page;
+		}
+		if (!!limit) {
+			httpConfWithParams.params['limit'] = limit;
+		}
 		if (withTime != null) {
-		httpConfWithParams.params['withTime'] = withTime;
+			httpConfWithParams.params['withTime'] = withTime;
 		}
 
 
@@ -229,12 +229,12 @@ angular.module('toga.services.data', [])
 		httpConfWithParams.params['serviceType'] = serviceType;
 		httpConfWithParams.params['startTime'] = startTime;
 
-        if (!!page) {
-          httpConfWithParams.params['page'] = page;
-        }
-        if (!!limit) {
-          httpConfWithParams.params['limit'] = limit;
-        }
+		if (!!page) {
+			httpConfWithParams.params['page'] = page;
+		}
+		if (!!limit) {
+			httpConfWithParams.params['limit'] = limit;
+		}
 
 		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/searchoffer/' + professionalId, httpConfWithParams)
 
@@ -270,18 +270,18 @@ angular.module('toga.services.data', [])
 
 		httpConfWithParams.params['serviceType'] = serviceType;
 
-        if (!!timeFrom) {
-          httpConfWithParams.params['timeFrom'] = timeFrom;
-        }
-        if (!!timeTo) {
-          httpConfWithParams.params['timeTo'] = timeTo;
-        }
-        if (!!page) {
-          httpConfWithParams.params['page'] = page;
-        }
-        if (!!limit) {
-          httpConfWithParams.params['limit'] = limit;
-        }
+		if (!!timeFrom) {
+			httpConfWithParams.params['timeFrom'] = timeFrom;
+		}
+		if (!!timeTo) {
+			httpConfWithParams.params['timeTo'] = timeTo;
+		}
+		if (!!page) {
+			httpConfWithParams.params['page'] = page;
+		}
+		if (!!limit) {
+			httpConfWithParams.params['limit'] = limit;
+		}
 
 		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + professionalId, httpConfWithParams)
 
@@ -335,8 +335,16 @@ angular.module('toga.services.data', [])
 		return deferred.promise;
 	};
 
+	dataService.notificationTypes = {
+		NEW_SERVICE_REQUEST: 'NEW_SERVICE_REQUEST',
+		APPLICATION_ACCEPTED: 'APPLICATION_ACCEPTED',
+		APPLICATION_REJECTED: 'APPLICATION_REJECTED',
+		SERVICE_REQUEST_DELETED: 'SERVICE_REQUEST_DELETED',
+		NEW_APPLICATION: 'NEW_APPLICATION',
+		APPLICATION_DELETED: 'APPLICATION_DELETED'
+	};
 
-  	/* get notifications */
+	/* get notifications */
 	dataService.getNotifications = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
 		var deferred = $q.defer();
 
@@ -348,24 +356,24 @@ angular.module('toga.services.data', [])
 			deferred.reject('Invalid professionalId');
 		}
 
-        if (!!timeFrom) {
-          httpConfWithParams.params['type'] = type;
-        }
-        if (!!timeFrom) {
-          httpConfWithParams.params['timeFrom'] = timeFrom;
-        }
-        if (!!timeTo) {
-          httpConfWithParams.params['timeTo'] = timeTo;
-        }
-        if (!!page) {
-          httpConfWithParams.params['page'] = page;
-        }
-        if (!!limit) {
-          httpConfWithParams.params['limit'] = limit;
-        }
-        if (read != 0) {
-          httpConfWithParams.params['read'] = read > 0 ? true : false;
-        }
+		if (!!timeFrom) {
+			httpConfWithParams.params['type'] = type;
+		}
+		if (!!timeFrom) {
+			httpConfWithParams.params['timeFrom'] = timeFrom;
+		}
+		if (!!timeTo) {
+			httpConfWithParams.params['timeTo'] = timeTo;
+		}
+		if (!!page) {
+			httpConfWithParams.params['page'] = page;
+		}
+		if (!!limit) {
+			httpConfWithParams.params['limit'] = limit;
+		}
+		if (read != 0) {
+			httpConfWithParams.params['read'] = read > 0 ? true : false;
+		}
 
 
 		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/notification/' + professionalId, httpConfWithParams)
