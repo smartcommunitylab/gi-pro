@@ -390,5 +390,6 @@ angular.module('toga.services.data', [])
 
 		return deferred.promise;
 	};
+
 	return dataService;
 });

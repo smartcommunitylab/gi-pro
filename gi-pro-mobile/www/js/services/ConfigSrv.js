@@ -7,8 +7,6 @@ angular.module('toga.services.config', [])
 	configService.APPLICATION_ID = CONF.APPLICATION_ID;
     configService.SENDER_ID = CONF.SENDER_ID;
 
-    var userVarToken = 'toga-app-usertoken-'+configService.APPLICATION_ID;
-
     var HTTP_CONFIG = {
 		timeout: 50000,
 		headers: {
@@ -18,11 +16,21 @@ angular.module('toga.services.config', [])
 
     configService.getHTTPConfig = function() {
       var conf = angular.copy(HTTP_CONFIG);
-      var token = localStorage.getItem(userVarToken);
+      var token = localStorage.getItem(configService.getUserVarToken());
       if (token != null && token != '' && token != 'null') {
         conf.headers.Authorization = 'Token '+token;
       }
       return conf;
+    }
+
+    configService.getUserVarToken = function() {
+      return 'toga-app-usertoken-'+configService.APPLICATION_ID;
+    }
+    configService.getUserVar = function() {
+      return 'toga-app-user-'+configService.APPLICATION_ID;
+    }
+    configService.getUserNotificationsDownloaded = function() {
+      return 'toga-app-notifications-downloaded-'+configService.APPLICATION_ID;
     }
 
 	configService.SERVICE_TYPE = 'sostituzione';
