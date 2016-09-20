@@ -46,7 +46,7 @@ angular.module('toga.services.push', [])
           NotifDB.insert(n);
         // second call, open the link
         } else {
-
+          // TODO open the object page
         }
       }, function(err) {
         console.error('Error reading from DB', err);
@@ -109,28 +109,164 @@ angular.module('toga.services.push', [])
 
 
 .factory('NotifDB', function ($rootScope, $ionicPlatform, $http, $q, Utils, Config) {
-  var db = window.openDatabase('togadb', '1.0', 'togadb', 2 * 1024 * 1024);
-  db.transaction(function (tx) {
-   tx.executeSql('CREATE TABLE IF NOT EXISTS notification (id unique, timestamp, text, type, offerId, requestId, fromUserId, read)');
-  });
+    var db = window.openDatabase('togadb', '1.0', 'togadb', 2 * 1024 * 1024);
+    db.transaction(function (tx) {
+     tx.executeSql('CREATE TABLE IF NOT EXISTS notification (id unique, timestamp, text, type, offerId, requestId, fromUserId, read)');
+    });
 
-  var notifDB = {};
+    var notifDB = {};
+
+    var remoteRead = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
+      // TODO use DB, except for initialization
+		var deferred = $q.defer();
+
+		var httpConfWithParams = Config.getHTTPConfig();
+		httpConfWithParams.params = {};
+
+		// professionalId is required
+		if (!professionalId || !angular.isString(professionalId)) {
+			deferred.reject('Invalid professionalId');
+		}
+
+        if (!!type) {
+          httpConfWithParams.params['type'] = type;
+        }
+        if (!!timeFrom) {
+          httpConfWithParams.params['timeFrom'] = timeFrom;
+        }
+        if (!!timeTo) {
+          httpConfWithParams.params['timeTo'] = timeTo;
+        }
+        if (!!page) {
+          httpConfWithParams.params['page'] = page;
+        }
+        if (!!limit) {
+          httpConfWithParams.params['limit'] = limit;
+        }
+        if (read != 0) {
+          httpConfWithParams.params['read'] = read > 0 ? true : false;
+        }
+
+
+		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/notification/' + professionalId, httpConfWithParams)
+
+		.then(
+			function (response) {
+				// offers
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
+
+    	/* get notifications */
+	notifDB.getNotifications = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
+      if (!ionic.Platform.isWebView()) {
+        return remoteRead(professionalId, type, read, timeFrom, timeTo, page, limit);
+      }
+
+      var deferred = $q.defer();
+
+      // check if already requested data from the server.
+      var downloaded = localStorage.getItem(Config.getUserNotificationsDownloaded());
+      // already downloaded
+      if (!!downloaded && downloaded != 'null') {
+        db.transaction(function (tx) {
+          var sql = 'SELECT * FROM notification';
+          if (type != null || read != null || timeFrom != null || timeTo != null) {
+            sql += ' WHERE ';
+          }
+          var cond = '';
+          var params = [];
+          if (type != null) {
+            cond += 'type = ?';
+            params.push(type);
+          }
+          if (read != null) {
+            if (params.length > 0) cond += ' AND ';
+            cond += 'read = ?';
+            params.push(read);
+          }
+          if (timeFrom != null) {
+            if (params.length > 0) cond += ' AND ';
+            cond += 'timestamp > ?';
+            params.push(timeFrom);
+          }
+          if (timeTo != null) {
+            if (params.length > 0) cond += ' AND ';
+            cond += 'timestamp < ?';
+            params.push(timeTo);
+          }
+          if (params.length > 0) sql += ' WHERE '+cond;
+//          if (page != null && limit != null) {
+//            sql += ' OFFSET ? LIMIT ?';
+//            params.push((page - 1) * limit);
+//            params.push(limit);
+//          }
+
+          tx.executeSql(sql, params, function (tx, results) {
+             if (results.rows && results.rows.length >= 1) {
+               var array = [];
+               var i = page != null && limit != null ? (page - 1)*limit : 0;
+               var N = limit != null ? limit : 50;
+               N = Math.min(results.rows.length,N);
+               for (; i < N; i++) {
+                 array.push(convertRow(results.rows.item(i)));
+               }
+               deferred.resolve(array);
+             } else {
+               deferred.resolve(null);
+             }
+           }, function(e) {
+             deferred.reject(e);
+           });
+        });
+      } else {
+        db.transaction(function (tx) {
+          tx.executeSql('DELETE FROM notification', null, function(){
+            remoteRead(professionalId, null, null, null, null, 0, 50).then(function(data) {
+              if (data.length >0) {
+                var count = data.length;
+                db.transaction(function (tx) {
+                  data.forEach(function(n) {
+                    tx.executeSql('INSERT INTO notification (id, timestamp, text, type, offerId, requestId, fromUserId, read) VALUES (?,?,?,?,?,?,?,?)',
+                                  [n.objectId, n.timestamp, n.text, n.type, n.serviceOfferId, n.serviceRequestId, null, n.read],
+                                  function() {
+                                    count--;
+                                    if (count == 0) {
+                                      localStorage.setItem(Config.getUserNotificationsDownloaded(), true);
+                                      notifDB.getNotifications(professionalId, type, read, timeFrom, timeTo, page, limit).then(function(data){
+                                        deferred.resolve(data);
+                                      }, function(e) {
+                                        deferred.reject(e);
+                                      });
+                                    }
+                                  }, function(e) {
+                                    deferred.reject(e);
+                                  });
+                  });
+                });
+              }
+            }, function(e) {
+              deferred.reject(e);
+            });
+          });
+        });
+      }
+
+      return deferred.promise;
+	};
 
   notifDB.getById = function(id) {
     var deferred = $q.defer();
     db.transaction(function (tx) {
        tx.executeSql('SELECT * FROM notification WHERE id = ?', [id], function (tx, results) {
          if (results.rows && results.rows.length >= 1) {
-           deferred.resolve({
-             objectId: results.rows.item(0).id,
-             timestamp: results.rows.item(0).timestamp,
-             serviceOfferId: results.rows.item(0).offerId,
-             serviceRequestId: results.rows.item(0).requestId,
-             text: results.rows.item(0).text,
-             type: results.rows.item(0).type,
-             fromUserId: results.rows.item(0).fromUserId,
-             read: results.rows.item(0).read
-           });
+           deferred.resolve(convertRow(results.rows.item(0)));
          } else {
            deferred.resolve(null);
          }
@@ -141,7 +277,21 @@ angular.module('toga.services.push', [])
     return deferred.promise;
   }
 
+  var convertRow = function(item) {
+    return {
+             objectId: item.id,
+             timestamp: item.timestamp,
+             serviceOfferId: item.offerId,
+             serviceRequestId: item.requestId,
+             text: item.text,
+             type: item.type,
+             fromUserId: item.fromUserId,
+             read: item.read
+           }
+  }
+
   notifDB.insert = function(notification) {
+    // TODO delete very old notifications
     db.transaction(function (tx) {
        tx.executeSql('INSERT INTO notification (id, timestamp, text, type, offerId, requestId, fromUserId, read) VALUES (?,?,?,?,?,?,?,?)',
                      [notification.objectId, new Date().getTime(), notification.text, notification.type, notification.serviceOfferId, notification.serviceRequestId, null, false]);

@@ -58,11 +58,12 @@ angular.module('toga.controllers.home', [])
 	};
 
     PushSrv.fgOn(function(notification) {
+      // TODO implement
       console.log('Show event in home', notification);
     });
 })
 
-.controller('NotificationsCtrl', function ($scope, Utils, Login, Config, DataSrv, PushSrv) {
+.controller('NotificationsCtrl', function ($scope, Utils, Login, Config, DataSrv, PushSrv, NotifDB) {
     var limit = 10;
 
   	$scope.notifications = null;
@@ -75,7 +76,7 @@ angular.module('toga.controllers.home', [])
           return;
         }
 		Utils.loading();
-		DataSrv.getNotifications(Login.getUser().objectId, null, null, null, null, $scope.page, limit).then(
+		NotifDB.getNotifications(Login.getUser().objectId, null, null, null, null, $scope.page, limit).then(
 			function (notifications) {
                 if (notifications.length < limit) {
                   $scope.hasMore = false;

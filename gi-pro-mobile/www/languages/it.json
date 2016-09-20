@@ -71,5 +71,7 @@
     "error_signin": "Codice fiscale / password sbagliato",
     "error_popup_title": "Errore di login",
     "refresh" : "Aggiorna i dati",
-    "notifications_empty": "Nessuna notifica trovata"
+    "notifications_empty": "Nessuna notifica trovata",
+    "NEW_SERVICE_OFFER": "Nuova offerta di sostituzione",
+    "NEW_SERVICE_REQUEST": "Nuova richiesta di sostituzione"
 }

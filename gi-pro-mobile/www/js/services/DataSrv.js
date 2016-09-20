@@ -335,52 +335,5 @@ angular.module('toga.services.data', [])
 		return deferred.promise;
 	};
 
-
-  	/* get notifications */
-	dataService.getNotifications = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
-		var deferred = $q.defer();
-
-		var httpConfWithParams = Config.getHTTPConfig();
-		httpConfWithParams.params = {};
-
-		// professionalId is required
-		if (!professionalId || !angular.isString(professionalId)) {
-			deferred.reject('Invalid professionalId');
-		}
-
-        if (!!timeFrom) {
-          httpConfWithParams.params['type'] = type;
-        }
-        if (!!timeFrom) {
-          httpConfWithParams.params['timeFrom'] = timeFrom;
-        }
-        if (!!timeTo) {
-          httpConfWithParams.params['timeTo'] = timeTo;
-        }
-        if (!!page) {
-          httpConfWithParams.params['page'] = page;
-        }
-        if (!!limit) {
-          httpConfWithParams.params['limit'] = limit;
-        }
-        if (read != 0) {
-          httpConfWithParams.params['read'] = read > 0 ? true : false;
-        }
-
-
-		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/notification/' + professionalId, httpConfWithParams)
-
-		.then(
-			function (response) {
-				// offers
-				deferred.resolve(response.data);
-			},
-			function (reason) {
-				deferred.reject(reason.data ? reason.data.errorMessage : reason);
-			}
-		);
-
-		return deferred.promise;
-	};
 	return dataService;
 });
