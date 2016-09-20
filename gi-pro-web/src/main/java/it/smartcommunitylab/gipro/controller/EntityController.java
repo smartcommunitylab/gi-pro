@@ -574,6 +574,7 @@ public class EntityController {
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	public Map<String,String> handleWrongRequestError(HttpServletRequest request, Exception exception) {
+		exception.printStackTrace();
 		return Utils.handleError(exception);
 	}
 	
@@ -581,6 +582,7 @@ public class EntityController {
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	public Map<String,String> handleEntityNotFoundError(HttpServletRequest request, Exception exception) {
+		exception.printStackTrace();
 		return Utils.handleError(exception);
 	}
 	
@@ -596,6 +598,7 @@ public class EntityController {
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public Map<String,String> handleGenericError(HttpServletRequest request, Exception exception) {
+		exception.printStackTrace();
 		return Utils.handleError(exception);
 	}
 	
