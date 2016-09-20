@@ -281,7 +281,7 @@ public class EntityController {
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}/{objectId}", method = RequestMethod.GET)
-	public @ResponseBody ServiceOffer getServiceOfferById(@PathVariable String applicationId,
+	public @ResponseBody ServiceOfferUI getServiceOfferById(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@PathVariable String objectId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -291,7 +291,8 @@ public class EntityController {
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceOfferById[%s]:%s - %s", applicationId, professionalId, objectId));
 		}
-		return result;
+		if (result == null) return null;
+		return Converter.convertServiceOffer(storageManager, applicationId, result);
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}", method = RequestMethod.GET)
@@ -347,7 +348,7 @@ public class EntityController {
 
 	
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}/{objectId}", method = RequestMethod.GET)
-	public @ResponseBody ServiceRequest getServiceRequestById(@PathVariable String applicationId,
+	public @ResponseBody ServiceRequestUI getServiceRequestById(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@PathVariable String objectId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -357,7 +358,8 @@ public class EntityController {
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequestById[%s]:%s - %s", applicationId, professionalId, objectId));
 		}
-		return result;
+		if (result == null) return null;
+		return Converter.convertServiceRequest(storageManager, applicationId, result);
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/application/{professionalId}", method = RequestMethod.GET)
