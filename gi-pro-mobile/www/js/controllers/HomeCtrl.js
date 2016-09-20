@@ -1,6 +1,6 @@
 angular.module('toga.controllers.home', [])
 
-.controller('HomeCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login, PushSrv) {
+.controller('HomeCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login, PushSrv, NotifDB) {
 	$scope.requests = null;
 	$scope.offers = null;
 	$scope.requestsNotifications = {};
@@ -61,7 +61,7 @@ angular.module('toga.controllers.home', [])
 
 	var updateNotificationsCounts = function () {
 		// Applications for user requests
-		DataSrv.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_APPLICATION, false).then(
+		NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_APPLICATION, false).then(
 			function (notifications) {
 				var newNotificationsMap = {}
 				angular.forEach(notifications, function (notif) {
@@ -79,7 +79,7 @@ angular.module('toga.controllers.home', [])
 		);
 
 		// Requests for user offers
-		DataSrv.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_REQUEST, false).then(
+		NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_REQUEST, false).then(
 			function (notifications) {
 				var newNotificationsMap = {}
 				angular.forEach(notifications, function (notif) {
