@@ -61,7 +61,7 @@ angular.module('toga.controllers.home', [])
 
 	var updateNotificationsCounts = function () {
 		// Applications for user requests
-		NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_APPLICATION, false).then(
+		NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_OFFER, false).then(
 			function (notifications) {
 				var newNotificationsMap = {}
 				angular.forEach(notifications, function (notif) {
