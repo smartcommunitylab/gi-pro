@@ -13,7 +13,7 @@ public class ServiceRequestUI {
 	private Date startTime;
 	private boolean privateRequest;
 	private String state;
-	private String requesterId;
+	private Professional requester;
 	private Map<String, ServiceApplication> applicants = new HashMap<String, ServiceApplication>();
 	private List<String> recipients = Lists.newArrayList();
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
@@ -42,12 +42,6 @@ public class ServiceRequestUI {
 	}
 	public void setState(String state) {
 		this.state = state;
-	}
-	public String getRequesterId() {
-		return requesterId;
-	}
-	public void setRequesterId(String requesterId) {
-		this.requesterId = requesterId;
 	}
 	public Map<String, Object> getCustomProperties() {
 		return customProperties;
@@ -79,4 +73,11 @@ public class ServiceRequestUI {
 	public void setPoi(Poi poi) {
 		this.poi = poi;
 	}
+	public Professional getRequester() {
+		return requester;
+	}
+	public void setRequester(Professional requester) {
+		this.requester = requester;
+	}
+	
 }
