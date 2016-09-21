@@ -167,7 +167,8 @@ angular.module('toga.services.push', [])
 
 	/* get notifications */
 	notifDB.getNotifications = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
-		if (!ionic.Platform.isWebView()) {
+		/*if (!ionic.Platform.isWebView()) {*/
+		if (false) {
 			return remoteRead(professionalId, type, read, timeFrom, timeTo, page, limit);
 		}
 
@@ -179,9 +180,6 @@ angular.module('toga.services.push', [])
 		if (!!downloaded && downloaded != 'null') {
 			db.transaction(function (tx) {
 				var sql = 'SELECT * FROM notification';
-				if (type != null || read != null || timeFrom != null || timeTo != null) {
-					sql += ' WHERE ';
-				}
 				var cond = '';
 				var params = [];
 				if (type != null) {
@@ -277,7 +275,7 @@ angular.module('toga.services.push', [])
 			});
 		});
 		return deferred.promise;
-	}
+	};
 
 	var convertRow = function (item) {
 		return {
@@ -297,17 +295,35 @@ angular.module('toga.services.push', [])
 		db.transaction(function (tx) {
 			tx.executeSql('INSERT INTO notification (id, timestamp, text, type, offerId, requestId, fromUserId, read) VALUES (?,?,?,?,?,?,?,?)', [notification.objectId, new Date().getTime(), notification.text, notification.type, notification.serviceOfferId, notification.serviceRequestId, null, false]);
 		});
-	}
+	};
+
 	notifDB.markAsRead = function (id) {
 		db.transaction(function (tx) {
 			tx.executeSql('UPDATE notification set read = ? WHERE id = ?', [true, id]);
 		});
-	}
+	};
+
+	notifDB.markAsReadByRequestId = function (requestId) {
+		db.transaction(function (tx) {
+			tx.executeSql('UPDATE notification set read = ? WHERE requestId = ?', [true, requestId], function () {
+				// TODO mark as read on the server
+			});
+		});
+	};
+
+	notifDB.markAsReadByOfferId = function (offerId) {
+		db.transaction(function (tx) {
+			tx.executeSql('UPDATE notification set read = ? WHERE offerId = ?', [true, offerId], function () {
+				// TODO mark as read on the server
+			});
+		});
+	};
+
 	notifDB.remove = function (id) {
 		db.transaction(function (tx) {
 			tx.executeSql('DELETE from notification WHERE id = ?', [id]);
 		});
-	}
+	};
 
 	return notifDB;
 })

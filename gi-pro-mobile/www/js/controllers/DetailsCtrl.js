@@ -1,6 +1,6 @@
 angular.module('toga.controllers.details', [])
 
-.controller('RequestDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login) {
+.controller('RequestDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login, NotifDB) {
 	$scope.request = null;
 	$scope.matchingOffers = null;
 
@@ -19,6 +19,7 @@ angular.module('toga.controllers.details', [])
 			DataSrv.getMatchingOffers(Login.getUser().objectId, req.objectId).then(
 				function (offers) {
 					$scope.matchingOffers = offers;
+					NotifDB.markAsReadByRequestId($scope.request.objectId);
 				},
 				Utils.commError
 			);
@@ -65,7 +66,7 @@ angular.module('toga.controllers.details', [])
 	};
 })
 
-.controller('OfferDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login) {
+.controller('OfferDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login, NotifDB) {
 	$scope.offer = null;
 	$scope.matchingRequests = null;
 
@@ -84,6 +85,7 @@ angular.module('toga.controllers.details', [])
 			DataSrv.getMatchingRequests(Login.getUser().objectId, off.objectId).then(
 				function (requests) {
 					$scope.matchingRequests = requests;
+					NotifDB.markAsReadByOfferId($scope.offer.objectId);
 				},
 				Utils.commError
 			);
