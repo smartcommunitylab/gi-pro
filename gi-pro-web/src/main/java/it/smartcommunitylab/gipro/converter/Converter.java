@@ -57,6 +57,7 @@ public class Converter {
 		List<ServiceRequestUI> result = Lists.newArrayList();
 		for(ServiceRequest serviceRequest : requestList) {
 			ServiceRequestUI serviceRequestUI = new ServiceRequestUI();
+			Professional professional = storageManager.findProfessionalById(applicationId, serviceRequest.getRequesterId());
 			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
 			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
 			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
@@ -64,7 +65,7 @@ public class Converter {
 			serviceRequestUI.setApplicants(serviceRequest.getApplicants());
 			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
 			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
-			serviceRequestUI.setRequesterId(serviceRequest.getRequesterId());
+			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
 			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 			serviceRequestUI.setPoi(poi);
@@ -76,6 +77,7 @@ public class Converter {
 	public static ServiceRequestUI convertServiceRequest(RepositoryManager storageManager,
 			String applicationId, ServiceRequest serviceRequest) {
 			ServiceRequestUI serviceRequestUI = new ServiceRequestUI();
+			Professional professional = storageManager.findProfessionalById(applicationId, serviceRequest.getRequesterId());
 			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
 			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
 			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
@@ -83,7 +85,7 @@ public class Converter {
 			serviceRequestUI.setApplicants(serviceRequest.getApplicants());
 			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
 			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
-			serviceRequestUI.setRequesterId(serviceRequest.getRequesterId());
+			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
 			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 			serviceRequestUI.setPoi(poi);

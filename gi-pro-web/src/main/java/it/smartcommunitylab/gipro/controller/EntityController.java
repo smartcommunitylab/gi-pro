@@ -515,16 +515,20 @@ public class EntityController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/image/download/{imageType}/{objectId}", method = RequestMethod.GET)
-	public @ResponseBody HttpEntity<byte[]> downloadImage(@PathVariable String applicationId,
+	@RequestMapping(value = "/image/{applicationId}/{imageType}/{objectId}", method = RequestMethod.GET)
+	public @ResponseBody HttpEntity<byte[]> downloadImage(
+			@PathVariable String applicationId,
 			@PathVariable String imageType, 
 			@PathVariable String objectId, 
+			@RequestParam String token,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String name = objectId + "." + imageType;
 		String path = imageUploadDir + "/" + name;
 		if(logger.isInfoEnabled()) {
 			logger.info("downloadImage:" + name);
 		}
+		// TODO: check token if necessary
+		
 		FileInputStream in = new FileInputStream(new File(path));
 		byte[] image = IOUtils.toByteArray(in);
 		HttpHeaders headers = new HttpHeaders();
