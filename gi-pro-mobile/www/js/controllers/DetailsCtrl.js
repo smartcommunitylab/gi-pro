@@ -2,23 +2,41 @@ angular.module('toga.controllers.details', [])
 
 .controller('RequestDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login) {
 	$scope.request = null;
-
-	if (!!$stateParams['request']) {
-		$scope.request = $stateParams['request'];
-	} else {
-      Utils.loading();
-      DataSrv.getRequestById(Login.getUser().objectId, $stateParams.objectId).then(function(object) {
-           Utils.loaded();
-           $scope.request = object;
-        }, Utils.commError);
-    }
+	$scope.matchingOffers = null;
 
 	$scope.isMine = function () {
 		return $scope.request != null && $scope.request.requesterId == Login.getUser().objectId;
 	};
+
 	$scope.isEditable = function () {
 		return $scope.isMine() && (!$scope.request.startTime || $scope.request.startTime > moment().startOf('date').valueOf());
 	};
+
+	var setRequest = function (req) {
+		$scope.request = req;
+
+		if ($scope.isMine()) {
+			DataSrv.getMatchingOffers(Login.getUser().objectId, req.objectId).then(
+				function (offers) {
+					$scope.matchingOffers = offers;
+				},
+				Utils.commError
+			);
+		}
+	};
+
+	if (!!$stateParams['request']) {
+		setRequest($stateParams['request']);
+	} else {
+		Utils.loading();
+		DataSrv.getRequestById(Login.getUser().objectId, $stateParams.objectId).then(
+			function (request) {
+				Utils.loaded();
+				setRequest(request);
+			},
+			Utils.commError
+		);
+	}
 
 	$scope.deleteRequest = function () {
 		var confirmPopup = $ionicPopup.confirm({
@@ -32,7 +50,7 @@ angular.module('toga.controllers.details', [])
 
 		confirmPopup.then(function (yes) {
 			if (yes) {
-                Utils.loading();
+				Utils.loading();
 				DataSrv.deleteRequest($scope.request.objectId, Login.getUser().objectId).then(
 					function (data) {
 						$scope.goTo('app.home', {
@@ -49,24 +67,41 @@ angular.module('toga.controllers.details', [])
 
 .controller('OfferDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login) {
 	$scope.offer = null;
-
-	if (!!$stateParams['offer']) {
-		$scope.offer = $stateParams['offer'];
-	} else {
-      Utils.loading();
-      DataSrv.getOfferById(Login.getUser().objectId, $stateParams.objectId).then(function(object) {
-           Utils.loaded();
-           $scope.offer = object;
-        }, Utils.commError);
-    }
-
+	$scope.matchingRequests = null;
 
 	$scope.isMine = function () {
-		return  $scope.offer!= null && $scope.offer.professional.objectId == Login.getUser().objectId;
+		return $scope.offer != null && $scope.offer.professional.objectId == Login.getUser().objectId;
 	};
+
 	$scope.isEditable = function () {
 		return $scope.isMine() && (!$scope.offer.startTime || $scope.offer.startTime > moment().startOf('date').valueOf());
 	};
+
+	var setOffer = function (off) {
+		$scope.offer = off;
+
+		if ($scope.isMine()) {
+			DataSrv.getMatchingRequests(Login.getUser().objectId, off.objectId).then(
+				function (requests) {
+					$scope.matchingRequests = requests;
+				},
+				Utils.commError
+			);
+		}
+	};
+
+	if (!!$stateParams['offer']) {
+		setOffer($stateParams['offer']);
+	} else {
+		Utils.loading();
+		DataSrv.getOfferById(Login.getUser().objectId, $stateParams.objectId).then(
+			function (offer) {
+				Utils.loaded();
+				setOffer(offer);
+			},
+			Utils.commError
+		);
+	}
 
 	$scope.deleteOffer = function () {
 		var confirmPopup = $ionicPopup.confirm({
@@ -80,7 +115,7 @@ angular.module('toga.controllers.details', [])
 
 		confirmPopup.then(function (yes) {
 			if (yes) {
-                Utils.loading();
+				Utils.loading();
 				DataSrv.deleteOffer($scope.offer.objectId, Login.getUser().objectId).then(
 					function (data) {
 						$scope.goTo('app.home', {
