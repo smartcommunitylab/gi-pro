@@ -136,7 +136,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 input[readonly] {
 	background-color: transparent !important;
 }
-.input-label {
+.input-label,
+.item-toggle {
 	/*color: black;*/
 	font-weight: bold;
 }
@@ -258,7 +259,7 @@ input[readonly] {
 		}
 		.address {}
 		.phone {}
-		.mail {}
+		.email {}
 	}
 	.poi {
 		padding-top: 10px;
@@ -272,6 +273,11 @@ input[readonly] {
 		.address {
 			font-style: italic;
 		}
+	}
+}
+.card {
+	.phone, .email {
+		white-space: normal;
 	}
 }
 
@@ -355,7 +361,8 @@ input[readonly] {
  * LOGIN AND REGISTRATION
  */
 
-.login, .registration {
+.login,
+.registration {
 	text-align: center;
 	.registration {
 		margin-top: 20px;

@@ -9907,7 +9907,8 @@ a.button {
 input[readonly] {
   background-color: transparent !important; }
 
-.input-label {
+.input-label,
+.item-toggle {
   /*color: black;*/
   font-weight: bold; }
 
@@ -10010,6 +10011,9 @@ input[readonly] {
   .details .poi .address {
     font-style: italic; }
 
+.card .phone, .card .email {
+  white-space: normal; }
+
 /*
  * SEARCH
  */
@@ -10068,9 +10072,11 @@ input[readonly] {
 /*
  * LOGIN AND REGISTRATION
  */
-.login, .registration {
+.login,
+.registration {
   text-align: center; }
-  .login .registration, .registration .registration {
+  .login .registration,
+  .registration .registration {
     margin-top: 20px; }
 
 /*

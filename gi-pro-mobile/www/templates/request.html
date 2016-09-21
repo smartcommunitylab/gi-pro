@@ -5,7 +5,8 @@
 	<ion-content class="padding">
 		<ul class="professional" ng-if="!isMine()">
 			<li class="name">{{request.requester.name}} {{request.requester.surname}}</li>
-			<li class="type">{{'professional_type_' + request.requester.type | translate}}</li>
+			<!--<li class="type">{{'professional_type_' + request.requester.type | translate}}</li>-->
+			<li class="type">{{request.requester.type}}</li>
 			<li class="address">{{request.requester.address}}</li>
 			<li class="phone"><span>{{'professional_phone' | translate}}:</span> {{request.requester.phone}}</li>
 			<li class="email"><span>{{'professional_mail' | translate}}:</span> {{request.requester.mail}}</li>
