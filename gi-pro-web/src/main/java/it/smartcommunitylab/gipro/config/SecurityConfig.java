@@ -27,20 +27,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private Environment env;	
 	
-//	@Autowired
-//	private UserDetailsService userDetailsServiceImpl;
-	
-//	@Autowired
-//	@Qualifier("customProvider")
-//	private AuthenticationProvider customAuthenticationProvider;
-	@Autowired
-//	@Qualifier("jwtProvider")
 	private AuthenticationProvider tokenAuthProvider;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
-//		.authenticationProvider(customAuthenticationProvider)
 		.authenticationProvider(tokenAuthProvider);
 	}
 	
@@ -53,17 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.csrf()
 		.disable();
-		
-//		http
-//		.rememberMe();	
-		
-//		http
-//			.headers()
-//			.frameOptions().disable();
-		
+				
 		http
-//		.csrf()
-//		.disable()
 		.authorizeRequests()
 		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 		.antMatchers("/api/**")
@@ -73,8 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 		http
-//			.csrf()
-//			.disable()
 			.authorizeRequests()
 			.antMatchers("/", "/console/**", "/upload/**")
 			.authenticated()
@@ -88,24 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public TokenAuthFilter tokenFilter() throws Exception{
 		 return new TokenAuthFilter();
 	}
-
-//	@Bean 
-//	public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception{
-//		 return new RememberMeAuthenticationFilter(authenticationManager(), tokenBasedRememberMeService());
-//	}
-	
-//	public RememberMeAuthenticationProvider rememberMeAuthenticationProvider(){
-//		 return new RememberMeAuthenticationProvider(tokenBasedRememberMeService().getKey());
-//	}
-	
-//	@Bean 
-//	public TokenBasedRememberMeServices tokenBasedRememberMeService(){
-//		 TokenBasedRememberMeServices service = new TokenBasedRememberMeServices(env.getProperty("rememberme.key"), userDetailsServiceImpl);
-//		 service.setAlwaysRemember(true);
-//		 service.setCookieName("rememberme");
-//		 service.setTokenValiditySeconds(3600*24*365*1);
-//		 return service;
-//	}
 	
 	@Bean
 	@Override
