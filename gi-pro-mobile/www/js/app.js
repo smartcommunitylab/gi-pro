@@ -226,6 +226,17 @@ angular.module('toga', [
 				controller: 'LoginCtrl'
 			}
 		}
+	})
+
+	.state('app.registration', {
+		cache: false,
+		url: '/registration',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/registration.html',
+				controller: 'RegistrationCtrl'
+			}
+		}
 	});
 
 	// if none of the above states are matched, use this as the fallback

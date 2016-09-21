@@ -95,7 +95,9 @@ angular.module('toga.services.push', [])
 	};
 
 	pushService.unreg = function () {
-		push.unregister();
+		if (!!push) {
+			push.unregister();
+		}
 	}
 
 	pushService.fgOn = function (listener) {
@@ -219,7 +221,7 @@ angular.module('toga.services.push', [])
 						}
 						deferred.resolve(array);
 					} else {
-						deferred.resolve(null);
+						deferred.resolve([]);
 					}
 				}, function (e) {
 					deferred.reject(e);
@@ -247,9 +249,13 @@ angular.module('toga.services.push', [])
 										},
 										function (e) {
 											deferred.reject(e);
-										});
+										}
+									);
 								});
 							});
+						} else {
+							localStorage.setItem(Config.getUserNotificationsDownloaded(), true);
+							deferred.resolve([]);
 						}
 					}, function (e) {
 						deferred.reject(e);

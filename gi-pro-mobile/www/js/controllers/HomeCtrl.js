@@ -7,6 +7,11 @@ angular.module('toga.controllers.home', [])
 	$scope.offersNotifications = {};
 
 	var reload = function () {
+		if (!Login.getUser()) {
+			$scope.goTo('app.login', {}, true, true, true);
+			return;
+		}
+
 		Utils.loading();
 		var from = moment().startOf('date').valueOf();
 		DataSrv.getRequests(Login.getUser().objectId, Config.SERVICE_TYPE, from, null, 1, 100).then(
@@ -75,24 +80,24 @@ angular.module('toga.controllers.home', [])
 				if (notifications.length > 0) {
 					$scope.requestsNotifications = newNotificationsMap;
 				}
-			}
-		);
 
-		// Requests for user offers
-		NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_REQUEST, false).then(
-			function (notifications) {
-				var newNotificationsMap = {}
-				angular.forEach(notifications, function (notif) {
-					if (!newNotificationsMap[notif.serviceOfferId]) {
-						newNotificationsMap[notif.serviceOfferId] = [notif];
-					} else {
-						newNotificationsMap[notif.serviceOfferId].push(notif);
+				// Requests for user offers
+				NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_REQUEST, false).then(
+					function (notifications) {
+						var newNotificationsMap = {}
+						angular.forEach(notifications, function (notif) {
+							if (!newNotificationsMap[notif.serviceOfferId]) {
+								newNotificationsMap[notif.serviceOfferId] = [notif];
+							} else {
+								newNotificationsMap[notif.serviceOfferId].push(notif);
+							}
+						});
+
+						if (notifications.length > 0) {
+							$scope.offersNotifications = newNotificationsMap;
+						}
 					}
-				});
-
-				if (notifications.length > 0) {
-					$scope.offersNotifications = newNotificationsMap;
-				}
+				);
 			}
 		);
 	};
@@ -157,14 +162,17 @@ angular.module('toga.controllers.home', [])
 		$scope.refresh();
 	});
 
-    $scope.openNotificationDetails = function(notification) {
-      if (notification.type == 'NEW_SERVICE_OFFER') {
-          $scope.goTo('app.requestdetails', {'objectId': notification.serviceRequestId});
-      }
-      else if (notification.type == 'NEW_SERVICE_REQUEST') {
-          $scope.goTo('app.offerdetails', {'objectId': notification.serviceOfferId});
-      }
-    }
+	$scope.openNotificationDetails = function (notification) {
+		if (notification.type == 'NEW_SERVICE_OFFER') {
+			$scope.goTo('app.requestdetails', {
+				'objectId': notification.serviceRequestId
+			});
+		} else if (notification.type == 'NEW_SERVICE_REQUEST') {
+			$scope.goTo('app.offerdetails', {
+				'objectId': notification.serviceOfferId
+			});
+		}
+	}
 
 })
 
@@ -184,6 +192,7 @@ angular.module('toga.controllers.home', [])
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			return;
 		}
+
 		Utils.loading();
 		var to = moment().startOf('date').valueOf();
 		DataSrv.getRequests(Login.getUser().objectId, Config.SERVICE_TYPE, 0, to, $scope.requestsPage, limit).then(
@@ -200,7 +209,6 @@ angular.module('toga.controllers.home', [])
 				}
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 				$scope.$broadcast('scroll.refreshComplete');
-				Utils.loaded();
 			},
 			function () {
 				$scope.hasMoreRequests = false;
@@ -208,15 +216,15 @@ angular.module('toga.controllers.home', [])
 				$scope.$broadcast('scroll.refreshComplete');
 				Utils.commError();
 			}
-		);
-
-	}
+		).finally(Utils.loaded);
+	};
 
 	$scope.loadMoreOffers = function () {
 		if (!$scope.hasMoreOffers) {
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			return;
 		}
+
 		Utils.loading();
 		var to = moment().startOf('date').valueOf();
 		DataSrv.getOffers(Login.getUser().objectId, Config.SERVICE_TYPE, 0, to, true, $scope.offersPage, limit).then(
@@ -233,7 +241,6 @@ angular.module('toga.controllers.home', [])
 				}
 				$scope.$broadcast('scroll.refreshComplete');
 				$scope.$broadcast('scroll.infiniteScrollComplete');
-				Utils.loaded();
 			},
 			function () {
 				$scope.hasMoreOffers = false;
@@ -241,9 +248,8 @@ angular.module('toga.controllers.home', [])
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 				Utils.commError();
 			}
-		);
-
-	}
+		).finally(Utils.loaded);
+	};
 
 	$scope.refreshRequests = function () {
 		$scope.requestsPage = 1;
@@ -251,12 +257,14 @@ angular.module('toga.controllers.home', [])
 		$scope.hasMoreRequests = true;
 		$scope.loadMoreRequests();
 	};
+
 	$scope.refreshOffers = function () {
 		$scope.offersPage = 1;
 		$scope.offers = null;
 		$scope.hasMoreOffers = true;
 		$scope.loadMoreOffers();
 	};
+
 	$scope.selectedTab = function () {
 		return $ionicTabsDelegate.selectedIndex();
 	};
@@ -283,10 +291,10 @@ angular.module('toga.controllers.home', [])
 
 	$scope.uploadImage = function () {
 		if (navigator && navigator.camera) {
-
 			var error = function (err) {
 				console.log('error', err);
 			};
+
 			navigator.camera.getPicture(function (fileURL) {
 				var win = function (r) {
 					Login.updateUser().then(function (user) {
@@ -304,7 +312,6 @@ angular.module('toga.controllers.home', [])
 				Utils.loading();
 				var ft = new FileTransfer();
 				ft.upload(fileURL, encodeURI(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/image/upload/png/' + $scope.profile.objectId), win, Utils.commError, options);
-
 			}, error, {
 				sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
 				destinationType: Camera.DestinationType.FILE_URI,
@@ -314,6 +321,5 @@ angular.module('toga.controllers.home', [])
 				targetHeight: 200
 			});
 		}
-	}
-
+	};
 });

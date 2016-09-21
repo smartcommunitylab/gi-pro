@@ -10068,9 +10068,9 @@ input[readonly] {
 /*
  * LOGIN AND REGISTRATION
  */
-.login {
+.login, .registration {
   text-align: center; }
-  .login .registration {
+  .login .registration, .registration .registration {
     margin-top: 20px; }
 
 /*

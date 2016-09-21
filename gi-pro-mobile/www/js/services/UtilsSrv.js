@@ -9,6 +9,11 @@ angular.module('toga.services.utils', [])
 		return Math.round(num * 10 * decimalPlaces) / (10 * decimalPlaces);
 	};
 
+	utilsService.checkFiscalCode = function (cf) {
+		var re = /^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$/;
+		return re.test(cf);
+	};
+
 	utilsService.getLang = function () {
 		var browserLanguage = '';
 		// works for earlier version of Android (2.3.x)
