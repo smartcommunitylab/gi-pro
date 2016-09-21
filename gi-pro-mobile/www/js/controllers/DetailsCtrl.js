@@ -5,10 +5,16 @@ angular.module('toga.controllers.details', [])
 
 	if (!!$stateParams['request']) {
 		$scope.request = $stateParams['request'];
-	}
+	} else {
+      Utils.loading();
+      DataSrv.getRequestById(Login.getUser().objectId, $stateParams.objectId).then(function(object) {
+           Utils.loaded();
+           $scope.request = object;
+        }, Utils.commError);
+    }
 
 	$scope.isMine = function () {
-		return $scope.request.requesterId == Login.getUser().objectId;
+		return $scope.request != null && $scope.request.requesterId == Login.getUser().objectId;
 	};
 	$scope.isEditable = function () {
 		return $scope.isMine() && (!$scope.request.startTime || $scope.request.startTime > moment().startOf('date').valueOf());
@@ -26,6 +32,7 @@ angular.module('toga.controllers.details', [])
 
 		confirmPopup.then(function (yes) {
 			if (yes) {
+                Utils.loading();
 				DataSrv.deleteRequest($scope.request.objectId, Login.getUser().objectId).then(
 					function (data) {
 						$scope.goTo('app.home', {
@@ -45,11 +52,17 @@ angular.module('toga.controllers.details', [])
 
 	if (!!$stateParams['offer']) {
 		$scope.offer = $stateParams['offer'];
-	}
+	} else {
+      Utils.loading();
+      DataSrv.getOfferById(Login.getUser().objectId, $stateParams.objectId).then(function(object) {
+           Utils.loaded();
+           $scope.offer = object;
+        }, Utils.commError);
+    }
 
 
 	$scope.isMine = function () {
-		return $scope.offer.professional.objectId == Login.getUser().objectId;
+		return  $scope.offer!= null && $scope.offer.professional.objectId == Login.getUser().objectId;
 	};
 	$scope.isEditable = function () {
 		return $scope.isMine() && (!$scope.offer.startTime || $scope.offer.startTime > moment().startOf('date').valueOf());
@@ -67,6 +80,7 @@ angular.module('toga.controllers.details', [])
 
 		confirmPopup.then(function (yes) {
 			if (yes) {
+                Utils.loading();
 				DataSrv.deleteOffer($scope.offer.objectId, Login.getUser().objectId).then(
 					function (data) {
 						$scope.goTo('app.home', {
