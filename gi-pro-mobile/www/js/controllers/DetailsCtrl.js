@@ -5,7 +5,7 @@ angular.module('toga.controllers.details', [])
 	$scope.matchingOffers = null;
 
 	$scope.isMine = function () {
-		return $scope.request != null && $scope.request.requesterId == Login.getUser().objectId;
+		return $scope.request != null && $scope.request.requester.objectId == Login.getUser().objectId;
 	};
 
 	$scope.isEditable = function () {

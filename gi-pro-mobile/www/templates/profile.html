@@ -10,7 +10,7 @@
             <div class="profile-image-placeholder" ng-if="!profile.imageUrl">
               <div class="upload"><i class="icon ion-camera"></i></div>
             </div>
-            <div class="profile-image" ng-if="!!profile.imageUrl"><img ng-src="{{imageUrlPrefix + profile.imageUrl}}"></div>
+            <div class="profile-image" ng-if="!!profile.imageUrl"><img ng-src="{{generateImageUrl(profile.imageUrl)}}"></div>
           </div>
         </div>
         <div class="col col-66">

@@ -287,8 +287,6 @@ angular.module('toga.controllers.home', [])
 .controller('ProfileCtrl', function ($scope, Config, Login, Utils) {
 	$scope.profile = Login.getUser();
 
-	$scope.imageUrlPrefix = Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/image/download';
-
 	$scope.uploadImage = function () {
 		if (navigator && navigator.camera) {
 			var error = function (err) {
