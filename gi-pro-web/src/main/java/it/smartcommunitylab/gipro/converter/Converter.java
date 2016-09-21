@@ -19,6 +19,20 @@ import com.google.common.collect.Lists;
 public class Converter {
 	private static final transient Logger logger = LoggerFactory.getLogger(Converter.class);
 	
+	public static ServiceOfferUI convertServiceOffer(RepositoryManager storageManager, String applicationId, ServiceOffer serviceOffer) 
+	{
+		Professional professional = storageManager.findProfessionalById(applicationId, serviceOffer.getProfessionalId());
+		ServiceOfferUI serviceOfferUI = new ServiceOfferUI();
+		serviceOfferUI.setObjectId(serviceOffer.getObjectId());
+		serviceOfferUI.setServiceType(serviceOffer.getServiceType());
+		serviceOfferUI.setState(serviceOffer.getState());
+		serviceOfferUI.setStartTime(serviceOffer.getStartTime());
+		serviceOfferUI.setEndTime(serviceOffer.getEndTime());
+		serviceOfferUI.setProfessional(professional);
+		Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
+		serviceOfferUI.setPoi(poi);
+		return serviceOfferUI;
+	}
 	public static List<ServiceOfferUI> convertServiceOffer(RepositoryManager storageManager,
 			String applicationId, List<ServiceOffer> offerList) {
 		List<ServiceOfferUI> result = Lists.newArrayList();
@@ -59,6 +73,22 @@ public class Converter {
 		return result;
 	}
 	
+	public static ServiceRequestUI convertServiceRequest(RepositoryManager storageManager,
+			String applicationId, ServiceRequest serviceRequest) {
+			ServiceRequestUI serviceRequestUI = new ServiceRequestUI();
+			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
+			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
+			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
+			serviceRequestUI.setPrivateRequest(serviceRequest.isPrivateRequest());
+			serviceRequestUI.setApplicants(serviceRequest.getApplicants());
+			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
+			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
+			serviceRequestUI.setRequesterId(serviceRequest.getRequesterId());
+			serviceRequestUI.setState(serviceRequest.getState());
+			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
+			serviceRequestUI.setPoi(poi);
+			return serviceRequestUI;
+	}
 	public static Professional convertRegistrationToProfessional(Registration registration) {
 		Professional professional = new Professional();
 		professional.setApplicationId(registration.getApplicationId());

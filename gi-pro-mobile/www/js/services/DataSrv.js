@@ -431,5 +431,68 @@ angular.module('toga.services.data', [])
 		return deferred.promise;
 	};
 
+    /* single offer */
+	dataService.getOfferById = function (professionalId, objectId) {
+		var deferred = $q.defer();
+
+		var httpConfWithParams = Config.getHTTPConfig();
+		httpConfWithParams.params = {};
+
+		// professionalId is required
+		if (!professionalId || !angular.isString(professionalId)) {
+			deferred.reject('Invalid professionalId');
+		}
+
+		// objectId is required
+		if (!objectId || !angular.isString(objectId)) {
+			deferred.reject('Invalid serviceType');
+		}
+
+		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + professionalId + '/' + objectId, httpConfWithParams)
+
+		.then(
+			function (response) {
+				// offers
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
+    /* single request */
+	dataService.getRequestById = function (professionalId, objectId) {
+		var deferred = $q.defer();
+
+		var httpConfWithParams = Config.getHTTPConfig();
+		httpConfWithParams.params = {};
+
+		// professionalId is required
+		if (!professionalId || !angular.isString(professionalId)) {
+			deferred.reject('Invalid professionalId');
+		}
+
+		// objectId is required
+		if (!objectId || !angular.isString(objectId)) {
+			deferred.reject('Invalid serviceType');
+		}
+
+		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + professionalId + '/' + objectId, httpConfWithParams)
+
+		.then(
+			function (response) {
+				// offers
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
+
 	return dataService;
 });

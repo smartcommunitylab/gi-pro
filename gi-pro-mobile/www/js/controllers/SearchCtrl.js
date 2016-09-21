@@ -33,7 +33,7 @@ angular.module('toga.controllers.search', [])
 		var timePickerCfg = {
 			setLabel: $filter('translate')('set'),
 			closeLabel: $filter('translate')('close'),
-			inputTime: Math.floor($scope.searchOffer.time),
+			inputTime: Math.floor($scope.searchOffer.time / 1000),
 			step: 15,
 			callback: function (val) {
 				console.log(val);
