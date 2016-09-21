@@ -346,6 +346,44 @@ angular.module('toga.services.data', [])
 		APPLICATION_DELETED: 'APPLICATION_DELETED'
 	};
 
+	/* get matching offers */
+	dataService.getMatchingOffers = function (professionalId, requestId) {
+		var deferred = $q.defer();
+
+		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + professionalId + '/' + requestId + '/matches', Config.getHTTPConfig())
+
+		.then(
+			function (response) {
+				// offers
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
+
+	/* get matching requests */
+	dataService.getMatchingRequests = function (professionalId, offerId) {
+		var deferred = $q.defer();
+
+		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + professionalId + '/' + offerId + '/matches', Config.getHTTPConfig())
+
+		.then(
+			function (response) {
+				// requests
+				deferred.resolve(response.data);
+			},
+			function (reason) {
+				deferred.reject(reason.data ? reason.data.errorMessage : reason);
+			}
+		);
+
+		return deferred.promise;
+	};
+
 	/* get notifications */
 	dataService.getNotifications = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
 		var deferred = $q.defer();
