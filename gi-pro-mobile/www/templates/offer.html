@@ -51,7 +51,7 @@
 
 		<div ng-if="matchingRequests != null && matchingRequests.length > 0" class="matches">
 			<span>{{'matching_requests' | translate}}</span>
-			<div class="card" ng-repeat="request in matchingRequests" ng-if="!!matchingRequests && matchingRequests.length > 0" ng-click="viewProfile(request.requester)">
+			<div class="card" ng-repeat="request in matchingRequests" ng-if="!!matchingRequests && matchingRequests.length > 0" ng-click="openRequestDetails(request)">
 				<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!request.requester.imageUrl}">
 					<img ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
 					<h2>{{request.requester.name}} {{request.requester.surname}}</h2>
