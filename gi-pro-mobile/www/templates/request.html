@@ -34,15 +34,18 @@
 			<div>{{'request_detail_date' | translate}} <span class="date">{{request.startTime | date:'longDate'}}</span>, <span class="time">{{request.startTime | date:'shortTime'}}</span></div>
 		</div>
 
-		<div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="viewProfile(offer.professional)">
-			<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!offer.professional.imageUrl}">
-				<img ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
-				<h2>{{offer.professional.name}} {{offer.professional.surname}}</h2>
-				<!--<h3 ng-if="!!offer.startTime">{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}}</h3>-->
-				<ul>
-					<li class="phone"><i class="icon ion-android-call"></i>{{offer.professional.phone}}</li>
-					<li class="email"><i class="icon ion-email"></i>{{offer.professional.mail}}</li>
-				</ul>
+		<div ng-if="matchingOffers != null  && matchingOffers.length > 0" class="matches">
+			<span>{{'matching_offers' | translate}}</span>
+			<div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="viewProfile(offer.professional)">
+				<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!offer.professional.imageUrl}">
+					<img ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
+					<h2>{{offer.professional.name}} {{offer.professional.surname}}</h2>
+					<!--<h3 ng-if="!!offer.startTime">{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}}</h3>-->
+					<ul>
+						<li class="phone"><i class="icon ion-android-call"></i>{{offer.professional.phone}}</li>
+						<li class="email"><i class="icon ion-email"></i>{{offer.professional.mail}}</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</ion-content>

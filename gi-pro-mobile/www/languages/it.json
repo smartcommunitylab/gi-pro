@@ -80,5 +80,7 @@
     "refresh" : "Aggiorna i dati",
     "notifications_empty": "Nessuna notifica trovata",
     "NEW_SERVICE_OFFER": "Nuova offerta di sostituzione",
-    "NEW_SERVICE_REQUEST": "Nuova richiesta di sostituzione"
+    "NEW_SERVICE_REQUEST": "Nuova richiesta di sostituzione",
+    "matching_requests": "Richeste corrispondenti",
+    "matching_offers": "Offerte corrispondenti"
 }

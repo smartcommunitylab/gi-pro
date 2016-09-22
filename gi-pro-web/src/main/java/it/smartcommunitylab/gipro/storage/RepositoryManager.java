@@ -823,6 +823,22 @@ public class RepositoryManager {
 		}
 		return notification;
 	}
+	public void readOfferNotifications(String applicationId,String objectId, String professionalId) {
+		Date now = new Date();
+		Update update = new Update();
+		update.set("read", true);
+		update.set("lastUpdate", now);
+		mongoTemplate.updateMulti(
+				Query.query(new Criteria("serviceOfferId").is(objectId).and("professionalId").is(professionalId)), update, Notification.class);
+	}
+	public void readRequestNotifications(String applicationId,String objectId, String professionalId) {
+		Date now = new Date();
+		Update update = new Update();
+		update.set("read", true);
+		update.set("lastUpdate", now);
+		mongoTemplate.updateMulti(
+				Query.query(new Criteria("serviceRequestId").is(objectId).and("professionalId").is(professionalId)), update, Notification.class);
+	}
 
 	public Notification hiddenNotification(String applicationId, String objectId,
 			String professionalId) {
@@ -1002,5 +1018,6 @@ public class RepositoryManager {
 		Professional professional = mongoTemplate.findOne(query, Professional.class);
 		return professional;
 	}
+
 
 }

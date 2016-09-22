@@ -44,10 +44,10 @@ angular.module('toga.services.push', [])
 				console.log('found', nDB);
 				// first call, do only insertion
 				if (nDB == null) {
-					NotifDB.insert(n);
-					// second call, open the link
+				  NotifDB.insert(n);
+				// second call, open the link
 				} else {
-					// TODO open the object page
+                  NotifDB.openDetails(nDB);
 				}
 			}, function (err) {
 				console.error('Error reading from DB', err);
@@ -112,13 +112,25 @@ angular.module('toga.services.push', [])
 })
 
 
-.factory('NotifDB', function ($rootScope, $ionicPlatform, $http, $q, Utils, Config) {
+.factory('NotifDB', function ($rootScope, $state, $ionicPlatform, $http, $q, Utils, Config) {
 	var db = window.openDatabase('togadb', '1.0', 'togadb', 2 * 1024 * 1024);
 	db.transaction(function (tx) {
 		tx.executeSql('CREATE TABLE IF NOT EXISTS notification (id unique, timestamp, text, type, offerId, requestId, fromUserId, read)');
 	});
 
 	var notifDB = {};
+
+    notifDB.openDetails = function(notification){
+		if (notification.type == 'NEW_SERVICE_OFFER') {
+			$state.go('app.requestdetails', {
+				'objectId': notification.serviceRequestId
+			});
+		} else if (notification.type == 'NEW_SERVICE_REQUEST') {
+			$state.go('app.offerdetails', {
+				'objectId': notification.serviceOfferId
+			});
+		}
+    };
 
 	var remoteRead = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
 		// TODO use DB, except for initialization

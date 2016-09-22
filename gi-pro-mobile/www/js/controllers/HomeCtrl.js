@@ -163,15 +163,7 @@ angular.module('toga.controllers.home', [])
 	});
 
 	$scope.openNotificationDetails = function (notification) {
-		if (notification.type == 'NEW_SERVICE_OFFER') {
-			$scope.goTo('app.requestdetails', {
-				'objectId': notification.serviceRequestId
-			});
-		} else if (notification.type == 'NEW_SERVICE_REQUEST') {
-			$scope.goTo('app.offerdetails', {
-				'objectId': notification.serviceOfferId
-			});
-		}
+      NotifDB.openDetails(notification);
 	}
 
 })
