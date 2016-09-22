@@ -540,7 +540,8 @@ input[readonly] {
   }
 
   .credits_row.version {
-      color: $t_lightwine;
+      color: $t_wine;
+      text-transform: uppercase;
   }
 
   .credits_row.version .col {

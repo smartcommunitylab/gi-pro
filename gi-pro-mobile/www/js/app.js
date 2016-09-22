@@ -49,6 +49,8 @@ angular.module('toga', [
 	$ionicConfigProvider.tabs.style('striped');
 	$ionicConfigProvider.backButton.previousTitleText(false).text('');
 
+//  	$ionicConfigProvider.navBar.alignTitle('left');
+
 	//$translateProvider.translations('it', {});
 	$translateProvider.preferredLanguage('it');
 	$translateProvider.useStaticFilesLoader({
