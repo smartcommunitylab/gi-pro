@@ -13,17 +13,17 @@
 	</properties>
 
 	<dependencies>
-        <dependency>
-          <groupId>eu.trentorise.smartcampus</groupId>
-          <artifactId>communicator.client</artifactId>
-          <version>2.3.0</version>
-          <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>eu.trentorise.smartcampus</groupId>
-            <artifactId>aac.client</artifactId>
-            <version>1.2</version>
-        </dependency>
+		<dependency>
+			<groupId>eu.trentorise.smartcampus</groupId>
+			<artifactId>communicator.client</artifactId>
+			<version>2.3.0</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.trentorise.smartcampus</groupId>
+			<artifactId>aac.client</artifactId>
+			<version>1.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>io.swagger</groupId>
@@ -54,13 +54,13 @@
 			<artifactId>thymeleaf-spring4</artifactId>
 			<version>2.1.5.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>4.0.7.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -130,9 +130,9 @@
 			<version>${spring-security-version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>io.jsonwebtoken</groupId>
-		    <artifactId>jjwt</artifactId>
-		    <version>0.7.0</version>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.7.0</version>
 		</dependency>
 
 		<dependency>
@@ -276,6 +276,10 @@
 			<id>jcenter-snapshots</id>
 			<name>jcenter</name>
 			<url>https://jcenter.bintray.com/</url>
+		</repository>
+		<repository>
+			<id>SmartCommunity-releases</id>
+			<url>http://repository.smartcommunitylab.it/content/repositories/releases</url>
 		</repository>
 	</repositories>
 
