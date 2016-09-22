@@ -9981,6 +9981,10 @@ input[readonly] {
 .home .scroll-view {
   height: 100%; }
 
+.home .card .icon {
+  margin-right: 7px;
+  font-size: 20px; }
+
 /*
  * DETAILS
  */
