@@ -28,13 +28,16 @@
 			<span class="date">{{request.startTime | date:'longDate'}}</span>, <span class="time">{{request.startTime | date:'shortTime'}}</span>
 		</div>
 
-		<div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="viewProfile(offer.professional)">
-			<div class="item item-text-wrap" ng-class="{'item-thumbnail-left': !!offer.professional.imageUrl}">
-				<img ng-if="!!offer.professional.imageUrl" ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
-				<h2>{{offer.professional.name}} {{offer.professional.surname}}</h2>
-				<h3 ng-if="!!offer.startTime">{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}}</h3>
-			</div>
-		</div>
+        <div ng-if="matchingOffers != null  && matchingOffers.length > 0"  class="matches">
+          <span>{{'matching_offers' | translate}}</span>
+          <div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="viewProfile(offer.professional)">
+              <div class="item item-text-wrap" ng-class="{'item-thumbnail-left': !!offer.professional.imageUrl}">
+                  <img ng-if="!!offer.professional.imageUrl" ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
+                  <h2>{{offer.professional.name}} {{offer.professional.surname}}</h2>
+                  <h3 ng-if="!!offer.startTime">{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}}</h3>
+              </div>
+          </div>
+        </div>
 	</ion-content>
 
 	<ion-footer-bar ng-if="isEditable()">

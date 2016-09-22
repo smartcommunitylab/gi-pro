@@ -41,13 +41,16 @@
 			<span class="date">{{offer.startTime | date:'longDate'}}</span>, <span class="time">{{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}</span>
 		</div>
 
-		<div class="card" ng-repeat="request in matchingRequests" ng-if="!!matchingRequests && matchingRequests.length > 0" ng-click="viewProfile(request.requester)">
-			<div class="item item-text-wrap" ng-class="{'item-thumbnail-left': !!request.requester.imageUrl}">
-				<img ng-if="!!request.requester.imageUrl" ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
-				<h2>{{request.requester.name}} {{request.requester.surname}}</h2>
-				<h3>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
-			</div>
-		</div>
+        <div ng-if="matchingRequests != null && matchingRequests.length > 0"  class="matches">
+          <span>{{'matching_requests' | translate}}</span>
+          <div class="card" ng-repeat="request in matchingRequests" ng-if="!!matchingRequests && matchingRequests.length > 0" ng-click="viewProfile(request.requester)">
+              <div class="item item-text-wrap" ng-class="{'item-thumbnail-left': !!request.requester.imageUrl}">
+                  <img ng-if="!!request.requester.imageUrl" ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
+                  <h2>{{request.requester.name}} {{request.requester.surname}}</h2>
+                  <h3>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
+              </div>
+          </div>
+        </div>
 	</ion-content>
 
 	<ion-footer-bar ng-if="isEditable()">
