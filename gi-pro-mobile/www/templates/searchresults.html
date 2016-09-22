@@ -14,12 +14,10 @@
 				<div class="item item-thumbnail-left">
 					<img src="http://placekitten.com/200/200">
 					<h2>{{offer.professional.name}} {{offer.professional.surname}}</h2>
-					<!--<p>{{offer.professional}}</p>-->
+					<!--<p>{{offer.professional.type}}</p>-->
 					<ul>
-						<li class="phone"><span>{{'professional_phone' | translate}}:</span> {{offer.professional.phone}}</li>
-						<li class="email"><span>{{'professional_mail' | translate}}:</span> {{offer.professional.mail}}</li>
-						<!--<li class="phone"><span><i class="icon ion-android-call"></i></span> {{offer.professional.phone}}</li>
-						<li class="email"><span><i class="icon ion-email"></i></span> {{offer.professional.mail}}</li>-->
+						<li class="phone"><i class="icon ion-android-call"></i>{{offer.professional.phone}}</li>
+						<li class="email"><i class="icon ion-email"></i>{{offer.professional.mail}}</li>
 					</ul>
 					<!--
 					<button class="button button-small button-royal" ng-click="">

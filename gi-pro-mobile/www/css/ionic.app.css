@@ -9984,6 +9984,12 @@ input[readonly] {
 /*
  * DETAILS
  */
+.details a,
+.details a:hover,
+.details a:active,
+.details a:visited {
+  color: #4e7499; }
+
 .details .datetime {
   padding: 10px 0;
   /*text-align: center;*/
@@ -9993,26 +9999,65 @@ input[readonly] {
     font-weight: bold; }
 
 .details .professional {
-  padding: 10px 0; }
-  .details .professional .name {
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #8a567a; }
+  .details .professional .item {
+    margin-bottom: 20px;
+    border: none; }
+    .details .professional .item ul {
+      /*position: absolute;
+				bottom: 10px;*/ }
+  .details .professional ul li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+    .details .professional ul li .icon {
+      display: inline-block;
+      width: 20px;
+      margin-right: 10px;
+      font-size: 20px;
+      text-align: center; }
+  .details .professional ul .name {
     font-weight: bold;
-    font-size: larger; }
-  .details .professional .type {
-    font-style: italic; }
-  .details .professional span {
-    color: gray; }
+    font-size: larger;
+    white-space: normal; }
+  .details .professional ul .type {
+    padding-top: 5px;
+    font-style: italic;
+    white-space: normal; }
+  .details .professional ul .address {
+    padding-top: 5px; }
+  .details .professional ul .phone {
+    padding-top: 5px; }
+  .details .professional ul .email {
+    padding-top: 5px; }
 
 .details .poi {
   padding-top: 10px; }
   .details .poi .type {
     font-style: italic; }
   .details .poi .name {
-    font-weight: bold; }
+    font-weight: bold;
+    padding: 5px 0; }
   .details .poi .address {
     font-style: italic; }
 
-.card .phone, .card .email {
-  white-space: normal; }
+.card ul {
+  padding-top: 5px;
+  font-size: smaller; }
+  .card ul .icon {
+    font-size: 20px;
+    padding-right: 5px; }
+
+.card .phone,
+.card .email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+  .card .phone .icon,
+  .card .email .icon {
+    font-size: larger; }
 
 /*
  * SEARCH
@@ -10027,6 +10072,9 @@ input[readonly] {
 .searchresults .card .item ul {
   padding-top: 5px;
   font-size: smaller; }
+  .searchresults .card .item ul .icon {
+    font-size: 20px;
+    padding-right: 5px; }
 
 .searchresults .card .actions {
   padding: 5px;

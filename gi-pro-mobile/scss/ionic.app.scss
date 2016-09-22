@@ -236,6 +236,12 @@ input[readonly] {
  */
 
 .details {
+	a,
+	a:hover,
+	a:active,
+	a:visited {
+		color: $t_blue;
+	}
 	.datetime {
 		padding: 10px 0;
 		/*text-align: center;*/
@@ -246,20 +252,50 @@ input[readonly] {
 		}
 	}
 	.professional {
-		padding: 10px 0;
-		.name {
-			font-weight: bold;
-			font-size: larger;
+		margin-bottom: 10px;
+		padding-bottom: 20px;
+		border-bottom: 2px solid $t_wine;
+		.item {
+			margin-bottom: 20px;
+			border: none;
+			ul {
+				/*position: absolute;
+				bottom: 10px;*/
+			}
 		}
-		.type {
-			font-style: italic;
+		ul {
+			li {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				.icon {
+					display: inline-block;
+					width: 20px;
+					margin-right: 10px;
+					font-size: 20px;
+					text-align: center;
+				}
+			}
+			.name {
+				font-weight: bold;
+				font-size: larger;
+				white-space: normal;
+			}
+			.type {
+				padding-top: 5px;
+				font-style: italic;
+				white-space: normal;
+			}
+			.address {
+				padding-top: 5px;
+			}
+			.phone {
+				padding-top: 5px;
+			}
+			.email {
+				padding-top: 5px;
+			}
 		}
-		span {
-			color: gray;
-		}
-		.address {}
-		.phone {}
-		.email {}
 	}
 	.poi {
 		padding-top: 10px;
@@ -268,6 +304,7 @@ input[readonly] {
 		}
 		.name {
 			font-weight: bold;
+			padding: 5px 0;
 		}
 		.description {}
 		.address {
@@ -276,8 +313,22 @@ input[readonly] {
 	}
 }
 .card {
-	.phone, .email {
-		white-space: normal;
+	ul {
+		padding-top: 5px;
+		font-size: smaller;
+		.icon {
+			font-size: 20px;
+			padding-right: 5px;
+		}
+	}
+	.phone,
+	.email {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		.icon {
+			font-size: larger;
+		}
 	}
 }
 
@@ -300,6 +351,10 @@ input[readonly] {
 			ul {
 				padding-top: 5px;
 				font-size: smaller;
+				.icon {
+					font-size: 20px;
+					padding-right: 5px;
+				}
 			}
 		}
 		.actions {

@@ -3,16 +3,24 @@
 	</ion-nav-buttons>
 
 	<ion-content class="padding">
-		<ul class="professional" ng-if="!isMine()">
-			<li class="name">{{offer.professional.name}} {{offer.professional.surname}}</li>
-			<!--<li class="type">{{'professional_type_' + offer.professional.type | translate}}</li>-->
-			<li class="type">{{offer.professional.type}}</li>
-			<li class="address">{{offer.professional.address}}</li>
-			<li class="phone"><span>{{'professional_phone' | translate}}:</span> {{offer.professional.phone}}</li>
-			<li class="email"><span>{{'professional_mail' | translate}}:</span> {{offer.professional.mail}}</li>
-			<li class="email"><span>{{'professional_pec' | translate}}:</span> {{offer.professional.pec}}</li>
-		</ul>
+		<div class="professional" ng-if="!isMine()">
+			<div class="item item-text-wrap item-thumbnail-left">
+				<img ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
+				<ul>
+					<li class="name">{{offer.professional.name}} {{offer.professional.surname}}</li>
+					<!--<li class="type">{{'professional_type_' + offer.professional.type | translate}}</li>-->
+					<li class="type">{{offer.professional.type}}</li>
+				</ul>
+			</div>
+			<ul>
+				<li class="address"><i class="icon ion-location"></i>{{offer.professional.address}}</li>
+				<li class="phone"><i class="icon ion-android-call"></i><a ng-href="tel:{{offer.professional.phone}}">{{offer.professional.phone}}</a></li>
+				<li class="email"><i class="icon ion-email"></i><a ng-href="mailto:{{offer.professional.mail}}">{{offer.professional.mail}}</a></li>
+				<li class="email"><i class="icon ion-email-unread"></i><a ng-href="mailto:{{offer.professional.pec}}">{{offer.professional.pec}}</a></li>
+			</ul>
+		</div>
 
+		<!--
 		<div class="row" ng-if="!isMine()">
 			<div class="col col-50">
 				<a class="button button-block button-royal button-outline icon-left ion-android-call" ng-href="tel:{{offer.professional.phone}}">
@@ -25,6 +33,7 @@
 				</a>
 			</div>
 		</div>
+		-->
 
 		<div class="poi">
 			<div>{{'offer_detail_poi' | translate}}</div>
@@ -37,13 +46,12 @@
 		</div>
 
 		<div class="datetime" ng-if="!!offer.startTime && !!offer.endTime">
-			<div>{{'offer_detail_date' | translate}}</div>
-			<span class="date">{{offer.startTime | date:'longDate'}}</span>, <span class="time">{{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}</span>
+			<div>{{'offer_detail_date' | translate}} <span class="date">{{offer.startTime | date:'longDate'}}</span>, <span class="time">{{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}</span></div>
 		</div>
 
 		<div class="card" ng-repeat="request in matchingRequests" ng-if="!!matchingRequests && matchingRequests.length > 0" ng-click="viewProfile(request.requester)">
-			<div class="item item-text-wrap" ng-class="{'item-thumbnail-left': !!request.requester.imageUrl}">
-				<img ng-if="!!request.requester.imageUrl" ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
+			<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!request.requester.imageUrl}">
+				<img ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
 				<h2>{{request.requester.name}} {{request.requester.surname}}</h2>
 				<h3>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
 			</div>

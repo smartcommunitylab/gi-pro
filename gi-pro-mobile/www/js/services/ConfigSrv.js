@@ -36,6 +36,10 @@ angular.module('toga.services.config', [])
 	configService.SERVICE_TYPE = 'sostituzione';
 
 	$rootScope.generateImageUrl = function (relUrl) {
+		if (!relUrl) {
+			return 'img/userph.png';
+		}
+
 		return configService.SERVER_URL + '/image/' + configService.APPLICATION_ID + relUrl + '?token=' + localStorage.getItem(configService.getUserVarToken());
 		//+ '&ts=' + new Date().getTime()
 	};
