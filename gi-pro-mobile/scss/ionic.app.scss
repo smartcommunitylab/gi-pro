@@ -493,3 +493,64 @@ input[readonly] {
     color: $t_darkwine;
   }
 }
+
+.credits {
+  .center {
+    text-align: center;
+  }
+
+  .credits_title {
+    text-align: center;
+    color: $t_darkwine;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .bg-image {
+    background-color: $t_lightwine;
+  }
+
+  .credits_subtitle {
+      margin-top: 20px !important;
+      text-align: center;
+      color: $t_darkwine;
+      font-size: 18px;
+      font-weight: bold;
+  }
+
+  .credits_row {
+      padding: 0;
+      margin-bottom: 10px;
+
+    .col {
+      text-align: center;
+    }
+  }
+
+  .credits_row.last {
+      margin-bottom: 20px;
+  }
+
+  .credits_row.version {
+      color: $t_lightwine;
+  }
+
+  .credits_row.version .col {
+      font-size: 12px;
+      line-height: 12px;
+  }
+
+  .credits_mail {
+      color: black;
+      font-size: 14px;
+      font-weight: normal;
+  }
+
+  .credits_version {
+      text-align: center;
+  }
+
+
+}

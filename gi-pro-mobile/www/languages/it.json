@@ -1,5 +1,5 @@
 {
-	"app": "TecnoToga",
+	"app": "TECNOTOGA",
 	"ok": "OK",
 	"close": "Chiudi",
 	"cancel": "Annulla",
@@ -82,5 +82,9 @@
     "NEW_SERVICE_OFFER": "Nuova offerta di sostituzione",
     "NEW_SERVICE_REQUEST": "Nuova richiesta di sostituzione",
     "matching_requests": "Richeste corrispondenti",
-    "matching_offers": "Offerte corrispondenti"
+    "matching_offers": "Offerte corrispondenti",
+    "credits_project": "Inizativa di:",
+    "credits_developer": "Sviluppata da:",
+    "credits_participation": "Con partecipazione di",
+    "credits_info": "Per le informazioni"
 }

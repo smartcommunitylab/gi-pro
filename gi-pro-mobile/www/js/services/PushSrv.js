@@ -317,14 +317,16 @@ angular.module('toga.services.push', [])
 
 	notifDB.markAsRead = function (id) {
 		db.transaction(function (tx) {
-			tx.executeSql('UPDATE notification set read = ? WHERE id = ?', [true, id]);
+			tx.executeSql('UPDATE notification set read = ? WHERE id = ?', [true, id], function(){
+              markAsReadRemotely('/notification/notification/'+id+'/read/'+$rootScope.user.objectId);
+            });
 		});
 	};
 
 	notifDB.markAsReadByRequestId = function (requestId) {
 		db.transaction(function (tx) {
 			tx.executeSql('UPDATE notification set read = ? WHERE requestId = ?', [true, requestId], function () {
-				// TODO mark as read on the server
+              markAsReadRemotely('/notification/request/'+requestId+'/read/'+$rootScope.user.objectId);
 			});
 		});
 	};
@@ -332,7 +334,7 @@ angular.module('toga.services.push', [])
 	notifDB.markAsReadByOfferId = function (offerId) {
 		db.transaction(function (tx) {
 			tx.executeSql('UPDATE notification set read = ? WHERE offerId = ?', [true, offerId], function () {
-				// TODO mark as read on the server
+              markAsReadRemotely('/notification/offer/'+offerId+'/read/'+$rootScope.user.objectId);
 			});
 		});
 	};
@@ -342,6 +344,12 @@ angular.module('toga.services.push', [])
 			tx.executeSql('DELETE from notification WHERE id = ?', [id]);
 		});
 	};
+
+    var markAsReadRemotely = function(path) {
+        var httpConfWithParams = Config.getHTTPConfig();
+		httpConfWithParams.params = {};
+		$http.put(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + path, {}, httpConfWithParams);
+    }
 
 	return notifDB;
 })
