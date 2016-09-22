@@ -39,6 +39,13 @@ angular.module('toga.controllers.details', [])
 		);
 	}
 
+	$scope.openOfferDetails = function (offer) {
+		$scope.goTo('app.offerdetails', {
+			'objectId': offer.objectId,
+			'offer': offer
+		});
+	};
+
 	$scope.deleteRequest = function () {
 		var confirmPopup = $ionicPopup.confirm({
 			title: $filter('translate')('request_delete_confirm_title'),
@@ -104,6 +111,13 @@ angular.module('toga.controllers.details', [])
 			Utils.commError
 		);
 	}
+
+	$scope.openRequestDetails = function (request) {
+		$scope.goTo('app.requestdetails', {
+			'objectId': request.objectId,
+			'request': request
+		});
+	};
 
 	$scope.deleteOffer = function () {
 		var confirmPopup = $ionicPopup.confirm({

@@ -1,4 +1,4 @@
-<ion-view view-title="{{'app' | translate}}" class="request details">
+<ion-view view-title="{{'request_detail' | translate}}" class="request details">
 	<ion-nav-buttons side="right">
 	</ion-nav-buttons>
 
@@ -36,7 +36,7 @@
 
 		<div ng-if="matchingOffers != null  && matchingOffers.length > 0" class="matches">
 			<span>{{'matching_offers' | translate}}</span>
-			<div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="viewProfile(offer.professional)">
+			<div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="openOfferDetails(offer)">
 				<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!offer.professional.imageUrl}">
 					<img ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
 					<h2>{{offer.professional.name}} {{offer.professional.surname}}</h2>
