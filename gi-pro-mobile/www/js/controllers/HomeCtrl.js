@@ -77,9 +77,9 @@ angular.module('toga.controllers.home', [])
 					}
 				});
 
-				if (notifications.length > 0) {
+//				if (notifications.length > 0) {
 					$scope.requestsNotifications = newNotificationsMap;
-				}
+//				}
 
 				// Requests for user offers
 				NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_REQUEST, false).then(
@@ -93,24 +93,28 @@ angular.module('toga.controllers.home', [])
 							}
 						});
 
-						if (notifications.length > 0) {
+//						if (notifications.length > 0) {
 							$scope.offersNotifications = newNotificationsMap;
-						}
+//						}
 					}
 				);
 			}
 		);
 	};
 
-	$scope.$on('$ionicView.enter', function (event, args) {
+    var subscribeFgListener = function() {
+      PushSrv.fgOn(function (notification) {
+          // TODO implement
+          console.log('Show event in home', notification);
+          updateNotificationsCounts();
+      });
+    }
+
+	$scope.$on('$ionicView.enter', function() {
+        subscribeFgListener();
 		updateNotificationsCounts();
 	});
 
-	PushSrv.fgOn(function (notification) {
-		// TODO implement
-		console.log('Show event in home', notification);
-		updateNotificationsCounts();
-	});
 })
 
 .controller('NotificationsCtrl', function ($scope, Utils, Login, Config, DataSrv, PushSrv, NotifDB) {
