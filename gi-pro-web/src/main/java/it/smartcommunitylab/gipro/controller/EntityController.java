@@ -501,7 +501,30 @@ public class EntityController {
 		}
 		return result;
 	}
-	
+
+	@RequestMapping(value = "/api/{applicationId}/notification/offer/{objectId}/read/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody void readOfferNotifications(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		professionalId = Utils.getContextProfessionalId();
+		storageManager.readOfferNotifications(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("readOfferNotifications[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+	}
+	@RequestMapping(value = "/api/{applicationId}/notification/request/{objectId}/read/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody void readRequestNotifications(@PathVariable String applicationId,
+			@PathVariable String objectId,
+			@PathVariable String professionalId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		professionalId = Utils.getContextProfessionalId();
+		storageManager.readRequestNotifications(applicationId, objectId, professionalId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("readREquestNotifications[%s]:%s - %s", applicationId, objectId, professionalId));
+		}
+	}
+
 	@RequestMapping(value = "/api/{applicationId}/notification/{objectId}/hidden/{professionalId}", method = RequestMethod.PUT)
 	public @ResponseBody Notification hiddenNotification(@PathVariable String applicationId,
 			@PathVariable String objectId,
