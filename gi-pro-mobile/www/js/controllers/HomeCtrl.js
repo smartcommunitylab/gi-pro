@@ -77,9 +77,7 @@ angular.module('toga.controllers.home', [])
 					}
 				});
 
-//				if (notifications.length > 0) {
-					$scope.requestsNotifications = newNotificationsMap;
-//				}
+				$scope.requestsNotifications = newNotificationsMap;
 
 				// Requests for user offers
 				NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_REQUEST, false).then(
@@ -93,28 +91,25 @@ angular.module('toga.controllers.home', [])
 							}
 						});
 
-//						if (notifications.length > 0) {
-							$scope.offersNotifications = newNotificationsMap;
-//						}
+						$scope.offersNotifications = newNotificationsMap;
 					}
 				);
 			}
 		);
 	};
 
-    var subscribeFgListener = function() {
-      PushSrv.fgOn(function (notification) {
-          // TODO implement
-          console.log('Show event in home', notification);
-          updateNotificationsCounts();
-      });
-    }
+	var subscribeFgListener = function () {
+		PushSrv.fgOn(function (notification) {
+			// TODO implement
+			console.log('Show event in home', notification);
+			updateNotificationsCounts();
+		});
+	};
 
-	$scope.$on('$ionicView.enter', function() {
-        subscribeFgListener();
+	$scope.$on('$ionicView.enter', function () {
+		subscribeFgListener();
 		updateNotificationsCounts();
 	});
-
 })
 
 .controller('NotificationsCtrl', function ($scope, Utils, Login, Config, DataSrv, PushSrv, NotifDB) {
@@ -167,9 +162,13 @@ angular.module('toga.controllers.home', [])
 	});
 
 	$scope.openNotificationDetails = function (notification) {
-      NotifDB.openDetails(notification);
-	}
+		NotifDB.openDetails(notification);
+	};
 
+	$scope.deleteNotification = function (notif, pos) {
+		NotifDB.remove(notif);
+		$scope.notifications.splice(pos, 1);
+	};
 })
 
 .controller('HistoryCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login) {

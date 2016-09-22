@@ -1,19 +1,21 @@
 <ion-view view-title="{{'notifications' | translate}}" class="notifications">
-  <ion-nav-buttons side="right">
-  </ion-nav-buttons>
+	<ion-nav-buttons side="right">
+	</ion-nav-buttons>
 
-  <ion-content>
-      <ion-refresher pulling-text="{{'refresh' | translate}}" on-refresh="refresh()">
-      </ion-refresher>
-      <h4 class="padding" ng-if="!!notifications && notifications.length == 0">{{'notifications_empty' | translate}}</h4>
+	<ion-content>
+		<ion-refresher pulling-text="{{'refresh' | translate}}" on-refresh="refresh()">
+		</ion-refresher>
 
-      <div class="card" ng-repeat="notification in notifications" ng-if="!!notifications && notifications.length > 0" ng-click="openNotificationDetails(notification)">
-        <div class="item item-text-wrap">
-          <h2>{{notification.type | translate}}</h2>
-          <h3>{{notification.text}}</h3>
-        </div>
-      </div>
-      <ion-infinite-scroll on-infinite="loadMore()" distance="1%">
-      </ion-infinite-scroll>
-  </ion-content>
+		<h4 class="padding" ng-if="!!notifications && notifications.length == 0">{{'notifications_empty' | translate}}</h4>
+
+		<ion-list>
+			<ion-item class="item-text-wrap" ng-click="openNotificationDetails(notification)" ng-repeat="notification in notifications" ng-if="!!notifications && notifications.length > 0">
+				<h2>{{notification.type | translate}}</h2>
+				<h3>{{notification.text}}</h3>
+				<ion-option-button class="button-assertive" ng-click="deleteNotification(notification, $index)"><i class="icon ion-trash-a"></i></ion-option-button>
+			</ion-item>
+		</ion-list>
+		<ion-infinite-scroll on-infinite="loadMore()" distance="1%">
+		</ion-infinite-scroll>
+	</ion-content>
 </ion-view>

@@ -44,10 +44,10 @@ angular.module('toga.services.push', [])
 				console.log('found', nDB);
 				// first call, do only insertion
 				if (nDB == null) {
-				  NotifDB.insert(n);
-				// second call, open the link
+					NotifDB.insert(n);
+					// second call, open the link
 				} else {
-                  NotifDB.openDetails(nDB);
+					NotifDB.openDetails(nDB);
 				}
 			}, function (err) {
 				console.error('Error reading from DB', err);
@@ -120,7 +120,7 @@ angular.module('toga.services.push', [])
 
 	var notifDB = {};
 
-    notifDB.openDetails = function(notification){
+	notifDB.openDetails = function (notification) {
 		if (notification.type == 'NEW_SERVICE_OFFER') {
 			$state.go('app.requestdetails', {
 				'objectId': notification.serviceRequestId
@@ -130,7 +130,7 @@ angular.module('toga.services.push', [])
 				'objectId': notification.serviceOfferId
 			});
 		}
-    };
+	};
 
 	var remoteRead = function (professionalId, type, read, timeFrom, timeTo, page, limit) {
 		// TODO use DB, except for initialization
@@ -221,7 +221,7 @@ angular.module('toga.services.push', [])
 				//            params.push((page - 1) * limit);
 				//            params.push(limit);
 				//          }
-                sql += ' ORDER BY timestamp DESC';
+				sql += ' ORDER BY timestamp DESC';
 
 				tx.executeSql(sql, params, function (tx, results) {
 					if (results.rows && results.rows.length >= 1) {
@@ -318,16 +318,16 @@ angular.module('toga.services.push', [])
 
 	notifDB.markAsRead = function (id) {
 		db.transaction(function (tx) {
-			tx.executeSql('UPDATE notification set read = ? WHERE id = ?', [true, id], function(){
-              markAsReadRemotely('/notification/notification/'+id+'/read/'+$rootScope.user.objectId);
-            });
+			tx.executeSql('UPDATE notification set read = ? WHERE id = ?', [true, id], function () {
+				doRemotely('/notification/notification/' + id + '/read/' + $rootScope.user.objectId);
+			});
 		});
 	};
 
 	notifDB.markAsReadByRequestId = function (requestId) {
 		db.transaction(function (tx) {
 			tx.executeSql('UPDATE notification set read = ? WHERE requestId = ?', [true, requestId], function () {
-              markAsReadRemotely('/notification/request/'+requestId+'/read/'+$rootScope.user.objectId);
+				doRemotely('/notification/request/' + requestId + '/read/' + $rootScope.user.objectId);
 			});
 		});
 	};
@@ -335,22 +335,24 @@ angular.module('toga.services.push', [])
 	notifDB.markAsReadByOfferId = function (offerId) {
 		db.transaction(function (tx) {
 			tx.executeSql('UPDATE notification set read = ? WHERE offerId = ?', [true, offerId], function () {
-              markAsReadRemotely('/notification/offer/'+offerId+'/read/'+$rootScope.user.objectId);
+				doRemotely('/notification/offer/' + offerId + '/read/' + $rootScope.user.objectId);
 			});
 		});
 	};
 
 	notifDB.remove = function (id) {
 		db.transaction(function (tx) {
-			tx.executeSql('DELETE from notification WHERE id = ?', [id]);
+			tx.executeSql('DELETE from notification WHERE id = ?', [id], function () {
+				doRemotely('/notification/' + id + '/hidden/' + $rootScope.user.objectId);
+			});
 		});
 	};
 
-    var markAsReadRemotely = function(path) {
-        var httpConfWithParams = Config.getHTTPConfig();
+	var doRemotely = function (path) {
+		var httpConfWithParams = Config.getHTTPConfig();
 		httpConfWithParams.params = {};
 		$http.put(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + path, {}, httpConfWithParams);
-    }
+	}
 
 	return notifDB;
 })
