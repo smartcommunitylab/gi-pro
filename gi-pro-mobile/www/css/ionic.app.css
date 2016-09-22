@@ -10218,7 +10218,8 @@ input[readonly] {
   margin-bottom: 20px; }
 
 .credits .credits_row.version {
-  color: #b99aaf; }
+  color: #8a567a;
+  text-transform: uppercase; }
 
 .credits .credits_row.version .col {
   font-size: 12px;
