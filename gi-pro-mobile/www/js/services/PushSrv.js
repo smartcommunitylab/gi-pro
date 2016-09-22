@@ -221,6 +221,7 @@ angular.module('toga.services.push', [])
 				//            params.push((page - 1) * limit);
 				//            params.push(limit);
 				//          }
+                sql += ' ORDER BY timestamp DESC';
 
 				tx.executeSql(sql, params, function (tx, results) {
 					if (results.rows && results.rows.length >= 1) {
