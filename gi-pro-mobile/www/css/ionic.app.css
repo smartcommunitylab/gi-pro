@@ -9981,9 +9981,25 @@ input[readonly] {
 .home .scroll-view {
   height: 100%; }
 
+.home .card .item {
+  padding: 10px; }
+  .home .card .item h2 {
+    margin-bottom: 5px; }
+  .home .card .item h3 {
+    margin: auto; }
+
 .home .card .icon {
   margin-right: 7px;
   font-size: 20px; }
+
+.home .card .badge {
+  top: auto;
+  position: absolute;
+  bottom: 10px;
+  right: 10px; }
+  .home .card .badge .icon {
+    margin-right: 4px;
+    font-size: 16px; }
 
 /*
  * DETAILS

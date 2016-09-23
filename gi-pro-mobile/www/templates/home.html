@@ -13,7 +13,10 @@
 						<div class="item item-text-wrap">
 							<h2>{{request.poi.name}}</h2>
 							<h3><i class="icon ion-calendar"></i>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
-							<span class="badge badge-calm" ng-if="!!requestsNotifications[request.objectId]">{{requestsNotifications[request.objectId].length}}</span>
+							<span class="badge badge-calm" ng-if="!!requestsNotifications[request.objectId]">
+								<i class="icon ion-ios-bell"></i>
+								{{requestsNotifications[request.objectId].length}}
+							</span>
 						</div>
 					</div>
 				</ion-content>
@@ -33,7 +36,10 @@
 							<h3 ng-if="!!offer.startTime && !!offer.endTime">
 									<i class="icon ion-clock"></i>{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}
 							</h3>
-							<span class="badge badge-calm" ng-if="!!offersNotifications[offer.objectId]">{{offersNotifications[offer.objectId].length}}</span>
+							<span class="badge badge-calm" ng-if="!!offersNotifications[offer.objectId]">
+								<i class="icon ion-ios-bell"></i>
+								{{offersNotifications[offer.objectId].length}}
+							</span>
 						</div>
 					</div>
 				</ion-content>
