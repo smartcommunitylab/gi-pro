@@ -32,15 +32,14 @@
     <meta http-equiv="Expires" content="-1" />        
         <title><fmt:message bundle="${res}" key="lbl_login_title" /></title>
         <!-- Bootstrap core CSS -->
-        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom styles for this template -->
-        <link href="../css/style.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
   
 
     </head>
     <body>
       <div class="container">
-	      <img class="logo" src="../img/ls_logo.png" alt="SmartCommunity" />
 	      <div class="clear"></div>
         <div class="row">
           <div class="col-md-offset-4 col-md-4">
@@ -48,15 +47,12 @@
             <h4 style="text-align:center"><fmt:message bundle="${res}" key="lbl_changesuccess_title" /></h4>
             <div>&nbsp;</div>
             <p><fmt:message bundle="${res}" key="lbl_changesuccess_text" /></p>
-            <div class="col-md-12 form-group">
-              <a class="btn" href="login"><fmt:message bundle="${res}" key="lbl_login" /></a>
-            </div>
             <div>&nbsp;</div>
             </div>
           </div>
         </div>
       </div>  
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-      <script src="../lib/bootstrap.min.js"></script>
+      <script src="lib/bootstrap.min.js"></script>
     </body>
 </html>
