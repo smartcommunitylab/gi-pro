@@ -112,7 +112,7 @@ angular.module('toga.controllers.home', [])
 	});
 })
 
-.controller('NotificationsCtrl', function ($scope, Utils, Login, Config, DataSrv, PushSrv, NotifDB) {
+.controller('NotificationsCtrl', function ($scope, $timeout, Utils, Login, Config, DataSrv, PushSrv, NotifDB) {
 	var limit = 10;
 
 	$scope.notifications = null;
@@ -150,15 +150,14 @@ angular.module('toga.controllers.home', [])
 		);
 	};
 
-	$scope.refresh = function () {
-		$scope.page = 1;
-		$scope.notifications = null;
-		$scope.hasMore = true;
-		$scope.loadMore();
-	};
 
 	PushSrv.fgOn(function (notification) {
-		$scope.refresh();
+        $scope.page = 1;
+        $scope.notifications = null;
+        $timeout(function(){
+        $scope.hasMore = true;
+          $scope.loadMore();
+        }, 200);
 	});
 
 	$scope.openNotificationDetails = function (notification) {
@@ -166,7 +165,7 @@ angular.module('toga.controllers.home', [])
 	};
 
 	$scope.deleteNotification = function (notif, pos) {
-		NotifDB.remove(notif);
+		NotifDB.remove(notif.objectId);
 		$scope.notifications.splice(pos, 1);
 	};
 })
