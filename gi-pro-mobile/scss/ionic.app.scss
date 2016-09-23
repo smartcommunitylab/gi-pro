@@ -444,8 +444,13 @@ input[readonly] {
 .login,
 .registration {
 	text-align: center;
-	.registration {
-		margin-top: 20px;
+	.item-checkbox {
+		font-size: 14px;
+		border: none;
+		.item-content {
+			text-align: left;
+			white-space: normal;
+		}
 	}
 }
 
@@ -516,6 +521,11 @@ input[readonly] {
 		color: $t_darkwine;
 	}
 }
+
+/*
+ * CREDITS
+ */
+
 .credits {
 	.center {
 		text-align: center;

@@ -29,8 +29,13 @@ angular.module('toga.controllers.login', [])
 	};
 })
 
-.controller('RegistrationCtrl', function ($scope, $state, $ionicHistory, $ionicPopup, $filter, Utils, Config, Login) {
+.controller('RegistrationCtrl', function ($scope, $state, $ionicHistory, $ionicPopup, $filter, $window, Utils, Config, Login) {
 	$scope.registration = {};
+
+	$scope.openPrivacyLink = function () {
+		$window.open($filter('translate')('register_privacy_link'), '_system', 'location=yes');
+		return false;
+	};
 
 	$scope.cancel = function () {
 		$ionicHistory.goBack();

@@ -10143,9 +10143,14 @@ input[readonly] {
 .login,
 .registration {
   text-align: center; }
-  .login .registration,
-  .registration .registration {
-    margin-top: 20px; }
+  .login .item-checkbox,
+  .registration .item-checkbox {
+    font-size: 14px;
+    border: none; }
+    .login .item-checkbox .item-content,
+    .registration .item-checkbox .item-content {
+      text-align: left;
+      white-space: normal; }
 
 /*
  * PROFILE
@@ -10203,6 +10208,9 @@ input[readonly] {
     font-weight: bold;
     color: #652648; }
 
+/*
+ * CREDITS
+ */
 .credits .center {
   text-align: center; }
 

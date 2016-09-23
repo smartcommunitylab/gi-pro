@@ -17,6 +17,9 @@
 	"new_account": "oppure effettua la registrazione",
 	"register": "Registrazione",
 	"register_new_account": "Registrati indicando il Codice Fiscale e scegli una password",
+	"register_privacy_info": "Informativa sulla privacy",
+	"register_privacy_link": "http://www.smartcommunitylab.it",
+	"register_privacy_accept": "Dichiaro di aver letto ed accettato l'informativa sulla privacy",
 	"register_form_cf_empty": "Inserire il Codice Fiscale",
 	"register_form_cf_invalid": "Codice Fiscale non valido",
 	"register_form_pwd_empty": "Compilare entrambi i campi password",
@@ -83,8 +86,8 @@
     "NEW_SERVICE_REQUEST": "Nuova richiesta di sostituzione",
     "matching_requests": "Richeste corrispondenti",
     "matching_offers": "Offerte corrispondenti",
-    "credits_project": "Inizativa di:",
-    "credits_developer": "Sviluppata da:",
-    "credits_participation": "Con partecipazione di",
-    "credits_info": "Per le informazioni"
+    "credits_project": "Un progetto di:",
+    "credits_developer": "realizzata da:",
+    "credits_initiative": "su un'iniziativa di",
+    "credits_info": "Per informazioni"
 }
