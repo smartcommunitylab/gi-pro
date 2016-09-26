@@ -68,9 +68,9 @@ public class AdminController {
 	@RequestMapping(value = "/dataset/{applicationId}", method = RequestMethod.POST)
 	public @ResponseBody String updateDataSetInfo(@RequestBody DataSetInfo dataSetInfo, 
 			@PathVariable String applicationId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+		}
 		storage.saveAppToken(dataSetInfo.getApplicationId(), dataSetInfo.getToken());
 		storage.saveDataSetInfo(dataSetInfo);
 		dataSetSetup.init();
@@ -83,9 +83,9 @@ public class AdminController {
 	@RequestMapping(value = "/reload/{applicationId}", method = RequestMethod.GET)
 	public @ResponseBody String reload(@PathVariable String applicationId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+		}
 		dataSetSetup.init();
 		if(logger.isInfoEnabled()) {
 			logger.info("reload dataSet");
@@ -96,9 +96,9 @@ public class AdminController {
 	@RequestMapping(value = "/import/{applicationId}/poi/{datasetId}", method = RequestMethod.POST)
 	public @ResponseBody String importPoi(@PathVariable String applicationId, @PathVariable String datasetId,
 			@RequestBody List<Poi> poiList, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+		}
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("importPoi[%s]", datasetId));
 		}
@@ -113,9 +113,9 @@ public class AdminController {
 	@RequestMapping(value = "/import/{applicationId}/professional/{datasetId}", method = RequestMethod.POST)
 	public @ResponseBody String importProfessional(@PathVariable String applicationId, @PathVariable String datasetId,
 			@RequestBody List<Professional> professionalList, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
-//			throw new UnauthorizedException("Unauthorized Exception: token not valid");
-//		}
+		if(!Utils.validateAPIRequest(request, dataSetSetup, storage)) {
+			throw new UnauthorizedException("Unauthorized Exception: token not valid");
+		}
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("importProfessional[%s]", datasetId));
 		}

@@ -599,6 +599,20 @@ public class EntityController {
 		return "{\"status\":\"OK\"}";
 	}
 	
+	@RequestMapping(value = "/api/{applicationId}/profile/{professionalId}", method = RequestMethod.PUT)
+	public @ResponseBody String updateProfessional(@PathVariable String applicationId,
+			@PathVariable String professionalId,
+			@RequestBody Professional professional,
+			HttpServletRequest request) throws Exception {
+		professionalId = Utils.getContextProfessionalId();
+		professional.setObjectId(professionalId);
+		storageManager.updateProfessional(applicationId, professional);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("updateProfessional[%s]:%s", applicationId, professionalId));
+		}
+		return "{\"status\":\"OK\"}";
+	}
+	
 	@ExceptionHandler(WrongRequestException.class)
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST)
 	@ResponseBody
