@@ -10148,7 +10148,10 @@ input[readonly] {
  */
 .login,
 .registration {
-  text-align: center; }
+  text-align: center;
+  /*.item-input-cf input {
+		text-transform: uppercase;
+	}*/ }
   .login .item-checkbox,
   .registration .item-checkbox {
     font-size: 14px;

@@ -199,6 +199,7 @@ input[readonly] {
 }
 
 /* Tabs */
+
 .tabs {
 	/*box-shadow: 0px 4px 10px 0px gray;*/
 }
@@ -215,7 +216,6 @@ input[readonly] {
 }
 .tabs-striped .tabs {
 	/*border-color: transparent;*/
-
 	border-color: $t_darkblue;
 }
 .tabs-top.tabs-striped .tab-item {
@@ -463,6 +463,9 @@ input[readonly] {
 			white-space: normal;
 		}
 	}
+	/*.item-input-cf input {
+		text-transform: uppercase;
+	}*/
 }
 
 /*
@@ -505,13 +508,17 @@ input[readonly] {
 		}
 		span {}
 	}
-    .contacts {
-      .row {padding: 0;}
-      .col {padding: 0;}
-      .edit {
-        color: $calm;
-      }
-    }
+	.contacts {
+		.row {
+			padding: 0;
+		}
+		.col {
+			padding: 0;
+		}
+		.edit {
+			color: $calm;
+		}
+	}
 	.name {
 		font-size: 20px;
 		font-weight: 500;
