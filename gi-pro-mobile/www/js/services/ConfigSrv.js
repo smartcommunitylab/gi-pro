@@ -8,6 +8,7 @@ angular.module('toga.services.config', [])
 	configService.SENDER_ID = CONF.SENDER_ID;
 
     configService.PROBLEMLINK = "mailto:tecnotoga@smartcommunitylab.it?subject=TECNOTOGA:%20segnalazione%20problema";
+    configService.HELPLINK = "http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/";
 
 	var HTTP_CONFIG = {
 		timeout: 50000,
@@ -41,6 +42,9 @@ angular.module('toga.services.config', [])
 	configService.getUserVar = function () {
 		return 'toga-app-user-' + configService.APPLICATION_ID;
 	}
+	configService.getUserVarProfileCheck = function () {
+		return 'toga-app-profilecheck-' + configService.APPLICATION_ID;
+	}
 	configService.getUserNotificationsDownloaded = function () {
 		return 'toga-app-notifications-downloaded-' + configService.APPLICATION_ID;
 	}
@@ -49,6 +53,9 @@ angular.module('toga.services.config', [])
 
     $rootScope.problemLink = function () {
       return configService.PROBLEMLINK;
+    };
+    $rootScope.helpLink = function () {
+      window.open(configService.HELPLINK, '_system', 'location=yes');
     };
 
 	return configService;

@@ -494,5 +494,31 @@ angular.module('toga.services.data', [])
 		return deferred.promise;
 	};
 
+    dataService.updateProfile = function(profile) {
+		var deferred = $q.defer();
+
+      var httpConfWithParams = Config.getHTTPConfig();
+		httpConfWithParams.params = {};
+		$http.put(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID+'/profile/'+profile.objectId, profile, httpConfWithParams)
+		.then(
+			function (response) {
+				var data = response.data;
+				if (!data || data.status != 'OK') {
+					deferred.reject();
+					return;
+				}
+				localStorage.setItem(Config.getUserVar(), JSON.stringify(profile));
+				$rootScope.user = profile;
+				deferred.resolve(profile);
+			},
+			function (reason) {
+				loginService.logout();
+				deferred.reject(reason);
+			}
+		);
+		return deferred.promise;
+
+    }
+
 	return dataService;
 });

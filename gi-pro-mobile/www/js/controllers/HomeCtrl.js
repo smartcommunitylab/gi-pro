@@ -278,21 +278,46 @@ angular.module('toga.controllers.home', [])
 	};
 })
 
-.controller('ProfileCtrl', function ($scope, Config, Login, Utils) {
-	$scope.profile = Login.getUser();
+.controller('ProfileCtrl', function ($scope, $stateParams, $filter, Config, Login, Utils, DataSrv) {
+	$scope.profile = angular.copy(Login.getUser());
+
+    var validate = function() {
+      if (!$scope.profile.phone) {
+            Utils.toast($filter('translate')('profile_form_phone_empty'));
+			return false;
+      }
+      return true;
+    }
 
     $scope.state = 'view';
+    if ($stateParams.firstRun) {
+      $scope.state = 'edit';
+      validate();
+    }
 
 	$scope.$on('$ionicView.leave', function (event, args) {
       $scope.state = 'view';
+      $scope.profile = angular.copy(Login.getUser());
 	});
 
-    $scope.edit = function() {
-      $scope.state = 'edit';
-    }
-    $scope.save = function() {
-      $scope.state = 'view';
-      // TODO validate data; remote save;
+    $scope.saveEdit = function() {
+      if ($scope.state == 'view') {
+        $scope.state = 'edit';
+      } else {
+        // TODO validate data; remote save;
+        if (validate()) {
+          Utils.loading();
+          DataSrv.updateProfile($scope.profile).then(function(){
+            $scope.profile = angular.copy(Login.getUser());
+            $scope.state = 'view';
+            Utils.loaded();
+            if ($stateParams.firstRun) {
+              localStorage.setItem(Config.getUserVarProfileCheck(),'true');
+              $scope.goTo('app.home',{},false,true,true);
+            }
+          },Utils.commError);
+        }
+      }
     }
 
 	$scope.uploadImage = function () {
