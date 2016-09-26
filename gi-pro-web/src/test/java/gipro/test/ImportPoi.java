@@ -43,8 +43,8 @@ public class ImportPoi {
 	public static String path = "C:\\Users\\micnori\\Documents\\Progetti\\gi-pro\\xml";
 	public static String applicatinID = "DEMO";
 	public static String accessToken = "???";
-	public static String importUrl = "http://localhost:8080/gi-pro/import/ADMIN/poi/";
-	//public static String importUrl = "https://dev.smartcommunitylab.it/gi-pro/import/ADMIN/poi/";
+	//public static String importUrl = "http://localhost:8080/gi-pro/import/ADMIN/poi/";
+	public static String importUrl = "https://dev.smartcommunitylab.it/gi-pro/import/ADMIN/poi/";
 	
 	public static final String[] FILE_HEADER = {"type", "name", "region", "address", "description"};
 	
@@ -138,7 +138,7 @@ public class ImportPoi {
 	@Test
 	public void CSVToPoi() throws Exception {
 		List<Poi> poiList = Lists.newArrayList();
-		FileReader fileReader = new FileReader(ImportPoi.path + File.separator + "poi.csv");
+		FileReader fileReader = new FileReader(ImportPoi.path + File.separator + "elenco_poi_v03.csv");
 		CSVFormat csvFileFormat = CSVFormat.DEFAULT
 				.withDelimiter(';')
 				.withEscape('\\')
