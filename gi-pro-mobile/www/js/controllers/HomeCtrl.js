@@ -278,7 +278,7 @@ angular.module('toga.controllers.home', [])
 	};
 })
 
-.controller('ProfileCtrl', function ($scope, $stateParams, $filter, Config, Login, Utils, DataSrv) {
+.controller('ProfileCtrl', function ($scope, $stateParams, $filter, $timeout, Config, Login, Utils, DataSrv) {
 	$scope.profile = angular.copy(Login.getUser());
 
     var validate = function() {
@@ -292,11 +292,12 @@ angular.module('toga.controllers.home', [])
     $scope.state = 'view';
     if ($stateParams.firstRun) {
       $scope.state = 'edit';
-      validate();
+      $timeout(validate, 1000);
     }
 
 	$scope.$on('$ionicView.leave', function (event, args) {
       $scope.state = 'view';
+      localStorage.setItem(Config.getUserVarProfileCheck(),'true');
       $scope.profile = angular.copy(Login.getUser());
 	});
 
