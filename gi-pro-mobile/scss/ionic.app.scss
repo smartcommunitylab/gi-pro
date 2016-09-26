@@ -460,14 +460,10 @@ input[readonly] {
 
 .profile {
 	.profile-image-container {
-		min-width: 100px;
-		width: 100px;
-		min-height: 100px;
-		height: 100px;
 		display: block;
 		.profile-image {
 			img {
-				width: 100px;
+				width: 100%;
 				height: auto;
 			}
 		}
@@ -498,6 +494,13 @@ input[readonly] {
 		}
 		span {}
 	}
+    .contacts {
+      .row {padding: 0;}
+      .col {padding: 0;}
+      .edit {
+        color: $calm;
+      }
+    }
 	.name {
 		font-size: 20px;
 		font-weight: 500;
