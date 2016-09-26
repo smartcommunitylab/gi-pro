@@ -10,6 +10,7 @@
 	"login": "Accedi",
 	"logout": "Esci",
 	"credits": "Credits",
+    "problem":"Segnala un problema",
 	"cf": "Codice Fiscale",
 	"password": "Password",
 	"password_lost": "Ho dimenticato la password",

@@ -10162,13 +10162,9 @@ input[readonly] {
  * PROFILE
  */
 .profile .profile-image-container {
-  min-width: 100px;
-  width: 100px;
-  min-height: 100px;
-  height: 100px;
   display: block; }
   .profile .profile-image-container .profile-image img {
-    width: 100px;
+    width: 100%;
     height: auto; }
   .profile .profile-image-container .profile-image-placeholder {
     display: block;
@@ -10192,6 +10188,15 @@ input[readonly] {
     font-size: 28px;
     color: #444;
     padding: 0 12px; }
+
+.profile .contacts .row {
+  padding: 0; }
+
+.profile .contacts .col {
+  padding: 0; }
+
+.profile .contacts .edit {
+  color: #10406f; }
 
 .profile .name {
   font-size: 20px;

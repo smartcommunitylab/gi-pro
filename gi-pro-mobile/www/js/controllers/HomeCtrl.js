@@ -281,6 +281,20 @@ angular.module('toga.controllers.home', [])
 .controller('ProfileCtrl', function ($scope, Config, Login, Utils) {
 	$scope.profile = Login.getUser();
 
+    $scope.state = 'view';
+
+	$scope.$on('$ionicView.leave', function (event, args) {
+      $scope.state = 'view';
+	});
+
+    $scope.edit = function() {
+      $scope.state = 'edit';
+    }
+    $scope.save = function() {
+      $scope.state = 'view';
+      // TODO validate data; remote save;
+    }
+
 	$scope.uploadImage = function () {
 		if (navigator && navigator.camera) {
 			var error = function (err) {

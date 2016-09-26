@@ -1,9 +1,47 @@
-<ion-view view-title="{{'profile' | translate}}" class="profile">
+<ion-view view-title="{{'profile' | translate}}" class="profile details">
 	<ion-nav-buttons side="right">
 		<!--<button class="button button-icon button-clear" ng-click=""></button>-->
+<!--		<button class="button button-icon button-clear" ng-class="{'ion-edit':state == 'view', 'ion-checkmark': state == 'edit'}" ng-click="edit()"></button>-->
 	</ion-nav-buttons>
 
-	<ion-content>
+	<ion-content >
+      <div class="professional">
+        <div class="row">
+          <div class="col col-33">
+            <div class="profile-image-container" ng-click="uploadImage()">
+              <div class="profile-image-placeholder" ng-if="!profile.imageUrl">
+                <div class="upload"><i class="icon ion-camera"></i></div>
+              </div>
+              <div class="profile-image" ng-if="!!profile.imageUrl">
+                <img ng-src="{{generateImageUrl(profile.imageUrl)}}">
+              </div>
+            </div>
+          </div>
+          <div class="col col-66">
+            <ul>
+                <li class="name">{{profile.name}} {{profile.surname}}</li>
+                <li class="type">{{profile.type}}</li>
+            </ul>
+          </div>
+        </div>
+        <ul class="padding contacts">
+            <li class="address"><i class="icon ion-location"></i>{{profile.address}}</li>
+            <li class="phone">
+              <i class="icon ion-android-call"></i>
+              <span ng-if="state=='view'">{{profile.phone}}</span>
+                  <input ng-if="state == 'edit'" type="tel" ng-maxlength="16" ng-model="profile.phone" placeholder="{{069999999}}">
+            </li>
+<!--
+            <li class="phone row">
+              <div class="col"><i class="icon ion-android-call"></i>{{profile.phone}}</div>
+              <div class="edit"><i class="icon ion-edit"></i></div>
+            </li>
+-->
+            <li class="email"><i class="icon ion-email"></i>{{profile.mail}}</li>
+            <li class="email"><i class="icon ion-email-unread"></i>{{profile.pec}}</li>
+        </ul>
+      </div>
+<!--
       <div class="row">
         <div class="col col-33">
           <div class="profile-image-container" ng-click="uploadImage()">
@@ -31,6 +69,7 @@
           {{profile.address}}
         </div>
       </div>
+-->
 
 	</ion-content>
 </ion-view>

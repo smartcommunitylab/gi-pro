@@ -24,22 +24,23 @@ public class Const {
 
 	public static final String[] poiTypeArray = new String[] {
 		"Corte d'Appello",
-		"Sezione distaccata corte d'appello",
+		//"Sezione distaccata corte d'appello",
 		"Corte di assise",
-		"Corte di assise di appello",
-		"Sezione distaccata corte di assise di appello",
+		//"Corte di assise di appello",
+		//"Sezione distaccata corte di assise di appello",
 		"Corte Suprema di Cassazione",
 		"Giudice di Pace",
 		"Tribunale",
-		"Sezione staccata di Tribunale",
-		"Tribunale di sorveglianza",
-		"Tribunale per i minorenni",
-		"Tribunale regionale Acque Pubbliche",
-		"Tribunale nazionale Acque pubbliche",
-		"Tribunale Amministrativo Regionale",
+		//"Sezione staccata di Tribunale",
+		//"Tribunale di sorveglianza",
+		//"Tribunale per i minorenni",
+		//"Tribunale regionale Acque Pubbliche",
+		//"Tribunale nazionale Acque pubbliche",
+		//"Tribunale Amministrativo Regionale",
 		"Consiglio di Stato",
 		"Commissione Regionali Tributarie",
-		"Commissione Provinciali Tributarie"
+		"Commissione Provinciali Tributarie",
+		"TAR"
 	};
 	
 	public static final String[] poiRegionArray = new String[] {
@@ -61,7 +62,8 @@ public class Const {
 		"Toscana",
 		"Trentino-Alto Adige",
 		"Umbria",
-		"Valle d'Aosta"
+		"Valle d'Aosta",
+		"Veneto"
 	};
 	
 	public static final String LawyerDataNascita = "LawyerDataNascita";

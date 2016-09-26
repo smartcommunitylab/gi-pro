@@ -42,10 +42,11 @@ import com.google.common.collect.Lists;
 public class ImportPoi {
 	public static String path = "C:\\Users\\micnori\\Documents\\Progetti\\gi-pro\\xml";
 	public static String applicatinID = "DEMO";
+	public static String accessToken = "???";
 	//public static String importUrl = "http://localhost:8080/gi-pro/import/ADMIN/poi/";
 	public static String importUrl = "https://dev.smartcommunitylab.it/gi-pro/import/ADMIN/poi/";
 	
-	public static final String[] FILE_HEADER = {"type", "name","region", "address", "description"};
+	public static final String[] FILE_HEADER = {"type", "name", "region", "address", "description"};
 	
 	protected XPath xPath;
 	protected DocumentBuilder documentBuilder;
@@ -102,7 +103,7 @@ public class ImportPoi {
 							ufficio.setApplicationId(ImportPoi.applicatinID);
 							ufficio.setRegion(regione);
 							ufficio.setName(name);
-							ufficio.setAddress(address + " " + cap + " " + comune);
+							ufficio.setAddress(address);
 							ufficio.setDescription(description);
 							ufficio.setType(type);
 							poiList.add(ufficio);
@@ -113,7 +114,10 @@ public class ImportPoi {
 		}
 		System.out.println(String.format("XMLToCSV: poi %d di %d", countVal, countTot));
 		FileWriter fileWriter = new FileWriter(ImportPoi.path + File.separator + "poi.csv");
-		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL);
+		CSVFormat csvFileFormat = CSVFormat.DEFAULT
+				.withDelimiter(';')
+				.withEscape('\\')
+				.withQuoteMode(QuoteMode.NONE);
 		CSVPrinter csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
 		csvFilePrinter.printRecord(Arrays.asList(ImportPoi.FILE_HEADER));
 		for(Poi poi : poiList) {
@@ -134,8 +138,11 @@ public class ImportPoi {
 	@Test
 	public void CSVToPoi() throws Exception {
 		List<Poi> poiList = Lists.newArrayList();
-		FileReader fileReader = new FileReader(ImportPoi.path + File.separator + "poi.csv");
-		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.ALL).withHeader(ImportPoi.FILE_HEADER);
+		FileReader fileReader = new FileReader(ImportPoi.path + File.separator + "elenco_poi_v03.csv");
+		CSVFormat csvFileFormat = CSVFormat.DEFAULT
+				.withDelimiter(';')
+				.withEscape('\\')
+				.withHeader(ImportPoi.FILE_HEADER);
 		CSVParser csvFileParser = new CSVParser(fileReader, csvFileFormat);
 		List<CSVRecord> csvRecords = csvFileParser.getRecords();
 		int count = 0;
@@ -168,13 +175,16 @@ public class ImportPoi {
 		StringRequestEntity requestEntity = new StringRequestEntity(jsonBody, "application/json", "UTF-8");
 		postMethod.setRequestEntity(requestEntity);
 		postMethod.addRequestHeader("Accept", "application/json");
-		//postMethod.addRequestHeader("X-ACCESS-TOKEN", accessToken);
+		postMethod.addRequestHeader("X-ACCESS-TOKEN", accessToken);
 		int statusCode = httpClient.executeMethod(postMethod);
 		System.out.println(String.format("CSVToPoi: http response %d", statusCode));
 	}
 
 	private String getPoiType(String name) {
 		for(String type : Const.poiTypeArray) {
+			if(type.equals("TAR")) {
+				continue;
+			}
 			if(name.toLowerCase().contains(type.toLowerCase())) {
 				return type;
 			}
