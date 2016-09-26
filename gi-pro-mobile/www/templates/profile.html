@@ -1,7 +1,7 @@
 <ion-view view-title="{{'profile' | translate}}" class="profile details">
 	<ion-nav-buttons side="right">
 		<!--<button class="button button-icon button-clear" ng-click=""></button>-->
-<!--		<button class="button button-icon button-clear" ng-class="{'ion-edit':state == 'view', 'ion-checkmark': state == 'edit'}" ng-click="edit()"></button>-->
+		<button class="button button-icon button-clear" ng-class="{'ion-edit':state == 'view', 'ion-checkmark': state == 'edit'}" ng-click="saveEdit()"></button>
 	</ion-nav-buttons>
 
 	<ion-content >
@@ -29,7 +29,7 @@
             <li class="phone">
               <i class="icon ion-android-call"></i>
               <span ng-if="state=='view'">{{profile.phone}}</span>
-                  <input ng-if="state == 'edit'" type="tel" ng-maxlength="16" ng-model="profile.phone" placeholder="{{069999999}}">
+                  <input ng-if="state == 'edit'" type="tel" ng-maxlength="16" ng-model="profile.phone" placeholder="{{069999999}}" autofocus>
             </li>
 <!--
             <li class="phone row">

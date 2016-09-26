@@ -85,6 +85,10 @@ angular.module('toga.services.login', [])
 		PushSrv.unreg();
 	}
 
+    loginService.checkUser = function(user) {
+      return !!user.phone;
+    }
+
 	loginService.register = function (username, password) {
 		var deferred = $q.defer();
 

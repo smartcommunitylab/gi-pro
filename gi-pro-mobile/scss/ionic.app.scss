@@ -550,6 +550,11 @@ input[readonly] {
 		.edit {
 			color: $calm;
 		}
+        input {
+          display: inline;
+          border-bottom: 1px solid #000;
+          height: inherit;
+        }
 	}
 	.name {
 		font-size: 20px;

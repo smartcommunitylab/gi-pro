@@ -10,6 +10,7 @@
 	"login": "Accedi",
 	"logout": "Esci",
 	"credits": "Credits",
+	"tutorial": "Tutorial",
     "problem":"Segnala un problema",
 	"cf": "Codice Fiscale",
 	"password": "Password",
@@ -90,5 +91,6 @@
     "credits_project": "Un progetto di:",
     "credits_developer": "realizzata da:",
     "credits_initiative": "su un'iniziativa di",
-    "credits_info": "Per informazioni"
+    "credits_info": "Per informazioni",
+	"profile_form_phone_empty": "Inserire il numero di telefono"
 }

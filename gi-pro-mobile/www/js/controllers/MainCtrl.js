@@ -3,7 +3,7 @@ angular.module('toga.controllers.main', [])
 /*
  * App generic controller
  */
-.controller('AppCtrl', function ($scope, $rootScope, $state, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login) {
+.controller('AppCtrl', function ($scope, $rootScope, $state, $location, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login) {
 	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot) {
 		var options = {
 			disableAnimate: false,
@@ -178,13 +178,18 @@ angular.module('toga.controllers.main', [])
 	$scope.logout = function () {
 		$timeout(function () {
 			Login.logout();
+			/*
 			$ionicHistory.nextViewOptions({
 				historyRoot: true,
 				disableBack: true
 			});
 			$state.go('app.login');
+			window.location.href = '/';
+			*/
+			$location.path('/');
+			window.location.reload(true);
 		});
-	}
+	};
 })
 
 /*

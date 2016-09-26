@@ -219,6 +219,18 @@ angular.module('toga', [
 			}
 		}
 	})
+	.state('app.initprofile', {
+		url: '/initprofile',
+		params: {
+			'firstRun': true
+		},
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/profile.html',
+				controller: 'ProfileCtrl'
+			}
+		}
+	})
 
 	.state('app.credits', {
 		url: '/credits',
@@ -268,6 +280,12 @@ angular.module('toga', [
 			return '/app/login';
 		} else {
 			$injector.get('$rootScope').user = logged;
+            var Config = $injector.get('Config');
+            var checked = localStorage.getItem(Config.getUserVarProfileCheck());
+            logged.phone = '';
+            if ('true' != checked && !Login.checkUser(logged)) {
+              return '/app/initprofile';
+            }
 			Login.updateUser().then(function () {}, function (errCode) {
 				if (errCode == Login.USER_ERRORS.NO_USER) {
 					Login.logout();

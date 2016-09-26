@@ -10234,6 +10234,11 @@ input[readonly] {
 .profile .contacts .edit {
   color: #10406f; }
 
+.profile .contacts input {
+  display: inline;
+  border-bottom: 1px solid #000;
+  height: inherit; }
+
 .profile .name {
   font-size: 20px;
   font-weight: 500;
