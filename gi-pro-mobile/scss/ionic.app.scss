@@ -230,9 +230,28 @@ input[readonly] {
 		height: 100%;
 	}
 	.card {
+		.item {
+			padding: 10px;
+			h2 {
+				margin-bottom: 5px;
+			}
+			h3 {
+				margin: auto;
+			}
+		}
 		.icon {
 			margin-right: 7px;
 			font-size: 20px;
+		}
+		.badge {
+			top: auto;
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+			.icon {
+				margin-right: 4px;
+				font-size: 16px;
+			}
 		}
 	}
 }
@@ -425,8 +444,13 @@ input[readonly] {
 .login,
 .registration {
 	text-align: center;
-	.registration {
-		margin-top: 20px;
+	.item-checkbox {
+		font-size: 14px;
+		border: none;
+		.item-content {
+			text-align: left;
+			white-space: normal;
+		}
 	}
 }
 
@@ -436,14 +460,10 @@ input[readonly] {
 
 .profile {
 	.profile-image-container {
-		min-width: 100px;
-		width: 100px;
-		min-height: 100px;
-		height: 100px;
 		display: block;
 		.profile-image {
 			img {
-				width: 100px;
+				width: 100%;
 				height: auto;
 			}
 		}
@@ -474,6 +494,13 @@ input[readonly] {
 		}
 		span {}
 	}
+    .contacts {
+      .row {padding: 0;}
+      .col {padding: 0;}
+      .edit {
+        color: $calm;
+      }
+    }
 	.name {
 		font-size: 20px;
 		font-weight: 500;
@@ -490,74 +517,64 @@ input[readonly] {
 		color: $dark;
 	}
 }
-
 .matches {
-  padding-top: 20px;
-
-  span{
-    font-weight: bold;
-    color: $t_darkwine;
-  }
+	padding-top: 20px;
+	span {
+		font-weight: bold;
+		color: $t_darkwine;
+	}
 }
 
+/*
+ * CREDITS
+ */
+
 .credits {
-  .center {
-    text-align: center;
-  }
-
-  .credits_title {
-    text-align: center;
-    color: $t_darkwine;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-
-  .bg-image {
-    background-color: $t_lightwine;
-  }
-
-  .credits_subtitle {
-      margin-top: 20px !important;
-      text-align: center;
-      color: $t_darkwine;
-      font-size: 18px;
-      font-weight: bold;
-  }
-
-  .credits_row {
-      padding: 0;
-      margin-bottom: 10px;
-
-    .col {
-      text-align: center;
-    }
-  }
-
-  .credits_row.last {
-      margin-bottom: 20px;
-  }
-
-  .credits_row.version {
-      color: $t_wine;
-      text-transform: uppercase;
-  }
-
-  .credits_row.version .col {
-      font-size: 12px;
-      line-height: 12px;
-  }
-
-  .credits_mail {
-      color: black;
-      font-size: 14px;
-      font-weight: normal;
-  }
-
-  .credits_version {
-      text-align: center;
-  }
-
-
+	.center {
+		text-align: center;
+	}
+	.credits_title {
+		text-align: center;
+		color: $t_darkwine;
+		font-size: 24px;
+		font-weight: bold;
+		margin-top: 20px;
+		margin-bottom: 10px;
+	}
+	.bg-image {
+		background-color: $t_lightwine;
+	}
+	.credits_subtitle {
+		margin-top: 20px !important;
+		text-align: center;
+		color: $t_darkwine;
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.credits_row {
+		padding: 0;
+		margin-bottom: 10px;
+		.col {
+			text-align: center;
+		}
+	}
+	.credits_row.last {
+		margin-bottom: 20px;
+	}
+	.credits_row.version {
+		color: $t_wine;
+		text-transform: uppercase;
+	}
+	.credits_row.version .col {
+		font-size: 12px;
+		line-height: 12px;
+	}
+	.credits_mail {
+		color: black;
+		font-size: 14px;
+		font-weight: normal;
+	}
+	.credits_version {
+		text-align: center;
+	}
 }

@@ -7,6 +7,8 @@ angular.module('toga.services.config', [])
 	configService.APPLICATION_ID = CONF.APPLICATION_ID;
 	configService.SENDER_ID = CONF.SENDER_ID;
 
+    configService.PROBLEMLINK = "mailto:tecnotoga@smartcommunitylab.it?subject=TECNOTOGA:%20segnalazione%20problema";
+
 	var HTTP_CONFIG = {
 		timeout: 50000,
 		headers: {
@@ -23,7 +25,17 @@ angular.module('toga.services.config', [])
 		return conf;
 	}
 
-	configService.getUserVarToken = function () {
+
+	$rootScope.generateImageUrl = function (relUrl) {
+		if (!relUrl) {
+			return 'img/userph.png';
+		}
+
+		return configService.SERVER_URL + '/image/' + configService.APPLICATION_ID + relUrl + '?token=' + localStorage.getItem(configService.getUserVarToken());
+		//+ '&ts=' + new Date().getTime()
+	};
+
+    configService.getUserVarToken = function () {
 		return 'toga-app-usertoken-' + configService.APPLICATION_ID;
 	}
 	configService.getUserVar = function () {
@@ -35,14 +47,9 @@ angular.module('toga.services.config', [])
 
 	configService.SERVICE_TYPE = 'sostituzione';
 
-	$rootScope.generateImageUrl = function (relUrl) {
-		if (!relUrl) {
-			return 'img/userph.png';
-		}
-
-		return configService.SERVER_URL + '/image/' + configService.APPLICATION_ID + relUrl + '?token=' + localStorage.getItem(configService.getUserVarToken());
-		//+ '&ts=' + new Date().getTime()
-	};
+    $rootScope.problemLink = function () {
+      return configService.PROBLEMLINK;
+    };
 
 	return configService;
 });

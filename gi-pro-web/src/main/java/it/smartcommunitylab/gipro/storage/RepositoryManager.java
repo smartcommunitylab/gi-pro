@@ -501,9 +501,9 @@ public class RepositoryManager {
 				new Criteria("startTime").lte(new Date(timeTo))
 			);
 		} else if(timeFrom != null) {
-			timeCriteria = new Criteria().andOperator(new Criteria("startTime").lte(new Date(timeFrom)));
+			timeCriteria = new Criteria().andOperator(new Criteria("startTime").gte(new Date(timeFrom)));
 		} else if(timeTo != null) {
-			timeCriteria = new Criteria().andOperator(new Criteria("startTime").gte(new Date(timeTo)));
+			timeCriteria = new Criteria().andOperator(new Criteria("startTime").lte(new Date(timeTo)));
 		}
 		if (withTime == null) {
 			if(timeCriteria != null) {
