@@ -202,7 +202,6 @@ angular.module('toga.controllers.main', [])
 	$scope.options = {};
 
 	$scope.endTutorial = function () {
-		//StorageSrv.setTutorialDone();
-		$scope.goTo('app.home', {}, true);
+		$scope.goTo('app.login', {});
 	};
 });

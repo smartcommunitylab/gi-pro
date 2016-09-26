@@ -277,7 +277,7 @@ angular.module('toga', [
 		var Login = $injector.get('Login');
 		var logged = Login.getUser();
 		if (!logged) {
-			return '/app/login';
+			return '/app/tutorial';
 		} else {
 			$injector.get('$rootScope').user = logged;
             var Config = $injector.get('Config');
@@ -289,7 +289,7 @@ angular.module('toga', [
 			Login.updateUser().then(function () {}, function (errCode) {
 				if (errCode == Login.USER_ERRORS.NO_USER) {
 					Login.logout();
-					$injector.get('$state').go('app.login', {});
+					$injector.get('$state').go('app.tutorial', {});
 				}
 			});
 
