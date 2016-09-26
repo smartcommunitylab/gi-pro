@@ -16,9 +16,6 @@ $dark:                            #444 !default;
 */
 
 // Custom colors
-$t_darkblue: #652648;
-$t_blue: #8a567a;
-$t_lightblue: #b99aaf;
 $t_blue: #1f6ca5;
 $t_darkblue: #10406f;
 $t_lightblue: #1bafe6;
@@ -230,6 +227,41 @@ input[readonly] {
 	border-width: 0px 0px 3px 0px !important;
 	/*border-color: $t_lightblue;*/
 	border-color: white;
+}
+
+/*
+ * TUTORIAL
+ */
+
+.tutorial {
+	background-color: $t_darkblue;
+}
+.tutorial .title {
+	height: 10%;
+	color: white;
+	text-transform: uppercase;
+	text-align: center;
+	font-size: larger;
+}
+.tutorial ion-slides {
+	height: 70%;
+}
+.tutorial ion-slides .swiper-slide {
+	text-align: center;
+}
+.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet {
+	width: 14px;
+	height: 14px;
+	border: 1px solid $t_blue;
+	background: transparent;
+	opacity: 1;
+}
+.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
+	background: $t_blue;
+}
+.tutorial .tutorial-footer {
+	height: 20%;
+	background-color: $t_darkblue;
 }
 
 /*

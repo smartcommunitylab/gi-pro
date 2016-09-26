@@ -33,9 +33,9 @@ angular.module('toga', [
 		}
 	});
 
-  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
-    PushSrv.fgOf();
-  });
+	$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
+		PushSrv.fgOf();
+	});
 })
 
 
@@ -49,7 +49,7 @@ angular.module('toga', [
 	$ionicConfigProvider.tabs.style('striped');
 	$ionicConfigProvider.backButton.previousTitleText(false).text('');
 
-//  	$ionicConfigProvider.navBar.alignTitle('left');
+	//  	$ionicConfigProvider.navBar.alignTitle('left');
 
 	//$translateProvider.translations('it', {});
 	$translateProvider.preferredLanguage('it');
@@ -93,6 +93,16 @@ angular.module('toga', [
 		abstract: true,
 		templateUrl: 'templates/menu.html',
 		controller: 'AppCtrl'
+	})
+
+	.state('app.tutorial', {
+		url: '/tutorial',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/tutorial.html',
+				controller: 'TutorialCtrl'
+			}
+		}
 	})
 
 	.state('app.home', {

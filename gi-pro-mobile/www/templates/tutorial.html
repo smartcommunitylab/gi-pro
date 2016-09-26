@@ -1,0 +1,25 @@
+<ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="tutorial">
+	<ion-content scroll="false">
+		<div class="row row-center title">
+			<div class="col">
+				{{'app' | translate}}
+			</div>
+		</div>
+		<ion-slides options="options" slider="data.slider">
+			<ion-slide-page>
+				<img src="http://placekitten.com/150/300" />
+			</ion-slide-page>
+			<ion-slide-page>
+				<img src="http://placekitten.com/250/300" />
+			</ion-slide-page>
+			<ion-slide-page>
+				<img src="http://placekitten.com/200/250" />
+			</ion-slide-page>
+		</ion-slides>
+		<div class="row row-center tutorial-footer">
+			<div class="col col-offset-25 col-50">
+				<button class="button button-block button-energized" ng-click="login()">{{'login' | translate}}</button>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

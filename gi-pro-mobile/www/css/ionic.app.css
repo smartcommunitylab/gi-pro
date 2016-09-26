@@ -9982,6 +9982,39 @@ input[readonly] {
   border-color: white; }
 
 /*
+ * TUTORIAL
+ */
+.tutorial {
+  background-color: #10406f; }
+
+.tutorial .title {
+  height: 10%;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: larger; }
+
+.tutorial ion-slides {
+  height: 70%; }
+
+.tutorial ion-slides .swiper-slide {
+  text-align: center; }
+
+.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #1f6ca5;
+  background: transparent;
+  opacity: 1; }
+
+.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
+  background: #1f6ca5; }
+
+.tutorial .tutorial-footer {
+  height: 20%;
+  background-color: #10406f; }
+
+/*
  * HOME
  */
 .home .scroll-view {

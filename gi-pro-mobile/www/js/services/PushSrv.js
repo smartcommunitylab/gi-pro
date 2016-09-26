@@ -81,7 +81,8 @@ angular.module('toga.services.push', [])
 			push = PushNotification.init({
 				android: {
 					senderID: Config.SENDER_ID,
-					icon: 'icon'
+					icon: 'notification',
+					iconColor: '#1f6ca5'
 				},
 				ios: {
 					alert: true,
