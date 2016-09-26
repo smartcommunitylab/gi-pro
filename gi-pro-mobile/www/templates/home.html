@@ -4,7 +4,7 @@
 		<button class="button button-icon button-clear ion-ios-bell" ng-click="goTo('app.notifications', {}, true, true, true)"></button>
 	</ion-nav-buttons>
 
-	<ion-tabs class="tabs-royal">
+	<ion-tabs class="tabs-calm">
 		<ion-tab title="{{'home_tab_1' | translate}}">
 			<ion-pane>
 				<ion-content>
@@ -13,14 +13,14 @@
 						<div class="item item-text-wrap">
 							<h2>{{request.poi.name}}</h2>
 							<h3><i class="icon ion-calendar"></i>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
-							<span class="badge badge-calm" ng-if="!!requestsNotifications[request.objectId]">
+							<span class="badge badge-energized" ng-if="!!requestsNotifications[request.objectId]">
 								<i class="icon ion-ios-bell"></i>
 								{{requestsNotifications[request.objectId].length}}
 							</span>
 						</div>
 					</div>
 				</ion-content>
-				<button class="button button-calm button-fab" ng-click="goTo('app.newrequest')">
+				<button class="button button-energized button-fab" ng-click="goTo('app.newrequest')">
 					<i class="icon ion-plus"></i>
 				</button>
 			</ion-pane>
@@ -36,14 +36,14 @@
 							<h3 ng-if="!!offer.startTime && !!offer.endTime">
 									<i class="icon ion-clock"></i>{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}
 							</h3>
-							<span class="badge badge-calm" ng-if="!!offersNotifications[offer.objectId]">
+							<span class="badge badge-energized" ng-if="!!offersNotifications[offer.objectId]">
 								<i class="icon ion-ios-bell"></i>
 								{{offersNotifications[offer.objectId].length}}
 							</span>
 						</div>
 					</div>
 				</ion-content>
-				<button class="button button-calm button-fab" ng-click="goTo('app.newoffer')">
+				<button class="button button-energized button-fab" ng-click="goTo('app.newoffer')">
 					<i class="icon ion-plus"></i>
 				</button>
 			</ion-pane>

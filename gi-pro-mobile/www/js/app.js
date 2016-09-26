@@ -241,7 +241,7 @@ angular.module('toga', [
 		}
 	});
 
-	// if none of the above states are matched, use this as the fallback
+	// if none of the above states are matched, use this as the fallback$state
 	$urlRouterProvider.otherwise(function ($injector) {
 		//var StorageSrv = $injector.get('StorageSrv');
 		//var $rootScope = $injector.get('$rootScope');
@@ -252,16 +252,16 @@ angular.module('toga', [
 		    return '/app/profilo';
 		}
 		*/
-		var LoginSrv = $injector.get('Login');
-		var logged = LoginSrv.getUser();
+		var Login = $injector.get('Login');
+		var logged = Login.getUser();
 		if (!logged) {
 			return '/app/login';
 		} else {
 			$injector.get('$rootScope').user = logged;
-			LoginSrv.updateUser().then(function () {}, function (errCode) {
-				if (errCode == LoginSrv.USER_ERRORS.NO_USER) {
-					LoginSrv.logout();
-					$scope.goTo('app.login', {}, false, true, true);
+			Login.updateUser().then(function () {}, function (errCode) {
+				if (errCode == Login.USER_ERRORS.NO_USER) {
+					Login.logout();
+					$injector.get('$state').go('app.login', {});
 				}
 			});
 

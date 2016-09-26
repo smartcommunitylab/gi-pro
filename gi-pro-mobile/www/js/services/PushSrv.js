@@ -74,10 +74,14 @@ angular.module('toga.services.push', [])
 				return;
 			}
 
-			if (!PushNotification) return;
+			if (!PushNotification) {
+				return;
+			}
+
 			push = PushNotification.init({
 				android: {
-					senderID: Config.SENDER_ID
+					senderID: Config.SENDER_ID,
+					icon: 'icon'
 				},
 				ios: {
 					alert: true,
