@@ -5,6 +5,11 @@ angular.module('toga.controllers.login', [])
 
 	$scope.login = function () {
 		Utils.loading();
+
+		if (!!$scope.user.cf) {
+			$scope.user.cf = $scope.user.cf.toUpperCase();
+		}
+
 		Login.login($scope.user.cf, $scope.user.pwd).then(function () {
 			$ionicHistory.nextViewOptions({
 				historyRoot: true,
@@ -59,6 +64,11 @@ angular.module('toga.controllers.login', [])
 		console.log($scope.registration);
 
 		Utils.loading();
+
+		if (!!$scope.registration.cf) {
+			$scope.registration.cf = $scope.registration.cf.toUpperCase();
+		}
+
 		Login.register($scope.registration.cf, $scope.registration.pwd).then(
 			function () {
 				Utils.toast($filter('translate')('register_done'));

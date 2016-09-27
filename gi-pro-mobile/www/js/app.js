@@ -8,6 +8,7 @@ angular.module('toga', [
 	'toga.services.login',
 	'toga.services.config',
 	'toga.services.push',
+	'toga.services.notifications',
 	'pascalprecht.translate',
 	'toga.services.data',
 	'toga.controllers.main',
@@ -33,9 +34,9 @@ angular.module('toga', [
 		}
 	});
 
-  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
-    PushSrv.fgOf();
-  });
+	$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
+		PushSrv.fgOf();
+	});
 })
 
 
@@ -49,7 +50,7 @@ angular.module('toga', [
 	$ionicConfigProvider.tabs.style('striped');
 	$ionicConfigProvider.backButton.previousTitleText(false).text('');
 
-//  	$ionicConfigProvider.navBar.alignTitle('left');
+	//  	$ionicConfigProvider.navBar.alignTitle('left');
 
 	//$translateProvider.translations('it', {});
 	$translateProvider.preferredLanguage('it');
@@ -93,6 +94,16 @@ angular.module('toga', [
 		abstract: true,
 		templateUrl: 'templates/menu.html',
 		controller: 'AppCtrl'
+	})
+
+	.state('app.tutorial', {
+		url: '/tutorial',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/tutorial.html',
+				controller: 'TutorialCtrl'
+			}
+		}
 	})
 
 	.state('app.home', {
@@ -209,6 +220,18 @@ angular.module('toga', [
 			}
 		}
 	})
+	.state('app.initprofile', {
+		url: '/initprofile',
+		params: {
+			'firstRun': true
+		},
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/profile.html',
+				controller: 'ProfileCtrl'
+			}
+		}
+	})
 
 	.state('app.credits', {
 		url: '/credits',
@@ -241,7 +264,7 @@ angular.module('toga', [
 		}
 	});
 
-	// if none of the above states are matched, use this as the fallback
+	// if none of the above states are matched, use this as the fallback$state
 	$urlRouterProvider.otherwise(function ($injector) {
 		//var StorageSrv = $injector.get('StorageSrv');
 		//var $rootScope = $injector.get('$rootScope');
@@ -252,16 +275,21 @@ angular.module('toga', [
 		    return '/app/profilo';
 		}
 		*/
-		var LoginSrv = $injector.get('Login');
-		var logged = LoginSrv.getUser();
+		var Login = $injector.get('Login');
+		var logged = Login.getUser();
 		if (!logged) {
-			return '/app/login';
+			return '/app/tutorial';
 		} else {
 			$injector.get('$rootScope').user = logged;
-			LoginSrv.updateUser().then(function () {}, function (errCode) {
-				if (errCode == LoginSrv.USER_ERRORS.NO_USER) {
-					LoginSrv.logout();
-					$scope.goTo('app.login', {}, false, true, true);
+            var Config = $injector.get('Config');
+            var checked = localStorage.getItem(Config.getUserVarProfileCheck());
+            if ('true' != checked && !Login.checkUser(logged)) {
+              return '/app/initprofile';
+            }
+			Login.updateUser().then(function () {}, function (errCode) {
+				if (errCode == Login.USER_ERRORS.NO_USER) {
+					Login.logout();
+					$injector.get('$state').go('app.tutorial', {});
 				}
 			});
 

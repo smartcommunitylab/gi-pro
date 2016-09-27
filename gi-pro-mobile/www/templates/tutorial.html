@@ -1,0 +1,56 @@
+<ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="tutorial">
+	<ion-content scroll="false">
+		<div class="row row-center title">
+			<div class="col">
+				{{'app' | translate}}
+			</div>
+		</div>
+		<ion-slides options="options" slider="data.slider">
+			<ion-slide-page class="padding">
+				<div class="description">{{'tutorial_offers' | translate}}</div>
+				<div class="row row-center">
+					<div class="col col-80 col-offset-10">
+						<img src="img/tutorial/offers.png" />
+					</div>
+				</div>
+			</ion-slide-page>
+			<ion-slide-page class="padding">
+				<div class="description">{{'tutorial_search' | translate}}</div>
+				<div class="row row-center">
+					<div class="col col-80 col-offset-10">
+						<img src="img/tutorial/search.png" />
+					</div>
+				</div>
+			</ion-slide-page>
+			<ion-slide-page class="padding">
+				<div class="description">{{'tutorial_requests' | translate}}</div>
+				<div class="row row-center">
+					<div class="col col-80 col-offset-10">
+						<img src="img/tutorial/requests.png" />
+					</div>
+				</div>
+			</ion-slide-page>
+			<ion-slide-page class="padding">
+				<div class="description">{{'tutorial_details' | translate}}</div>
+				<div class="row row-center">
+					<div class="col col-80 col-offset-10">
+						<img src="img/tutorial/details.png" />
+					</div>
+				</div>
+			</ion-slide-page>
+			<ion-slide-page class="padding">
+				<div class="description">{{'tutorial_functions' | translate}}</div>
+				<div class="row row-center">
+					<div class="col col-80 col-offset-10">
+						<img src="img/tutorial/functions.png" />
+					</div>
+				</div>
+			</ion-slide-page>
+		</ion-slides>
+		<div class="row row-center tutorial-footer">
+			<div class="col col-offset-25 col-50">
+				<button class="button button-block button-energized" ng-click="endTutorial()">{{'login' | translate}}</button>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

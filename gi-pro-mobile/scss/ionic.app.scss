@@ -16,13 +16,15 @@ $dark:                            #444 !default;
 */
 
 // Custom colors
-$t_blue: #4e7499;
-$t_darkwine: #652648;
-$t_wine: #8a567a;
-$t_lightwine: #b99aaf;
+$t_blue: #1f6ca5;
+$t_darkblue: #10406f;
+$t_lightblue: #1bafe6;
+$t_orange: #d75719;
+$t_red: #d7193a;
 // Ionic overrides
-$royal: $t_wine !default;
-$calm: $t_blue !default;
+$calm: $t_darkblue !default;
+$energized: $t_orange !default;
+$assertive: $t_red !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
@@ -32,89 +34,92 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .toga-app .ionic_datepicker_popup {
 	.today {
-		border: 1px solid $t_wine;
+		border: 1px solid $t_blue;
 		/*border-radius: 50%;*/
 	}
 	.selected_date {
-		background-color: $t_wine;
+		background-color: $t_blue;
 		/*border-radius: 50%;*/
 		color: #ffffff;
 		/*font-weight: bold;*/
 	}
 	.popup-head {
-		background-color: $t_wine;
+		background-color: $t_blue;
 		/*display: none;*/
 	}
 	.popup-body {
 		.selected_date_full {
-			background-color: $t_wine;
+			background-color: $t_blue;
 		}
 		.month_select,
 		.year_select {
 			/*border: none;*/
-			border-bottom: 1px solid $t_wine;
+			border-bottom: 1px solid $t_blue;
 			/*padding: 0;*/
 		}
 		.month_select:after,
 		.year_select:after {
 			/*right: 5px;*/
-			color: $t_wine;
+			color: $t_blue;
 		}
 		.button-clear {
-			color: $t_wine;
+			color: $t_blue;
 		}
 	}
 	.popup-buttons button {
-		background-color: $t_blue;
+		background-color: $t_orange;
 		/*border-radius: 0;
 		margin-right: 1px;*/
 		color: #ffffff;
 	}
 }
+
 .toga-app .ionic_datepicker_modal {
 	.header,
 	.footer {
-		background-color: $t_wine;
+		background-color: $t_blue;
 		.title,
 		.button {
 			color: #ffffff;
 		}
 	}
 	.today {
-		border: 1px solid $t_wine;
+		border: 1px solid $t_blue;
 	}
 	.selected_date {
-		background-color: $t_wine;
+		background-color: $t_blue;
 		color: #fff;
 		/*font-weight: bold;*/
 	}
 	.button-clear {
-		color: $t_wine;
+		color: $t_blue;
 	}
 	.month_select,
 	.year_select {
 		/*border: none;*/
-		border-bottom: 1px solid $t_wine;
+		border-bottom: 1px solid $t_blue;
 		/*padding: 0;*/
 	}
 	.month_select:after,
 	.year_select:after {
 		/*right: 5px;*/
-		color: $t_wine;
+		color: $t_blue;
 	}
 }
+
 .toga-app .ionic_timepicker_popup {
 	.popup-body {
 		.heading {
-			background-color: $t_wine;
+			background-color: $t_blue;
 		}
 	}
 	.popup-buttons {
 		.button {
-			background-color: $t_blue;
+			background-color: $t_orange;
 		}
 	}
 }
+
 
 /* Buttons */
 
@@ -131,16 +136,19 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 	box-shadow: 2px 2px 2px #c8c8c8;
 }
 
+
 /* Form */
 
 input[readonly] {
 	background-color: transparent !important;
 }
+
 .input-label,
 .item-toggle {
 	/*color: black;*/
 	font-weight: bold;
 }
+
 .item-stacked-label {
 	border: 0;
 	.input-value {
@@ -152,9 +160,11 @@ input[readonly] {
 		color: gray;
 	}
 }
+
 .item-toggle {
 	border: 0;
 }
+
 
 /* Footer */
 
@@ -174,52 +184,113 @@ input[readonly] {
 	}
 }
 
+
 /* Menu */
 
 .menu {
-	background-color: $t_darkwine;
+	background-color: $t_blue;
 	.list {
 		.item {
 			color: white;
 			border-color: transparent;
-			background-color: $t_darkwine;
+			background-color: $t_blue;
 		}
 		.item.item-complex .item-content {
 			background-color: transparent;
 		}
 		.item.active {
-			background-color: $t_wine;
+			background-color: $t_darkblue;
 		}
 	}
 }
 
+
 /* Tabs */
+
+.tabs {
+	/*box-shadow: 0px 4px 10px 0px gray;*/
+}
 
 .tab-item {
 	/*opacity: 1;*/
 	text-transform: uppercase;
 	font-weight: bold;
 }
+
 .tab-item.tab-item-active,
 .tab-item.active,
 .tab-item.activated {
-	color: $t_darkwine !important;
-	/*color: $t_lightwine !important;*/
+	/*color: $t_lightblue !important;*/
+	color: white !important;
 }
+
 .tabs-striped .tabs {
-	border-color: transparent;
+	/*border-color: transparent;*/
+	border-color: $t_darkblue;
 }
+
 .tabs-top.tabs-striped .tab-item {
 	max-width: none;
+	margin-top: 0px;
 	color: white;
 }
+
 .tabs-top.tabs-striped .tab-item.tab-item-active,
 .tabs-top.tabs-striped .tab-item.active,
 .tabs-top.tabs-striped .tab-item.activated {
+	margin-top: 0px;
 	border-width: 0px 0px 3px 0px !important;
-	border-color: $t_darkwine;
-	/*border-color: $t_lightwine;*/
+	/*border-color: $t_lightblue;*/
+	border-color: white;
 }
+
+
+/*
+ * TUTORIAL
+ */
+
+.tutorial {
+	background-color: $t_darkblue;
+}
+
+.tutorial .title {
+	height: 10%;
+	color: white;
+	text-transform: uppercase;
+	text-align: center;
+	font-size: larger;
+}
+
+.tutorial ion-slides {
+	height: 70%;
+}
+.tutorial ion-slides img {
+	border: 2px solid white;
+}
+.tutorial ion-slides .description {
+	color: white;
+	font-size: 16px;
+}
+.tutorial ion-slides .swiper-slide {
+	text-align: center;
+}
+.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet {
+	width: 14px;
+	height: 14px;
+	border: 1px solid white;
+	background: transparent;
+	opacity: 1;
+}
+
+.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
+	background: white;
+}
+
+.tutorial .tutorial-footer {
+	height: 20%;
+	background-color: $t_darkblue;
+}
+
 
 /*
  * HOME
@@ -256,6 +327,7 @@ input[readonly] {
 	}
 }
 
+
 /*
  * DETAILS
  */
@@ -265,7 +337,7 @@ input[readonly] {
 	a:hover,
 	a:active,
 	a:visited {
-		color: $t_blue;
+		color: $t_orange;
 	}
 	.datetime {
 		padding: 10px 0;
@@ -279,7 +351,7 @@ input[readonly] {
 	.professional {
 		margin-bottom: 10px;
 		padding-bottom: 20px;
-		border-bottom: 2px solid $t_wine;
+		border-bottom: 2px solid $t_blue;
 		.item {
 			margin-bottom: 20px;
 			border: none;
@@ -337,6 +409,7 @@ input[readonly] {
 		}
 	}
 }
+
 .card {
 	ul {
 		padding-top: 5px;
@@ -357,6 +430,19 @@ input[readonly] {
 	}
 }
 
+
+/*
+ * NOTIFICATIONS
+ */
+
+.notifications .notification.unread {
+	h2,
+	h3 {
+		font-weight: bold;
+	}
+}
+
+
 /*
  * SEARCH
  */
@@ -367,6 +453,7 @@ input[readonly] {
 		padding: 0;
 	}
 }
+
 .searchresults {
 	p {
 		margin: 0;
@@ -389,6 +476,7 @@ input[readonly] {
 	}
 }
 
+
 /*
  * FORMS
  */
@@ -400,6 +488,7 @@ input[readonly] {
 		padding: 0;
 	}
 }
+
 
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS
@@ -419,10 +508,11 @@ input[readonly] {
 			}
 		}
 	}
-	.list-container > .list {
+	.list-container>.list {
 		margin-top: 5px;
 	}
 }
+
 .popup-types,
 .popup-regions {
 	.popup-head {
@@ -436,6 +526,7 @@ input[readonly] {
 		white-space: normal;
 	}
 }
+
 
 /*
  * LOGIN AND REGISTRATION
@@ -452,7 +543,11 @@ input[readonly] {
 			white-space: normal;
 		}
 	}
+	/*.item-input-cf input {
+		text-transform: uppercase;
+	}*/
 }
+
 
 /*
  * PROFILE
@@ -494,13 +589,22 @@ input[readonly] {
 		}
 		span {}
 	}
-    .contacts {
-      .row {padding: 0;}
-      .col {padding: 0;}
-      .edit {
-        color: $calm;
-      }
-    }
+	.contacts {
+		.row {
+			padding: 0;
+		}
+		.col {
+			padding: 0;
+		}
+		.edit {
+			color: $calm;
+		}
+		input {
+			display: inline;
+			border-bottom: 1px solid #000;
+			height: inherit;
+		}
+	}
 	.name {
 		font-size: 20px;
 		font-weight: 500;
@@ -517,13 +621,15 @@ input[readonly] {
 		color: $dark;
 	}
 }
+
 .matches {
 	padding-top: 20px;
 	span {
 		font-weight: bold;
-		color: $t_darkwine;
+		color: $t_darkblue;
 	}
 }
+
 
 /*
  * CREDITS
@@ -535,19 +641,19 @@ input[readonly] {
 	}
 	.credits_title {
 		text-align: center;
-		color: $t_darkwine;
+		color: $t_darkblue;
 		font-size: 24px;
 		font-weight: bold;
 		margin-top: 20px;
 		margin-bottom: 10px;
 	}
 	.bg-image {
-		background-color: $t_lightwine;
+		background-color: $t_lightblue;
 	}
 	.credits_subtitle {
 		margin-top: 20px !important;
 		text-align: center;
-		color: $t_darkwine;
+		color: $t_darkblue;
 		font-size: 18px;
 		font-weight: bold;
 	}
@@ -562,7 +668,7 @@ input[readonly] {
 		margin-bottom: 20px;
 	}
 	.credits_row.version {
-		color: $t_wine;
+		color: $t_blue;
 		text-transform: uppercase;
 	}
 	.credits_row.version .col {

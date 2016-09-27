@@ -10,6 +10,7 @@
 	"login": "Accedi",
 	"logout": "Esci",
 	"credits": "Credits",
+	"tutorial": "Tutorial",
     "problem":"Segnala un problema",
 	"cf": "Codice Fiscale",
 	"password": "Password",
@@ -90,5 +91,13 @@
     "credits_project": "Un progetto di:",
     "credits_developer": "realizzata da:",
     "credits_initiative": "su un'iniziativa di",
-    "credits_info": "Per informazioni"
+    "credits_info": "Per informazioni",
+	"profile_form_phone_empty": "Inserire il numero di telefono",
+    "offer_not_exist": "Offerta di sostituzione non esiste",
+    "request_not_exist": "Richiesta di sostituzione non esiste",
+	"tutorial_offers": "Inserisci le tue disponibilità di sostituzione udienza per i diversi Tribunali",
+	"tutorial_search": "Verifica le offerte di disponibilità di sostituzione udienza inserite dai tuoi colleghi",
+	"tutorial_requests": "Inserisci le tue richieste di sostituzione udienza",
+	"tutorial_details": "Contatta direttamente il collega",
+	"tutorial_functions": "Accedi alle funzionalità dell'app"
 }

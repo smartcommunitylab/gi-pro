@@ -3,7 +3,7 @@ angular.module('toga.controllers.main', [])
 /*
  * App generic controller
  */
-.controller('AppCtrl', function ($scope, $rootScope, $state, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login) {
+.controller('AppCtrl', function ($scope, $rootScope, $state, $location, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login) {
 	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot) {
 		var options = {
 			disableAnimate: false,
@@ -157,7 +157,7 @@ angular.module('toga.controllers.main', [])
 		$scope.pois = null;
 
 		if (angular.isFunction($scope.getSelectedPoi) && !!$scope.search.poi) {
-            Prefs.lastPOI($scope.search.poi);
+			Prefs.lastPOI($scope.search.poi);
 			$scope.poisModal.hide().then($scope.getSelectedPoi($scope.search.poi));
 		} else {
 			$scope.poisModal.hide();
@@ -175,14 +175,33 @@ angular.module('toga.controllers.main', [])
 	// Execute action on remove modal
 	$scope.$on('modal.removed', function () {});
 
-    $scope.logout = function() {
-      $timeout(function(){
-        Login.logout();
-        $ionicHistory.nextViewOptions({
-          historyRoot: true,
-          disableBack: true
-        });
-        $state.go('app.login');
-      });
-    }
+	$scope.logout = function () {
+		$timeout(function () {
+			Login.logout();
+			/*
+			$ionicHistory.nextViewOptions({
+				historyRoot: true,
+				disableBack: true
+			});
+			$state.go('app.login');
+			window.location.href = '/';
+			*/
+			$location.path('/');
+			window.location.reload(true);
+		});
+	};
+})
+
+/*
+ * Tutorial controller
+ */
+.controller('TutorialCtrl', function ($scope, $ionicSideMenuDelegate) {
+	// disable sidemenu
+	$ionicSideMenuDelegate.canDragContent(false);
+	// ion-slides options
+	$scope.options = {};
+
+	$scope.endTutorial = function () {
+		$scope.goTo('app.login', {});
+	};
 });
