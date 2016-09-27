@@ -264,21 +264,26 @@ input[readonly] {
 .tutorial ion-slides {
 	height: 70%;
 }
-
+.tutorial ion-slides img {
+	border: 2px solid white;
+}
+.tutorial ion-slides .description {
+	color: white;
+	font-size: 16px;
+}
 .tutorial ion-slides .swiper-slide {
 	text-align: center;
 }
-
 .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet {
 	width: 14px;
 	height: 14px;
-	border: 1px solid $t_blue;
+	border: 1px solid white;
 	background: transparent;
 	opacity: 1;
 }
 
 .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
-	background: $t_blue;
+	background: white;
 }
 
 .tutorial .tutorial-footer {
