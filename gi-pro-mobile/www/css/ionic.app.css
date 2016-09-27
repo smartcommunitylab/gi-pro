@@ -10119,6 +10119,13 @@ input[readonly] {
     font-size: larger; }
 
 /*
+ * NOTIFICATIONS
+ */
+.notifications .notification.unread h2,
+.notifications .notification.unread h3 {
+  font-weight: bold; }
+
+/*
  * SEARCH
  */
 .search .row,

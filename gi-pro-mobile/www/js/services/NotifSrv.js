@@ -223,7 +223,7 @@ angular.module('toga.services.notifications', [])
 			text: item.text,
 			type: item.type,
 			fromUserId: item.fromUserId,
-			read: item.read
+			read: item.read === 'true'
 		}
 	}
 

@@ -73,6 +73,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		color: #ffffff;
 	}
 }
+
 .toga-app .ionic_datepicker_modal {
 	.header,
 	.footer {
@@ -105,6 +106,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		color: $t_blue;
 	}
 }
+
 .toga-app .ionic_timepicker_popup {
 	.popup-body {
 		.heading {
@@ -117,6 +119,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		}
 	}
 }
+
 
 /* Buttons */
 
@@ -133,16 +136,19 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 	box-shadow: 2px 2px 2px #c8c8c8;
 }
 
+
 /* Form */
 
 input[readonly] {
 	background-color: transparent !important;
 }
+
 .input-label,
 .item-toggle {
 	/*color: black;*/
 	font-weight: bold;
 }
+
 .item-stacked-label {
 	border: 0;
 	.input-value {
@@ -154,9 +160,11 @@ input[readonly] {
 		color: gray;
 	}
 }
+
 .item-toggle {
 	border: 0;
 }
+
 
 /* Footer */
 
@@ -175,6 +183,7 @@ input[readonly] {
 		}
 	}
 }
+
 
 /* Menu */
 
@@ -195,31 +204,37 @@ input[readonly] {
 	}
 }
 
+
 /* Tabs */
 
 .tabs {
 	/*box-shadow: 0px 4px 10px 0px gray;*/
 }
+
 .tab-item {
 	/*opacity: 1;*/
 	text-transform: uppercase;
 	font-weight: bold;
 }
+
 .tab-item.tab-item-active,
 .tab-item.active,
 .tab-item.activated {
 	/*color: $t_lightblue !important;*/
 	color: white !important;
 }
+
 .tabs-striped .tabs {
 	/*border-color: transparent;*/
 	border-color: $t_darkblue;
 }
+
 .tabs-top.tabs-striped .tab-item {
 	max-width: none;
 	margin-top: 0px;
 	color: white;
 }
+
 .tabs-top.tabs-striped .tab-item.tab-item-active,
 .tabs-top.tabs-striped .tab-item.active,
 .tabs-top.tabs-striped .tab-item.activated {
@@ -229,6 +244,7 @@ input[readonly] {
 	border-color: white;
 }
 
+
 /*
  * TUTORIAL
  */
@@ -236,6 +252,7 @@ input[readonly] {
 .tutorial {
 	background-color: $t_darkblue;
 }
+
 .tutorial .title {
 	height: 10%;
 	color: white;
@@ -243,12 +260,15 @@ input[readonly] {
 	text-align: center;
 	font-size: larger;
 }
+
 .tutorial ion-slides {
 	height: 70%;
 }
+
 .tutorial ion-slides .swiper-slide {
 	text-align: center;
 }
+
 .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet {
 	width: 14px;
 	height: 14px;
@@ -256,13 +276,16 @@ input[readonly] {
 	background: transparent;
 	opacity: 1;
 }
+
 .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
 	background: $t_blue;
 }
+
 .tutorial .tutorial-footer {
 	height: 20%;
 	background-color: $t_darkblue;
 }
+
 
 /*
  * HOME
@@ -298,6 +321,7 @@ input[readonly] {
 		}
 	}
 }
+
 
 /*
  * DETAILS
@@ -380,6 +404,7 @@ input[readonly] {
 		}
 	}
 }
+
 .card {
 	ul {
 		padding-top: 5px;
@@ -400,6 +425,19 @@ input[readonly] {
 	}
 }
 
+
+/*
+ * NOTIFICATIONS
+ */
+
+.notifications .notification.unread {
+	h2,
+	h3 {
+		font-weight: bold;
+	}
+}
+
+
 /*
  * SEARCH
  */
@@ -410,6 +448,7 @@ input[readonly] {
 		padding: 0;
 	}
 }
+
 .searchresults {
 	p {
 		margin: 0;
@@ -432,6 +471,7 @@ input[readonly] {
 	}
 }
 
+
 /*
  * FORMS
  */
@@ -443,6 +483,7 @@ input[readonly] {
 		padding: 0;
 	}
 }
+
 
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS
@@ -462,10 +503,11 @@ input[readonly] {
 			}
 		}
 	}
-	.list-container > .list {
+	.list-container>.list {
 		margin-top: 5px;
 	}
 }
+
 .popup-types,
 .popup-regions {
 	.popup-head {
@@ -479,6 +521,7 @@ input[readonly] {
 		white-space: normal;
 	}
 }
+
 
 /*
  * LOGIN AND REGISTRATION
@@ -499,6 +542,7 @@ input[readonly] {
 		text-transform: uppercase;
 	}*/
 }
+
 
 /*
  * PROFILE
@@ -550,11 +594,11 @@ input[readonly] {
 		.edit {
 			color: $calm;
 		}
-        input {
-          display: inline;
-          border-bottom: 1px solid #000;
-          height: inherit;
-        }
+		input {
+			display: inline;
+			border-bottom: 1px solid #000;
+			height: inherit;
+		}
 	}
 	.name {
 		font-size: 20px;
@@ -572,6 +616,7 @@ input[readonly] {
 		color: $dark;
 	}
 }
+
 .matches {
 	padding-top: 20px;
 	span {
@@ -579,6 +624,7 @@ input[readonly] {
 		color: $t_darkblue;
 	}
 }
+
 
 /*
  * CREDITS
