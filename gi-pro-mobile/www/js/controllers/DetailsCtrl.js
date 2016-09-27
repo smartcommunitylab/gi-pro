@@ -1,6 +1,6 @@
 angular.module('toga.controllers.details', [])
 
-.controller('RequestDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login, NotifDB) {
+.controller('RequestDetailsCtrl', function ($scope, $rootScope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login, NotifDB) {
 	$scope.request = null;
 	$scope.matchingOffers = null;
 

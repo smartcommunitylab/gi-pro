@@ -92,5 +92,7 @@
     "credits_developer": "realizzata da:",
     "credits_initiative": "su un'iniziativa di",
     "credits_info": "Per informazioni",
-	"profile_form_phone_empty": "Inserire il numero di telefono"
+	"profile_form_phone_empty": "Inserire il numero di telefono",
+    "offer_not_exist": "Offerta di sostituzione non esiste",
+    "request_not_exist": "Richiesta di sostituzione non esiste"
 }

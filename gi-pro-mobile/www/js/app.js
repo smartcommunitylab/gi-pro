@@ -8,6 +8,7 @@ angular.module('toga', [
 	'toga.services.login',
 	'toga.services.config',
 	'toga.services.push',
+	'toga.services.notifications',
 	'pascalprecht.translate',
 	'toga.services.data',
 	'toga.controllers.main',
@@ -282,7 +283,6 @@ angular.module('toga', [
 			$injector.get('$rootScope').user = logged;
             var Config = $injector.get('Config');
             var checked = localStorage.getItem(Config.getUserVarProfileCheck());
-            logged.phone = '';
             if ('true' != checked && !Login.checkUser(logged)) {
               return '/app/initprofile';
             }

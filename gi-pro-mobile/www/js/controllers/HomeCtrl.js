@@ -150,6 +150,12 @@ angular.module('toga.controllers.home', [])
 		);
 	};
 
+    $scope.refresh = function() {
+        $scope.page = 1;
+        $scope.notifications = null;
+        $scope.hasMore = true;
+        $scope.loadMore();
+    }
 
 	PushSrv.fgOn(function (notification) {
         $scope.page = 1;
@@ -161,6 +167,9 @@ angular.module('toga.controllers.home', [])
 	});
 
 	$scope.openNotificationDetails = function (notification) {
+        if (!notification.read) {
+          NotifDB.markAsRead(notification.objectId);
+        }
 		NotifDB.openDetails(notification);
 	};
 
