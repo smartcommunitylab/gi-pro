@@ -98,6 +98,9 @@ angular.module('toga', [
 
 	.state('app.tutorial', {
 		url: '/tutorial',
+        params: {
+          forceReload: false,
+        },
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/tutorial.html',
@@ -108,10 +111,6 @@ angular.module('toga', [
 
 	.state('app.home', {
 		url: '/home',
-		params: {
-			'tab': 0,
-			'reload': false
-		},
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/home.html',

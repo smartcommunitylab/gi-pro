@@ -48,7 +48,7 @@ angular.module('toga.services.login', [])
 		return $rootScope.user;
 	}
 
-	loginService.updateUser = function () {
+	loginService.updateUser = function (skipRegistration) {
 		var deferred = $q.defer();
 		var httpConfWithParams = Config.getHTTPConfig();
 		$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/profile', httpConfWithParams)
@@ -60,7 +60,7 @@ angular.module('toga.services.login', [])
 				}
 				localStorage.setItem(userVarName, JSON.stringify(user));
 				$rootScope.user = user;
-				PushSrv.init();
+				if (!skipRegistration) PushSrv.init();
 				deferred.resolve(user);
 			}, function (reason) {
 				if (reason.status == 401 || reason.status == 403) {

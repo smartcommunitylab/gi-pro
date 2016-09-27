@@ -32,10 +32,7 @@
 				<ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ui-sref="app.profile">
 					<i class="icon ion-person"></i> {{'profile' | translate}}
 				</ion-item>
-				<ion-item nav-clear menu-close class="item item-icon-left" ng-if="!user" ui-sref="app.login">
-					<i class="icon ion-log-in"></i> {{'login' | translate}}
-				</ion-item>
-				<ion-item nav-clear menu-close class="item item-icon-left" ng-if="!!user" ng-click="logout()">
+				<ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ng-click="logout()">
 					<i class="icon ion-log-out"></i> {{'logout' | translate}}
 				</ion-item>
 				<div class="padding-vertical"></div>

@@ -9,6 +9,7 @@ angular.module('toga.services.config', [])
 
     configService.PROBLEMLINK = "mailto:tecnotoga@smartcommunitylab.it?subject=TECNOTOGA:%20segnalazione%20problema";
     configService.HELPLINK = "http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/";
+    configService.PRIVACYLINK = "http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/";
 
 	var HTTP_CONFIG = {
 		timeout: 50000,
@@ -26,14 +27,22 @@ angular.module('toga.services.config', [])
 		return conf;
 	}
 
+    configService.getToken = function() {
+      var token = localStorage.getItem(configService.getUserVarToken());
+		if (token != null && token != '' && token != 'null') {
+			return 'Token ' + token;
+		}
+      return null;
+    }
 
-	$rootScope.generateImageUrl = function (relUrl) {
+	$rootScope.generateImageUrl = function (relUrl,update) {
 		if (!relUrl) {
 			return 'img/userph.png';
 		}
 
-		return configService.SERVER_URL + '/image/' + configService.APPLICATION_ID + relUrl + '?token=' + localStorage.getItem(configService.getUserVarToken());
-		//+ '&ts=' + new Date().getTime()
+		var res = configService.SERVER_URL + '/image/' + configService.APPLICATION_ID + relUrl + '?token=' + localStorage.getItem(configService.getUserVarToken());
+        if (update) res +=  '&ts=' + new Date().getTime();
+        return res;
 	};
 
     configService.getUserVarToken = function () {
@@ -48,11 +57,17 @@ angular.module('toga.services.config', [])
 	configService.getUserNotificationsDownloaded = function () {
 		return 'toga-app-notifications-downloaded-' + configService.APPLICATION_ID;
 	}
+	configService.getUserRegId = function () {
+		return 'toga-app-regid-' + configService.APPLICATION_ID;
+	}
 
 	configService.SERVICE_TYPE = 'sostituzione';
 
     $rootScope.problemLink = function () {
       return configService.PROBLEMLINK;
+    };
+    $rootScope.privacyLink = function () {
+      return configService.PRIVACYLINK;
     };
     $rootScope.helpLink = function () {
       window.open(configService.HELPLINK, '_system', 'location=yes');

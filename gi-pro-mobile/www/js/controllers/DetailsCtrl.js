@@ -64,7 +64,7 @@ angular.module('toga.controllers.details', [])
 						$scope.goTo('app.home', {
 							'reload': true,
 							'tab': 0
-						}, false, true, true);
+						}, false, true, true, true);
 						Utils.toast($filter('translate')('request_delete_done'));
 					}, Utils.commError
 				);
@@ -137,7 +137,7 @@ angular.module('toga.controllers.details', [])
 						$scope.goTo('app.home', {
 							'reload': true,
 							'tab': 1
-						}, false, true, true);
+						}, false, true, true, true);
 						Utils.toast($filter('translate')('offer_delete_done'));
 					}, Utils.commError
 				);

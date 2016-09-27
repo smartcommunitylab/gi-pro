@@ -250,47 +250,59 @@ input[readonly] {
  */
 
 .tutorial {
-	background-color: $t_darkblue;
-}
+  background-color: $t_darkblue;
+  .title {
+    height: 10%;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: larger;
+  }
+  ion-slides {
+    height: 70%;
+    img {
+      border: 2px solid white;
+    }
+//    .description {
+//        color: white;
+//        font-size: 16px;
+//    }
+    .swiper-slide {
+        text-align: center;
+    }
+    .swiper-pagination .swiper-pagination-bullet {
+        width: 14px;
+        height: 14px;
+        border: 1px solid white;
+        background: transparent;
+        opacity: 1;
+    }
+    .swiper-pagination .swiper-pagination-bullet-active {
+        background: white;
+    }
+  }
+  .tutorial-footer {
+      height: 20%;
+      background-color: $t_darkblue;
+  }
+  .tutorial-content {
+    color: #fff;
+    max-height: 80%;
+    height: 80%;
+    display: block;
 
-.tutorial .title {
-	height: 10%;
-	color: white;
-	text-transform: uppercase;
-	text-align: center;
-	font-size: larger;
-}
+    div {
+      padding: 0 20px;
+      min-height: 20%;
+    }
 
-.tutorial ion-slides {
-	height: 70%;
+    img {
+      margin-top: 20px;
+      border: 1px solid white;
+      max-width: 60%;
+    }
+  }
 }
-.tutorial ion-slides img {
-	border: 2px solid white;
-}
-.tutorial ion-slides .description {
-	color: white;
-	font-size: 16px;
-}
-.tutorial ion-slides .swiper-slide {
-	text-align: center;
-}
-.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet {
-	width: 14px;
-	height: 14px;
-	border: 1px solid white;
-	background: transparent;
-	opacity: 1;
-}
-
-.tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
-	background: white;
-}
-
-.tutorial .tutorial-footer {
-	height: 20%;
-	background-color: $t_darkblue;
-}
-
 
 /*
  * HOME
@@ -565,7 +577,7 @@ input[readonly] {
 		.profile-image-placeholder {
 			display: block;
 			border-radius: 8px;
-			height: 100%;
+			height: 100px;
 			background-color: $stable;
 			position: relative;
 			.upload {

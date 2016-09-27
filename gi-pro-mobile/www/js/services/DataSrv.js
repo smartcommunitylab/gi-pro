@@ -1,7 +1,7 @@
 angular.module('toga.services.data', [])
 
 .factory('DataSrv', function ($rootScope, $http, $q, Utils, Config) {
-	var dataService = {};
+	var dataService = {internalCache:{}};
 
 	/* POI types (local) */
 	dataService.getPoiTypes = function () {

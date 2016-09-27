@@ -8,7 +8,7 @@ angular.module('toga.controllers.home', [])
 
 	var reload = function () {
 		if (!Login.getUser()) {
-			$scope.goTo('app.login', {}, true, true, true);
+			$scope.goTo('app.tutorial', {forceReload:true}, true, true, true);
 			return;
 		}
 
@@ -32,18 +32,18 @@ angular.module('toga.controllers.home', [])
 	if (!$stateParams.reload) {
 		// prevent double load (WHY?!?!?)
 		reload();
-		console.log('LOAD');
 	}
 
-	$scope.$on('$ionicView.beforeEnter', function (event, args) {
-		if (!!args.stateParams.reload) {
+	$scope.$on('$ionicView.enter', function (event, args) {
+        var params = DataSrv.internalCache['app.home'] || {};
+		if (!!params.reload) {
 			reload();
-			console.log('RELOAD');
 		}
 
-		if (!!args.stateParams.tab) {
-			$ionicTabsDelegate.select(args.stateParams.tab);
+		if (!!params.tab) {
+			$ionicTabsDelegate.select(params.tab);
 		}
+        DataSrv.internalCache['app.home'] = null;
 	});
 
 	$scope.selectedTab = function () {
@@ -121,6 +121,7 @@ angular.module('toga.controllers.home', [])
 
 	$scope.loadMore = function () {
 		if (!$scope.hasMore) {
+			Utils.loaded();
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			return;
 		}
@@ -193,6 +194,7 @@ angular.module('toga.controllers.home', [])
 
 	$scope.loadMoreRequests = function () {
 		if (!$scope.hasMoreRequests) {
+			Utils.loaded();
 			$scope.$broadcast('scroll.infiniteScrollComplete');
 			return;
 		}
@@ -225,7 +227,8 @@ angular.module('toga.controllers.home', [])
 
 	$scope.loadMoreOffers = function () {
 		if (!$scope.hasMoreOffers) {
-			$scope.$broadcast('scroll.infiniteScrollComplete');
+			Utils.loaded();
+            $scope.$broadcast('scroll.infiniteScrollComplete');
 			return;
 		}
 
@@ -288,8 +291,10 @@ angular.module('toga.controllers.home', [])
 	};
 })
 
-.controller('ProfileCtrl', function ($scope, $stateParams, $filter, $timeout, Config, Login, Utils, DataSrv) {
+.controller('ProfileCtrl', function ($scope, $rootScope, $stateParams, $filter, $timeout, Config, Login, Utils, DataSrv) {
 	$scope.profile = angular.copy(Login.getUser());
+
+    $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl,true);
 
 	var validate = function () {
 		if (!$scope.profile.phone) {
@@ -339,9 +344,10 @@ angular.module('toga.controllers.home', [])
 
 			navigator.camera.getPicture(function (fileURL) {
 				var win = function (r) {
-					Login.updateUser().then(function (user) {
+					Login.updateUser(true).then(function (user) {
 						Utils.loaded();
 						$scope.profile.imageUrl = user.imageUrl;
+                        $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl,true);
 						//            $scope.$apply();
 					}, Utils.commError);
 				}
@@ -350,7 +356,7 @@ angular.module('toga.controllers.home', [])
 				options.fileKey = "file";
 				options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
 				options.mimeType = "image/png";
-
+                options.headers = {Authorization: Config.getToken()};
 				Utils.loading();
 				var ft = new FileTransfer();
 				ft.upload(fileURL, encodeURI(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/image/upload/png/' + $scope.profile.objectId), win, Utils.commError, options);

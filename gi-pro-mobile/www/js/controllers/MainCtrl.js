@@ -4,7 +4,7 @@ angular.module('toga.controllers.main', [])
  * App generic controller
  */
 .controller('AppCtrl', function ($scope, $rootScope, $state, $location, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login) {
-	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot) {
+	$scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot, internalCache) {
 		var options = {
 			disableAnimate: false,
 			disableBack: false,
@@ -24,7 +24,13 @@ angular.module('toga.controllers.main', [])
 		}
 
 		$ionicHistory.nextViewOptions(options);
-		$state.go(state, params);
+
+        if (internalCache) {
+          DataSrv.internalCache[state] = params;
+          $state.go(state);
+        } else {
+          $state.go(state, params);
+        }
 	};
 
 	/*
@@ -178,16 +184,16 @@ angular.module('toga.controllers.main', [])
 	$scope.logout = function () {
 		$timeout(function () {
 			Login.logout();
-			/*
 			$ionicHistory.nextViewOptions({
 				historyRoot: true,
 				disableBack: true
 			});
-			$state.go('app.login');
-			window.location.href = '/';
-			*/
-			$location.path('/');
-			window.location.reload(true);
+//			$state.go('app.login');
+//			window.location.href = '/';
+//			$location.path('/');
+            $state.go('app.tutorial',{forceReload:true});
+//			window.location.reload(true);
+//            $state.go('app.tutorial');
 		});
 	};
 })
@@ -195,13 +201,21 @@ angular.module('toga.controllers.main', [])
 /*
  * Tutorial controller
  */
-.controller('TutorialCtrl', function ($scope, $ionicSideMenuDelegate) {
+.controller('TutorialCtrl', function ($scope, $stateParams, $ionicSideMenuDelegate, $ionicHistory) {
 	// disable sidemenu
 	$ionicSideMenuDelegate.canDragContent(false);
 	// ion-slides options
 	$scope.options = {};
 
+    $scope.$on('$ionicView.enter', function (event, args) {
+      $ionicHistory.clearCache();
+      $ionicHistory.clearHistory();
+      if ($stateParams.forceReload) {
+        window.location.reload(true);
+      }
+	});
+
 	$scope.endTutorial = function () {
-		$scope.goTo('app.login', {});
+		$scope.goTo('app.login');
 	};
 });

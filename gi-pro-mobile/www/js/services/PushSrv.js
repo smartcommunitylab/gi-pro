@@ -16,6 +16,8 @@ angular.module('toga.services.push', [])
 			return;
 		}
 
+        localStorage.setItem(Config.getUserRegId(), data.registrationId);
+
 		httpConfWithParams.params['registrationId'] = data.registrationId;
 
 		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/pushregister', {}, httpConfWithParams)
@@ -101,7 +103,33 @@ angular.module('toga.services.push', [])
 
 	pushService.unreg = function () {
 		if (!!push) {
-			push.unregister();
+			push.unregister(function(){
+              console.log('unregistered');
+              var httpConfWithParams = Config.getHTTPConfig();
+              httpConfWithParams.params = {};
+
+              var regId = localStorage.getItem(Config.getUserRegId());
+
+              // registrationId is required
+              if (!regId) {
+                  console.error('Invalid push registrationId');
+                  return;
+              }
+
+              httpConfWithParams.params['registrationId'] = regId;
+
+              $http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/pushunregister', {}, httpConfWithParams)
+
+              .then(
+                  function (response) {
+                      console.log('push unregistration ok');
+                  },
+                  function (reason) {
+                      console.error('push  unregistration failed', reason);
+                  }
+              );
+
+            });
 		}
 	}
 

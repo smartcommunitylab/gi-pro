@@ -99,5 +99,8 @@
 	"tutorial_search": "Verifica le offerte di disponibilità di sostituzione udienza inserite dai tuoi colleghi",
 	"tutorial_requests": "Inserisci le tue richieste di sostituzione udienza",
 	"tutorial_details": "Contatta direttamente il collega",
-	"tutorial_functions": "Accedi alle funzionalità dell'app"
+	"tutorial_functions": "Accedi alle funzionalità della app",
+    "tutorial_welcome1": "Benvenuto in TECNOTOGA, la soluzione per l’Avvocato 4.0.",
+    "tutorial_welcome2": "Scorri le immagini da destra a sinistra per scoprire le funzionalità.",
+    "tutorial_welcome3": "Schiaccia 'Accedi' per accedere alla app."
 }

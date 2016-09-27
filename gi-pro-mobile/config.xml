@@ -9,8 +9,22 @@
 		</author>
   <content src="index.html"/>
   <access origin="*"/>
+
   <access launch-external="yes" origin="mailto:*"/>
   <access launch-external="yes" origin="tel:*"/>
+
+  <plugin name="cordova-plugin-whitelist" spec="1" />
+  <allow-navigation href="*" />
+
+  <allow-intent href="*" />
+  <allow-intent href="http://*/*" />
+  <allow-intent href="https://*/*" />
+  <allow-intent href="tel:*" />
+  <allow-intent href="sms:*" />
+  <allow-intent href="mailto:*" />
+  <allow-intent href="geo:*" />
+
+
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>

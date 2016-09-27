@@ -15,7 +15,7 @@
 			</label>
 		</div>
 
-		<a href="#" ng-click="openPrivacyLink()">{{'register_privacy_info' | translate}}</a>
+		<a ng-click="openPrivacyLink()">{{'register_privacy_info' | translate}}</a>
 		<ion-checkbox class="checkbox-energized" ng-model="registration.privacy">{{'register_privacy_accept' | translate}}</ion-checkbox>
 
 		<button class="button button-block button-energized" ng-click="register()" ng-disabled="!registration.privacy">{{'register' | translate}}</button>
