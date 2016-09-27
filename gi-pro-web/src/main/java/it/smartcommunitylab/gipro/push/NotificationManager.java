@@ -170,4 +170,12 @@ public class NotificationManager {
 	private String getAppToken() throws AACException {
 		return service.generateClientToken().getAccess_token();
 	}
+
+	public void unregisterUser(String objectId, String registrationId) {
+		// TODO communicator.unregisterUserToPush
+		UserSignature signature = new UserSignature();
+		signature.setAppName(env.getProperty("push.appName"));
+		signature.setRegistrationId(registrationId);
+		//communicator.unregisterUserToPush(signature, env.getProperty("push.appName"), userId, getAppToken());
+	}
 }
