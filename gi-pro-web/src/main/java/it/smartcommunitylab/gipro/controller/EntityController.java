@@ -105,10 +105,27 @@ public class EntityController {
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found: "+professionalId);
 		}
-		
 		notificationManager.registerUser(profile.getObjectId(), registrationId);
-		
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("registerPush[%s]:%d", applicationId, registrationId));
+		}
 	}
+	
+	
+	@RequestMapping(value = "/api/{applicationId}/pushunregister", method = RequestMethod.POST)
+	public @ResponseBody void unregisterPush(@PathVariable String applicationId, @RequestParam String registrationId,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String professionalId = Utils.getContextProfessionalId();
+		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
+		if(profile == null) {
+			throw new UnauthorizedException("profile not found: "+professionalId);
+		}
+		notificationManager.unregisterUser(profile.getObjectId(), registrationId);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("unregisterPush[%s]:%d", applicationId, registrationId));
+		}
+	}
+	
 	@RequestMapping(value = "/api/{applicationId}/professional/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionals(@PathVariable String applicationId, 
 			@RequestParam String type,
