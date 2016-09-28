@@ -133,7 +133,7 @@ public class CNF {
 	private Professional testProfile(String applicationId) {
 		Professional professional = new Professional();	
 		professional.setApplicationId(applicationId);
-		professional.setMail("mail@test.com");
+		professional.setMail("togatest@smartcommunitylab.it");
 		professional.setPec("pec@test.com");
 		professional.setPhone("123456789");
 		professional.setFax("987654321");
