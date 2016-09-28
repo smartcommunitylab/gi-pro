@@ -25,7 +25,7 @@ public class CNF {
 	@Value("${cnf.url}")
 	private String url;
 	
-	private final static String TESTCF = "AABBCCDDEEFFGGHH";
+	private final static String TESTCF = "ABCDEF12G34H567I";
 	
 	
 	protected XPath xPath;
