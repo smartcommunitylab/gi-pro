@@ -23,8 +23,11 @@ public class CNF {
 	private static final transient Logger logger = LoggerFactory.getLogger(CNF.class);
 	
 	@Value("${cnf.url}")
-	
 	private String url;
+	
+	private final static String TESTCF = "AABBCCDDEEFFGGHH";
+	
+	
 	protected XPath xPath;
 	protected DocumentBuilder documentBuilder;
 	protected XPathExpression rootElement = null;
@@ -67,7 +70,14 @@ public class CNF {
 	}
 	
 	public Professional getProfile(String applicationId, String cf) {
-		if (StringUtils.isEmpty(url)) return new Professional();
+		if (StringUtils.isEmpty(url)) {
+			return new Professional();
+		}
+		
+		if (TESTCF.equals(cf)) {
+			return testProfile(applicationId);
+		}
+		
 		HttpClient httpClient = new HttpClient();
 		GetMethod getMethod = new GetMethod(url + cf);
 		try {
@@ -116,6 +126,31 @@ public class CNF {
 		return null;
 	}
 	
+	/**
+	 * @param applicationId
+	 * @return
+	 */
+	private Professional testProfile(String applicationId) {
+		Professional professional = new Professional();	
+		professional.setApplicationId(applicationId);
+		professional.setMail("mail@test.com");
+		professional.setPec("pec@test.com");
+		professional.setPhone("123456789");
+		professional.setFax("987654321");
+		professional.setName("Mario");
+		professional.setSurname("Rossi");
+		professional.setAddress("via Verdi, 1, 12345, Roma");
+		//TODO use cfCnf
+		professional.setCf(TESTCF);
+		professional.setType("Qualifica");
+		professional.getCustomProperties().put(Const.LawyerDataNascita, "01/01/1971");
+		professional.getCustomProperties().put(Const.LawyerLuogoNascita, "Roma");
+		professional.getCustomProperties().put(Const.LawyerOrdineCompetenza, "ROMA");
+		professional.getCustomProperties().put(Const.LawyerDataIscrizioneOrdine, "01/01/1991");
+		professional.getCustomProperties().put(Const.LawyerCassazionista, true);
+		return professional;
+	}
+
 	private String getName(String nominativo) {
 		int lastIndexOf = nominativo.lastIndexOf(" ");
 		return nominativo.substring(lastIndexOf).trim();
