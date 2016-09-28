@@ -43,7 +43,10 @@ angular.module('toga.services.login', [])
 
 	loginService.getUser = function () {
 		if ($rootScope.user == null) {
-			$rootScope.user = JSON.parse(localStorage.getItem(userVarName));
+            var user = JSON.parse(localStorage.getItem(userVarName));
+            if (user != null && user.objectId != null) {
+              $rootScope.user = user;
+            }
 		}
 		return $rootScope.user;
 	}

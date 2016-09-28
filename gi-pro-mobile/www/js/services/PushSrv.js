@@ -90,13 +90,17 @@ angular.module('toga.services.push', [])
 					alert: true,
 					badge: true,
 					sound: true,
-					senderID: Config.SENDER_ID
+					senderID: Config.SENDER_ID,
+//                    gcmSandbox: true
 				},
 				windows: {}
 			});
 
 			push.on('registration', register);
 			push.on('notification', notification);
+            push.on('error', function(e) {
+                console.log(e.message);
+            });
 		});
 
 	};
