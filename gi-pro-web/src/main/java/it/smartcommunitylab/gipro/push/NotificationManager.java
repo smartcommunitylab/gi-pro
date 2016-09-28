@@ -69,7 +69,7 @@ public class NotificationManager {
 //	private String senderId;
 //
 //	@Autowired
-//	@Value("${communicatorURL}")
+//	@Value("${push.url}")
 //	private String communicatorURL;		
 //	@Autowired
 //	@Value("${ext.aacURL}")
@@ -81,7 +81,7 @@ public class NotificationManager {
 	@PostConstruct
 	public void init() throws CommunicatorConnectorException {
 		service = new AACService(env.getProperty("ext.aacURL"), env.getProperty("push.clientId"), env.getProperty("push.clientSecret"));
-		communicator = new CommunicatorConnector(env.getProperty("communicatorURL"));
+		communicator = new CommunicatorConnector(env.getProperty("push.url"));
 		registerApps();
 
 	}
