@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,7 +181,7 @@ public class RepositoryManager {
 		if(dbProfessional != null) {
 			Date now = new Date();
 			Update update = new Update();
-			update.set("phone", professional.getPhone());
+			update.set("cellPhone", professional.getCellPhone());
 			update.set("lastUpdate", now);
 			mongoTemplate.updateFirst(query, update, Professional.class);
 		}

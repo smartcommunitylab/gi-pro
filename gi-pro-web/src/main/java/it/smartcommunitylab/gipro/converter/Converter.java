@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
 
@@ -103,6 +104,9 @@ public class Converter {
 		professional.setPiva(registration.getPiva());
 		professional.setUsername(registration.getUsername());
 		professional.setPasswordHash(registration.getPassword());
+		if (StringUtils.hasText(registration.getCellPhone())) {
+			professional.setCellPhone(registration.getCellPhone());
+		}
 		return professional;
 	}
 	

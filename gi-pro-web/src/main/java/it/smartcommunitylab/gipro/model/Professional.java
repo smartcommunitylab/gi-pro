@@ -19,6 +19,7 @@ public class Professional extends BaseObject {
 	private String type;
 	private String lang;
 	
+	private String cellPhone;
 	private String imageUrl;
 	
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
@@ -119,7 +120,11 @@ public class Professional extends BaseObject {
 	public void setLang(String lang) {
 		this.lang = lang;
 	}
-
-	
+	public String getCellPhone() {
+		return cellPhone;
+	}
+	public void setCellPhone(String cellPhone) {
+		this.cellPhone = cellPhone;
+	}
 	
 }

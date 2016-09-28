@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,12 +97,16 @@ public class RegistrationController {
 			@RequestParam String lang,
 			@RequestParam(required=false) String name,			
 			@RequestParam(required=false) String surname,
+			@RequestParam(required=false) String cellPhone,
 			HttpServletResponse res) throws Exception {
 		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found");
 		}
 		Registration registration = Converter.convertProfessionalToRegistration(profile, password, lang);
+		if (StringUtils.hasText(cellPhone)) {
+			registration.setCellPhone(cellPhone);
+		}
 		Registration result = storageManager.registerUser(registration);
 		mailSender.sendConfirmationMail(result);
 	}
