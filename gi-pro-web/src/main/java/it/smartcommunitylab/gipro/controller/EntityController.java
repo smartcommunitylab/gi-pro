@@ -107,7 +107,7 @@ public class EntityController {
 		}
 		notificationManager.registerUser(profile.getObjectId(), registrationId);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("registerPush[%s]:%d", applicationId, registrationId));
+			logger.info(String.format("registerPush[%s]:%s", applicationId, registrationId));
 		}
 	}
 	
@@ -122,7 +122,7 @@ public class EntityController {
 		}
 		notificationManager.unregisterUser(profile.getObjectId(), registrationId);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("unregisterPush[%s]:%d", applicationId, registrationId));
+			logger.info(String.format("unregisterPush[%s]:%s", applicationId, registrationId));
 		}
 	}
 	
