@@ -13,6 +13,9 @@
 			<label class="item item-input">
 				<input type="password" ng-model="registration.pwdagain" placeholder="{{'password_again' | translate}}">
 			</label>
+			<label class="item item-input">
+				<input type="tel" maxlength="14" ng-maxlength="14" ng-model="registration.cellPhone" placeholder="{{'cellPhone' | translate}}">
+			</label>
 		</div>
 
 		<a ng-click="openPrivacyLink()">{{'register_privacy_info' | translate}}</a>

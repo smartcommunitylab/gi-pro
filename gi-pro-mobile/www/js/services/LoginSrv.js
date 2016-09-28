@@ -92,7 +92,7 @@ angular.module('toga.services.login', [])
       return !!user.phone;
     }
 
-	loginService.register = function (username, password) {
+	loginService.register = function (username, password, cell) {
 		var deferred = $q.defer();
 
 		$http({
@@ -111,6 +111,7 @@ angular.module('toga.services.login', [])
 			data: {
 				cf: username,
 				password: password,
+                cellPhone: cell || "",
 				lang: Utils.getLang()
 			}
 		}).then(

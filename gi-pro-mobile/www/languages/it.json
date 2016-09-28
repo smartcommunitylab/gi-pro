@@ -13,6 +13,7 @@
 	"tutorial": "Tutorial",
     "problem":"Segnala un problema",
 	"cf": "Codice Fiscale",
+	"cellPhone": "Cellulare",
 	"password": "Password",
 	"password_lost": "Ho dimenticato la password",
 	"password_again": "Ripeti password",

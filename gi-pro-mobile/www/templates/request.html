@@ -15,6 +15,7 @@
 			<ul>
 				<li class="address"><i class="icon ion-location"></i>{{request.requester.address}}</li>
 				<li class="phone"><i class="icon ion-android-call"></i><a ng-href="tel:{{request.requester.phone}}">{{request.requester.phone}}</a></li>
+				<li class="phone" ng-if="!!request.requester.cellPhone"><i class="icon ion-iphone"></i><a ng-href="tel:{{request.requester.cellPhone}}">{{request.requester.cellPhone}}</a></li>
 				<li class="email"><i class="icon ion-email"></i><a ng-href="mailto:{{request.requester.mail}}">{{request.requester.mail}}</a></li>
 				<li class="email"><i class="icon ion-email-unread"></i><a ng-href="mailto:{{request.requester.pec}}">{{request.requester.pec}}</a></li>
 			</ul>

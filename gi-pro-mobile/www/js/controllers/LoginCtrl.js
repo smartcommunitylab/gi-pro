@@ -69,7 +69,7 @@ angular.module('toga.controllers.login', [])
 			$scope.registration.cf = $scope.registration.cf.toUpperCase();
 		}
 
-		Login.register($scope.registration.cf, $scope.registration.pwd).then(
+		Login.register($scope.registration.cf, $scope.registration.pwd, $scope.registration.cellPhone).then(
 			function () {
 				Utils.toast($filter('translate')('register_done'));
 				$scope.goTo('app.login', {}, false, true, true);

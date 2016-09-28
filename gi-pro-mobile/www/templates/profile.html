@@ -26,10 +26,11 @@
         </div>
         <ul class="padding contacts">
             <li class="address"><i class="icon ion-location"></i>{{profile.address}}</li>
+            <li class="phone"><i class="icon ion-android-call"></i>{{profile.phone}}</li>
             <li class="phone">
-              <i class="icon ion-android-call"></i>
-              <span ng-if="state=='view'">{{profile.phone}}</span>
-                  <input ng-if="state == 'edit'" type="tel" ng-maxlength="16" ng-model="profile.phone" placeholder="{{069999999}}" autofocus>
+              <i class="icon ion-iphone"></i>
+              <span ng-if="state=='view'">{{profile.cellPhone}}</span>
+                  <input ng-if="state == 'edit'" type="tel" ng-maxlength="14" ng-model="profile.cellPhone" placeholder="069999999" autofocus>
             </li>
 <!--
             <li class="phone row">

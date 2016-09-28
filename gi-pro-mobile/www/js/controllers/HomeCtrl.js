@@ -297,18 +297,14 @@ angular.module('toga.controllers.home', [])
     $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl,true);
 
 	var validate = function () {
-		if (!$scope.profile.phone) {
-			Utils.toast($filter('translate')('profile_form_phone_empty'));
-			return false;
-		}
+//		if (!$scope.profile.customProperties) {
+//			Utils.toast($filter('translate')('profile_form_phone_empty'));
+//			return false;
+//		}
 		return true;
 	}
 
 	$scope.state = 'view';
-	if ($stateParams.firstRun) {
-		$scope.state = 'edit';
-		$timeout(validate, 1000);
-	}
 
 	$scope.$on('$ionicView.leave', function (event, args) {
 		$scope.state = 'view';
@@ -327,10 +323,6 @@ angular.module('toga.controllers.home', [])
 					$scope.profile = angular.copy(Login.getUser());
 					$scope.state = 'view';
 					Utils.loaded();
-					if ($stateParams.firstRun) {
-						localStorage.setItem(Config.getUserVarProfileCheck(), 'true');
-						$scope.goTo('app.home', {}, false, true, true);
-					}
 				}, Utils.commError);
 			}
 		}
