@@ -141,6 +141,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Bean(name="messages")
 	public MessageSource getMessageSource() {
 		ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
+		resourceBundleMessageSource.setFallbackToSystemLocale(false);
 		resourceBundleMessageSource.setBasename("/locale/messages");
 		return resourceBundleMessageSource;
 	}

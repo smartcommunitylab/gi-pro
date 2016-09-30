@@ -39,7 +39,7 @@
 
     </head>
     <body>
-      <div class="container">
+      <div class="container text-center">
 	      <div class="clear"></div>
         <div class="row">
           <div class="col-md-offset-4 col-md-4">
