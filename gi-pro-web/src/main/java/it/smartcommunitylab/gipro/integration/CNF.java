@@ -1,6 +1,7 @@
 package it.smartcommunitylab.gipro.integration;
 
 import it.smartcommunitylab.gipro.common.Const;
+import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.model.Professional;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -101,6 +102,9 @@ public class CNF {
 				String ordine = (String) ordineElement.evaluate(rootNode, XPathConstants.STRING);
 				String cassazione = (String) cassazioneElement.evaluate(rootNode, XPathConstants.STRING);
 				String dataIscrizione = (String) dataIscrizioneElement.evaluate(rootNode, XPathConstants.STRING);
+				if(Utils.isEmpty(cfCnf)) {
+					return null;
+				}
 				Professional professional = new Professional();
 				professional.setApplicationId(applicationId);
 				professional.setMail(mailCnf);
@@ -111,7 +115,7 @@ public class CNF {
 				professional.setSurname(getSurname(nominativo));
 				professional.setAddress(address);
 				//TODO use cfCnf
-				professional.setCf(cf);
+				professional.setCf(cfCnf);
 				professional.setType(qualifica.trim());
 				professional.getCustomProperties().put(Const.LawyerDataNascita, dataNascita);
 				professional.getCustomProperties().put(Const.LawyerLuogoNascita, luogoNascita);
