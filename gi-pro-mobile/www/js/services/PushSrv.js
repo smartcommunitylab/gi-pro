@@ -19,12 +19,13 @@ angular.module('toga.services.push', [])
         localStorage.setItem(Config.getUserRegId(), data.registrationId);
 
 		httpConfWithParams.params['registrationId'] = data.registrationId;
+		httpConfWithParams.params['platform'] = ionic.Platform.platform();
 
 		$http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/pushregister', {}, httpConfWithParams)
 
 		.then(
 			function (response) {
-				console.log('push registration ok');
+				console.log('push registration ok: ', response);
 			},
 			function (reason) {
 				console.error('push  registration failed', reason);
@@ -55,6 +56,9 @@ angular.module('toga.services.push', [])
 				console.error('Error reading from DB', err);
 			});
 		}
+        push.finish(function() {
+            console.log("processing of push data is finished");
+        });
 	};
 
 	var toNotification = function (notification) {
