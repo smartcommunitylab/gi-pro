@@ -52,9 +52,10 @@ angular.module('toga.controllers.new', [])
 			startTime: $scope.newRequest.date + $scope.newRequest.time,
 			customProperties: {},
 		};
-
+        Utils.loading();
 		DataSrv.createRequestPublic(serviceRequest).then(
 			function (data) {
+                Utils.loaded();
 				$scope.goTo('app.home', {
 					'reload': true,
 					'tab': 0
@@ -134,8 +135,10 @@ angular.module('toga.controllers.new', [])
 			serviceOffer.endTime = $scope.newOffer.date + $scope.newOffer.toTime;
 		}
 
+        Utils.loading();
 		DataSrv.createOffer(serviceOffer).then(
 			function (data) {
+                Utils.loaded();
 				unregisterNewOfferWatch();
 				$scope.goTo('app.home', {
 					'reload': true,

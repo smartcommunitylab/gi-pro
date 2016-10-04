@@ -106,7 +106,7 @@ angular.module('toga.services.utils', [])
 	};
 
 	utilsService.loaded = function () {
-		$ionicLoading.hide();
+		$timeout($ionicLoading.hide);
 	};
 
 	utilsService.roundTime = function () {

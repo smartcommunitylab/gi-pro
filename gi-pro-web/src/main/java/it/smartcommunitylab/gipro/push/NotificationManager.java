@@ -86,10 +86,13 @@ public class NotificationManager {
 
 	}
 
-	public void registerUser(String userId, String registrationId) throws CommunicatorConnectorException, AACException {
+	public void registerUser(String userId, String registrationId, String platform) throws CommunicatorConnectorException, AACException {
 		UserSignature signature = new UserSignature();
 		signature.setAppName(env.getProperty("push.appName"));
 		signature.setRegistrationId(registrationId);
+		if (platform != null) {
+			signature.setPlatform(platform);
+		}
 		communicator.registerUserToPush(signature, env.getProperty("push.appName"), userId, getAppToken());
 
 	}
