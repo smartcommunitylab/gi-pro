@@ -443,7 +443,7 @@ public class RepositoryManager {
 			notification.setType(Const.NT_NEW_SERVICE_REQUEST);
 			notification.setServiceOfferId(serviceOffer.getObjectId());
 			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification,serviceOffer.getProfessionalId(), serviceOffer.getServiceType());
+			//addNotification(notification,serviceOffer.getProfessionalId(), serviceOffer.getServiceType());
 		}
 		return serviceRequest;
 	}
