@@ -98,14 +98,16 @@ public class EntityController {
 	}
 
 	@RequestMapping(value = "/api/{applicationId}/pushregister", method = RequestMethod.POST)
-	public @ResponseBody void registerPush(@PathVariable String applicationId, @RequestParam String registrationId,
+	public @ResponseBody void registerPush(@PathVariable String applicationId, 
+			@RequestParam String registrationId,
+			@RequestParam(required=false) String platform,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String professionalId = Utils.getContextProfessionalId();
 		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
 			throw new UnauthorizedException("profile not found: "+professionalId);
 		}
-		notificationManager.registerUser(profile.getObjectId(), registrationId);
+		notificationManager.registerUser(profile.getObjectId(), registrationId, platform);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("registerPush[%s]:%s", applicationId, registrationId));
 		}
