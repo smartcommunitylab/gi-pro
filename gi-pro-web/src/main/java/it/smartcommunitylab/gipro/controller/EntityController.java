@@ -88,11 +88,13 @@ public class EntityController {
 
 		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
-			throw new UnauthorizedException("local profile not found: "+professionalId);
+			logger.error(String.format("local profile not found:%s", professionalId));
+			throw new UnauthorizedException("local profile not found: " + professionalId);
 		}
 		Professional cnfProfile = cnfService.getProfile(applicationId, profile.getCf());
 		if(cnfProfile == null) {
-			throw new UnauthorizedException("cnf profile not found: "+professionalId);
+			logger.error(String.format("cnf profile not found:%s", professionalId));
+			throw new UnauthorizedException("cnf profile not found: " + professionalId);
 		}
 		return profile;
 	}
@@ -105,7 +107,8 @@ public class EntityController {
 		String professionalId = Utils.getContextProfessionalId();
 		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
-			throw new UnauthorizedException("profile not found: "+professionalId);
+			logger.error(String.format("profile not found:%s", professionalId));
+			throw new UnauthorizedException("profile not found: " + professionalId);
 		}
 		notificationManager.registerUser(profile.getObjectId(), registrationId, platform);
 		if(logger.isInfoEnabled()) {
@@ -120,6 +123,7 @@ public class EntityController {
 		String professionalId = Utils.getContextProfessionalId();
 		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
 		if(profile == null) {
+			logger.error(String.format("profile not found:%s", professionalId));
 			throw new UnauthorizedException("profile not found: "+professionalId);
 		}
 		notificationManager.unregisterUser(profile.getObjectId(), registrationId);

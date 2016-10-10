@@ -68,10 +68,12 @@ public class RegistrationController {
 		try {
 			Professional profile = cnfService.getProfile(applicationId, cf);
 			if(profile == null) {
+				logger.error(String.format("login - profile not found:%s", cf));
 				throw new UnauthorizedException("profile not found");
 			}
 			profile = storageManager.loginByCF(applicationId, cf, password);
 			if(profile == null) {
+				logger.error(String.format("login - profile not found:%s", cf));
 				throw new UnauthorizedException("profile not found or invalid credentials");
 			}
 			String token = jwtUtils.generateToken(profile);
@@ -79,7 +81,7 @@ public class RegistrationController {
 //			permissionsManager.authenticateByCF(request, response, profile);
 			return profile;
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error(String.format("login[%s]:%s", cf, e.getMessage()));
 			throw new UnauthorizedException("profile not found");
 		}
 	}
@@ -101,6 +103,7 @@ public class RegistrationController {
 			HttpServletResponse res) throws Exception {
 		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
+			logger.error(String.format("register - profile not found:%s", cf));
 			throw new UnauthorizedException("profile not found");
 		}
 		Registration registration = Converter.convertProfessionalToRegistration(profile, password, lang);
@@ -125,7 +128,7 @@ public class RegistrationController {
 			storageManager.saveProfessionalbyCF(professional);
 			return new ModelAndView("registration/confirmsuccess");
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("confirm:" + e.getMessage());
 			model.addAttribute("error", e.getClass().getSimpleName());
 			return new ModelAndView("registration/confirmerror");
 		}
@@ -143,7 +146,7 @@ public class RegistrationController {
 			mailSender.sendConfirmationMail(result);
 			return new ModelAndView("registration/regsuccess");
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("resend:" + e.getMessage());
 			model.addAttribute("error", e.getClass().getSimpleName());
 			return new ModelAndView("registration/resend");
 		}
@@ -163,7 +166,7 @@ public class RegistrationController {
 			req.getSession().setAttribute("confirmationCode", result.getConfirmationKey());
 			mailSender.sendResetMail(result);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("reset:" + e.getMessage());
 			model.addAttribute("error", e.getClass().getSimpleName());
 			return new ModelAndView("registration/resetpwd");
 		}
@@ -188,7 +191,7 @@ public class RegistrationController {
 		try {
 			storageManager.updatePassword(cf, password, confirmationCode);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("changepwd:" + e.getMessage());
 			model.addAttribute("error", e.getClass().getSimpleName());
 			return new ModelAndView("registration/changepwd");
 		}
