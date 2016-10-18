@@ -84,7 +84,7 @@ public class CNF {
 		try {
 			int statusCode = httpClient.executeMethod(getMethod);
 			if(logger.isInfoEnabled()) {
-				logger.info("getProfile:" + statusCode);
+				logger.info(String.format("getProfile[%s]:%s", cf, String.valueOf(statusCode)));
 			}
 			if((statusCode >= 200) && (statusCode < 300)) {
 				Document xmlDoc = this.documentBuilder.parse(getMethod.getResponseBodyAsStream());
@@ -125,7 +125,7 @@ public class CNF {
 				return professional;
 			}
 		} catch (Exception e) {
-			logger.error("getProfile:" + e.getMessage());
+			logger.error(String.format("getProfile[%s]:%s", cf, e.getMessage()));
 		}
 		return null;
 	}
