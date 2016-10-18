@@ -1030,7 +1030,7 @@ public class RepositoryManager {
 				.and("cf").is(cf);
 		Query query = new Query(criteria);
 		Registration registration = mongoTemplate.findOne(query, Registration.class);
-		if (registration != null) {
+		if (registration == null) {
 			throw new NotRegisteredException();
 		}
 		
