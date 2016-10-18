@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -220,18 +219,30 @@ public class RepositoryManager {
 		Object[] params = null;
 		switch(type) {
 			// name/surname of the offering person; poi name, date/time of the request
-			case Const.NT_NEW_SERVICE_OFFER: 
-			case Const.NT_NEW_SERVICE_REQUEST: {
+			case Const.NT_NEW_SERVICE_OFFER: {
 				ServiceOffer offer = getServiceOfferById(applicationId, null, serviceOfferId);
-				Professional p = findProfessionalById(applicationId, offer.getProfessionalId());
 				ServiceRequest request = getServiceRequestById(applicationId, null, serviceRequestId);
+				Professional p = findProfessionalById(applicationId, offer.getProfessionalId());
 				Poi poi = findPoiById(applicationId, request.getPoiId());
 				params = new String[]{ 
-						p.getName(), 
 						p.getSurname(), 
+						p.getName(), 
 						poi.getName(),
 						translationHelper.dateTime(request.getStartTime(), lang)
 						};
+				break;
+			}
+			case Const.NT_NEW_SERVICE_REQUEST: {
+				ServiceRequest request = getServiceRequestById(applicationId, null, serviceRequestId);
+				Professional p = findProfessionalById(applicationId, request.getRequesterId());
+				Poi poi = findPoiById(applicationId, request.getPoiId());
+				params = new String[]{ 
+						p.getSurname(), 
+						p.getName(), 
+						poi.getName(),
+						translationHelper.dateTime(request.getStartTime(), lang)
+						};
+				break;
 			}
 			// TODO
 			case Const.NT_SERVICE_REQUEST_DELETED:
