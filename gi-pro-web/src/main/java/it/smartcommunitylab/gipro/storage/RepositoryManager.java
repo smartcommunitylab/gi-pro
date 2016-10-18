@@ -6,6 +6,7 @@ import it.smartcommunitylab.gipro.common.TranslationHelper;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
 import it.smartcommunitylab.gipro.exception.InvalidDataException;
+import it.smartcommunitylab.gipro.exception.NotVerifiedException;
 import it.smartcommunitylab.gipro.exception.NotRegisteredException;
 import it.smartcommunitylab.gipro.exception.RegistrationException;
 import it.smartcommunitylab.gipro.exception.UnauthorizedException;
@@ -1026,12 +1027,20 @@ public class RepositoryManager {
 	public Professional loginByCF(String applicationId, String cf, String password) 
 			throws Exception {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("cf").is(cf)
-				.and("confirmed").is(Boolean.TRUE);
+				.and("cf").is(cf);
 		Query query = new Query(criteria);
 		Registration registration = mongoTemplate.findOne(query, Registration.class);
+		if (registration != null) {
+			throw new NotRegisteredException();
+		}
+		
+		criteria = new Criteria("applicationId").is(applicationId)
+				.and("cf").is(cf)
+				.and("confirmed").is(Boolean.TRUE);
+		query = new Query(criteria);
+		registration = mongoTemplate.findOne(query, Registration.class);
 		if(registration == null) {
-			throw new NotRegisteredException("profile not found");
+			throw new NotVerifiedException();
 		}
 		boolean matches = PasswordHash.validatePassword(password, registration.getPassword());
 		if (!matches) {

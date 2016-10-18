@@ -3,6 +3,7 @@ package it.smartcommunitylab.gipro.controller;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.converter.Converter;
 import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
+import it.smartcommunitylab.gipro.exception.NotRegisteredException;
 import it.smartcommunitylab.gipro.exception.RegistrationException;
 import it.smartcommunitylab.gipro.exception.UnauthorizedException;
 import it.smartcommunitylab.gipro.exception.WrongRequestException;
@@ -68,21 +69,21 @@ public class RegistrationController {
 		try {
 			Professional profile = cnfService.getProfile(applicationId, cf);
 			if(profile == null) {
-				logger.error(String.format("login - profile not found:%s", cf));
-				throw new UnauthorizedException("profile not found");
+				logger.error(String.format("login - CNF profile not found: %s", cf));
+				throw new UnauthorizedException("CNF profile not found");
 			}
 			profile = storageManager.loginByCF(applicationId, cf, password);
 			if(profile == null) {
-				logger.error(String.format("login - profile not found:%s", cf));
-				throw new UnauthorizedException("profile not found or invalid credentials");
+				logger.error(String.format("login - local profile not found: %s", cf));
+				throw new UnauthorizedException("local profile not found or invalid credentials");
 			}
 			String token = jwtUtils.generateToken(profile);
 			profile.setPasswordHash(token);
 //			permissionsManager.authenticateByCF(request, response, profile);
 			return profile;
 		} catch (Exception e) {
-			logger.error(String.format("login[%s]:%s", cf, e.getMessage()));
-			throw new UnauthorizedException("profile not found");
+			logger.error(String.format("login error [%s]:%s", cf, e.getMessage()));
+			throw e;//new UnauthorizedException("profile not found, generic exception");
 		}
 	}
 	
@@ -208,7 +209,7 @@ public class RegistrationController {
 	@ExceptionHandler(AlreadyRegisteredException.class)
 	@ResponseStatus(value=HttpStatus.CONFLICT)
 	@ResponseBody
-	public Map<String,String> handleEntityNotFoundError(HttpServletRequest request, Exception exception) {
+	public Map<String,String> handleAlreadyRegisteredError(HttpServletRequest request, Exception exception) {
 		return Utils.handleError(exception);
 	}
 	
@@ -218,7 +219,7 @@ public class RegistrationController {
 	public Map<String,String> handleUnauthorizedError(HttpServletRequest request, Exception exception) {
 		return Utils.handleError(exception);
 	}
-	
+
 	@ExceptionHandler(RegistrationException.class)
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
