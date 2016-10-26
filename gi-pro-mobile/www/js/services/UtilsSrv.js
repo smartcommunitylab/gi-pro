@@ -73,7 +73,7 @@ angular.module('toga.services.utils', [])
 			if (duration == 'short') {
 				duration = 2000;
 			} else {
-				duration = 5000;
+				duration = 4000;
 			}
 
 			var myPopup = $ionicPopup.show({

@@ -4,7 +4,7 @@ angular.module('toga.controllers.new', [])
 	$scope.newRequest = {
 		poi: Prefs.lastPOI(),
 		date: moment().startOf('date').valueOf(),
-		time: Utils.roundTime()
+		time: 9 * 60 * 60 * 1000//Utils.roundTime()
 	};
 
 	var getSelectedPoi = function (poi) {
@@ -28,8 +28,9 @@ angular.module('toga.controllers.new', [])
 	};
 
 	$scope.openTimePicker = function (field) {
-        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
-        epochs = Math.floor(epochs / 15) * 15 * 60;
+//        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
+//        epochs = Math.floor(epochs / 15) * 15 * 60;
+        var epochs = 9 * 60 * 60;
 		var timePickerCfg = {
 			setLabel: $filter('translate')('set'),
 			closeLabel: $filter('translate')('close'),
@@ -44,6 +45,9 @@ angular.module('toga.controllers.new', [])
 	};
 
 	$scope.createNewRequest = function () {
+        if ($scope.submitting) return;
+
+        $scope.submitting = true;
 		var serviceRequest = {
 			poiId: $scope.newRequest.poi.objectId,
 			privateRequest: false,
@@ -61,7 +65,10 @@ angular.module('toga.controllers.new', [])
 					'tab': 0
 				}, false, true, true, true);
 				Utils.toast($filter('translate')('newrequest_done'));
-			}, Utils.commError
+			}, function(){
+              Utils.commError();
+              $scope.submitting = false;
+            }
 		);
 	};
 })
@@ -71,8 +78,8 @@ angular.module('toga.controllers.new', [])
 		poi: Prefs.lastPOI(),
 		useDateTime: false,
 		date: moment().startOf('date').valueOf(),
-		fromTime: Utils.roundTime(),
-		toTime: Utils.roundTime() + 60 * 60 * 1000
+		fromTime: 9 * 60 * 60 * 1000,//Utils.roundTime(),
+		toTime: 10 * 60 * 60 * 1000//Utils.roundTime() + 60 * 60 * 1000
 	};
 
 	var getSelectedPoi = function (poi) {
@@ -96,8 +103,9 @@ angular.module('toga.controllers.new', [])
 	};
 
 	$scope.openTimePicker = function (field) {
-        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
-        epochs = Math.floor(epochs / 15) * 15 * 60;
+//        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
+//        epochs = Math.floor(epochs / 15) * 15 * 60;
+        var epochs = (field == 'from' ? 9 : 10) * 60 * 60;
 		var timePickerCfg = {
 			setLabel: $filter('translate')('set'),
 			closeLabel: $filter('translate')('close'),
@@ -124,6 +132,9 @@ angular.module('toga.controllers.new', [])
 	}, true);
 
 	$scope.createNewOffer = function () {
+        if (!$scope.isFormValid) return;
+
+        $scope.isFormValid = false;
 		var serviceOffer = {
 			serviceType: Config.SERVICE_TYPE,
 			poiId: $scope.newOffer.poi.objectId,
@@ -146,7 +157,10 @@ angular.module('toga.controllers.new', [])
 				}, false, true, true, true);
 				Utils.toast($filter('translate')('newoffer_done'));
 			},
-			Utils.commError
+			function() {
+              $scope.isFormValid = true;
+              Utils.commError();
+            }
 		);
 	};
 });

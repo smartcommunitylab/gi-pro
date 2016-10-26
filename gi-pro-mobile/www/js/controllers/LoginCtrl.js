@@ -11,17 +11,19 @@ angular.module('toga.controllers.login', [])
 		}
 
 		Login.login($scope.user.cf, $scope.user.pwd).then(function () {
+            Utils.loaded();
 			$ionicHistory.nextViewOptions({
 				historyRoot: true,
 				disableBack: true
 			});
 			$state.go('app.home');
-		}, function () {
+		}, function (status) {
+            Utils.loaded();
 			$ionicPopup.alert({
 				title: $filter('translate')('error_popup_title'),
-				template: $filter('translate')('error_signin')
+				template: $filter('translate')('error_signin_'+status)
 			});
-		}).finally(Utils.loaded);
+		});
 	}
 
 	$scope.reset = function () {
@@ -71,10 +73,22 @@ angular.module('toga.controllers.login', [])
 
 		Login.register($scope.registration.cf, $scope.registration.pwd, $scope.registration.cellPhone).then(
 			function () {
-				Utils.toast($filter('translate')('register_done'));
-				$scope.goTo('app.login', {}, false, true, true);
-			},
-			Utils.commError
-		).finally(Utils.loaded);
+              Utils.loaded();
+              $ionicPopup.alert({
+                  title: $filter('translate')('register_done_title'),
+                  templateUrl: 'templates/registered_popup.html'
+              }).then(function(){
+                  //Utils.toast($filter('translate')('register_done'),'long');
+                  $scope.goTo('app.login', {}, false, true, true);
+
+              });
+			}, function(status) {
+              Utils.loaded();
+              $ionicPopup.alert({
+                  title: $filter('translate')('error_popup_title'),
+                  template: $filter('translate')('error_signup_'+status)
+              });
+            }
+		);
 	}
 });

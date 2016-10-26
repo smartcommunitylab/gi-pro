@@ -5,7 +5,7 @@ angular.module('toga.controllers.search', [])
 	$scope.searchOffer = {
 		poi: Prefs.lastPOI(),
 		date: moment().startOf('date').valueOf(),
-		time: Utils.roundTime()
+		time: 9 * 60 * 60 * 1000//Utils.roundTime()
 	};
 
 	var getSelectedPoi = function (poi) {

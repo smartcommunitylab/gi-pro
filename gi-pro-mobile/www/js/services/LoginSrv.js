@@ -23,7 +23,7 @@ angular.module('toga.services.login', [])
 				var user = response.data;
 				if (!user || !user.objectId) {
 					loginService.logout();
-					deferred.reject(reason);
+					deferred.reject(loginService.USER_ERRORS.NO_CONNECTION);
 					return;
 				}
 				localStorage.setItem(userVarName, JSON.stringify(user));
@@ -34,7 +34,15 @@ angular.module('toga.services.login', [])
 			},
 			function (reason) {
 				loginService.logout();
-				deferred.reject(reason);
+				if (reason.data && reason.data.errorType == 'NotRegisteredException') {
+					deferred.reject(loginService.USER_ERRORS.NO_USER);
+                } else if (reason.data && reason.data.errorType == 'NotVerifiedException') {
+					deferred.reject(loginService.USER_ERRORS.NOT_VERIFIED);
+                } else if (reason.data && reason.data.errorType == 'UnauthorizedException') {
+					deferred.reject(loginService.USER_ERRORS.INVALID_CREDENTIALS);
+				} else {
+					deferred.reject(loginService.USER_ERRORS.NO_CONNECTION);
+				}
 			}
 		);
 
@@ -77,13 +85,13 @@ angular.module('toga.services.login', [])
 
 	loginService.USER_ERRORS = {
 		NO_CONNECTION: 1,
-		NO_USER: 2
+		NO_USER: 2,
+        NOT_VERIFIED: 3,
+        INVALID_CREDENTIALS: 4
 	};
 
 	loginService.logout = function () {
-		localStorage.setItem(userVarName, null);
-		localStorage.setItem(userVarToken, null);
-		localStorage.setItem(Config.getUserNotificationsDownloaded(), null);
+		localStorage.clear();
 		$rootScope.user = null;
 		PushSrv.unreg();
 	}
@@ -119,8 +127,12 @@ angular.module('toga.services.login', [])
 				deferred.resolve(response.data);
 			},
 			function (reason) {
-				deferred.reject(reason);
-			}
+				if (reason.data && reason.data.errorType == 'UnauthorizedException') {
+					deferred.reject(loginService.USER_ERRORS.INVALID_CREDENTIALS);
+				} else {
+					deferred.reject(loginService.USER_ERRORS.NO_CONNECTION);
+				}
+            }
 		);
 
 		return deferred.promise;

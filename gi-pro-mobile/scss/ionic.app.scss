@@ -112,6 +112,18 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		.heading {
 			background-color: $t_blue;
 		}
+        .row {
+            padding: 10px 0;
+            .time_picker_box_text {
+              margin: 10px 0;
+            }
+            .time_picker_colon {
+              padding-top: 55px;
+            }
+          .button i:before {
+            font-size: 22px;
+          }
+        }
 	}
 	.popup-buttons {
 		.button {

@@ -9887,6 +9887,15 @@ a.button {
 .toga-app .ionic_timepicker_popup .popup-body .heading {
   background-color: #1f6ca5; }
 
+.toga-app .ionic_timepicker_popup .popup-body .row {
+  padding: 10px 0; }
+  .toga-app .ionic_timepicker_popup .popup-body .row .time_picker_box_text {
+    margin: 10px 0; }
+  .toga-app .ionic_timepicker_popup .popup-body .row .time_picker_colon {
+    padding-top: 55px; }
+  .toga-app .ionic_timepicker_popup .popup-body .row .button i:before {
+    font-size: 22px; }
+
 .toga-app .ionic_timepicker_popup .popup-buttons .button {
   background-color: #d75719; }
 
