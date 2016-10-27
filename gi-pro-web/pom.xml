@@ -268,7 +268,7 @@
 			</plugin>
 
 		</plugins>
-		<finalName>gi-pro</finalName>
+		<finalName>gi-pro-generic</finalName>
 	</build>
 
 	<repositories>

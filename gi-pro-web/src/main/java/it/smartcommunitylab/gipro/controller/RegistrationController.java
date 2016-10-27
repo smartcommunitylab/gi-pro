@@ -1,20 +1,5 @@
 package it.smartcommunitylab.gipro.controller;
 
-import it.smartcommunitylab.gipro.common.Utils;
-import it.smartcommunitylab.gipro.converter.Converter;
-import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
-import it.smartcommunitylab.gipro.exception.NotRegisteredException;
-import it.smartcommunitylab.gipro.exception.RegistrationException;
-import it.smartcommunitylab.gipro.exception.UnauthorizedException;
-import it.smartcommunitylab.gipro.exception.WrongRequestException;
-import it.smartcommunitylab.gipro.integration.CNF;
-import it.smartcommunitylab.gipro.mail.MailSender;
-import it.smartcommunitylab.gipro.model.Professional;
-import it.smartcommunitylab.gipro.model.Registration;
-import it.smartcommunitylab.gipro.security.JwtUtils;
-import it.smartcommunitylab.gipro.security.PermissionsManager;
-import it.smartcommunitylab.gipro.storage.RepositoryManager;
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,15 +11,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+
+import it.smartcommunitylab.gipro.common.Utils;
+import it.smartcommunitylab.gipro.converter.Converter;
+import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
+import it.smartcommunitylab.gipro.exception.RegistrationException;
+import it.smartcommunitylab.gipro.exception.UnauthorizedException;
+import it.smartcommunitylab.gipro.exception.WrongRequestException;
+import it.smartcommunitylab.gipro.mail.MailSender;
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.Registration;
+import it.smartcommunitylab.gipro.security.JwtUtils;
+import it.smartcommunitylab.gipro.storage.RepositoryManager;
 
 @Controller
 public class RegistrationController {
@@ -44,13 +41,7 @@ public class RegistrationController {
 	private RepositoryManager storageManager;
 	
 	@Autowired
-	private PermissionsManager permissionsManager; 
-	
-	@Autowired
 	private MailSender mailSender;
-	
-	@Autowired
-	private CNF cnfService;
 	
 	@Autowired
 	private JwtUtils jwtUtils;
@@ -62,19 +53,14 @@ public class RegistrationController {
 	
 	@RequestMapping(value = "/login/{applicationId}", method = RequestMethod.POST)
 	public @ResponseBody Professional login(@PathVariable String applicationId,
-			@RequestParam String cf, 
+			@RequestParam String email, 
 			@RequestParam String password,
 			Model model, HttpServletRequest request, HttpServletResponse response) 
 					throws Exception {
 		try {
-			Professional profile = cnfService.getProfile(applicationId, cf);
+			Professional profile = storageManager.loginByEmail(applicationId, email, password);
 			if(profile == null) {
-				logger.error(String.format("login - CNF profile not found: %s", cf));
-				throw new UnauthorizedException("CNF profile not found");
-			}
-			profile = storageManager.loginByCF(applicationId, cf, password);
-			if(profile == null) {
-				logger.error(String.format("login - local profile not found: %s", cf));
+				logger.error(String.format("login - local profile not found: %s", email));
 				throw new UnauthorizedException("local profile not found or invalid credentials");
 			}
 			String token = jwtUtils.generateToken(profile);
@@ -82,7 +68,7 @@ public class RegistrationController {
 //			permissionsManager.authenticateByCF(request, response, profile);
 			return profile;
 		} catch (Exception e) {
-			logger.error(String.format("login error [%s]:%s", cf, e.getMessage()));
+			logger.error(String.format("login error [%s]:%s", email, e.getMessage()));
 			throw e;//new UnauthorizedException("profile not found, generic exception");
 		}
 	}
@@ -95,22 +81,9 @@ public class RegistrationController {
 
 	@RequestMapping(value = "/register/{applicationId}/rest", method = RequestMethod.POST)
 	public @ResponseBody void registerREST(@PathVariable String applicationId,
-			@RequestParam String cf,
-			@RequestParam String password,
-			@RequestParam String lang,
-			@RequestParam(required=false) String name,			
-			@RequestParam(required=false) String surname,
-			@RequestParam(required=false) String cellPhone,
-			HttpServletResponse res) throws Exception {
-		Professional profile = cnfService.getProfile(applicationId, cf);
-		if(profile == null) {
-			logger.error(String.format("register - profile not found:%s", cf));
-			throw new UnauthorizedException("profile not found");
-		}
-		Registration registration = Converter.convertProfessionalToRegistration(profile, password, lang);
-		if (StringUtils.hasText(cellPhone)) {
-			registration.setCellPhone(cellPhone);
-		}
+			@RequestBody Registration registration,
+			HttpServletResponse res) throws Exception 
+	{
 		Registration result = storageManager.registerUser(registration);
 		mailSender.sendConfirmationMail(result);
 	}
@@ -120,13 +93,7 @@ public class RegistrationController {
 		try {
 			Registration confirmUser = storageManager.confirmUser(confirmationCode);
 			Professional professional = Converter.convertRegistrationToProfessional(confirmUser);
-			Professional profile = cnfService.getProfile(professional.getApplicationId(),	professional.getCf());
-			professional.setAddress(profile.getAddress());
-			professional.setFax(profile.getFax());
-			professional.setPiva(profile.getPiva());
-			professional.setType(profile.getType());
-			professional.setCustomProperties(profile.getCustomProperties());
-			storageManager.saveProfessionalbyCF(professional);
+			storageManager.saveProfessionalbyEmail(professional);
 			return new ModelAndView("registration/confirmsuccess");
 		} catch (Exception e) {
 			logger.error("confirm:" + e.getMessage());

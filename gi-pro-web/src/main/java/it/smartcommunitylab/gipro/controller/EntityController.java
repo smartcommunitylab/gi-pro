@@ -16,22 +16,6 @@
 
 package it.smartcommunitylab.gipro.controller;
 
-import it.smartcommunitylab.gipro.common.Utils;
-import it.smartcommunitylab.gipro.converter.Converter;
-import it.smartcommunitylab.gipro.exception.EntityNotFoundException;
-import it.smartcommunitylab.gipro.exception.UnauthorizedException;
-import it.smartcommunitylab.gipro.exception.WrongRequestException;
-import it.smartcommunitylab.gipro.integration.CNF;
-import it.smartcommunitylab.gipro.model.Notification;
-import it.smartcommunitylab.gipro.model.Poi;
-import it.smartcommunitylab.gipro.model.Professional;
-import it.smartcommunitylab.gipro.model.ServiceOffer;
-import it.smartcommunitylab.gipro.model.ServiceOfferUI;
-import it.smartcommunitylab.gipro.model.ServiceRequest;
-import it.smartcommunitylab.gipro.model.ServiceRequestUI;
-import it.smartcommunitylab.gipro.push.NotificationManager;
-import it.smartcommunitylab.gipro.storage.RepositoryManager;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,6 +47,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.smartcommunitylab.gipro.common.Utils;
+import it.smartcommunitylab.gipro.converter.Converter;
+import it.smartcommunitylab.gipro.exception.EntityNotFoundException;
+import it.smartcommunitylab.gipro.exception.UnauthorizedException;
+import it.smartcommunitylab.gipro.exception.WrongRequestException;
+import it.smartcommunitylab.gipro.model.Notification;
+import it.smartcommunitylab.gipro.model.Poi;
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.ServiceOffer;
+import it.smartcommunitylab.gipro.model.ServiceOfferUI;
+import it.smartcommunitylab.gipro.model.ServiceRequest;
+import it.smartcommunitylab.gipro.model.ServiceRequestUI;
+import it.smartcommunitylab.gipro.push.NotificationManager;
+import it.smartcommunitylab.gipro.storage.RepositoryManager;
+
 
 @Controller
 public class EntityController {
@@ -74,9 +73,6 @@ public class EntityController {
 	
 	@Autowired
 	private RepositoryManager storageManager;
-	
-	@Autowired
-	private CNF cnfService;
 	
 	@Autowired
 	private NotificationManager notificationManager;
@@ -91,11 +87,7 @@ public class EntityController {
 			logger.error(String.format("local profile not found:%s", professionalId));
 			throw new UnauthorizedException("local profile not found: " + professionalId);
 		}
-		Professional cnfProfile = cnfService.getProfile(applicationId, profile.getCf());
-		if(cnfProfile == null) {
-			logger.error(String.format("cnf profile not found:%s", professionalId));
-			throw new UnauthorizedException("cnf profile not found: " + professionalId);
-		}
+
 		return profile;
 	}
 
@@ -617,7 +609,7 @@ public class EntityController {
 					new File(imageUploadDir + "/" + name)));
 			FileCopyUtils.copy(file.getInputStream(), stream);
 			stream.close();
-			storageManager.updateProfessionalImageByCF(applicationId, profile.getCf(), "/"+imageType+ "/" + objectId);
+			storageManager.updateProfessionalImageByEmail(applicationId, profile.getMail(), "/"+imageType+ "/" + objectId);
 		}
 		return "{\"status\":\"OK\"}";
 	}

@@ -16,9 +16,6 @@
 
 package it.smartcommunitylab.gipro.config;
 
-import it.smartcommunitylab.gipro.integration.CNF;
-import it.smartcommunitylab.gipro.storage.RepositoryManager;
-
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,14 +40,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+
+import it.smartcommunitylab.gipro.storage.RepositoryManager;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import com.mongodb.MongoClient;
-import com.mongodb.MongoException;
 
 @Configuration
 @ComponentScan("it.smartcommunitylab.gipro")
@@ -105,11 +103,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	RepositoryManager getRepositoryManager() throws UnknownHostException, MongoException {
 		return new RepositoryManager(getMongo(), defaultLang);
-	}
-	
-	@Bean
-	CNF getCNFService() {
-		return new CNF();
 	}
 	
 	@Bean

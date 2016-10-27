@@ -145,9 +145,9 @@ public class RepositoryManager {
 		return professional;
 	}
 	
-	public void saveProfessionalbyCF(Professional professional) {
+	public void saveProfessionalbyEmail(Professional professional) {
 		Criteria criteria = new Criteria("applicationId").is(professional.getApplicationId())
-				.and("cf").is(professional.getCf());
+				.and("mail").is(professional.getMail());
 		Query query = new Query(criteria);
 		Professional dbProfessional = mongoTemplate.findOne(query, Professional.class);
 		if(dbProfessional == null) {
@@ -159,9 +159,9 @@ public class RepositoryManager {
 		}
 	}
 	
-	public void updateProfessionalImageByCF(String applicationId, String cf, String image) {
+	public void updateProfessionalImageByEmail(String applicationId, String email, String image) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("cf").is(cf);
+				.and("mail").is(email);
 		Query query = new Query(criteria);
 		Professional dbProfessional = mongoTemplate.findOne(query, Professional.class);
 		if(dbProfessional != null) {
@@ -187,9 +187,9 @@ public class RepositoryManager {
 		}
 	}
 	
-	private void updateProfessionalPasswordByCF(String applicationId, String cf, String passwordHash) {
+	private void updateProfessionalPasswordByEmail(String applicationId, String email, String passwordHash) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("cf").is(cf);
+				.and("mail").is(email);
 		Query query = new Query(criteria);
 		Professional dbProfessional = mongoTemplate.findOne(query, Professional.class);
 		if(dbProfessional != null) {
@@ -307,9 +307,9 @@ public class RepositoryManager {
 		return result;
 	}
 	
-	public Professional findProfessionalByCF(String applicationId, String cf) {
+	public Professional findProfessionalByEmail(String applicationId, String email) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("cf").is(cf);
+				.and("mail").is(email);
 		Query query = new Query(criteria);
 		filterProfessionalFields(query);
 		Professional result = mongoTemplate.findOne(query, Professional.class);
@@ -906,7 +906,7 @@ public class RepositoryManager {
 			throws AlreadyRegisteredException, RegistrationException {
 		try {
 			Criteria criteria = new Criteria("applicationId").is(registration.getApplicationId())
-					.and("cf").is(registration.getCf());
+					.and("mail").is(registration.getMail());
 			Query query = new Query(criteria);
 			Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 			if(dbRegistration != null) {
@@ -952,9 +952,9 @@ public class RepositoryManager {
 		return dbRegistration;
 	}
 
-	public Registration resendConfirm(String cf) throws Exception {
+	public Registration resendConfirm(String email) throws Exception {
 		Date now = new Date();
-		Criteria criteria = new Criteria("cf").is(cf).and("confirmed").is(Boolean.FALSE);
+		Criteria criteria = new Criteria("mail").is(email).and("confirmed").is(Boolean.FALSE);
 		Query query = new Query(criteria);
 		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 		if(dbRegistration == null) {
@@ -973,9 +973,9 @@ public class RepositoryManager {
 		return dbRegistration;
 	}
 
-	public Registration resetPassword(String cf) throws Exception {
+	public Registration resetPassword(String email) throws Exception {
 		Date now = new Date();
-		Criteria criteria = new Criteria("cf").is(cf).and("confirmed").is(Boolean.TRUE);
+		Criteria criteria = new Criteria("mail").is(email).and("confirmed").is(Boolean.TRUE);
 		Query query = new Query(criteria);
 		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 		if(dbRegistration == null) {
@@ -998,10 +998,10 @@ public class RepositoryManager {
 		return dbRegistration;
 	}
 
-	public void updatePassword(String cf, String password, 
+	public void updatePassword(String email, String password, 
 			String confirmationCode) throws Exception {
 		Date now = new Date();
-		Criteria criteria = new Criteria("cf").is(cf)
+		Criteria criteria = new Criteria("mail").is(email)
 				.and("confirmationKey").is(confirmationCode)
 				.and("confirmed").is(Boolean.FALSE);
 		Query query = new Query(criteria);
@@ -1018,16 +1018,16 @@ public class RepositoryManager {
 			update.set("password", newPassword);
 			update.set("lastUpdate", now);
 			mongoTemplate.updateFirst(query, update, Registration.class);
-			updateProfessionalPasswordByCF(dbRegistration.getApplicationId(), cf, newPassword);
+			updateProfessionalPasswordByEmail(dbRegistration.getApplicationId(), email, newPassword);
 		} catch (Exception e) {
 			throw new RegistrationException(e.getMessage());
 		}
 	}
 
-	public Professional loginByCF(String applicationId, String cf, String password) 
+	public Professional loginByEmail(String applicationId, String email, String password) 
 			throws Exception {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("cf").is(cf);
+				.and("mail").is(email);
 		Query query = new Query(criteria);
 		Registration registration = mongoTemplate.findOne(query, Registration.class);
 		if (registration == null) {
@@ -1035,7 +1035,7 @@ public class RepositoryManager {
 		}
 		
 		criteria = new Criteria("applicationId").is(applicationId)
-				.and("cf").is(cf)
+				.and("mail").is(email)
 				.and("confirmed").is(Boolean.TRUE);
 		query = new Query(criteria);
 		registration = mongoTemplate.findOne(query, Registration.class);
@@ -1047,7 +1047,7 @@ public class RepositoryManager {
 			throw new UnauthorizedException("invalid password");
 		}
 		criteria = new Criteria("applicationId").is(applicationId)
-				.and("cf").is(cf);
+				.and("mail").is(email);
 		query = new Query(criteria);
 		filterProfessionalFields(query);
 		Professional professional = mongoTemplate.findOne(query, Professional.class);
