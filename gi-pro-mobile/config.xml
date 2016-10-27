@@ -9,7 +9,6 @@
         </author>
         <content src="index.html" />
         <access origin="*" />
-
         <access launch-external="yes" origin="mailto:*" />
         <access launch-external="yes" origin="tel:*" />
 

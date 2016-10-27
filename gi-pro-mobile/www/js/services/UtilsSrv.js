@@ -116,6 +116,7 @@ angular.module('gi-pro.services.utils', [])
     }
 
     return utilsService;
+
 })
 
 .factory('Prefs', function ($rootScope, $filter, $window, $timeout, $ionicLoading, $ionicPopup, $cordovaToast, Config) {

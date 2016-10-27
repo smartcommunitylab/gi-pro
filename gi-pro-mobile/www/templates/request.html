@@ -7,7 +7,7 @@
 			<div class="item item-text-wrap item-thumbnail-left">
 				<img ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
 				<ul>
-					<li class="name">{{request.requester.name}} {{request.requester.surname}}</li>
+					<li class="name">{{request.requester.surname}} {{request.requester.name}}</li>
 					<!--<li class="type">{{'professional_type_' + request.requester.type | translate}}</li>-->
 					<li class="type">{{request.requester.type}}</li>
 				</ul>
@@ -40,7 +40,7 @@
 			<div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="openOfferDetails(offer)">
 				<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!offer.professional.imageUrl}">
 					<img ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
-					<h2>{{offer.professional.name}} {{offer.professional.surname}}</h2>
+					<h2>{{offer.professional.surname}} {{offer.professional.name}}</h2>
 					<!--<h3 ng-if="!!offer.startTime">{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}}</h3>-->
 					<ul>
 						<li class="phone"><i class="icon ion-android-call"></i>{{offer.professional.phone}}</li>

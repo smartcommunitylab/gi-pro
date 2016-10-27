@@ -7,7 +7,7 @@
 			<div class="item item-text-wrap item-thumbnail-left">
 				<img ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
 				<ul>
-					<li class="name">{{offer.professional.name}} {{offer.professional.surname}}</li>
+					<li class="name">{{offer.professional.surname}} {{offer.professional.name}}</li>
 					<!--<li class="type">{{'professional_type_' + offer.professional.type | translate}}</li>-->
 					<li class="type">{{offer.professional.type}}</li>
 				</ul>
@@ -55,7 +55,7 @@
 			<div class="card" ng-repeat="request in matchingRequests" ng-if="!!matchingRequests && matchingRequests.length > 0" ng-click="openRequestDetails(request)">
 				<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!request.requester.imageUrl}">
 					<img ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
-					<h2>{{request.requester.name}} {{request.requester.surname}}</h2>
+					<h2>{{request.requester.surname}} {{request.requester.name}}</h2>
 					<h3>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
 				</div>
 			</div>

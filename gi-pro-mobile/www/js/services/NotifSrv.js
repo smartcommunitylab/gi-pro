@@ -142,7 +142,7 @@ angular.module('gi-pro.services.notifications', [])
                 syncDeferred.resolve();
                 return syncDeferred.promise;
             }
-            remoteUpdate(professionalId, downloaded, now, syncDeferred);
+            remoteUpdate(professionalId, downloaded, now + 1000 * 60 * 60 * 12, syncDeferred);
         } else {
             db.transaction(function (tx) {
                 tx.executeSql('DELETE FROM notification', null, function () {

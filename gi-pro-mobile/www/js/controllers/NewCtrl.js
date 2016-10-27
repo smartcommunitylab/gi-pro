@@ -4,7 +4,7 @@ angular.module('gi-pro.controllers.new', [])
     $scope.newRequest = {
         poi: Prefs.lastPOI(),
         date: moment().startOf('date').valueOf(),
-        time: Utils.roundTime()
+        time: 9 * 60 * 60 * 1000 //Utils.roundTime()
     };
 
     var getSelectedPoi = function (poi) {
@@ -28,8 +28,9 @@ angular.module('gi-pro.controllers.new', [])
     };
 
     $scope.openTimePicker = function (field) {
-        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
-        epochs = Math.floor(epochs / 15) * 15 * 60;
+        //        var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()));
+        //        epochs = Math.floor(epochs / 15) * 15 * 60;
+        var epochs = 9 * 60 * 60;
         var timePickerCfg = {
             setLabel: $filter('translate')('set'),
             closeLabel: $filter('translate')('close'),
@@ -44,6 +45,9 @@ angular.module('gi-pro.controllers.new', [])
     };
 
     $scope.createNewRequest = function () {
+        if ($scope.submitting) return;
+
+        $scope.submitting = true;
         var serviceRequest = {
             poiId: $scope.newRequest.poi.objectId,
             privateRequest: false,
@@ -149,4 +153,5 @@ angular.module('gi-pro.controllers.new', [])
             Utils.commError
         );
     };
+
 });
