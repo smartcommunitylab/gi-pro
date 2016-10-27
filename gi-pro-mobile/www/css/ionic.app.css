@@ -10002,7 +10002,7 @@ input[readonly] {
     text-align: center;
     font-size: larger; }
   .tutorial ion-slides {
-    height: 70%; }
+    height: 60%; }
     .tutorial ion-slides img {
       border: 2px solid white; }
     .tutorial ion-slides .swiper-slide {
@@ -10016,7 +10016,6 @@ input[readonly] {
     .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
       background: white; }
   .tutorial .tutorial-footer {
-    height: 20%;
     background-color: #10406f; }
   .tutorial .tutorial-content {
     color: #fff;

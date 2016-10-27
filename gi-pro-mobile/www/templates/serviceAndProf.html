@@ -15,24 +15,14 @@
 
                     <h4 class="padding" ng-if="!!services && services.length == 0">{{'requests_empty' | translate}}</h4>
                     <div class="card" ng-repeat="service in services" ng-if="!!services && services.length > 0" ng-click="openRequestDetails(service)">
+
+
                         <div class="item item-text-wrap">
                             <h2>service blablabla</h2>
-                            <!--
-<h3><i class="icon ion-calendar"></i>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
-<span class="badge badge-energized" ng-if="!!requestsNotifications[request.objectId]">
-								<i class="icon ion-ios-bell"></i>
-								{{requestsNotifications[request.objectId].length}}
-							</span>
--->
                         </div>
-                    </div>
 
+                    </div>
                 </ion-content>
-                <!--
-                <button class="button button-energized button-fab" ng-click="goTo('app.newrequest')">
-                    <i class="icon ion-plus"></i>
-                </button>
--->
             </ion-pane>
         </ion-tab>
 
@@ -42,18 +32,16 @@
 
                     <h4 class="padding" ng-if="!!professionists && professionists.length == 0">{{'offers_empty' | translate}}</h4>
                     <div class="card" ng-repeat="professionist in professionists" ng-if="!!professionists && professionists.length > 0" ng-click="openProfDetails(professionist)">
+                        <!--
                         <div class="item item-text-wrap">
-                            <h2>blabla</h2>
-                            <!--
-<h3 ng-if="!!offer.startTime && !!offer.endTime">
-									<i class="icon ion-clock"></i>{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}
-							</h3>
-<span class="badge badge-energized" ng-if="!!offersNotifications[offer.objectId]">
-								<i class="icon ion-ios-bell"></i>
-								{{offersNotifications[offer.objectId].length}}
-							</span>
--->
+                            <h2>prof blabla</h2>
                         </div>
+-->
+                        <a class="item item-avatar" href="#">
+                            <img ng-src="{{professionist.picture}}">
+                            <div>{{professionist.name}}</div>
+                            <p>{{professionist.professionistId}}</p>
+                        </a>
                     </div>
 
                 </ion-content>

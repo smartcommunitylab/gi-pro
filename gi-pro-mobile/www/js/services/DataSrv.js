@@ -116,13 +116,36 @@ angular.module('gi-pro.services.data', [])
     get ilst with all professionist
     */
     dataService.getProfessionists = function () {
+            var tempProf = [{
+                name: "Tullio Pinter",
+                picture: "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
+                professionId: "idpro_1"
+            }, {
+                name: "yabba dabba",
+                picture: "http://jovesnavegants.org/wp-content/uploads/2015/09/PerfilSinFotoMujer.jpg",
+                professionId: "idpro_2"
+            }, {
+                name: "zigo zago",
+                picture: "http://jornaldepenedo-al.com.br/teste/wp-content/uploads/2016/08/user.png",
+                professionId: "idpro_1"
+            }];
             var deferred = $q.defer();
-            deferred.resolve([]);
+            deferred.resolve(tempProf);
             return deferred.promise;
 
         }
         /*get ilst with all services*/
     dataService.getServices = function () {
+            var tempServ = [{
+                serviceId: "1",
+                owner: "Tullio Pinter"
+            }, {
+                serviceId: "2",
+                owner: "yabba dabba"
+            }, {
+                serviceId: "1",
+                owner: "zigo zago"
+            }];
             var deferred = $q.defer();
             deferred.resolve([]);
             return deferred.promise;

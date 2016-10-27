@@ -1,54 +1,59 @@
 <ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="tutorial">
-  <ion-content scroll="false">
-    <div class="row row-center title">
-      <div class="col">
-        {{'app' | translate}}
-      </div>
-    </div>
-    <ion-slides options="options" slider="data.slider">
-      <ion-slide-page>
-        <div class="tutorial-content">
-          <div class="description"></div>
-          <div class="description">{{'tutorial_welcome1' | translate}}</div>
-          <div class="description">{{'tutorial_welcome2' | translate}}</div>
-          <div class="description">{{'tutorial_welcome3' | translate}}</div>
+    <ion-content scroll="false">
+        <div class="row row-center title">
+            <div class="col">
+                {{'app' | translate}}
+            </div>
         </div>
-      </ion-slide-page>
-      <ion-slide-page>
-        <div class="tutorial-content">
-          <div class="description">{{'tutorial_offers' | translate}}</div>
-          <img src="img/tutorial/offers.png" />
+        <ion-slides options="options" slider="data.slider">
+            <ion-slide-page>
+                <div class="tutorial-content">
+                    <div class="description"></div>
+                    <div class="description">{{'tutorial_welcome1' | translate}}</div>
+                    <div class="description">{{'tutorial_welcome2' | translate}}</div>
+                    <div class="description">{{'tutorial_welcome3' | translate}}</div>
+                </div>
+            </ion-slide-page>
+            <ion-slide-page>
+                <div class="tutorial-content">
+                    <div class="description">{{'tutorial_offers' | translate}}</div>
+                    <img src="img/tutorial/offers.png" />
+                </div>
+            </ion-slide-page>
+            <ion-slide-page>
+                <div class="tutorial-content">
+                    <div class="description">{{'tutorial_search' | translate}}</div>
+                    <img src="img/tutorial/search.png" />
+                </div>
+            </ion-slide-page>
+            <ion-slide-page>
+                <div class="tutorial-content">
+                    <div class="description">{{'tutorial_requests' | translate}}</div>
+                    <img src="img/tutorial/requests.png" />
+                </div>
+            </ion-slide-page>
+            <ion-slide-page>
+                <div class="tutorial-content">
+                    <div class="description">{{'tutorial_details' | translate}}</div>
+                    <img src="img/tutorial/details.png" />
+                </div>
+            </ion-slide-page>
+            <ion-slide-page>
+                <div class="tutorial-content">
+                    <div class="description">{{'tutorial_functions' | translate}}</div>
+                    <img src="img/tutorial/functions.png" />
+                </div>
+            </ion-slide-page>
+        </ion-slides>
+        <div class="row row-center tutorial-footer">
+            <div class="col">
+                <button class="button button-block button-energized" ng-click="endTutorial()">{{'login_as_pro' | translate}}</button>
+            </div>
         </div>
-      </ion-slide-page>
-      <ion-slide-page>
-        <div class="tutorial-content">
-          <div class="description">{{'tutorial_search' | translate}}</div>
-          <img src="img/tutorial/search.png" />
+        <div class="row row-center tutorial-footer">
+            <div class="col">
+                <button class="button button-block button-energized" ui-sref="app.serviceAndProf">{{'enter_no_login' | translate}}</button>
+            </div>
         </div>
-      </ion-slide-page>
-      <ion-slide-page>
-        <div class="tutorial-content">
-          <div class="description">{{'tutorial_requests' | translate}}</div>
-          <img src="img/tutorial/requests.png" />
-        </div>
-      </ion-slide-page>
-      <ion-slide-page>
-        <div class="tutorial-content">
-          <div class="description">{{'tutorial_details' | translate}}</div>
-          <img src="img/tutorial/details.png" />
-        </div>
-      </ion-slide-page>
-      <ion-slide-page>
-        <div class="tutorial-content">
-          <div class="description">{{'tutorial_functions' | translate}}</div>
-          <img src="img/tutorial/functions.png" />
-        </div>
-      </ion-slide-page>
-    </ion-slides>
-    <div class="row row-center tutorial-footer">
-      <div class="col col-offset-25 col-50">
-        <button class="button button-block button-energized" ng-click="endTutorial()">{{'login' | translate}}</button>
-      </div>
-    </div>
-  </ion-content>
+    </ion-content>
 </ion-view>

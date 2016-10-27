@@ -20,7 +20,7 @@
 
         <ion-content>
             <ion-list>
-                <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ui-sref="app.reqAndOffer">
+                <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ui-sref="app.serviceAndProf">
                     <i class="icon ion-home"></i> {{'home' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close class="item item-icon-left" ng-if="logged" ui-sref-active="active" ui-sref="app.notifications">
@@ -31,6 +31,9 @@
                 </ion-item>
                 <ion-item nav-clear menu-close class="item item-icon-left" ng-if="logged" ui-sref-active="active" ui-sref="app.profile">
                     <i class="icon ion-person"></i> {{'profile' | translate}}
+                </ion-item>
+                <ion-item nav-clear menu-close class="item item-icon-left" ng-if="!logged" ui-sref-active="active" ui-sref="app.login">
+                    <i class="icon ion-log-in"></i> {{'login' | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close class="item item-icon-left" ng-if="!logged" ui-sref-active="active" ui-sref="app.tutorial">
                     <i class="icon ion-help-circled"></i> {{'log_pro' | translate}}

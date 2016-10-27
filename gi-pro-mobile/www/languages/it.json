@@ -1,5 +1,6 @@
 {
-    "app": "Gi-Pro",
+    "app": "GiPro",
+    "app_label": "App",
     "ok": "OK",
     "close": "Chiudi",
     "cancel": "Annulla",
@@ -8,6 +9,8 @@
     "history": "Storico",
     "profile": "Profilo",
     "login": "Accedi",
+    "login_as_pro": "ACCEDI COME PROFESSIONISTA",
+    "enter_no_login": "ENTRA SENZA LOGIN",
     "logout": "Esci",
     "credits": "Credits",
     "tutorial": "Tutorial",

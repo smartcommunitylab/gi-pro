@@ -1,41 +1,74 @@
 {
-	"regions": ["Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"],
-	"types": [
-		{
-			"name": "Corte d'Appello",
-			"region": true
+    "regions": ["Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"],
+    "types": [
+        {
+            "name": "Corte d'Appello",
+            "region": true
 		},
-		{
-			"name": "Corte di assise",
-			"region": true
+        {
+            "name": "Corte di assise",
+            "region": true
 		},
-		{
-			"name": "Corte Suprema di Cassazione",
-			"region": false
+        {
+            "name": "Corte Suprema di Cassazione",
+            "region": false
 		},
-		{
-			"name": "Giudice di Pace",
-			"region": true
+        {
+            "name": "Giudice di Pace",
+            "region": true
 		},
-		{
-			"name": "Tribunale",
-			"region": true
+        {
+            "name": "Tribunale",
+            "region": true
 		},
-		{
-			"name": "Consiglio di Stato",
-			"region": false
+        {
+            "name": "Consiglio di Stato",
+            "region": false
 		},
-		{
-			"name": "Commissione Regionali Tributarie",
-			"region": true
+        {
+            "name": "Commissione Regionali Tributarie",
+            "region": true
 		},
-		{
-			"name": "Commissione Provinciali Tributarie",
-			"region": true
+        {
+            "name": "Commissione Provinciali Tributarie",
+            "region": true
 		},
-		{
-			"name": "TAR",
-			"region": true
+        {
+            "name": "TAR",
+            "region": true
 		}
-	]
+	],
+    "professions": [
+        {
+            "id": "idpro_1",
+            "name": "Architetto"
+		},
+        {
+            "id": "idpro_2",
+            "name": "Civilista"
+		},
+        {
+            "id": "idpro_3",
+            "name": "Penalista"
+		}],
+    "services": [
+        {
+            "id": "idser_1",
+            "name": "Stampa",
+            "value": "50",
+            "id": "idser_2",
+            "name": "Office",
+            "value": "100",
+
+		}],
+    "zones": [
+        {
+            "id": "idzone_1",
+            "name": "Trento"
+        },
+        {
+            "id": "idzone_2",
+            "name": "Mezzolombardo"
+        }
+    ]
 }
