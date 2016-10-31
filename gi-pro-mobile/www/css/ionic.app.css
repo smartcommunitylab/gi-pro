@@ -10059,12 +10059,11 @@ input[readonly] {
 .serviceandprofessionist .scroll-view {
   height: 100%; }
 
-.serviceandprofessionist .card .item {
-  padding: 10px; }
-  .serviceandprofessionist .card .item h2 {
-    margin-bottom: 5px; }
-  .serviceandprofessionist .card .item h3 {
-    margin: auto; }
+.serviceandprofessionist .card .item h2 {
+  margin-bottom: 5px; }
+
+.serviceandprofessionist .card .item h3 {
+  margin: auto; }
 
 .serviceandprofessionist .card .icon {
   margin-right: 7px;

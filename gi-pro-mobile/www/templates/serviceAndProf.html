@@ -12,14 +12,28 @@
         <ion-tab title="{{'service_tab' | translate}}" ng-if="logged">
             <ion-pane>
                 <ion-content>
-
+                    <!--                    filter for services-->
+                    <div class="selected-filters row" ng-if="!selectingFilter">
+                        <div class="col col-50 selected-service" ng-click="openFilters('service')">{{'selectedService_label'|translate}}:{{filters.selectedService.name}}</div>
+                        <div class="col col-50 selected-zone" ng-click="openFilters('zone')">{{'selectedZone_label'|translate}}:{{filters.selectedZone.name}}</div>
+                    </div>
+                    <!--                    services-->
+                    <div class="services-list" ng-if="selectingFilter && selectingServices">
+                        {{'selectedService_label'|translate}}
+                        <div ng-repeat="service in services" ng-click="selectFilter('service',service)">{{service.name}}</div>
+                    </div>
+                    <!--                    zones-->
+                    <div class="zones-list" ng-if="selectingFilter && selectingZones">
+                        {{'selectedZone_label'|translate}}
+                        <div ng-repeat="zone in zones" ng-click="selectFilter('zone',zone)">{{zone.name}}</div>
+                    </div>
                     <h4 class="padding" ng-if="!!services && services.length == 0">{{'requests_empty' | translate}}</h4>
                     <div class="card" ng-repeat="service in services" ng-if="!!services && services.length > 0" ng-click="openRequestDetails(service)">
 
 
-                        <div class="item item-text-wrap">
-                            <h2>service blablabla</h2>
-                        </div>
+                        <a class="item" href="#">
+                            <div>{{service.name}}</div>
+                        </a>
 
                     </div>
                 </ion-content>
@@ -29,9 +43,27 @@
         <ion-tab title="{{'prof_tab' | translate}}">
             <ion-pane>
                 <ion-content>
+                    <!--                    filter for professionals-->
+                    <div class="selected-filters row" ng-if="!selectingFilter">
+                        <div class="col col-50 selected-profession" ng-click="openFilters('profession')"> {{'selectedProfession_label'|translate}}:{{filters.selectedProfession.name}}
+                        </div>
+                        <div class="col col-50 selected-zone" ng-click="openFilters('zone')"> {{'selectedZone_label'|translate}}:{{filters.selectedZone.name}}
+                        </div>
+                    </div>
+                    <!--                    professions-->
+                    <div class="professional-list" ng-if="selectingFilter && selectingProfession">
+                        {{'selectedProfession_label'|translate}}
+                        <div ng-repeat="profession in professionals" ng-click="selectFilter('service',service)">{{profession.name}}</div>
+                    </div>
+                    <!--                    zones-->
+                    <div class="zones-list" ng-if="selectingFilter && selectingZones">
+                        {{'selectedZone_label'|translate}}
+                        <div ng-repeat="zone in zones" ng-click="selectFilter('service',service)">{{zone.name}}</div>
 
-                    <h4 class="padding" ng-if="!!professionists && professionists.length == 0">{{'offers_empty' | translate}}</h4>
-                    <div class="card" ng-repeat="professionist in professionists" ng-if="!!professionists && professionists.length > 0" ng-click="openProfDetails(professionist)">
+                    </div>
+
+                    <h4 class="padding" ng-if="!!professionals && professionals.length == 0">{{'offers_empty' | translate}}</h4>
+                    <div class="card" ng-repeat="professionist in professionals" ng-if="!!professionals && professionals.length > 0" ng-click="openProfDetails(professionist)">
                         <!--
                         <div class="item item-text-wrap">
                             <h2>prof blabla</h2>
@@ -40,7 +72,7 @@
                         <a class="item item-avatar" href="#">
                             <img ng-src="{{professionist.picture}}">
                             <div>{{professionist.name}}</div>
-                            <p>{{professionist.professionistId}}</p>
+                            <p>{{professionist.profession}}</p>
                         </a>
                     </div>
 

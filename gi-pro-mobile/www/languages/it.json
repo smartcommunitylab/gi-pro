@@ -114,5 +114,9 @@
     "tutorial_welcome2": "Scorri le immagini da destra a sinistra per scoprire le funzionalità.",
     "tutorial_welcome3": "Clicca 'Accedi' per accedere alla app.",
     "service_tab": "Servizi",
-    "prof_tab": "Professionisti"
+    "prof_tab": "Professionisti",
+    "selectedProfession_label": "Professione",
+    "selectedZone_label": "Zona",
+    "selectedService_label": "Servizio"
+
 }

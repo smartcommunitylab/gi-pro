@@ -342,9 +342,21 @@ $dark:                            #444 !default;
         .scroll-view {
             height: 100%;
         }
+        .selected-filters {
+            .selected-service {
+                .selected-zone {}
+                .selected-service {}
+                .selected-profession {}
+            }
+        }
+        .professional-list{}
+        .services-list{
+
+        }
+        .zones-list{}
         .card {
             .item {
-                padding: 10px;
+                //                padding: 10px;
                 h2 {
                     margin-bottom: 5px;
                 }
