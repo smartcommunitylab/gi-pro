@@ -4,6 +4,9 @@ angular.module('gi-pro.services.data', [])
     var dataService = {
         internalCache: {}
     };
+    var allProfessions = null;
+    var allZones = null;
+    var allServices = null;
     var professionMap = null;
     var zoneMap = null;
     var servicesMap = null;
@@ -59,61 +62,70 @@ angular.module('gi-pro.services.data', [])
     /* get Professions (local) */
     dataService.getProfessionsDefinition = function () {
         var deferred = $q.defer();
+        if (allProfessions) {
+            deferred.resolve(allProfessions);
+        } else {
+            $http.get('data/poifilters.json')
 
-        $http.get('data/poifilters.json')
-
-        .then(
-            function (response) {
-                if (!professionMap) {
-                    professionMap = createMap(response.data.professions)
-                };
-                deferred.resolve(response.data.professions);
-            },
-            function (reason) {
-                deferred.reject(reason);
-            }
-        );
-
+            .then(
+                function (response) {
+                    if (!professionMap) {
+                        professionMap = createMap(response.data.professions)
+                    };
+                    allProfessions = response.data.professions;
+                    deferred.resolve(allProfessions);
+                },
+                function (reason) {
+                    deferred.reject(reason);
+                }
+            );
+        }
         return deferred.promise;
     };
     /* get Services (local) */
     dataService.getServicesDefinition = function () {
         var deferred = $q.defer();
+        if (allServices) {
+            deferred.resolve(allServices);
+        } else {
+            $http.get('data/poifilters.json')
 
-        $http.get('data/poifilters.json')
-
-        .then(
-            function (response) {
-                if (!servicesMap) {
-                    servicesMap = createMap(response.data.services);
+            .then(
+                function (response) {
+                    if (!servicesMap) {
+                        servicesMap = createMap(response.data.services);
+                    }
+                    allServices = response.data.services;
+                    deferred.resolve(response.data.services);
+                },
+                function (reason) {
+                    deferred.reject(reason);
                 }
-                deferred.resolve(response.data.services);
-            },
-            function (reason) {
-                deferred.reject(reason);
-            }
-        );
-
+            );
+        }
         return deferred.promise;
     };
     /* get Zones (local) */
     dataService.getZonesDefinition = function () {
         var deferred = $q.defer();
+        if (allServices) {
+            deferred.resolve(allZones);
+        } else {
+            $http.get('data/poifilters.json')
 
-        $http.get('data/poifilters.json')
-
-        .then(
-            function (response) {
-                if (!zoneMap) {
-                    zoneMap = createMap(response.data.zones);
+            .then(
+                function (response) {
+                    if (!zoneMap) {
+                        zoneMap = createMap(response.data.zones);
+                    }
+                    allZones = response.data.zones;
+                    deferred.resolve(response.data.zones);
+                },
+                function (reason) {
+                    deferred.reject(reason);
                 }
-                deferred.resolve(response.data.zones);
-            },
-            function (reason) {
-                deferred.reject(reason);
-            }
-        );
-
+            );
+        }
         return deferred.promise;
     };
     /* get POIs by type and region */
@@ -194,65 +206,90 @@ angular.module('gi-pro.services.data', [])
             var tempProf = [{
                 name: "Tullio Pinter",
                 picture: "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
-                professionId: "idpro_1"
+                professionId: "idpro_1",
+                zoneId: "idzone_1",
+                phone: ["0461112233", "+393401122334"],
+                mail: ["aa@bb.com", "cc@dd.com"],
+                description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
+                competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
+
             }, {
                 name: "yabba dabba",
                 picture: "http://jovesnavegants.org/wp-content/uploads/2015/09/PerfilSinFotoMujer.jpg",
-                professionId: "idpro_2"
+                professionId: "idpro_2",
+                zoneId: "idzone_1",
+                phone: ["0461112233", "+393401122334"],
+                mail: ["aa@bb.com", "cc@dd.com"],
+                description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
+                competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
             }, {
                 name: "zigo zago",
                 picture: "http://jornaldepenedo-al.com.br/teste/wp-content/uploads/2016/08/user.png",
-                professionId: "idpro_1"
+                professionId: "idpro_1",
+                zoneId: "idzone_2",
+                phone: ["0461112233", "+393401122334"],
+                mail: ["aa@bb.com", "cc@dd.com"],
+                description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
+                competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
             }];
             var deferred = $q.defer();
             //add information
             dataService.getProfessionsDefinition().then(function (professions) {
-                for (var i = 0; i < tempProf.length; i++) {
-                    tempProf[i]["profession"] = professionMap[tempProf[i].professionId].name;
-                }
                 deferred.resolve(tempProf);
 
             });
             return deferred.promise;
 
         }
-        /*get ilst with all services*/
+        /*get list with all services*/
     dataService.getServices = function () {
         var tempServ = [{
-            serviceId: "1",
-            owner: "Tullio Pinter"
+            serviceId: "idser_1",
+            owner: "Tullio Pinter",
+            zoneId: "idzone_1"
             }, {
-            serviceId: "2",
-            owner: "yabba dabba"
+            serviceId: "idser_2",
+            owner: "yabba dabba",
+            zoneId: "idzone_1"
             }, {
-            serviceId: "1",
-            owner: "zigo zago"
+            serviceId: "idser_1",
+            owner: "zigo zago",
+            zoneId: "idzone_2"
             }];
         var deferred = $q.defer();
         dataService.getServicesDefinition().then(function (services) {
             for (var i = 0; i < tempServ.length; i++) {
-                tempServ[i]["service"] = servicesMap[tempProf[i].serviceId].name;
+                tempServ[i]["service"] = servicesMap[tempServ[i].serviceId].name;
             }
             deferred.resolve(tempServ);
         });
         return deferred.promise;
     }
     dataService.getZones = function () {
-            var tempZones = [{
-                zoneId: "1",
+        var tempZones = [{
+            zoneId: "idzone_1",
             }, {
-                zoneId: "2",
+            zoneId: "idzone_2",
             }, {
-                zoneId: "3",
+            zoneId: "idzone_1",
             }];
-            var deferred = $q.defer();
-            dataService.getZonesDefinition().then(function (zones) {
-                for (var i = 0; i < tempZones.length; i++) {
-                    tempZones[i]["service"] = zoneMap[tempProf[i].serviceId].name;
-                }
-                deferred.resolve(tempZones);
-            });
-            return deferred.promise;
+        var deferred = $q.defer();
+        dataService.getZonesDefinition().then(function (zones) {
+            for (var i = 0; i < tempZones.length; i++) {
+                tempZones[i]["zone"] = zoneMap[tempZones[i].zoneId].name;
+            }
+            deferred.resolve(tempZones);
+        });
+        return deferred.promise;
+    }
+    dataService.getProfessionsMap = function () {
+        return professionMap;
+    }
+    dataService.getServicesMap = function () {
+        return servicesMap;
+    }
+    dataService.getZonesMap = function () {
+            return zoneMap;
         }
         /* get offers */
     dataService.getOffers = function (professionalId, serviceType, timeFrom, timeTo, withTime, page, limit) {

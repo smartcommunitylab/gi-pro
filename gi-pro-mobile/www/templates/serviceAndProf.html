@@ -14,28 +14,30 @@
                 <ion-content>
                     <!--                    filter for services-->
                     <div class="selected-filters row" ng-if="!selectingFilter">
-                        <div class="col col-50 selected-service" ng-click="openFilters('service')">{{'selectedService_label'|translate}}:{{filters.selectedService.name}}</div>
-                        <div class="col col-50 selected-zone" ng-click="openFilters('zone')">{{'selectedZone_label'|translate}}:{{filters.selectedZone.name}}</div>
+                        <div class="col col-50 selected-service" ng-click="openFilters('service')"><span ng-if="filters.selectedService">{{'selectedService_label'|translate}}:{{filters.selectedService.name}}</span><span ng-if="!filters.selectedService">{{'allServices_label'|translate}}</span></div>
+                        <div class="col col-50 selected-zone" ng-click="openFilters('zone')"><span ng-if="filters.selectedZone">{{'selectedZone_label'|translate}}:{{filters.selectedZone.name}}</span><span ng-if="!filters.selectedZone">{{'allZones_label'|translate}}</span></div>
                     </div>
                     <!--                    services-->
                     <div class="services-list" ng-if="selectingFilter && selectingServices">
                         {{'selectedService_label'|translate}}
-                        <div ng-repeat="service in services" ng-click="selectFilter('service',service)">{{service.name}}</div>
+                        <div ng-click="selectFilter('service',null)">{{'allServices_label'|translate}}:</div>
+                        <div ng-repeat="service in filters.allServices" ng-click="selectFilter('service',service)">{{service.name}}</div>
                     </div>
                     <!--                    zones-->
                     <div class="zones-list" ng-if="selectingFilter && selectingZones">
                         {{'selectedZone_label'|translate}}
-                        <div ng-repeat="zone in zones" ng-click="selectFilter('zone',zone)">{{zone.name}}</div>
+                        <div ng-click="selectFilter('zone',null)">{{'allZones_label'|translate}}</div>
+                        <div ng-repeat="zone in filters.allZones" ng-click="selectFilter('zone',zone)">{{zone.name}}</div>
                     </div>
-                    <h4 class="padding" ng-if="!!services && services.length == 0">{{'requests_empty' | translate}}</h4>
-                    <div class="card" ng-repeat="service in services" ng-if="!!services && services.length > 0" ng-click="openRequestDetails(service)">
-
-
+                    <!--                    <h4 class="padding" ng-if="!!activeServices && activeServices.length == 0">{{'requests_empty' | translate}}</h4>-->
+                    <div class="card" ng-repeat="service in  filteredServices = (activeServices | filter :{service:filters.selectedService.name,zone:filters.selectedZone.name})" ng-if="!!activeServices && activeServices.length > 0" ng-click="openRequestDetails(service)">
                         <a class="item" href="#">
-                            <div>{{service.name}}</div>
+                            <div>{{service.service}}</div>
                         </a>
 
                     </div>
+                    <p ng-hide="filteredServices.length ">{{'services_empty' | translate}}</p>
+
                 </ion-content>
             </ion-pane>
         </ion-tab>
@@ -45,36 +47,39 @@
                 <ion-content>
                     <!--                    filter for professionals-->
                     <div class="selected-filters row" ng-if="!selectingFilter">
-                        <div class="col col-50 selected-profession" ng-click="openFilters('profession')"> {{'selectedProfession_label'|translate}}:{{filters.selectedProfession.name}}
-                        </div>
-                        <div class="col col-50 selected-zone" ng-click="openFilters('zone')"> {{'selectedZone_label'|translate}}:{{filters.selectedZone.name}}
+                        <div class="col col-50 selected-profession" ng-click="openFilters('profession')"> <span ng-if="filters.selectedProfession">{{'selectedProfession_label'|translate}}:{{filters.selectedProfession.name}}</span>
+                            <span ng-if="!filters.selectedProfession">{{'allProfession_label'|translate}}</span></div>
+                        <div class="col col-50 selected-zone" ng-click="openFilters('zone')"> <span ng-if="filters.selectedZone">{{'selectedZone_label'|translate}}:{{filters.selectedZone.name}}</span><span ng-if="!filters.selectedZone">{{'allZones_label'|translate}}</span>
                         </div>
                     </div>
                     <!--                    professions-->
                     <div class="professional-list" ng-if="selectingFilter && selectingProfession">
                         {{'selectedProfession_label'|translate}}
-                        <div ng-repeat="profession in professionals" ng-click="selectFilter('service',service)">{{profession.name}}</div>
+                        <div ng-click="selectFilter('profession',null)">{{'allProfession_label'|translate}}</div>
+                        <div ng-repeat="profession in filters.allProfessions" ng-click="selectFilter('profession',profession)">{{profession.name}}</div>
                     </div>
                     <!--                    zones-->
                     <div class="zones-list" ng-if="selectingFilter && selectingZones">
                         {{'selectedZone_label'|translate}}
-                        <div ng-repeat="zone in zones" ng-click="selectFilter('service',service)">{{zone.name}}</div>
+                        <div ng-click="selectFilter('zone',null)">{{'allZones_label'|translate}}</div>
+                        <div ng-repeat="zone in filters.allZones" ng-click="selectFilter('zone',zone)">{{zone.name}}</div>
 
                     </div>
 
-                    <h4 class="padding" ng-if="!!professionals && professionals.length == 0">{{'offers_empty' | translate}}</h4>
-                    <div class="card" ng-repeat="professionist in professionals" ng-if="!!professionals && professionals.length > 0" ng-click="openProfDetails(professionist)">
+                    <!--                    <h4 class="padding" ng-if="!!activeProfessionals && activeProfessionals.length == 0">{{'offers_empty' | translate}}</h4>-->
+                    <div class="card" ng-repeat="professionist in filteredProfessional = (activeProfessionals | filter :{profession:filters.selectedProfession.name,zone:filters.selectedZone.name})" ng-if="!!activeProfessionals && activeProfessionals.length > 0" ng-click="openProfDetails(professionist)">
                         <!--
                         <div class="item item-text-wrap">
                             <h2>prof blabla</h2>
                         </div>
 -->
-                        <a class="item item-avatar" href="#">
+                        <a class="item item-avatar" ng-click="openDetailsProf(professionist)">
                             <img ng-src="{{professionist.picture}}">
                             <div>{{professionist.name}}</div>
                             <p>{{professionist.profession}}</p>
                         </a>
                     </div>
+                    <p ng-hide="filteredProfessional.length ">{{'professional_empty' | translate}}</p>
 
                 </ion-content>
             </ion-pane>

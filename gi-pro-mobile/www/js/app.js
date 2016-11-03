@@ -128,6 +128,19 @@ angular.module('gi-pro', [
                 }
             }
         })
+        .state('app.profdetails', {
+            url: '/prof/{objectId}',
+            params: {
+                'objectId': null,
+                'professionist': null
+            },
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/profDetail.html',
+                    controller: 'ProfessionistDetailsCtrl'
+                }
+            }
+        })
         .state('app.requestdetails', {
             url: '/request/{objectId}',
             params: {

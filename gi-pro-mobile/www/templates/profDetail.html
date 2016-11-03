@@ -1,0 +1,55 @@
+<ion-view view-title="{{title}}" class="prof-details">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear" ng-class="{'ion-edit':state == 'view', 'ion-checkmark': state == 'edit'}" ng-click="saveEdit()"></button>
+    </ion-nav-buttons>
+
+    <ion-content>
+        <div class="professional">
+            <div class="row">
+                <div class="col col-33">
+                    <div class="profile-image-container" ng-click="uploadImage()">
+                        <div class="profile-image-placeholder" ng-if="!prof.picture">
+                            <div class="upload"><i class="icon ion-camera"></i></div>
+                        </div>
+                        <div class="profile-image" ng-if="!!prof.picture">
+                            <img ng-src="{{imageUrl}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-66">
+                    <ul>
+                        <li class="name">{{prof.profession}} </li>
+                        <li class="type">{{prof.zone}}</li>
+                    </ul>
+                </div>
+            </div>
+            <ul class="padding contacts">
+                <li class="email" ng-repeat="mail in prof.mail"><i class="icon ion-email"></i><a href="mailto:{{mail}}">{{mail}}</a></li>
+                <li class="phone" ng-repeat="phone in prof.phone"><i class="icon ion-android-call"></i><a href="tel:{{phone}}">{{phone}}</a></li>
+                <!--
+<li class="phone"><i class="icon ion-android-call"></i>{{profile.description}}</li>
+<li class="phone"><i class="icon ion-android-call"></i>{{profile.competenze}}</li>
+-->
+                <!--
+                <li class="phone">
+                    <i class="icon ion-iphone"></i>
+                    <span ng-if="state=='view'">{{profile.cellPhone}}</span>
+                    <input ng-if="state == 'edit'" type="tel" ng-maxlength="14" ng-model="profile.cellPhone" placeholder="069999999" autofocus>
+                </li>
+                <li class="email"><i class="icon ion-email"></i>{{profile.mail}}</li>
+                <li class="email"><i class="icon ion-email-unread"></i>{{profile.pec}}</li>
+-->
+            </ul>
+            <div class="description">
+                <div class="description_label">{{'prof_descrizione_label'|translate}}</div>
+                <div class="description_text">{{prof.description}}</div>
+            </div>
+            <div class="competenze">
+                {{'prof_competenze_label'|translate}}
+                <ul class="lista-competenze">
+                    <li ng-repeat="competenza in prof.competenze track by $index"><i class="icon ion-ios-circle-filled"></i>{{competenza}}</li>
+                </ul>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -349,14 +349,11 @@ $dark:                            #444 !default;
                 .selected-profession {}
             }
         }
-        .professional-list{}
-        .services-list{
-
-        }
-        .zones-list{}
+        .professional-list {}
+        .services-list {}
+        .zones-list {}
         .card {
             .item {
-                //                padding: 10px;
                 h2 {
                     margin-bottom: 5px;
                 }
@@ -376,6 +373,97 @@ $dark:                            #444 !default;
                 .icon {
                     margin-right: 4px;
                     font-size: 16px;
+                }
+            }
+        }
+    }
+    /*
+* Professionist Details
+*/
+
+    .prof-details {
+
+        .professional {
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid $t_blue;
+            .profile-image-container {
+            display: block;
+            .profile-image {
+                img {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+            .profile-image-placeholder {
+                display: block;
+                border-radius: 8px;
+                height: 100px;
+                background-color: $stable;
+                position: relative;
+                .upload {
+                    position: absolute;
+                    bottom: 4px;
+                    right: 8px;
+                    font-size: 28px;
+                    color: $dark;
+                }
+            }
+        }
+            .item {
+                margin-bottom: 20px;
+                border: none;
+                ul {
+                    /*position: absolute;
+				bottom: 10px;*/
+                }
+            }
+            ul {
+                li {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    .icon {
+                        display: inline-block;
+                        width: 20px;
+                        margin-right: 10px;
+                        font-size: 20px;
+                        text-align: center;
+                    }
+                }
+                .name {
+                    font-weight: bold;
+                    font-size: larger;
+                    white-space: normal;
+                }
+                .type {
+                    padding-top: 5px;
+                    font-style: italic;
+                    white-space: normal;
+                }
+                .address {
+                    padding-top: 5px;
+                }
+                .phone {
+                    padding-top: 5px;
+                }
+                .email {
+                    padding-top: 5px;
+                }
+            }
+            .description {
+                .description_label {}
+                .description_text {}
+            }
+            .competenze {
+                margin: 10px 10px 10px 10px;
+                .lista-competenze {
+                    list-style-type: disc;
+                    li {
+                        i {
+                            font-size: 8px;
+                        }
+                    }
                 }
             }
         }

@@ -117,6 +117,10 @@
     "prof_tab": "Professionisti",
     "selectedProfession_label": "Professione",
     "selectedZone_label": "Zona",
-    "selectedService_label": "Servizio"
-
+    "selectedService_label": "Servizio",
+    "allProfession_label": "Tutte le professioni",
+    "allZones_label": "Tutte le zone",
+    "allServices_label": "Tutti i servizi",
+    "prof_competenze_label": "Competenze",
+    "prof_descrizione_label": "Descrizione"
 }
