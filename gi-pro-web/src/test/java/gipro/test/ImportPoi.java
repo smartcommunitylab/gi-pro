@@ -181,14 +181,14 @@ public class ImportPoi {
 	}
 
 	private String getPoiType(String name) {
-		for(String type : Const.poiTypeArray) {
-			if(type.equals("TAR")) {
-				continue;
-			}
-			if(name.toLowerCase().contains(type.toLowerCase())) {
-				return type;
-			}
-		}
+//		for(String type : Const.poiTypeArray) {
+//			if(type.equals("TAR")) {
+//				continue;
+//			}
+//			if(name.toLowerCase().contains(type.toLowerCase())) {
+//				return type;
+//			}
+//		}
 		return null;
 	}
 }
