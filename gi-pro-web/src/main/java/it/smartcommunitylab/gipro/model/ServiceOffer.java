@@ -13,7 +13,7 @@ public class ServiceOffer extends BaseObject {
 	private String serviceSubtype;
 	private String area, address;
 	private String note;
-	private int cost;
+	private Integer cost;
 	
 	public String getObjectId() {
 		return objectId;
@@ -81,10 +81,10 @@ public class ServiceOffer extends BaseObject {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public int getCost() {
+	public Integer getCost() {
 		return cost;
 	}
-	public void setCost(int cost) {
+	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
 	

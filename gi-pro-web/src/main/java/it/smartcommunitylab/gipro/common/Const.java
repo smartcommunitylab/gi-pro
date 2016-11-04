@@ -7,20 +7,20 @@ public class Const {
 	public static final String STATE_OPEN = "OPEN";
 	public static final String STATE_CLOSED = "CLOSED";
 	public static final String STATE_DELETED = "DELETED";
+	public static final String STATE_ACCEPTED = "ACCEPTED";
+	public static final String STATE_REJECTED = "REJECTED";
 	
-	public static final String SERVICE_APP_REQUESTED = "REQUESTED";
-	public static final String SERVICE_APP_REJECTED = "REJECTED";
-	public static final String SERVICE_APP_ACCEPTED = "ACCEPTED";
-	public static final String SERVICE_APP_DELETED = "DELETED";
+//	public static final String SERVICE_APP_REQUESTED = "REQUESTED";
+//	public static final String SERVICE_APP_REJECTED = "REJECTED";
+//	public static final String SERVICE_APP_ACCEPTED = "ACCEPTED";
+//	public static final String SERVICE_APP_DELETED = "DELETED";
 	
 	public static final String NT_NEW_SERVICE_REQUEST = "NEW_SERVICE_REQUEST";
 	public static final String NT_NEW_SERVICE_OFFER = "NEW_SERVICE_OFFER";
-	public static final String NT_APPLICATION_ACCEPTED = "APPLICATION_ACCEPTED"; 
-	public static final String NT_APPLICATION_REJECTED = "APPLICATION_REJECTED"; 
+	public static final String NT_REQUEST_ACCEPTED = "REQUEST_ACCEPTED"; 
+	public static final String NT_REQUEST_REJECTED = "REQUEST_REJECTED"; 
 	public static final String NT_SERVICE_REQUEST_DELETED = "SERVICE_REQUEST_DELETED";  
 	public static final String NT_SERVICE_OFFER_DELETED = "SERVICE_OFFER_DELETED";  
-	public static final String NT_NEW_APPLICATION = "NEW_APPLICATION";
-	public static final String NT_APPLICATION_DELETED = "APPLICATION_DELETED";
 	
 	public static final String LawyerDataNascita = "LawyerDataNascita";
 	public static final String LawyerLuogoNascita = "LawyerLuogoNascita";

@@ -77,17 +77,17 @@ public class Converter {
 			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
 			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
 			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
-			serviceRequestUI.setPrivateRequest(serviceRequest.isPrivateRequest());
-			serviceRequestUI.setApplicants(serviceRequest.getApplicants());
 			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
-			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
 			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
 			serviceRequestUI.setAddress(serviceRequest.getAddress());
 			serviceRequestUI.setArea(serviceRequest.getArea());
 			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
-			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
-			serviceRequestUI.setPoi(poi);
+			serviceRequestUI.setCost(serviceRequest.getCost());
+			if (serviceRequest.getPoiId() != null) {
+				Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
+				serviceRequestUI.setPoi(poi);
+			}
 			result.add(serviceRequestUI);
 		}
 		return result;
@@ -100,17 +100,17 @@ public class Converter {
 			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
 			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
 			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
-			serviceRequestUI.setPrivateRequest(serviceRequest.isPrivateRequest());
-			serviceRequestUI.setApplicants(serviceRequest.getApplicants());
 			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
-			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
 			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
 			serviceRequestUI.setAddress(serviceRequest.getAddress());
 			serviceRequestUI.setArea(serviceRequest.getArea());
 			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
-			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
-			serviceRequestUI.setPoi(poi);
+			serviceRequestUI.setCost(serviceRequest.getCost());
+			if (serviceRequest.getPoiId() != null) {
+				Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
+				serviceRequestUI.setPoi(poi);
+			}
 			return serviceRequestUI;
 	}
 	public static Professional convertRegistrationToProfessional(Registration registration) {

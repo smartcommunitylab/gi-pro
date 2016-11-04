@@ -2,24 +2,23 @@ package it.smartcommunitylab.gipro.model;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Lists;
 
 public class ServiceRequest extends BaseObject {
 	private String objectId;
+	private String requesterId;
+
+	private String offerId;
+	private String professionalId;
+	
 	private String poiId;
 	private Date startTime;
-	private boolean privateRequest;
 	private String state;
-	private String requesterId;
-	private Map<String, ServiceApplication> applicants = new HashMap<String, ServiceApplication>();
-	private List<String> recipients = Lists.newArrayList();
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
 	private String serviceType;
 	private String serviceSubtype;
 	private String area, address;
+	private Integer cost;
 
 	public String getObjectId() {
 		return objectId;
@@ -39,11 +38,11 @@ public class ServiceRequest extends BaseObject {
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-	public boolean isPrivateRequest() {
-		return privateRequest;
+	public String getProfessionalId() {
+		return professionalId;
 	}
-	public void setPrivateRequest(boolean privateRequest) {
-		this.privateRequest = privateRequest;
+	public void setProfessionalId(String professionalId) {
+		this.professionalId = professionalId;
 	}
 	public String getState() {
 		return state;
@@ -63,23 +62,11 @@ public class ServiceRequest extends BaseObject {
 	public void setCustomProperties(Map<String, Object> customProperties) {
 		this.customProperties = customProperties;
 	}
-	public List<String> getRecipients() {
-		return recipients;
-	}
-	public void setRecipients(List<String> recipients) {
-		this.recipients = recipients;
-	}
 	public String getServiceType() {
 		return serviceType;
 	}
 	public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
-	}
-	public Map<String, ServiceApplication> getApplicants() {
-		return applicants;
-	}
-	public void setApplicants(Map<String, ServiceApplication> applicants) {
-		this.applicants = applicants;
 	}
 	public String getServiceSubtype() {
 		return serviceSubtype;
@@ -99,4 +86,17 @@ public class ServiceRequest extends BaseObject {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public String getOfferId() {
+		return offerId;
+	}
+	public void setOfferId(String offerId) {
+		this.offerId = offerId;
+	}
+	public Integer getCost() {
+		return cost;
+	}
+	public void setCost(Integer cost) {
+		this.cost = cost;
+	}
 }
+

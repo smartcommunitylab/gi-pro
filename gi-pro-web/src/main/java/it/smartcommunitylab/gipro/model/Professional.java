@@ -20,6 +20,8 @@ public class Professional extends BaseObject {
 	private String type;
 	private String lang;
 	
+	private int balance;
+	
 	private String cellPhone;
 	private String imageUrl;
 	
@@ -133,6 +135,11 @@ public class Professional extends BaseObject {
 	public void setArea(String area) {
 		this.area = area;
 	}
-
+	public int getBalance() {
+		return balance;
+	}
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
 	
 }

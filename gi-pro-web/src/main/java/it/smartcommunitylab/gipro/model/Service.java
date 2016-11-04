@@ -24,7 +24,7 @@ import java.util.List;
 public class Service {
 
 	private String id, name;
-	private int cost;
+	private Integer cost = null;
 	private List<ServiceSubtype> subtypes;
 	
 	public String getId() {
@@ -39,10 +39,10 @@ public class Service {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getCost() {
+	public Integer getCost() {
 		return cost;
 	}
-	public void setCost(int cost) {
+	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
 	public List<ServiceSubtype> getSubtypes() {
@@ -61,7 +61,7 @@ public class Service {
 	
 	public static class ServiceSubtype {
 		private String subtype, name;
-		private int cost;
+		private Integer cost = null;
 		public String getSubtype() {
 			return subtype;
 		}
@@ -74,10 +74,10 @@ public class Service {
 		public void setName(String name) {
 			this.name = name;
 		}
-		public int getCost() {
+		public Integer getCost() {
 			return cost;
 		}
-		public void setCost(int cost) {
+		public void setCost(Integer cost) {
 			this.cost = cost;
 		}
 		

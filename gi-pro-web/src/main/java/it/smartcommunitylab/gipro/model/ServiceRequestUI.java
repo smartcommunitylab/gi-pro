@@ -19,6 +19,7 @@ public class ServiceRequestUI {
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
 	private String serviceType, serviceSubtype;
 	private String area, address;
+	private Integer cost;
 
 	public String getObjectId() {
 		return objectId;
@@ -98,5 +99,12 @@ public class ServiceRequestUI {
 	public void setServiceSubtype(String serviceSubtype) {
 		this.serviceSubtype = serviceSubtype;
 	}
+	public Integer getCost() {
+		return cost;
+	}
+	public void setCost(Integer cost) {
+		this.cost = cost;
+	}
+
 	
 }
