@@ -126,9 +126,12 @@ public class EntityController {
 	
 	@RequestMapping(value = "/api/{applicationId}/professional/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionals(@PathVariable String applicationId, 
-			@RequestParam String type,
+			@RequestParam(required=false) String type,
+			@RequestParam(required=false) String area,
 			@RequestParam(required=false) Integer page, 
-			@RequestParam(required=false) Integer limit, 
+			@RequestParam(required=false) Integer limit,
+			@RequestParam(required=false) String orderBy,
+			@RequestParam(required=false) String q,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if(Utils.isEmpty(type)) {
 			throw new WrongRequestException("bad parameters");
@@ -139,7 +142,7 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}
-		List<Professional> result = storageManager.findProfessional(applicationId, type, page, limit);
+		List<Professional> result = storageManager.findProfessional(applicationId, type, area, q, page, limit, orderBy);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getProfessionals[%s]:%d", applicationId, result.size()));
 		}
@@ -148,13 +151,12 @@ public class EntityController {
 
 	@RequestMapping(value = "/api/{applicationId}/professional/byids", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionalsByIds(@PathVariable String applicationId, 
-			@RequestParam String ids, 
+			@RequestParam List<String> ids, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if(Utils.isEmpty(ids)) {
+		if(ids == null || ids.isEmpty()) {
 			throw new WrongRequestException("bad parameters");
 		}
-		String[] idArray = ids.split(",");
-		List<Professional> result = storageManager.findProfessionalByIds(applicationId, idArray);
+		List<Professional> result = storageManager.findProfessionalByIds(applicationId, ids);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getProfessionalsByIds[%s]:%s - %d", applicationId, ids, result.size()));
 		}
@@ -201,12 +203,17 @@ public class EntityController {
 	
 	@RequestMapping(value = "/api/{applicationId}/service/searchoffer/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceOfferUI> searchServiceOffer(@PathVariable String applicationId,
-			@PathVariable String professionalId,
-			@RequestParam String poiId,
-			@RequestParam String serviceType,
-			@RequestParam Long startTime,  
+			@RequestParam(required=false) String serviceType,
+			@RequestParam(required=false) String area,
+			@RequestParam(required=false) Long timeFrom,
+			@RequestParam(required=false) Long timeTo,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
+			@RequestParam(required=false) Boolean withTime,
+			@RequestParam(required=false) String[] orderBy,
+			@PathVariable String professionalId,
+			@RequestParam(required=false) String poiId,
+			@RequestParam(required=false) Long startTime,  
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		if(Utils.isEmpty(poiId) || (startTime == null)) {
@@ -219,7 +226,7 @@ public class EntityController {
 			limit = 10;
 		}		
 		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, professionalId, 
-				serviceType, poiId, startTime, page, limit);
+				serviceType, poiId, area, startTime, page, limit, orderBy);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("searchServiceOffer[%s]:%d", applicationId, result.size()));
 		}

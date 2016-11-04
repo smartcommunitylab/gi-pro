@@ -38,6 +38,7 @@ import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.util.StringUtils;
 
 public class RepositoryManager {
 	private static final transient Logger logger = LoggerFactory.getLogger(RepositoryManager.class);
@@ -278,10 +279,23 @@ public class RepositoryManager {
 		mongoTemplate.remove(query, Professional.class);
 	}
 	
-	public List<Professional> findProfessional(String applicationId, String type, Integer page, Integer limit) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("type").is(type);
+	public List<Professional> findProfessional(String applicationId, String type, String area, String q, Integer page, Integer limit, String ... orderBy) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId);
+		if (StringUtils.hasText(type)) {
+			criteria.and("type").is(type);
+		}
+		if (StringUtils.hasText(area)) {
+			criteria.and("area").is(area);
+		}
+		if (StringUtils.hasText(q)) {
+			criteria.and("surname").regex("/"+q.toLowerCase()+"/i");
+		}
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+		if (orderBy != null && orderBy.length > 0) {
+			query.with(new Sort(Sort.Direction.ASC, orderBy));
+		} else {
+			query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+		}
 		if(limit != null) {
 			query.limit(limit);
 		}
@@ -293,8 +307,7 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public List<Professional> findProfessionalByIds(String applicationId, String[] idArray) {
-		List<String> idList = Arrays.asList(idArray);
+	public List<Professional> findProfessionalByIds(String applicationId, List<String> idList) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(idList);
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
@@ -357,18 +370,28 @@ public class RepositoryManager {
 
 	public List<ServiceOffer> searchServiceOffer(String applicationId, 
 			String professionalId, String serviceType, String poiId,
-			Long startTime, Integer page,	Integer limit) {
+			String area, Long startTime, Integer page,	Integer limit, String ... orderBy) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("poiId").is(poiId)
-				.and("serviceType").is(serviceType)
+//				.and("poiId").is(poiId)
+//				.and("serviceType").is(serviceType)
 				.and("state").is(Const.STATE_OPEN)
 				.and("professionalId").ne(professionalId);
-		Criteria timeCriteria = new Criteria().andOperator(
-				Criteria.where("startTime").lte(new Date(startTime)),
-				Criteria.where("endTime").gte(new Date(startTime)));
-		criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
+		if (startTime != null) {
+			Criteria timeCriteria = new Criteria().andOperator(
+					Criteria.where("startTime").lte(new Date(startTime)),
+					Criteria.where("endTime").gte(new Date(startTime)));
+			criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
+		}
+		if (StringUtils.hasText(area)) {
+			criteria.and("area").is(area);
+		}
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		if (orderBy != null && orderBy.length > 0) {
+			query.with(new Sort(Sort.Direction.ASC, orderBy));
+		} else {
+			query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		}
+
 		if(limit != null) {
 			query.limit(limit);
 		}
