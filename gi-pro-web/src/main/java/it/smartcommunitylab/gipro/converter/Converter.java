@@ -1,5 +1,13 @@
 package it.smartcommunitylab.gipro.converter;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+
+import com.google.common.collect.Lists;
+
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.Registration;
@@ -8,14 +16,6 @@ import it.smartcommunitylab.gipro.model.ServiceOfferUI;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
 import it.smartcommunitylab.gipro.model.ServiceRequestUI;
 import it.smartcommunitylab.gipro.storage.RepositoryManager;
-
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
-
-import com.google.common.collect.Lists;
 
 public class Converter {
 	private static final transient Logger logger = LoggerFactory.getLogger(Converter.class);
@@ -30,8 +30,16 @@ public class Converter {
 		serviceOfferUI.setStartTime(serviceOffer.getStartTime());
 		serviceOfferUI.setEndTime(serviceOffer.getEndTime());
 		serviceOfferUI.setProfessional(professional);
-		Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
-		serviceOfferUI.setPoi(poi);
+		serviceOfferUI.setAddress(serviceOffer.getAddress());
+		serviceOfferUI.setArea(serviceOffer.getArea());
+		serviceOfferUI.setServiceSubtype(serviceOffer.getServiceSubtype());
+		serviceOfferUI.setNote(serviceOffer.getNote());
+		serviceOfferUI.setCost(serviceOffer.getCost());
+		
+		if (serviceOffer.getPoiId() != null) {
+			Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
+			serviceOfferUI.setPoi(poi);
+		}
 		return serviceOfferUI;
 	}
 	public static List<ServiceOfferUI> convertServiceOffer(RepositoryManager storageManager,
@@ -46,8 +54,15 @@ public class Converter {
 			serviceOfferUI.setStartTime(serviceOffer.getStartTime());
 			serviceOfferUI.setEndTime(serviceOffer.getEndTime());
 			serviceOfferUI.setProfessional(professional);
-			Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
-			serviceOfferUI.setPoi(poi);
+			serviceOfferUI.setAddress(serviceOffer.getAddress());
+			serviceOfferUI.setArea(serviceOffer.getArea());
+			serviceOfferUI.setServiceSubtype(serviceOffer.getServiceSubtype());
+			serviceOfferUI.setNote(serviceOffer.getNote());
+			serviceOfferUI.setCost(serviceOffer.getCost());
+			if (serviceOffer.getPoiId() != null) {
+				Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
+				serviceOfferUI.setPoi(poi);
+			}
 			result.add(serviceOfferUI);
 		}
 		return result;
@@ -68,6 +83,9 @@ public class Converter {
 			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
 			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
+			serviceRequestUI.setAddress(serviceRequest.getAddress());
+			serviceRequestUI.setArea(serviceRequest.getArea());
+			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
 			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 			serviceRequestUI.setPoi(poi);
 			result.add(serviceRequestUI);
@@ -88,6 +106,9 @@ public class Converter {
 			serviceRequestUI.setRecipients(serviceRequest.getRecipients());
 			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
+			serviceRequestUI.setAddress(serviceRequest.getAddress());
+			serviceRequestUI.setArea(serviceRequest.getArea());
+			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
 			Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 			serviceRequestUI.setPoi(poi);
 			return serviceRequestUI;
@@ -103,6 +124,9 @@ public class Converter {
 		professional.setPhone(registration.getPhone());
 		professional.setPiva(registration.getPiva());
 		professional.setUsername(registration.getUsername());
+		professional.setAddress(registration.getAddress());
+		professional.setArea(registration.getArea());
+		professional.setType(registration.getType());
 		professional.setPasswordHash(registration.getPassword());
 		if (StringUtils.hasText(registration.getCellPhone())) {
 			professional.setCellPhone(registration.getCellPhone());

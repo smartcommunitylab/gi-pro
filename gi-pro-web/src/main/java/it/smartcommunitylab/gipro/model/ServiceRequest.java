@@ -18,7 +18,9 @@ public class ServiceRequest extends BaseObject {
 	private List<String> recipients = Lists.newArrayList();
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
 	private String serviceType;
-	
+	private String serviceSubtype;
+	private String area, address;
+
 	public String getObjectId() {
 		return objectId;
 	}
@@ -78,5 +80,23 @@ public class ServiceRequest extends BaseObject {
 	}
 	public void setApplicants(Map<String, ServiceApplication> applicants) {
 		this.applicants = applicants;
+	}
+	public String getServiceSubtype() {
+		return serviceSubtype;
+	}
+	public void setServiceSubtype(String serviceSubtype) {
+		this.serviceSubtype = serviceSubtype;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }

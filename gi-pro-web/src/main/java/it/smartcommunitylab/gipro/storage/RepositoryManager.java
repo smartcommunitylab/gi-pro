@@ -14,9 +14,11 @@ import it.smartcommunitylab.gipro.model.Notification;
 import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.Registration;
+import it.smartcommunitylab.gipro.model.Service;
 import it.smartcommunitylab.gipro.model.ServiceApplication;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
+import it.smartcommunitylab.gipro.model.Service.ServiceSubtype;
 import it.smartcommunitylab.gipro.push.NotificationManager;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
@@ -48,6 +50,9 @@ public class RepositoryManager {
 	
 	private MongoTemplate mongoTemplate;
 	private String defaultLang;
+
+	@Autowired
+	private ServiceConfig serviceConfig;
 	
 	public RepositoryManager(MongoTemplate template, String defaultLang) {
 		this.mongoTemplate = template;
@@ -380,6 +385,15 @@ public class RepositoryManager {
 		Date now = new Date();
 		serviceOffer.setCreationDate(now);
 		serviceOffer.setLastUpdate(now);
+		
+		Service service = serviceConfig.getService(serviceOffer.getServiceType());
+		ServiceSubtype subtype = service.subtype(serviceOffer.getServiceSubtype());
+		if (subtype == null) {
+			serviceOffer.setCost(service.getCost());
+		} else {
+			serviceOffer.setCost(subtype.getCost());
+		}
+		
 		mongoTemplate.save(serviceOffer);
 		//search matching service requests
 		List<ServiceRequest> matchingRequests = getMatchingRequests(serviceOffer);
