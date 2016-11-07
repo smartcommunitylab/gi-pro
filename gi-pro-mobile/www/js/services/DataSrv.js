@@ -203,39 +203,78 @@ angular.module('gi-pro.services.data', [])
     get ilst with all professionist
     */
     dataService.getProfessionals = function () {
-            var tempProf = [{
+        var tempProf = [{
+            professionistId: "id1",
+            name: "Tullio Pinter",
+            picture: "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
+            professionId: "idpro_1",
+            zoneId: "idzone_1",
+            location: {
+                lat: 46.066682,
+                long: 11.120470
+            },
+            phone: ["0461112233", "+393401122334"],
+            mail: ["aa@bb.com", "cc@dd.com"],
+            description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
+            competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
+
+            }, {
+            professionistId: "id2",
+
+            name: "yabba dabba",
+            picture: "http://jovesnavegants.org/wp-content/uploads/2015/09/PerfilSinFotoMujer.jpg",
+            professionId: "idpro_2",
+            zoneId: "idzone_1",
+            location: {
+                lat: 46.070761,
+                long: 11.122831
+            },
+            phone: ["0461112233", "+393401122334"],
+            mail: ["aa@bb.com", "cc@dd.com"],
+            description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
+            competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
+            }, {
+            professionistId: "id3",
+
+            name: "zigo zago",
+            picture: "http://jornaldepenedo-al.com.br/teste/wp-content/uploads/2016/08/user.png",
+            professionId: "idpro_1",
+            zoneId: "idzone_2",
+            location: {
+                lat: 46.069719,
+                long: 11.124365
+            },
+            phone: ["0461112233", "+393401122334"],
+            mail: ["aa@bb.com", "cc@dd.com"],
+            description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
+            competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
+            }];
+        var deferred = $q.defer();
+        //add information
+        dataService.getProfessionsDefinition().then(function (professions) {
+            deferred.resolve(tempProf);
+
+        });
+        return deferred.promise;
+
+    }
+    dataService.getProfessionistByID = function (id) {
+            //        call server with id and obtain
+            var deferred = $q.defer();
+            deferred.resolve({
+                professionistId: "id1",
                 name: "Tullio Pinter",
                 picture: "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
                 professionId: "idpro_1",
                 zoneId: "idzone_1",
+                location: {
+                    lat: 46.066682,
+                    long: 11.120470
+                },
                 phone: ["0461112233", "+393401122334"],
                 mail: ["aa@bb.com", "cc@dd.com"],
                 description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
                 competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
-
-            }, {
-                name: "yabba dabba",
-                picture: "http://jovesnavegants.org/wp-content/uploads/2015/09/PerfilSinFotoMujer.jpg",
-                professionId: "idpro_2",
-                zoneId: "idzone_1",
-                phone: ["0461112233", "+393401122334"],
-                mail: ["aa@bb.com", "cc@dd.com"],
-                description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
-                competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
-            }, {
-                name: "zigo zago",
-                picture: "http://jornaldepenedo-al.com.br/teste/wp-content/uploads/2016/08/user.png",
-                professionId: "idpro_1",
-                zoneId: "idzone_2",
-                phone: ["0461112233", "+393401122334"],
-                mail: ["aa@bb.com", "cc@dd.com"],
-                description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
-                competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
-            }];
-            var deferred = $q.defer();
-            //add information
-            dataService.getProfessionsDefinition().then(function (professions) {
-                deferred.resolve(tempProf);
 
             });
             return deferred.promise;

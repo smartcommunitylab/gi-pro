@@ -2,6 +2,7 @@ angular.module('gi-pro', [
 	'ionic',
 	'ngCordova',
 	'ngSanitize',
+    'leaflet-directive',
 	'ionic-datepicker',
 	'ionic-timepicker',
 	'gi-pro.services.utils',
@@ -11,13 +12,17 @@ angular.module('gi-pro', [
 	'gi-pro.services.notifications',
 	'pascalprecht.translate',
 	'gi-pro.services.data',
+	'gi-pro.services.geo',
+	'gi-pro.services.mapservice',
+	'gi-pro.services.data',
 	'gi-pro.controllers.main',
 	'gi-pro.controllers.login',
 	'gi-pro.controllers.reqandoffer',
 	'gi-pro.controllers.serviceandprof',
     'gi-pro.controllers.details',
 	'gi-pro.controllers.search',
-	'gi-pro.controllers.new'
+	'gi-pro.controllers.new',
+	'gi-pro.directives'
 ])
 
 .run(function ($ionicPlatform, $rootScope, Login, PushSrv) {
@@ -141,33 +146,42 @@ angular.module('gi-pro', [
                 }
             }
         })
-        .state('app.requestdetails', {
-            url: '/request/{objectId}',
-            params: {
-                'objectId': null,
-                'request': null
-            },
+        .state('app.map', {
+            url: "/map",
             views: {
                 'menuContent': {
-                    templateUrl: 'templates/request.html',
-                    controller: 'RequestDetailsCtrl'
+                    templateUrl: "templates/map.html",
+                    controller: 'MapCtrl'
                 }
             }
         })
-
-    .state('app.offerdetails', {
-        url: '/offer/{objectId}',
-        params: {
-            'objectId': null,
-            'offer': null
-        },
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/offer.html',
-                controller: 'OfferDetailsCtrl'
-            }
-        }
-    })
+        //        .state('app.requestdetails', {
+        //            url: '/request/{objectId}',
+        //            params: {
+        //                'objectId': null,
+        //                'request': null
+        //            },
+        //            views: {
+        //                'menuContent': {
+        //                    templateUrl: 'templates/request.html',
+        //                    controller: 'RequestDetailsCtrl'
+        //                }
+        //            }
+        //        })
+        //
+        //    .state('app.offerdetails', {
+        //        url: '/offer/{objectId}',
+        //        params: {
+        //            'objectId': null,
+        //            'offer': null
+        //        },
+        //        views: {
+        //            'menuContent': {
+        //                templateUrl: 'templates/offer.html',
+        //                controller: 'OfferDetailsCtrl'
+        //            }
+        //        }
+        //    })
 
     .state('app.search', {
         url: '/search',
@@ -192,25 +206,25 @@ angular.module('gi-pro', [
         }
     })
 
-    .state('app.newrequest', {
-        url: '/request/new',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/form_request.html',
-                controller: 'NewRequestCtrl'
-            }
-        }
-    })
-
-    .state('app.newoffer', {
-        url: '/offer/new',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/form_offer.html',
-                controller: 'NewOfferCtrl'
-            }
-        }
-    })
+    //    .state('app.newrequest', {
+    //        url: '/request/new',
+    //        views: {
+    //            'menuContent': {
+    //                templateUrl: 'templates/form_request.html',
+    //                controller: 'NewRequestCtrl'
+    //            }
+    //        }
+    //    })
+    //
+    //    .state('app.newoffer', {
+    //        url: '/offer/new',
+    //        views: {
+    //            'menuContent': {
+    //                templateUrl: 'templates/form_offer.html',
+    //                controller: 'NewOfferCtrl'
+    //            }
+    //        }
+    //    })
 
     .state('app.notifications', {
         url: '/notifications',
@@ -222,25 +236,25 @@ angular.module('gi-pro', [
         }
     })
 
-    .state('app.history', {
-        url: '/history',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/history.html',
-                controller: 'HistoryCtrl'
-            }
-        }
-    })
-
-    .state('app.profile', {
-        url: '/profile',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/profile.html',
-                controller: 'ProfileCtrl'
-            }
-        }
-    })
+    //    .state('app.history', {
+    //        url: '/history',
+    //        views: {
+    //            'menuContent': {
+    //                templateUrl: 'templates/history.html',
+    //                controller: 'HistoryCtrl'
+    //            }
+    //        }
+    //    })
+    //
+    //    .state('app.profile', {
+    //        url: '/profile',
+    //        views: {
+    //            'menuContent': {
+    //                templateUrl: 'templates/profile.html',
+    //                controller: 'ProfileCtrl'
+    //            }
+    //        }
+    //    })
 
     .state('app.credits', {
         url: '/credits',

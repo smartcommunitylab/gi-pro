@@ -145,13 +145,28 @@ angular.module('gi-pro.controllers.details', [])
             });
         };
     })
-    .controller('ProfessionistDetailsCtrl', function ($scope, $stateParams) {
+    .controller('ProfessionistDetailsCtrl', function ($scope, $stateParams, DataSrv) {
+        $scope.title = "";
+        $scope.imageUrl = "";
         var setProfessionist = function (prof) {
             $scope.prof = prof;
         };
 
         if (!!$stateParams['professionist']) {
             setProfessionist($stateParams['professionist']);
+            $scope.title = $scope.prof.name;
+            $scope.imageUrl = $scope.prof.picture;
+
+
+        }
+        if (!!$stateParams['objectId']) {
+
+            DataSrv.getProfessionistByID($stateParams['objectId']).then(function (professionist) {
+                setProfessionist(professionist);
+                $scope.title = $scope.prof.name;
+                $scope.imageUrl = $scope.prof.picture;
+
+            });
         }
         //    else {
         //            Utils.loading();
@@ -163,7 +178,5 @@ angular.module('gi-pro.controllers.details', [])
         //                Utils.commError
         //            );
         //        }
-        $scope.title = $scope.prof.name;
-//        $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
-        $scope.imageUrl = $scope.prof.picture;
+        //        $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
     });
