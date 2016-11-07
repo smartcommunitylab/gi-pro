@@ -10,6 +10,10 @@ public class ServiceOffer extends BaseObject {
 	private Date endTime;
 	private String state;
 	private String serviceType;
+	private String serviceSubtype;
+	private String area, address;
+	private String note;
+	private Integer cost;
 	
 	public String getObjectId() {
 		return objectId;
@@ -53,4 +57,35 @@ public class ServiceOffer extends BaseObject {
 	public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
 	}
+	public String getServiceSubtype() {
+		return serviceSubtype;
+	}
+	public void setServiceSubtype(String serviceSubtype) {
+		this.serviceSubtype = serviceSubtype;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
+	public Integer getCost() {
+		return cost;
+	}
+	public void setCost(Integer cost) {
+		this.cost = cost;
+	}
+	
 }

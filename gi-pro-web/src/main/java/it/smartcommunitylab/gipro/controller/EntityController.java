@@ -50,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.converter.Converter;
 import it.smartcommunitylab.gipro.exception.EntityNotFoundException;
+import it.smartcommunitylab.gipro.exception.InvalidStateException;
 import it.smartcommunitylab.gipro.exception.UnauthorizedException;
 import it.smartcommunitylab.gipro.exception.WrongRequestException;
 import it.smartcommunitylab.gipro.model.Notification;
@@ -126,9 +127,12 @@ public class EntityController {
 	
 	@RequestMapping(value = "/api/{applicationId}/professional/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionals(@PathVariable String applicationId, 
-			@RequestParam String type,
+			@RequestParam(required=false) String type,
+			@RequestParam(required=false) String area,
 			@RequestParam(required=false) Integer page, 
-			@RequestParam(required=false) Integer limit, 
+			@RequestParam(required=false) Integer limit,
+			@RequestParam(required=false) String orderBy,
+			@RequestParam(required=false) String q,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if(Utils.isEmpty(type)) {
 			throw new WrongRequestException("bad parameters");
@@ -139,7 +143,7 @@ public class EntityController {
 		if(limit == null) {
 			limit = 10;
 		}
-		List<Professional> result = storageManager.findProfessional(applicationId, type, page, limit);
+		List<Professional> result = storageManager.findProfessional(applicationId, type, area, q, page, limit, orderBy);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getProfessionals[%s]:%d", applicationId, result.size()));
 		}
@@ -148,13 +152,12 @@ public class EntityController {
 
 	@RequestMapping(value = "/api/{applicationId}/professional/byids", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionalsByIds(@PathVariable String applicationId, 
-			@RequestParam String ids, 
+			@RequestParam List<String> ids, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if(Utils.isEmpty(ids)) {
+		if(ids == null || ids.isEmpty()) {
 			throw new WrongRequestException("bad parameters");
 		}
-		String[] idArray = ids.split(",");
-		List<Professional> result = storageManager.findProfessionalByIds(applicationId, idArray);
+		List<Professional> result = storageManager.findProfessionalByIds(applicationId, ids);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getProfessionalsByIds[%s]:%s - %d", applicationId, ids, result.size()));
 		}
@@ -201,12 +204,17 @@ public class EntityController {
 	
 	@RequestMapping(value = "/api/{applicationId}/service/searchoffer/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceOfferUI> searchServiceOffer(@PathVariable String applicationId,
-			@PathVariable String professionalId,
-			@RequestParam String poiId,
-			@RequestParam String serviceType,
-			@RequestParam Long startTime,  
+			@RequestParam(required=false) String serviceType,
+			@RequestParam(required=false) String area,
+			@RequestParam(required=false) Long timeFrom,
+			@RequestParam(required=false) Long timeTo,
 			@RequestParam(required=false) Integer page, 
 			@RequestParam(required=false) Integer limit, 
+			@RequestParam(required=false) Boolean withTime,
+			@RequestParam(required=false) String[] orderBy,
+			@PathVariable String professionalId,
+			@RequestParam(required=false) String poiId,
+			@RequestParam(required=false) Long startTime,  
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		if(Utils.isEmpty(poiId) || (startTime == null)) {
@@ -219,7 +227,7 @@ public class EntityController {
 			limit = 10;
 		}		
 		List<ServiceOffer> result = storageManager.searchServiceOffer(applicationId, professionalId, 
-				serviceType, poiId, startTime, page, limit);
+				serviceType, poiId, area, startTime, page, limit, orderBy);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("searchServiceOffer[%s]:%d", applicationId, result.size()));
 		}
@@ -241,30 +249,16 @@ public class EntityController {
 		return result;		
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/service/request/public", method = RequestMethod.POST)
-	public @ResponseBody ServiceRequest addPublicServiceRequest(@PathVariable String applicationId,
+	@RequestMapping(value = "/api/{applicationId}/service/request", method = RequestMethod.POST)
+	public @ResponseBody ServiceRequest addServiceRequest(@PathVariable String applicationId,
 			@RequestBody ServiceRequest serviceRequest,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		serviceRequest.setApplicationId(applicationId);
 		String professionalId = Utils.getContextProfessionalId();
 		serviceRequest.setRequesterId(professionalId);
-		ServiceRequest result = storageManager.savePublicServiceRequest(serviceRequest);
+		ServiceRequest result = storageManager.saveServiceRequest(serviceRequest);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("addPublicServiceRequest[%s]: user %s", applicationId, professionalId));
-		}
-		return result;		
-	}
-	
-	@RequestMapping(value = "/api/{applicationId}/service/request/private", method = RequestMethod.POST)
-	public @ResponseBody ServiceRequest addPrivateServiceRequest(@PathVariable String applicationId,
-			@RequestBody ServiceRequest serviceRequest,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		serviceRequest.setApplicationId(applicationId);
-		String professionalId = Utils.getContextProfessionalId();
-		serviceRequest.setRequesterId(professionalId);
-		ServiceRequest result = storageManager.savePrivateServiceRequest(serviceRequest);
-		if(logger.isInfoEnabled()) {
-			logger.info(String.format("addPrivateServiceRequest[%s]:%s", applicationId, result.getObjectId()));
 		}
 		return result;		
 	}
@@ -301,8 +295,7 @@ public class EntityController {
 			@PathVariable String objectId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
-		ServiceOffer result = storageManager.getServiceOfferById(applicationId, professionalId, 
-				objectId);
+		ServiceOffer result = storageManager.getServiceOfferById(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceOfferById[%s]:%s - %s", applicationId, professionalId, objectId));
 		}
@@ -311,7 +304,7 @@ public class EntityController {
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}", method = RequestMethod.GET)
-	public @ResponseBody List<ServiceRequestUI> getServiceRequests(@PathVariable String applicationId,
+	public @ResponseBody List<ServiceRequestUI> getMyServiceRequests(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@RequestParam String serviceType,
 			@RequestParam(required=false) Long timeFrom,
@@ -335,32 +328,18 @@ public class EntityController {
 		return resultUI;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}/{objectId}/matches", method = RequestMethod.GET)
-	public @ResponseBody List<ServiceRequestUI> getMatchingServiceRequests(@PathVariable String applicationId,
+	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}/{objectId}/requests", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceRequestUI> getServiceRequestsForOffer(@PathVariable String applicationId,
 			@PathVariable String professionalId, @PathVariable String objectId, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
-		List<ServiceRequest> result = storageManager.getMatchingRequests(applicationId, professionalId,  objectId);
+		List<ServiceRequest> result = storageManager.getOfferRequests(applicationId,  objectId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
 		}
 		List<ServiceRequestUI> resultUI = Converter.convertServiceRequest(storageManager, applicationId, result);
 		return resultUI;
-	}	
-	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}/{objectId}/matches", method = RequestMethod.GET)
-	public @ResponseBody List<ServiceOfferUI> getMatchingServiceOffers(@PathVariable String applicationId,
-			@PathVariable String professionalId, @PathVariable String objectId, 
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		professionalId = Utils.getContextProfessionalId();
-		List<ServiceOffer> result = storageManager.getMatchingOffers(applicationId, professionalId,  objectId);
-		if(logger.isInfoEnabled()) {
-			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
-		}
-		List<ServiceOfferUI> resultUI = Converter.convertServiceOffer(storageManager, applicationId, result);
-		return resultUI;
-	}	
-
+	}
 	
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}/{objectId}", method = RequestMethod.GET)
 	public @ResponseBody ServiceRequestUI getServiceRequestById(@PathVariable String applicationId,
@@ -368,38 +347,13 @@ public class EntityController {
 			@PathVariable String objectId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
-		ServiceRequest result = storageManager.getServiceRequestById(applicationId, professionalId, 
-				objectId);
+		ServiceRequest result = storageManager.getServiceRequestById(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequestById[%s]:%s - %s", applicationId, professionalId, objectId));
 		}
 		if (result == null) return null;
 		return Converter.convertServiceRequest(storageManager, applicationId, result);
 	}
-	
-	@RequestMapping(value = "/api/{applicationId}/service/application/{professionalId}", method = RequestMethod.GET)
-	public @ResponseBody List<ServiceRequest> getServiceRequestApplications(@PathVariable String applicationId,
-			@PathVariable String professionalId,
-			@RequestParam String serviceType,
-			@RequestParam(required=false) Long timestamp,
-			@RequestParam(required=false) Integer page, 
-			@RequestParam(required=false) Integer limit, 
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		professionalId = Utils.getContextProfessionalId();
-		if(page == null) {
-			page = 1;
-		}
-		if(limit == null) {
-			limit = 10;
-		}
-		List<ServiceRequest> result = storageManager.getServiceRequestApplications(applicationId, professionalId, 
-				serviceType, timestamp, page, limit);
-		if(logger.isInfoEnabled()) {
-			logger.info(String.format("getServiceRequestApplications[%s]:%d", applicationId, result.size()));
-		}
-		return result;
-	}
-	
 	
 	@RequestMapping(value = "/api/{applicationId}/service/offer/{objectId}/{professionalId}", method = RequestMethod.DELETE)
 	public @ResponseBody ServiceOffer deleteServiceOffer(@PathVariable String applicationId,
@@ -426,58 +380,89 @@ public class EntityController {
 		}
 		return result;
 	}
-	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/apply/{professionalId}", method = RequestMethod.PUT)
-	public @ResponseBody ServiceRequest applyServiceApplication(@PathVariable String applicationId,
+
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/accept", method = RequestMethod.DELETE)
+	public @ResponseBody ServiceRequest acceptServiceRequest(@PathVariable String applicationId,
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
-		ServiceRequest result = storageManager.applyToServiceRequest(applicationId, objectId, professionalId);
+		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
+		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can delete");
+		
+		ServiceRequest result = storageManager.acceptServiceRequest(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("applyServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+			logger.info(String.format("acceptServiceRequest[%s]:%s - %s", applicationId, objectId, professionalId));
 		}
 		return result;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/reject/{professionalId}", method = RequestMethod.PUT)
-	public @ResponseBody ServiceRequest rejectServiceApplication(@PathVariable String applicationId,
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/reject", method = RequestMethod.DELETE)
+	public @ResponseBody ServiceRequest rejectServiceRequest(@PathVariable String applicationId,
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
-		ServiceRequest result = storageManager.rejectServiceApplication(applicationId, objectId, professionalId);
+		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
+		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can delete");
+		
+		ServiceRequest result = storageManager.rejectServiceRequest(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
-			logger.info(String.format("rejectServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+			logger.info(String.format("rejectServiceRequest[%s]:%s - %s", applicationId, objectId, professionalId));
 		}
 		return result;
 	}
-	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/accept/{professionalId}", method = RequestMethod.PUT)
-	public @ResponseBody ServiceRequest acceptServiceApplication(@PathVariable String applicationId,
-			@PathVariable String objectId,
-			@PathVariable String professionalId,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		professionalId = Utils.getContextProfessionalId();
-		ServiceRequest result = storageManager.acceptServiceApplication(applicationId, objectId, professionalId);
-		if(logger.isInfoEnabled()) {
-			logger.info(String.format("acceptServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
-		}
-		return result;
-	}
-	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/delete/{professionalId}", method = RequestMethod.PUT)
-	public @ResponseBody ServiceRequest deleteServiceApplication(@PathVariable String applicationId,
-			@PathVariable String objectId,
-			@PathVariable String professionalId,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		professionalId = Utils.getContextProfessionalId();
-		ServiceRequest result = storageManager.deleteServiceApplication(applicationId, objectId, professionalId);
-		if(logger.isInfoEnabled()) {
-			logger.info(String.format("deleteServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
-		}
-		return result;
-	}
+//	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/apply/{professionalId}", method = RequestMethod.PUT)
+//	public @ResponseBody ServiceRequest applyServiceApplication(@PathVariable String applicationId,
+//			@PathVariable String objectId,
+//			@PathVariable String professionalId,
+//			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		professionalId = Utils.getContextProfessionalId();
+//		ServiceRequest result = storageManager.applyToServiceRequest(applicationId, objectId, professionalId);
+//		if(logger.isInfoEnabled()) {
+//			logger.info(String.format("applyServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+//		}
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/reject/{professionalId}", method = RequestMethod.PUT)
+//	public @ResponseBody ServiceRequest rejectServiceApplication(@PathVariable String applicationId,
+//			@PathVariable String objectId,
+//			@PathVariable String professionalId,
+//			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		professionalId = Utils.getContextProfessionalId();
+//		ServiceRequest result = storageManager.rejectServiceApplication(applicationId, objectId, professionalId);
+//		if(logger.isInfoEnabled()) {
+//			logger.info(String.format("rejectServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+//		}
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/accept/{professionalId}", method = RequestMethod.PUT)
+//	public @ResponseBody ServiceRequest acceptServiceApplication(@PathVariable String applicationId,
+//			@PathVariable String objectId,
+//			@PathVariable String professionalId,
+//			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		professionalId = Utils.getContextProfessionalId();
+//		ServiceRequest result = storageManager.acceptServiceApplication(applicationId, objectId, professionalId);
+//		if(logger.isInfoEnabled()) {
+//			logger.info(String.format("acceptServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+//		}
+//		return result;
+//	}
+//	
+//	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/delete/{professionalId}", method = RequestMethod.PUT)
+//	public @ResponseBody ServiceRequest deleteServiceApplication(@PathVariable String applicationId,
+//			@PathVariable String objectId,
+//			@PathVariable String professionalId,
+//			HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		professionalId = Utils.getContextProfessionalId();
+//		ServiceRequest result = storageManager.deleteServiceApplication(applicationId, objectId, professionalId);
+//		if(logger.isInfoEnabled()) {
+//			logger.info(String.format("deleteServiceApplication[%s]:%s - %s", applicationId, objectId, professionalId));
+//		}
+//		return result;
+//	}
 	
 	@RequestMapping(value = "/api/{applicationId}/notification/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<Notification> getNotifications(@PathVariable String applicationId,
@@ -651,9 +636,25 @@ public class EntityController {
 		logger.error(exception.getMessage());
 		return Utils.handleError(exception);
 	}
-	
+
+	@ExceptionHandler(UnauthorizedException.class)
+	@ResponseStatus(value=HttpStatus.PRECONDITION_FAILED)
+	@ResponseBody
+	public Map<String,String> handleBalanceError(HttpServletRequest request, Exception exception) {
+		logger.error(exception.getMessage());
+		return Utils.handleError(exception);
+	}
+
+	@ExceptionHandler(InvalidStateException.class)
+	@ResponseStatus(value=HttpStatus.PRECONDITION_FAILED)
+	@ResponseBody
+	public Map<String,String> handleStateError(HttpServletRequest request, Exception exception) {
+		logger.error(exception.getMessage());
+		return Utils.handleError(exception);
+	}
+
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseStatus(value=HttpStatus.PRECONDITION_FAILED)
 	@ResponseBody
 	public Map<String,String> handleGenericError(HttpServletRequest request, Exception exception) {
 		exception.printStackTrace();

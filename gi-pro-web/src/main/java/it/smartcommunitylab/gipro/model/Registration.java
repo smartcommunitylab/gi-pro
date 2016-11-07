@@ -17,8 +17,6 @@
 package it.smartcommunitylab.gipro.model;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -39,6 +37,8 @@ public class Registration extends BaseObject {
 	private Date confirmationDeadline;
 	private String confirmationKey;
 	private String lang;
+	private String type;
+	private String area, address;
 	private String cellPhone;
 	
 	public String getName() {
@@ -124,5 +124,23 @@ public class Registration extends BaseObject {
 	}
 	public void setCellPhone(String cellPhone) {
 		this.cellPhone = cellPhone;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }

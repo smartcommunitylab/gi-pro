@@ -1,29 +1,7 @@
 package it.smartcommunitylab.gipro.storage;
 
-import it.smartcommunitylab.gipro.common.Const;
-import it.smartcommunitylab.gipro.common.PasswordHash;
-import it.smartcommunitylab.gipro.common.TranslationHelper;
-import it.smartcommunitylab.gipro.common.Utils;
-import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
-import it.smartcommunitylab.gipro.exception.InvalidDataException;
-import it.smartcommunitylab.gipro.exception.NotVerifiedException;
-import it.smartcommunitylab.gipro.exception.NotRegisteredException;
-import it.smartcommunitylab.gipro.exception.RegistrationException;
-import it.smartcommunitylab.gipro.exception.UnauthorizedException;
-import it.smartcommunitylab.gipro.model.Notification;
-import it.smartcommunitylab.gipro.model.Poi;
-import it.smartcommunitylab.gipro.model.Professional;
-import it.smartcommunitylab.gipro.model.Registration;
-import it.smartcommunitylab.gipro.model.ServiceApplication;
-import it.smartcommunitylab.gipro.model.ServiceOffer;
-import it.smartcommunitylab.gipro.model.ServiceRequest;
-import it.smartcommunitylab.gipro.push.NotificationManager;
-import it.smartcommunitylab.gipro.security.DataSetInfo;
-import it.smartcommunitylab.gipro.security.Token;
-
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +14,32 @@ import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.util.StringUtils;
+
+import it.smartcommunitylab.gipro.common.Const;
+import it.smartcommunitylab.gipro.common.PasswordHash;
+import it.smartcommunitylab.gipro.common.TranslationHelper;
+import it.smartcommunitylab.gipro.common.Utils;
+import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
+import it.smartcommunitylab.gipro.exception.EntityNotFoundException;
+import it.smartcommunitylab.gipro.exception.InsufficientBalanceException;
+import it.smartcommunitylab.gipro.exception.InvalidDataException;
+import it.smartcommunitylab.gipro.exception.InvalidStateException;
+import it.smartcommunitylab.gipro.exception.NotRegisteredException;
+import it.smartcommunitylab.gipro.exception.NotVerifiedException;
+import it.smartcommunitylab.gipro.exception.RegistrationException;
+import it.smartcommunitylab.gipro.exception.UnauthorizedException;
+import it.smartcommunitylab.gipro.model.Notification;
+import it.smartcommunitylab.gipro.model.Poi;
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.Registration;
+import it.smartcommunitylab.gipro.model.Service;
+import it.smartcommunitylab.gipro.model.ServiceOffer;
+import it.smartcommunitylab.gipro.model.ServiceRequest;
+import it.smartcommunitylab.gipro.model.Service.ServiceSubtype;
+import it.smartcommunitylab.gipro.push.NotificationManager;
+import it.smartcommunitylab.gipro.security.DataSetInfo;
+import it.smartcommunitylab.gipro.security.Token;
 
 public class RepositoryManager {
 	private static final transient Logger logger = LoggerFactory.getLogger(RepositoryManager.class);
@@ -48,6 +52,9 @@ public class RepositoryManager {
 	
 	private MongoTemplate mongoTemplate;
 	private String defaultLang;
+
+	@Autowired
+	private ServiceConfig serviceConfig;
 	
 	public RepositoryManager(MongoTemplate template, String defaultLang) {
 		this.mongoTemplate = template;
@@ -221,8 +228,8 @@ public class RepositoryManager {
 		switch(type) {
 			// name/surname of the offering person; poi name, date/time of the request
 			case Const.NT_NEW_SERVICE_OFFER: {
-				ServiceOffer offer = getServiceOfferById(applicationId, null, serviceOfferId);
-				ServiceRequest request = getServiceRequestById(applicationId, null, serviceRequestId);
+				ServiceOffer offer = getServiceOfferById(applicationId, serviceOfferId);
+				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
 				Professional p = findProfessionalById(applicationId, offer.getProfessionalId());
 				Poi poi = findPoiById(applicationId, request.getPoiId());
 				params = new String[]{ 
@@ -234,7 +241,7 @@ public class RepositoryManager {
 				break;
 			}
 			case Const.NT_NEW_SERVICE_REQUEST: {
-				ServiceRequest request = getServiceRequestById(applicationId, null, serviceRequestId);
+				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
 				Professional p = findProfessionalById(applicationId, request.getRequesterId());
 				Poi poi = findPoiById(applicationId, request.getPoiId());
 				params = new String[]{ 
@@ -246,11 +253,9 @@ public class RepositoryManager {
 				break;
 			}
 			// TODO
-			case Const.NT_SERVICE_REQUEST_DELETED:
-			case Const.NT_NEW_APPLICATION: 
-			case Const.NT_APPLICATION_ACCEPTED: 
-			case Const.NT_APPLICATION_REJECTED: 
-			case Const.NT_APPLICATION_DELETED: 
+			case Const.NT_SERVICE_OFFER_DELETED:
+			case Const.NT_REQUEST_ACCEPTED: 
+			case Const.NT_REQUEST_REJECTED: 
 		}
 		return translationHelper.getNotificationText(lang, type, serviceType, params);
 	}
@@ -273,10 +278,23 @@ public class RepositoryManager {
 		mongoTemplate.remove(query, Professional.class);
 	}
 	
-	public List<Professional> findProfessional(String applicationId, String type, Integer page, Integer limit) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("type").is(type);
+	public List<Professional> findProfessional(String applicationId, String type, String area, String q, Integer page, Integer limit, String ... orderBy) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId);
+		if (StringUtils.hasText(type)) {
+			criteria.and("type").is(type);
+		}
+		if (StringUtils.hasText(area)) {
+			criteria.and("area").is(area);
+		}
+		if (StringUtils.hasText(q)) {
+			criteria.and("surname").regex("/"+q.toLowerCase()+"/i");
+		}
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+		if (orderBy != null && orderBy.length > 0) {
+			query.with(new Sort(Sort.Direction.ASC, orderBy));
+		} else {
+			query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+		}
 		if(limit != null) {
 			query.limit(limit);
 		}
@@ -288,8 +306,7 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public List<Professional> findProfessionalByIds(String applicationId, String[] idArray) {
-		List<String> idList = Arrays.asList(idArray);
+	public List<Professional> findProfessionalByIds(String applicationId, List<String> idList) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").in(idList);
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
@@ -352,18 +369,28 @@ public class RepositoryManager {
 
 	public List<ServiceOffer> searchServiceOffer(String applicationId, 
 			String professionalId, String serviceType, String poiId,
-			Long startTime, Integer page,	Integer limit) {
+			String area, Long startTime, Integer page,	Integer limit, String ... orderBy) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("poiId").is(poiId)
-				.and("serviceType").is(serviceType)
+//				.and("poiId").is(poiId)
+//				.and("serviceType").is(serviceType)
 				.and("state").is(Const.STATE_OPEN)
 				.and("professionalId").ne(professionalId);
-		Criteria timeCriteria = new Criteria().andOperator(
-				Criteria.where("startTime").lte(new Date(startTime)),
-				Criteria.where("endTime").gte(new Date(startTime)));
-		criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
+		if (startTime != null) {
+			Criteria timeCriteria = new Criteria().andOperator(
+					Criteria.where("startTime").lte(new Date(startTime)),
+					Criteria.where("endTime").gte(new Date(startTime)));
+			criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
+		}
+		if (StringUtils.hasText(area)) {
+			criteria.and("area").is(area);
+		}
 		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		if (orderBy != null && orderBy.length > 0) {
+			query.with(new Sort(Sort.Direction.ASC, orderBy));
+		} else {
+			query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		}
+
 		if(limit != null) {
 			query.limit(limit);
 		}
@@ -380,98 +407,58 @@ public class RepositoryManager {
 		Date now = new Date();
 		serviceOffer.setCreationDate(now);
 		serviceOffer.setLastUpdate(now);
+				
 		mongoTemplate.save(serviceOffer);
-		//search matching service requests
-		List<ServiceRequest> matchingRequests = getMatchingRequests(serviceOffer);
-		Date timestamp = new Date();
-		for(ServiceRequest serviceRequest : matchingRequests) {
-			// notify requestor
-			Notification notification = new Notification();
-			notification.setApplicationId(serviceOffer.getApplicationId());
-			notification.setTimestamp(timestamp);
-			notification.setProfessionalId(serviceRequest.getRequesterId());
-			notification.setType(Const.NT_NEW_SERVICE_OFFER);
-			notification.setServiceOfferId(serviceOffer.getObjectId());
-			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification, serviceRequest.getRequesterId(), serviceRequest.getServiceType());
-			// notify myself about existing requests
-			notification = new Notification();
-			notification.setApplicationId(serviceOffer.getApplicationId());
-			notification.setTimestamp(timestamp);
-			notification.setProfessionalId(serviceOffer.getProfessionalId());
-			notification.setType(Const.NT_NEW_SERVICE_REQUEST);
-			notification.setServiceOfferId(serviceOffer.getObjectId());
-			notification.setServiceRequestId(serviceRequest.getObjectId());
-			addNotification(notification, serviceOffer.getProfessionalId(), serviceOffer.getServiceType());
-		}
 		return serviceOffer;
 	}
 
-	private List<ServiceRequest> getMatchingRequests(ServiceOffer serviceOffer) {
-		Criteria criteria = new Criteria("applicationId").is(serviceOffer.getApplicationId())
-				.and("poiId").is(serviceOffer.getPoiId())
-				.and("serviceType").is(serviceOffer.getServiceType())
-				.and("state").is(Const.STATE_OPEN)
+	public List<ServiceRequest> getOfferRequests(String applicationId, String offerId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("offerId").is(offerId)
+				.and("state").in(Const.STATE_OPEN, Const.STATE_ACCEPTED)
 				.and("startTime").gte(new Date());
-		if((serviceOffer.getStartTime() != null) && (serviceOffer.getEndTime() != null)) {
-			criteria = criteria.andOperator(
-					new Criteria("startTime").gte(serviceOffer.getStartTime()),
-					new Criteria("startTime").lte(serviceOffer.getEndTime())
-			);
-		}
 		Query query = new Query(criteria);
 		query.with(new Sort(Sort.Direction.DESC, "creationDate"));
 		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
 		return result;
 	}
-	
-	public List<ServiceRequest> getMatchingRequests(String applicationId, String professionalId, String objectId) {
-		ServiceOffer offer = getServiceOfferById(applicationId, professionalId, objectId);
-		if (offer == null) return Collections.emptyList();
-		return getMatchingRequests(offer);
-	}
-	public List<ServiceOffer> getMatchingOffers(String applicationId, String professionalId, String objectId) {
-		ServiceRequest request = getServiceRequestById(applicationId, professionalId, objectId);
-		if (request == null) return Collections.emptyList();
-		return getMatchingOffers(request);
-	}
 
-	public ServiceRequest savePublicServiceRequest(ServiceRequest serviceRequest) {
-		serviceRequest.setObjectId(Utils.getUUID());
-		serviceRequest.setState(Const.STATE_OPEN);
-		serviceRequest.setPrivateRequest(false);
-		Date now = new Date();
-		serviceRequest.setCreationDate(now);
-		serviceRequest.setLastUpdate(now);
-		mongoTemplate.save(serviceRequest);
-		//search matching offers
-		List<ServiceOffer> matchingOffers = getMatchingOffers(serviceRequest);
-		Date timestamp = new Date();
-		for(ServiceOffer serviceOffer : matchingOffers) {
-			Notification notification = new Notification();
-			notification.setApplicationId(serviceRequest.getApplicationId());
-			notification.setTimestamp(timestamp);
-			notification.setProfessionalId(serviceOffer.getProfessionalId());
-			notification.setType(Const.NT_NEW_SERVICE_REQUEST);
-			notification.setServiceOfferId(serviceOffer.getObjectId());
-			notification.setServiceRequestId(serviceRequest.getObjectId());
-			//addNotification(notification,serviceOffer.getProfessionalId(), serviceOffer.getServiceType());
+	public ServiceRequest saveServiceRequest(ServiceRequest serviceRequest) throws EntityNotFoundException, InsufficientBalanceException {
+		// check balance
+		Professional requester = findProfessionalById(serviceRequest.getApplicationId(), serviceRequest.getRequesterId());
+		if (requester == null) throw new EntityNotFoundException("No requester found");
+		
+		ServiceOffer offer = getServiceOfferById(serviceRequest.getApplicationId(), serviceRequest.getOfferId());
+		if (offer == null || !Const.STATE_OPEN.equals(offer.getState())) throw new EntityNotFoundException("Offer not found");
+		serviceRequest.setProfessionalId(offer.getProfessionalId());
+		
+		Service service = serviceConfig.getService(serviceRequest.getServiceType());
+		Integer cost = null;
+		if (service != null) {
+			ServiceSubtype sub = service.subtype(serviceRequest.getServiceSubtype());
+			if (sub != null) cost = sub.getCost();
+			else cost = service.getCost();
 		}
-		return serviceRequest;
-	}
-
-	public ServiceRequest savePrivateServiceRequest(ServiceRequest serviceRequest) {
+		if (cost != null && requester.getBalance() < cost) {
+			throw new InsufficientBalanceException("No balance for service");
+		} 
+		serviceRequest.setCost(cost);
+		
 		serviceRequest.setObjectId(Utils.getUUID());
 		serviceRequest.setState(Const.STATE_OPEN);
-		serviceRequest.setPrivateRequest(true);
 		Date now = new Date();
 		serviceRequest.setCreationDate(now);
 		serviceRequest.setLastUpdate(now);
+		
 		mongoTemplate.save(serviceRequest);
+		
+		Criteria criteria = new Criteria("applicationId").is(requester.getApplicationId()).and("objectId").is(requester.getObjectId());
+		mongoTemplate.updateFirst(Query.query(criteria), new Update().set("balance", requester.getBalance() - cost), Professional.class);
+		
 		//search matching offers
-		List<ServiceOffer> matchingOffers = getMatchingOffers(serviceRequest);
 		Date timestamp = new Date();
-		for(ServiceOffer serviceOffer : matchingOffers) {
+		ServiceOffer serviceOffer = getServiceOfferById(serviceRequest.getApplicationId(), serviceRequest.getOfferId());
+		if (serviceOffer != null) {
 			Notification notification = new Notification();
 			notification.setApplicationId(serviceRequest.getApplicationId());
 			notification.setTimestamp(timestamp);
@@ -484,29 +471,30 @@ public class RepositoryManager {
 		return serviceRequest;
 	}
 
-	private List<ServiceOffer> getMatchingOffers(ServiceRequest serviceRequest) {
-		Criteria criteria = new Criteria("applicationId").is(serviceRequest.getApplicationId())
-				.and("poiId").is(serviceRequest.getPoiId())
-				.and("serviceType").is(serviceRequest.getServiceType())
-				.and("state").is(Const.STATE_OPEN);
-		if(serviceRequest.isPrivateRequest()) {
-			criteria = criteria.andOperator(new Criteria("professionalId").in(serviceRequest.getRecipients()));
-		}
-		Criteria timeCriteria = new Criteria().andOperator(
-				Criteria.where("startTime").lte(serviceRequest.getStartTime()),
-				Criteria.where("endTime").gte(serviceRequest.getStartTime()));
-		criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
-		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "startTime", "creationDate"));
-		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
-		return result;
-	}
+//	private List<ServiceOffer> getMatchingOffers(ServiceRequest serviceRequest) {
+//		Criteria criteria = new Criteria("applicationId").is(serviceRequest.getApplicationId())
+//				.and("poiId").is(serviceRequest.getPoiId())
+//				.and("serviceType").is(serviceRequest.getServiceType())
+//				.and("state").is(Const.STATE_OPEN);
+//		if(serviceRequest.isPrivateRequest()) {
+//			criteria = criteria.andOperator(new Criteria("professionalId").in(serviceRequest.getRecipients()));
+//		}
+//		Criteria timeCriteria = new Criteria().andOperator(
+//				Criteria.where("startTime").lte(serviceRequest.getStartTime()),
+//				Criteria.where("endTime").gte(serviceRequest.getStartTime()));
+//		criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
+//		Query query = new Query(criteria);
+//		query.with(new Sort(Sort.Direction.DESC, "startTime", "creationDate"));
+//		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
+//		return result;
+//	}
 	
 	public List<ServiceOffer> getServiceOffers(String applicationId, String professionalId,
 			String serviceType, Long timeFrom, Long timeTo, Boolean withTime, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("professionalId").is(professionalId)
-				.and("serviceType").is(serviceType);
+				.and("serviceType").is(serviceType)
+				.and("state").ne(Const.STATE_DELETED);
 		Criteria timeCriteria = null;
 		if((timeFrom != null) && (timeTo != null)) {
 			timeCriteria = new Criteria().andOperator(
@@ -550,7 +538,8 @@ public class RepositoryManager {
 	public List<ServiceRequest> getServiceRequests(String applicationId, String professionalId,
 			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("requesterId").is(professionalId).and("serviceType").is(serviceType);
+				.and("requesterId").is(professionalId).and("serviceType").is(serviceType)
+				.and("state").ne(Const.STATE_DELETED);
 		if((timeFrom != null) && (timeTo != null)) {
 			criteria = criteria.andOperator(
 				new Criteria("startTime").gte(new Date(timeFrom)),
@@ -580,20 +569,68 @@ public class RepositoryManager {
 				.and("objectId").is(objectId)
 				.and("professionalId").is(professionalId);
 		Query query = new Query(criteria);
+		Update update = new Update().set("state", Const.STATE_DELETED);
 		try {
-			result = mongoTemplate.findOne(query, ServiceOffer.class);
-			if(result != null) {
-				mongoTemplate.findAndRemove(query, ServiceOffer.class);
-			}
+			mongoTemplate.updateFirst(query, update, ServiceOffer.class);
 		} catch (Exception e) {
 			logger.warn("deleteServiceOffer:" + e.getMessage());
 		} 
-		// TODO : consider notification for service offer deleted?
+		List<ServiceRequest> requests = getOfferRequests(applicationId, objectId);
+		if (requests != null)
+			for (ServiceRequest req: requests) {
+				Notification notification = new Notification();
+				notification.setApplicationId(applicationId);
+				notification.setTimestamp(new Date());
+				notification.setProfessionalId(req.getRequesterId());
+				notification.setType(Const.NT_SERVICE_OFFER_DELETED);
+				notification.setServiceOfferId(req.getOfferId());
+				notification.setServiceRequestId(req.getObjectId());
+				addNotification(notification, req.getRequesterId(), req.getServiceType());
+			}
 		return result;
 	}
 
-	public ServiceRequest deleteServiceRequest(String applicationId, String objectId,
-			String professionalId) {
+	public ServiceRequest acceptServiceRequest(String applicationId, String objectId) throws InvalidStateException {
+		ServiceRequest req = getServiceRequestById(applicationId, objectId);
+		if (!Const.STATE_OPEN.equals(req.getState())) throw new InvalidStateException("Request is not open");
+		
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Update update = new Update().set("state", Const.STATE_ACCEPTED);
+		mongoTemplate.updateFirst(Query.query(criteria), update, ServiceRequest.class);
+		
+		req = getServiceRequestById(applicationId, objectId);
+		Notification notification = new Notification();
+		notification.setApplicationId(applicationId);
+		notification.setTimestamp(new Date());
+		notification.setProfessionalId(req.getRequesterId());
+		notification.setType(Const.NT_REQUEST_ACCEPTED);
+		notification.setServiceOfferId(req.getOfferId());
+		notification.setServiceRequestId(req.getObjectId());
+		addNotification(notification, req.getRequesterId(), req.getServiceType());
+		return req;
+	}
+	public ServiceRequest rejectServiceRequest(String applicationId, String objectId) throws InvalidStateException {
+		ServiceRequest req = getServiceRequestById(applicationId, objectId);
+		if (!Const.STATE_OPEN.equals(req.getState())) throw new InvalidStateException("Request is not open");
+
+		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+		Update update = new Update().set("state", Const.STATE_REJECTED);
+		mongoTemplate.updateFirst(Query.query(criteria), update, ServiceRequest.class);
+
+		req = getServiceRequestById(applicationId, objectId);
+		Notification notification = new Notification();
+		notification.setApplicationId(applicationId);
+		notification.setTimestamp(new Date());
+		notification.setProfessionalId(req.getRequesterId());
+		notification.setType(Const.NT_REQUEST_REJECTED);
+		notification.setServiceOfferId(req.getOfferId());
+		notification.setServiceRequestId(req.getObjectId());
+		addNotification(notification, req.getRequesterId(), req.getServiceType());
+		return req;
+	}
+	
+	
+	public ServiceRequest deleteServiceRequest(String applicationId, String objectId, String professionalId) {
 		ServiceRequest result = null;
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("objectId").is(objectId)
@@ -602,22 +639,11 @@ public class RepositoryManager {
 		try {
 			result = mongoTemplate.findOne(query, ServiceRequest.class);
 			if(result != null) {
-				if(result.getState().equals(Const.STATE_OPEN)) {
-					Date timestamp = new Date();
-					for(ServiceApplication serviceApplication : result.getApplicants().values()) {
-						if(serviceApplication.getState().equals(Const.SERVICE_APP_REQUESTED) ||
-								serviceApplication.getState().equals(Const.SERVICE_APP_ACCEPTED)) {
-							Notification notification = new Notification();
-							notification.setApplicationId(applicationId);
-							notification.setTimestamp(timestamp);
-							notification.setProfessionalId(serviceApplication.getProfessionalId());
-							notification.setType(Const.NT_SERVICE_REQUEST_DELETED);
-							notification.setServiceRequestId(result.getObjectId());
-							addNotification(notification,serviceApplication.getProfessionalId(), result.getServiceType());
-						}
-					}
+				if(!Const.STATE_ACCEPTED.equals(result.getState())) {
+					mongoTemplate.findAndRemove(query, ServiceRequest.class);
+				} else {
+					throw new InvalidStateException("Already accepted");
 				}
-				mongoTemplate.findAndRemove(query, ServiceRequest.class);
 			}
 		} catch (Exception e) {
 			logger.warn("deleteServiceOffer:" + e.getMessage());
@@ -625,122 +651,122 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public List<ServiceRequest> getServiceRequestApplications(String applicationId,
-			String professionalId, String serviceType, Long timestamp, Integer page, Integer limit) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("applicants." + professionalId).exists(true).and("serviceType").is(serviceType);
-		if(timestamp != null) {
-			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timestamp)));
-		}
-		Query query = new Query(criteria);
-		query.with(new Sort(Sort.Direction.DESC, "startTime"));
-		if(limit != null) {
-			query.limit(limit);
-		}
-		if(page != null) {
-			query.skip((page - 1) * limit);
-		}
-		filterServiceRequestFields(professionalId, query);
-		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
-		return result;
-	}
-
-	private void filterServiceRequestFields(String professionalId, Query query) {
-		query.fields().include("objectId");
-		query.fields().include("poiId");
-		query.fields().include("startTime");
-		query.fields().include("privateRequest");
-		query.fields().include("state");
-		query.fields().include("requesterId");
-		query.fields().include("applicants." + professionalId);
-		query.fields().include("customProperties");
-		query.fields().include("serviceType");
-	}
+//	public List<ServiceRequest> getServiceRequestApplications(String applicationId,
+//			String professionalId, String serviceType, Long timestamp, Integer page, Integer limit) {
+//		Criteria criteria = new Criteria("applicationId").is(applicationId)
+//				.and("applicants." + professionalId).exists(true).and("serviceType").is(serviceType);
+//		if(timestamp != null) {
+//			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timestamp)));
+//		}
+//		Query query = new Query(criteria);
+//		query.with(new Sort(Sort.Direction.DESC, "startTime"));
+//		if(limit != null) {
+//			query.limit(limit);
+//		}
+//		if(page != null) {
+//			query.skip((page - 1) * limit);
+//		}
+//		filterServiceRequestFields(professionalId, query);
+//		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
+//		return result;
+//	}
+//
+//	private void filterServiceRequestFields(String professionalId, Query query) {
+//		query.fields().include("objectId");
+//		query.fields().include("poiId");
+//		query.fields().include("startTime");
+//		query.fields().include("privateRequest");
+//		query.fields().include("state");
+//		query.fields().include("requesterId");
+//		query.fields().include("applicants." + professionalId);
+//		query.fields().include("customProperties");
+//		query.fields().include("serviceType");
+//	}
 	
 	private void filterProfessionalFields(Query query) {
 		query.fields().exclude("username");
 		query.fields().exclude("passwordHash");
 	}
 
-	public ServiceRequest applyToServiceRequest(String applicationId, String objectId,
-			String professionalId) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
-		Query query = new Query(criteria);
-		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
-		if(serviceRequest != null) {
-			Date timestamp = new Date();
-			//check if the professional hash already applyed
-			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
-			if(serviceApplication == null) {
-				//add application
-				serviceApplication = new ServiceApplication();
-				serviceApplication.setTimestamp(timestamp);
-				serviceApplication.setState(Const.SERVICE_APP_REQUESTED);
-				serviceApplication.setProfessionalId(professionalId);
-				serviceRequest.getApplicants().put(professionalId, serviceApplication);
-				updateServiceApplication(query, serviceRequest);
-				//add notification
-				Notification notification = new Notification();
-				notification.setApplicationId(applicationId);
-				notification.setTimestamp(timestamp);
-				notification.setProfessionalId(serviceRequest.getRequesterId());
-				notification.setType(Const.NT_NEW_APPLICATION);
-				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification,serviceRequest.getRequesterId(), serviceRequest.getServiceType());
-			}
-			serviceRequest.getApplicants().clear();
-			serviceRequest.getApplicants().put(professionalId, serviceApplication);
-		}
-		return serviceRequest;
-	}
+//	public ServiceRequest applyToServiceRequest(String applicationId, String objectId,
+//			String professionalId) {
+//		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+//		Query query = new Query(criteria);
+//		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+//		if(serviceRequest != null) {
+//			Date timestamp = new Date();
+//			//check if the professional hash already applyed
+//			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+//			if(serviceApplication == null) {
+//				//add application
+//				serviceApplication = new ServiceApplication();
+//				serviceApplication.setTimestamp(timestamp);
+//				serviceApplication.setState(Const.SERVICE_APP_REQUESTED);
+//				serviceApplication.setProfessionalId(professionalId);
+//				serviceRequest.getApplicants().put(professionalId, serviceApplication);
+//				updateServiceApplication(query, serviceRequest);
+//				//add notification
+//				Notification notification = new Notification();
+//				notification.setApplicationId(applicationId);
+//				notification.setTimestamp(timestamp);
+//				notification.setProfessionalId(serviceRequest.getRequesterId());
+//				notification.setType(Const.NT_NEW_APPLICATION);
+//				notification.setServiceRequestId(serviceRequest.getObjectId());
+//				addNotification(notification,serviceRequest.getRequesterId(), serviceRequest.getServiceType());
+//			}
+//			serviceRequest.getApplicants().clear();
+//			serviceRequest.getApplicants().put(professionalId, serviceApplication);
+//		}
+//		return serviceRequest;
+//	}
 	
-	public ServiceRequest rejectServiceApplication(String applicationId, String objectId,
-			String professionalId) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
-		Query query = new Query(criteria);
-		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
-		if(serviceRequest != null) {
-			Date timestamp = new Date();
-			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
-			if(serviceApplication != null) {
-				serviceApplication.setState(Const.SERVICE_APP_REJECTED);
-				updateServiceApplication(query, serviceRequest);
-				//add notification
-				Notification notification = new Notification();
-				notification.setApplicationId(applicationId);
-				notification.setTimestamp(timestamp);
-				notification.setProfessionalId(serviceApplication.getProfessionalId());
-				notification.setType(Const.NT_APPLICATION_REJECTED);
-				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification, serviceApplication.getProfessionalId(), serviceRequest.getServiceType());
-			}
-		}
-		return serviceRequest;
-	}
-
-	public ServiceRequest acceptServiceApplication(String applicationId, String objectId,
-			String professionalId) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
-		Query query = new Query(criteria);
-		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
-		if(serviceRequest != null) {
-			Date timestamp = new Date();
-			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
-			if(serviceApplication != null) {
-				serviceApplication.setState(Const.SERVICE_APP_ACCEPTED);
-				updateServiceApplication(query, serviceRequest);
-				//add notification
-				Notification notification = new Notification();
-				notification.setApplicationId(applicationId);
-				notification.setTimestamp(timestamp);
-				notification.setProfessionalId(serviceApplication.getProfessionalId());
-				notification.setType(Const.NT_APPLICATION_ACCEPTED);
-				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification, professionalId, serviceRequest.getServiceType());	
-			}
-		}
-		return serviceRequest;
-	}
+//	public ServiceRequest rejectServiceApplication(String applicationId, String objectId,
+//			String professionalId) {
+//		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+//		Query query = new Query(criteria);
+//		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+//		if(serviceRequest != null) {
+//			Date timestamp = new Date();
+//			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+//			if(serviceApplication != null) {
+//				serviceApplication.setState(Const.SERVICE_APP_REJECTED);
+//				updateServiceApplication(query, serviceRequest);
+//				//add notification
+//				Notification notification = new Notification();
+//				notification.setApplicationId(applicationId);
+//				notification.setTimestamp(timestamp);
+//				notification.setProfessionalId(serviceApplication.getProfessionalId());
+//				notification.setType(Const.NT_APPLICATION_REJECTED);
+//				notification.setServiceRequestId(serviceRequest.getObjectId());
+//				addNotification(notification, serviceApplication.getProfessionalId(), serviceRequest.getServiceType());
+//			}
+//		}
+//		return serviceRequest;
+//	}
+//
+//	public ServiceRequest acceptServiceApplication(String applicationId, String objectId,
+//			String professionalId) {
+//		Criteria criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(objectId);
+//		Query query = new Query(criteria);
+//		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+//		if(serviceRequest != null) {
+//			Date timestamp = new Date();
+//			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+//			if(serviceApplication != null) {
+//				serviceApplication.setState(Const.SERVICE_APP_ACCEPTED);
+//				updateServiceApplication(query, serviceRequest);
+//				//add notification
+//				Notification notification = new Notification();
+//				notification.setApplicationId(applicationId);
+//				notification.setTimestamp(timestamp);
+//				notification.setProfessionalId(serviceApplication.getProfessionalId());
+//				notification.setType(Const.NT_APPLICATION_ACCEPTED);
+//				notification.setServiceRequestId(serviceRequest.getObjectId());
+//				addNotification(notification, professionalId, serviceRequest.getServiceType());	
+//			}
+//		}
+//		return serviceRequest;
+//	}
 
 	private void push(Notification notification, String title) {
 		try {
@@ -754,38 +780,38 @@ public class RepositoryManager {
 		}
 	}
 	
-	public ServiceRequest deleteServiceApplication(String applicationId, String objectId,
-			String professionalId) {
-		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("objectId").is(objectId);
-		Query query = new Query(criteria);
-		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
-		if(serviceRequest != null) {
-			Date timestamp = new Date();
-			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
-			if(serviceApplication != null) {
-				serviceApplication.setState(Const.SERVICE_APP_DELETED);
-				updateServiceApplication(query, serviceRequest);
-				//add notification
-				Notification notification = new Notification();
-				notification.setApplicationId(applicationId);
-				notification.setTimestamp(timestamp);
-				notification.setProfessionalId(serviceRequest.getRequesterId());
-				notification.setType(Const.NT_APPLICATION_DELETED);
-				notification.setServiceRequestId(serviceRequest.getObjectId());
-				addNotification(notification, serviceRequest.getRequesterId(), serviceRequest.getServiceType());				
-			}
-		}
-		return serviceRequest;
-	}
+//	public ServiceRequest deleteServiceApplication(String applicationId, String objectId,
+//			String professionalId) {
+//		Criteria criteria = new Criteria("applicationId").is(applicationId)
+//				.and("objectId").is(objectId);
+//		Query query = new Query(criteria);
+//		ServiceRequest serviceRequest = mongoTemplate.findOne(query, ServiceRequest.class);
+//		if(serviceRequest != null) {
+//			Date timestamp = new Date();
+//			ServiceApplication serviceApplication = serviceRequest.getApplicants().get(professionalId);
+//			if(serviceApplication != null) {
+//				serviceApplication.setState(Const.SERVICE_APP_DELETED);
+//				updateServiceApplication(query, serviceRequest);
+//				//add notification
+//				Notification notification = new Notification();
+//				notification.setApplicationId(applicationId);
+//				notification.setTimestamp(timestamp);
+//				notification.setProfessionalId(serviceRequest.getRequesterId());
+//				notification.setType(Const.NT_APPLICATION_DELETED);
+//				notification.setServiceRequestId(serviceRequest.getObjectId());
+//				addNotification(notification, serviceRequest.getRequesterId(), serviceRequest.getServiceType());				
+//			}
+//		}
+//		return serviceRequest;
+//	}
 	
-	private void updateServiceApplication(Query query, ServiceRequest serviceRequest) {
-		Date now = new Date();
-		Update update = new Update();
-		update.set("applicants", serviceRequest.getApplicants());
-		update.set("lastUpdate", now);
-		mongoTemplate.updateFirst(query, update, ServiceRequest.class);
-	}
+//	private void updateServiceApplication(Query query, ServiceRequest serviceRequest) {
+//		Date now = new Date();
+//		Update update = new Update();
+//		update.set("applicants", serviceRequest.getApplicants());
+//		update.set("lastUpdate", now);
+//		mongoTemplate.updateFirst(query, update, ServiceRequest.class);
+//	}
 
 	public List<Notification> getNotifications(String applicationId, String professionalId,
 			Long timeFrom, Long timeTo, Boolean read, String type, Integer page, Integer limit) {
@@ -820,8 +846,7 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public ServiceOffer getServiceOfferById(String applicationId, String professionalId,
-			String objectId) {
+	public ServiceOffer getServiceOfferById(String applicationId, String objectId) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("objectId").is(objectId);
 		Query query = new Query(criteria);
@@ -829,8 +854,7 @@ public class RepositoryManager {
 		return result;
 	}
 
-	public ServiceRequest getServiceRequestById(String applicationId, String professionalId,
-			String objectId) {
+	public ServiceRequest getServiceRequestById(String applicationId, String objectId) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("objectId").is(objectId);
 		Query query = new Query(criteria);

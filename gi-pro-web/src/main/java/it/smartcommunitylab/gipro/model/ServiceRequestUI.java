@@ -17,8 +17,10 @@ public class ServiceRequestUI {
 	private Map<String, ServiceApplication> applicants = new HashMap<String, ServiceApplication>();
 	private List<String> recipients = Lists.newArrayList();
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
-	private String serviceType;
-	
+	private String serviceType, serviceSubtype;
+	private String area, address;
+	private Integer cost;
+
 	public String getObjectId() {
 		return objectId;
 	}
@@ -79,5 +81,30 @@ public class ServiceRequestUI {
 	public void setRequester(Professional requester) {
 		this.requester = requester;
 	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getServiceSubtype() {
+		return serviceSubtype;
+	}
+	public void setServiceSubtype(String serviceSubtype) {
+		this.serviceSubtype = serviceSubtype;
+	}
+	public Integer getCost() {
+		return cost;
+	}
+	public void setCost(Integer cost) {
+		this.cost = cost;
+	}
+
 	
 }

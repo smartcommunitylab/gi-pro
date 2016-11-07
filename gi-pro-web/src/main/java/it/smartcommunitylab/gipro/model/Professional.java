@@ -12,12 +12,15 @@ public class Professional extends BaseObject {
 	private String phone;
 	private String fax;
 	private String address;
+	private String area;
 	private String cf;
 	private String piva;
 	private String username;
 	private String passwordHash;
 	private String type;
 	private String lang;
+	
+	private int balance;
 	
 	private String cellPhone;
 	private String imageUrl;
@@ -125,6 +128,18 @@ public class Professional extends BaseObject {
 	}
 	public void setCellPhone(String cellPhone) {
 		this.cellPhone = cellPhone;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public int getBalance() {
+		return balance;
+	}
+	public void setBalance(int balance) {
+		this.balance = balance;
 	}
 	
 }
