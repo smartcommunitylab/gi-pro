@@ -35,6 +35,7 @@ public class Converter {
 		serviceOfferUI.setServiceSubtype(serviceOffer.getServiceSubtype());
 		serviceOfferUI.setNote(serviceOffer.getNote());
 		serviceOfferUI.setCost(serviceOffer.getCost());
+		serviceOfferUI.setCoordinates(serviceOffer.getCoordinates());
 		
 		if (serviceOffer.getPoiId() != null) {
 			Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
@@ -59,6 +60,7 @@ public class Converter {
 			serviceOfferUI.setServiceSubtype(serviceOffer.getServiceSubtype());
 			serviceOfferUI.setNote(serviceOffer.getNote());
 			serviceOfferUI.setCost(serviceOffer.getCost());
+			serviceOfferUI.setCoordinates(serviceOffer.getCoordinates());
 			if (serviceOffer.getPoiId() != null) {
 				Poi poi = storageManager.findPoiById(applicationId, serviceOffer.getPoiId());
 				serviceOfferUI.setPoi(poi);
@@ -126,6 +128,7 @@ public class Converter {
 		professional.setUsername(registration.getUsername());
 		professional.setAddress(registration.getAddress());
 		professional.setArea(registration.getArea());
+		professional.setCoordinates(registration.getCoordinates());
 		professional.setType(registration.getType());
 		professional.setPasswordHash(registration.getPassword());
 		if (StringUtils.hasText(registration.getCellPhone())) {
@@ -133,22 +136,6 @@ public class Converter {
 		}
 		return professional;
 	}
-	
-	public static Registration convertProfessionalToRegistration(Professional professional, 
-			String password, String lang) {
-		Registration registration = new Registration();
-		registration.setApplicationId(professional.getApplicationId());
-		registration.setCf(professional.getCf());
-		registration.setLang(lang);
-		registration.setMail(professional.getMail());
-		registration.setName(professional.getName());
-		registration.setPassword(password);
-		registration.setPec(professional.getPec());
-		registration.setPhone(professional.getPhone());
-		registration.setPiva(professional.getPiva());
-		registration.setSurname(professional.getSurname());
-		registration.setUsername(professional.getUsername());
-		return registration;
-	}
+
 	
 }

@@ -12,6 +12,7 @@ public class ServiceOffer extends BaseObject {
 	private String serviceType;
 	private String serviceSubtype;
 	private String area, address;
+	private double[] coordinates;
 	private String note;
 	private Integer cost;
 	
@@ -86,6 +87,12 @@ public class ServiceOffer extends BaseObject {
 	}
 	public void setCost(Integer cost) {
 		this.cost = cost;
+	}
+	public double[] getCoordinates() {
+		return coordinates;
+	}
+	public void setCoordinates(double[] coordinates) {
+		this.coordinates = coordinates;
 	}
 	
 }
