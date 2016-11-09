@@ -1,6 +1,6 @@
 angular.module('gi-pro.controllers.serviceandprof', [])
 
-.controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
+.controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
   $scope.activeServices = null; //list of active services
   $scope.activeProfessionals = null; //list of active professional
   $scope.activeZones = null; //list of active zones
@@ -9,10 +9,14 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.selectingZones = false;
   $scope.selectingProfession = false;
   $scope.listVisualization = true;
+  $scope.searchBarVisible = false;
+  $scope.searchString = "";
+
+
   var professionMap = null;
   var zoneMap = null;
   var servicesMap = null;
-
+  $scope.title = $filter('translate')('app');
   $scope.filters = {
     allServices: [],
     selectedService: null,
@@ -22,6 +26,16 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     selectedZone: null
   };
 
+  $scope.goBack = function () {
+      $scope.searchString = "";
+      $scope.searchBarVisible = false;
+      $scope.title = $filter('translate')('app');
+    }
+    //  $scope.clearSearch = function () {
+    //    $scope.searchString = "";
+    //    $scope.searchBarVisible = false;
+    //    $scope.title = $filter('translate')('app');
+    //  }
   var loadFilters = function () {
     //        load professions
     //        load services
@@ -52,14 +66,14 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   }
   var addExtraDataToProf = function () {
     for (var i = 0; i < $scope.activeProfessionals.length; i++) {
-      $scope.activeProfessionals[i]["profession"] = professionMap[$scope.activeProfessionals[i].professionId].name;
-      $scope.activeProfessionals[i]["zone"] = zoneMap[$scope.activeProfessionals[i].zoneId].name;
+      $scope.activeProfessionals[i]["profession"] = professionMap[$scope.activeProfessionals[i].type].name;
+      $scope.activeProfessionals[i]["zone"] = zoneMap[$scope.activeProfessionals[i].area].name;
     }
     //if logged add also service meta info
     if (Login.userIsLogged()) {
       for (var i = 0; i < $scope.activeServices.length; i++) {
         $scope.activeServices[i]["service"] = servicesMap[$scope.activeServices[i].serviceId].name;
-        $scope.activeServices[i]["zone"] = zoneMap[$scope.activeProfessionals[i].zoneId].name;
+        $scope.activeServices[i]["zone"] = zoneMap[$scope.activeProfessionals[i].area].name;
       }
     }
 
@@ -127,7 +141,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   }
 
   $scope.switchSearchBar = function () {
-    $scope.searchBar
+    $scope.searchBarVisible = true;
+    $scope.title = '';
   }
   $scope.openDetailsProf = function (professionist) {
     $state.go("app.profdetails", {
@@ -169,6 +184,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       }
 
     }
+    $ionicScrollDelegate.resize();
   }
   $scope.$on('$ionicView.enter', function (event, args) {
     var params = DataSrv.internalCache['app.serviceAndProf'] || {};
@@ -184,6 +200,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.switchToMap = function () {
     $scope.listVisualization = !$scope.listVisualization;
   }
+
   $scope.initMap = function () {
     mapService.initMap('serviceMap').then(function () {
       GeoLocate.locate().then(function (pos) {

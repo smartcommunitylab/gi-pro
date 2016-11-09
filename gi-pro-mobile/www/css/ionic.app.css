@@ -9815,6 +9815,13 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.bar .clear-button {
+  color: #bbb;
+  height: 20px; }
+
+.bar .home-search {
+  height: 24px; }
+
 /* IonicDatePicker, IonicTimePicker */
 .gi-pro .ionic_datepicker_popup .today {
   border: 1px solid #1f6ca5;
