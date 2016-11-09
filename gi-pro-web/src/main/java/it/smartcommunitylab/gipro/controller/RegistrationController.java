@@ -191,6 +191,7 @@ public class RegistrationController {
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public Map<String,String> handleRegistrationError(HttpServletRequest request, Exception exception) {
+		logger.error("registration error", exception);
 		return Utils.handleError(exception);
 	}
 	
