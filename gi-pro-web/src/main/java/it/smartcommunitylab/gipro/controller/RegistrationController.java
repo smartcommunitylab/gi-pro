@@ -198,7 +198,7 @@ public class RegistrationController {
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public Map<String,String> handleGenericError(HttpServletRequest request, Exception exception) {
-		exception.printStackTrace();
+		logger.error("Generic error", exception);
 		return Utils.handleError(exception);
 	}	
 }
