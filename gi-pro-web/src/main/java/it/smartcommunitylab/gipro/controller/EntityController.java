@@ -125,7 +125,7 @@ public class EntityController {
 		}
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/professional/bypage", method = RequestMethod.GET)
+	@RequestMapping(value = "/apipublic/{applicationId}/professional/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionals(@PathVariable String applicationId, 
 			@RequestParam(required=false) String type,
 			@RequestParam(required=false) String area,
@@ -150,7 +150,7 @@ public class EntityController {
 		return result;
 	}
 
-	@RequestMapping(value = "/api/{applicationId}/professional/byids", method = RequestMethod.GET)
+	@RequestMapping(value = "/apipublic/{applicationId}/professional/byids", method = RequestMethod.GET)
 	public @ResponseBody List<Professional> getProfessionalsByIds(@PathVariable String applicationId, 
 			@RequestParam List<String> ids, 
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -164,7 +164,7 @@ public class EntityController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/poi/bypage", method = RequestMethod.GET)
+	@RequestMapping(value = "/apipublic/{applicationId}/poi/bypage", method = RequestMethod.GET)
 	public @ResponseBody List<Poi> getPois(@PathVariable String applicationId, 
 			@RequestParam String type,
 			@RequestParam(required=false) String region,
@@ -187,7 +187,7 @@ public class EntityController {
 		return result;
 	}
 		
-	@RequestMapping(value = "/api/{applicationId}/poi/byids", method = RequestMethod.GET)
+	@RequestMapping(value = "/apipublic/{applicationId}/poi/byids", method = RequestMethod.GET)
 	public @ResponseBody List<Poi> getPoisByIds(@PathVariable String applicationId, 
 			@RequestParam String ids,  
 			HttpServletRequest request, HttpServletResponse response) throws Exception {

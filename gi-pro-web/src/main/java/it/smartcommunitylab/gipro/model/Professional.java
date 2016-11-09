@@ -13,6 +13,7 @@ public class Professional extends BaseObject {
 	private String fax;
 	private String address;
 	private String area;
+	private double[] coordinates;
 	private String cf;
 	private String piva;
 	private String username;
@@ -140,6 +141,12 @@ public class Professional extends BaseObject {
 	}
 	public void setBalance(int balance) {
 		this.balance = balance;
+	}
+	public double[] getCoordinates() {
+		return coordinates;
+	}
+	public void setCoordinates(double[] coordinates) {
+		this.coordinates = coordinates;
 	}
 	
 }

@@ -29,4 +29,5 @@ public class Const {
 	public static final String LawyerDataIscrizioneAlbo = "LawyerDataIscrizioneAlbo";
 	public static final String LawyerCassazionista = "LawyerCassazionista";
 	public static final String LawyerOrdineCompetenza = "LawyerOrdineCompetenza";
+	public static final int INIT_BALANCE = 100;
 }

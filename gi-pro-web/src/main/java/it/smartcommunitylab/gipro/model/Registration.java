@@ -39,6 +39,8 @@ public class Registration extends BaseObject {
 	private String lang;
 	private String type;
 	private String area, address;
+	private double[] coordinates;
+
 	private String cellPhone;
 	
 	public String getName() {
@@ -143,4 +145,11 @@ public class Registration extends BaseObject {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public double[] getCoordinates() {
+		return coordinates;
+	}
+	public void setCoordinates(double[] coordinates) {
+		this.coordinates = coordinates;
+	}
+	
 }

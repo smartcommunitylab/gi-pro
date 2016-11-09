@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.authorizeRequests()
 		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-		.antMatchers("/api/**")
-		.hasAnyAuthority(AppUserDetails.GIPRO)
+		.antMatchers("/apipublic/**").permitAll()
+		.antMatchers("/api/**").hasAnyAuthority(AppUserDetails.GIPRO)
 		.and()
 		.addFilterBefore(tokenFilter(), BasicAuthenticationFilter.class)
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
