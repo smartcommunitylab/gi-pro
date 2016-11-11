@@ -48,7 +48,7 @@
             <form action="reset" method="post">
                 <c:if test="${error != null}"><div class="error"><fmt:message bundle="${res}" key="${error}" /></div></c:if>
                 <div>&nbsp;</div>
-                <div class="col-md-12 form-group"><label> <fmt:message bundle="${res}" key="lbl_cf" />: </label><input class="form-control" type="text" name="cf"/></div>
+                <div class="col-md-12 form-group"><label> <fmt:message bundle="${res}" key="lbl_cf" />: </label><input class="form-control" type="text" name="email"/></div>
                 <div class="col-md-12 form-group">
                   <button class="btn btn-primary"><fmt:message bundle="${res}" key="lbl_reset_btn" /></button>
                   <a class="btn" href="login"><fmt:message bundle="${res}" key="lbl_cancel" /></a>
