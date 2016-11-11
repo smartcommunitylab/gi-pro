@@ -1,0 +1,117 @@
+[{
+    "address": "Via Malpaga 11",
+    "area": "idzone_1",
+    "coordinates": [
+      46.070761,
+       11.122831
+    ],
+    "cost": 100,
+    "note": "string",
+    "objectId": "idser_1",
+    "poi": {
+      "address": "Via Malpaga 11",
+      "applicationId": "DEMO",
+      "coordinates": [
+       46.070761,
+       11.122831
+      ],
+      "creationDate": "2016-11-10T12:31:00.381Z",
+      "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo.",
+      "lastUpdate": "2016-11-10T12:31:00.381Z",
+      "name": "Poi 1",
+      "objectId": "string",
+      "region": "string",
+      "type": "string"
+    },
+    "professional": {
+      "address": "Via Malvasia 51",
+      "applicationId": "DEMO",
+      "area": "idzone_1",
+      "balance": 0,
+      "cellPhone": "+393401122334",
+      "cf": "AAABBB80R01L378Y",
+      "creationDate": "2016-11-08T13:16:30.438Z",
+      "customProperties": {
+        "competenze": ["avvocato divorzista", "difensore", "perizia"]
+      },
+      "fax": "393401122334",
+      "imageUrl": "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
+      "lang": "ita",
+      "lastUpdate": "2016-11-08T13:16:30.438Z",
+      "mail": "TullioPinter@bb.com",
+      "name": "Tullio",
+      "objectId": "id1",
+      "passwordHash": "string",
+      "pec": "string",
+      "phone": "0461112233",
+      "piva": "string",
+      "surname": "Pinter",
+      "type": "idpro_1",
+      "username": "string",
+      "location": {
+        "lat": 46.070761,
+        "long": 11.122831
+      },
+      "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo."
+    },
+    "serviceType": "sostituzioneudienza"
+  },
+  {
+    "address": "Via Malpaga 12",
+    "area": "idzone_2",
+    "coordinates": [
+      46.069719,
+      11.124365
+    ],
+    "cost": 50,
+    "note": "string",
+    "objectId": "idser_2",
+    "poi": {
+      "address": "Via Malpaga 12",
+      "applicationId": "DEMO",
+      "coordinates": [
+      46.069719,
+      11.124365
+      ],
+      "creationDate": "2016-11-10T12:31:00.381Z",
+      "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo.",
+      "lastUpdate": "2016-11-10T12:31:00.381Z",
+      "name": "Poi 1",
+      "objectId": "string",
+      "region": "string",
+      "type": "string"
+    },
+    "professional": {
+      "address": "Via alla Cascata 51",
+      "applicationId": "DEMO",
+      "area": "idzone_2",
+      "balance": 0,
+      "cellPhone": "+393404455334",
+      "cf": "AAABBB80R01L378Y",
+      "creationDate": "2016-11-08T13:16:30.438Z",
+      "customProperties": {
+        "competenze": ["competenza 1", "competenza 2", "competenza 3"]
+      },
+      "fax": "393401122334",
+      "imageUrl": "http://jovesnavegants.org/wp-content/uploads/2015/09/PerfilSinFotoMujer.jpg",
+      "lang": "ita",
+      "lastUpdate": "2016-11-08T13:16:30.438Z",
+      "mail": "YabbaDabbar@bb.com",
+      "name": "Yabba",
+      "objectId": "id3",
+      "passwordHash": "string",
+      "pec": "string",
+      "phone": "0461112233",
+      "piva": "string",
+      "surname": "Dabba",
+      "type": "idpro_2",
+      "username": "string",
+      "location": {
+        "lat": 46.066682,
+        "long": 11.120470
+      },
+      "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo."
+    },
+    "serviceSubtype": "10pages",
+    "serviceType": "stampante"
+  }]

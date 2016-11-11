@@ -1,6 +1,6 @@
 angular.module('gi-pro.controllers.serviceandprof', [])
 
-.controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
+.controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, $ionicTabsDelegate, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
   $scope.activeServices = null; //list of active services
   $scope.activeProfessionals = null; //list of active professional
   $scope.activeZones = null; //list of active zones
@@ -19,10 +19,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.title = $filter('translate')('app');
   $scope.filters = {
     allServices: [],
-    selectedService: null,
-    allProfessions: [],
-    selectedProfession: null,
-    allZones: [],
+    selectedService: null,allProfessions: [],
+  selectedProfession: null,
+  allZones: [],
     selectedZone: null
   };
 
@@ -71,8 +70,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
     //if logged add also service meta info
     if (Login.userIsLogged()) {
+      //if (true) {
       for (var i = 0; i < $scope.activeServices.length; i++) {
-        $scope.activeServices[i]["service"] = servicesMap[$scope.activeServices[i].serviceId].name;
+        $scope.activeServices[i]["service"] = servicesMap[$scope.activeServices[i].serviceType].name;
         $scope.activeServices[i]["zone"] = zoneMap[$scope.activeProfessionals[i].area].name;
       }
     }
@@ -89,13 +89,14 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       function (professionals) {
         if (professionals) {
           $scope.activeProfessionals = professionals;
-          $scope.markers = mapService.getProfessionalsPoints($scope.activeProfessionals);
+          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.activeProfessionals);
+          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.activeProfessionals);
         }
         //                get zones
         DataSrv.getZones().then(function (zones) {
             $scope.activeZones = zones;
             if (Login.userIsLogged()) {
-              //                        if (true) {
+              //if (true) {
               DataSrv.getServices().then(
                 function (services) {
                   $scope.activeServices = services;
@@ -201,19 +202,42 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     $scope.listVisualization = !$scope.listVisualization;
   }
 
-  $scope.initMap = function () {
-    mapService.initMap('serviceMap').then(function () {
-      GeoLocate.locate().then(function (pos) {
-        $scope.center = {
-          lat: pos[0],
-          lng: pos[1],
-          zoom: 18
-        };
-      }, function () {
-        //                $scope.filterMarkers(false);
-      });
+  $scope.initServiceMap = function () {
+    if ($ionicTabsDelegate.selectedIndex() == 1) { //1 is the second
 
-    });
+      mapService.initMap('serviceMap').then(function () {
+        GeoLocate.locate().then(function (pos) {
+          $scope.center = {
+            lat: pos[0],
+            lng: pos[1],
+            zoom: 18
+          };
+          $scope.servicesMarkers = mapService.getServicesPoints($scope.activeServices);
+          mapService.refresh('serviceMap');
+        }, function () {
+          //                $scope.filterMarkers(false);
+        });
+
+      });
+    }
+  };
+  $scope.initProfessionMap = function () {
+    if ($ionicTabsDelegate.selectedIndex() == 0) { //0 is the first
+      mapService.initMap('professionMap').then(function () {
+        GeoLocate.locate().then(function (pos) {
+          $scope.center = {
+            lat: pos[0],
+            lng: pos[1],
+            zoom: 18
+          };
+          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.activeProfessionals);
+          mapService.refresh('professionMap');
+
+        }, function () {
+          //                $scope.filterMarkers(false);
+        });
+      });
+    }
   };
   angular.extend($scope, {
     center: {
@@ -221,7 +245,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       lng: Config.getMapPosition().long,
       zoom: 18
     },
-    markers: $scope.markers,
+    servicesMarkers: $scope.servicesMarkers,
+    professionalMarkers: $scope.professionalMarkers,
     events: {}
   });
 });

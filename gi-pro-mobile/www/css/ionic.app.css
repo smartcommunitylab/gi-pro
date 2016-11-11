@@ -10072,6 +10072,13 @@ input[readonly] {
 .serviceandprofessionist .card .item h3 {
   margin: auto; }
 
+.serviceandprofessionist .card .item .list-service-cost {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: right;
+  font-size: 20px; }
+
 .serviceandprofessionist .card .icon {
   margin-right: 7px;
   font-size: 20px; }

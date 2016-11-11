@@ -146,6 +146,7 @@ angular.module('gi-pro.controllers.details', [])
     };
   })
   .controller('ProfessionistDetailsCtrl', function ($scope, $stateParams, DataSrv) {
+    $scope.state = 'view';
     $scope.title = "";
     $scope.imageUrl = "";
     var setProfessionist = function (prof) {
@@ -179,4 +180,111 @@ angular.module('gi-pro.controllers.details', [])
     //            );
     //        }
     //        $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
+  }).controller('ServiceDetailsCtrl', function ($scope, $stateParams, DataSrv) {
+    $scope.title = "";
+    $scope.imageUrl = "";
+    var setService = function (service) {
+      $scope.service = service;
+    };
+
+    if (!!$stateParams['service']) {
+      setService($stateParams['service']);
+      $scope.title = $scope.service.name;
+      $scope.imageUrl = $scope.service.picture;
+
+
+    }
+    if (!!$stateParams['objectId']) {
+
+      DataSrv.getServiceByID($stateParams['objectId']).then(function (service) {
+        setService(service);
+        $scope.title = $scope.service.name;
+        $scope.imageUrl = $scope.service.imageUrl;
+
+      });
+    }
+    //    else {
+    //            Utils.loading();
+    //            DataSrv.getOfferById(Login.getUser().objectId, $stateParams.objectId).then(
+    //                function (offer) {
+    //                    Utils.loaded();
+    //                    setOffer(offer);
+    //                },
+    //                Utils.commError
+    //            );
+    //        }
+    //        $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
+  })
+  .controller('ProfileCtrl', function ($scope, $rootScope, $stateParams, $filter, $timeout, Config, Login, Utils, DataSrv) {
+    $scope.prof = angular.copy(Login.getUser());
+    $scope.myProfile = true;
+    $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true);
+    var validate = function () {
+      //		if (!$scope.profile.customProperties) {
+      //			Utils.toast($filter('translate')('profile_form_phone_empty'));
+      //			return false;
+      //		}
+      return true;
+    }
+
+    $scope.state = 'view';
+
+    $scope.$on('$ionicView.leave', function (event, args) {
+      $scope.state = 'view';
+      localStorage.setItem(Config.getUserVarProfileCheck(), 'true');
+      $scope.prof = angular.copy(Login.getUser());
+    });
+
+    $scope.saveEdit = function () {
+      if ($scope.state == 'view') {
+        $scope.state = 'edit';
+      } else {
+        // TODO validate data; remote save;
+        if (validate()) {
+          Utils.loading();
+          DataSrv.updateProfile($scope.prof).then(function () {
+            $scope.prof = angular.copy(Login.getUser());
+            $scope.state = 'view';
+            Utils.loaded();
+          }, Utils.commError);
+        }
+      }
+    }
+
+    $scope.uploadImage = function () {
+      if (navigator && navigator.camera) {
+        var error = function (err) {
+          console.log('error', err);
+        };
+
+        navigator.camera.getPicture(function (fileURL) {
+          var win = function (r) {
+            Login.updateUser(true).then(function (user) {
+              Utils.loaded();
+              $scope.prof.imageUrl = user.imageUrl;
+              $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true);
+              //            $scope.$apply();
+            }, Utils.commError);
+          }
+
+          var options = new FileUploadOptions();
+          options.fileKey = "file";
+          options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+          options.mimeType = "image/png";
+          options.headers = {
+            Authorization: Config.getToken()
+          };
+          Utils.loading();
+          var ft = new FileTransfer();
+          ft.upload(fileURL, encodeURI(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/image/upload/png/' + $scope.prof.objectId), win, Utils.commError, options);
+        }, error, {
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+          destinationType: Camera.DestinationType.FILE_URI,
+          encodingType: Camera.EncodingType.PNG,
+          allowEdit: true,
+          targetWidth: 200,
+          targetHeight: 200
+        });
+      }
+    };
   });

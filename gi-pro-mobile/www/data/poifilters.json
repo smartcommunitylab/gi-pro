@@ -14,16 +14,59 @@
 		}],
   "services": [
     {
-      "id": "idser_1",
-      "name": "Stampa",
-      "value": "50"
-
-
-		}, {
-      "id": "idser_2",
-      "name": "Office",
-      "value": "100"
-        }],
+      "id": "sostituzioneudienza",
+      "name": "Sostituzione udienza",
+      "cost": 10
+    },{
+      "id": "fax",
+      "name": "Fax",
+      "value": 5
+        },
+    {
+      "id": "stampante",
+      "name": "Stampante",
+      "subtypes": [{
+        "subtype": "10pages",
+        "name": "< 10 pagine",
+        "cost": 5
+      }, {
+        "subtype": "60pages",
+        "name": "< 50 pagine",
+        "cost": 10
+      }]
+        },
+    {
+      "id": "postazione",
+      "name": "Postazione di lavoro",
+      "subtypes": [{
+        "subtype": "halfday",
+        "name": "1/2 giornata",
+        "cost": 15
+      }, {
+        "subtype": "day",
+        "name": "Giornata intera",
+        "cost": 30
+      }]
+        },
+    {
+      "id": "sala",
+      "name": "Sala riunioni",
+      "subtypes": [{
+        "subtype": "1hour",
+        "name": "1 ora",
+        "cost": 10
+      }, {
+        "subtype": "halfday",
+        "name": "1/2 giornata",
+        "cost": 40
+      }]
+        },
+    {
+      "id": "conversazione",
+      "name": "Conversazione in lingua straniera",
+      "cost": 15
+        }
+    ],
   "zones": [
     {
       "id": "idzone_1",

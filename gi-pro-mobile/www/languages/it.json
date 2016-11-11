@@ -123,5 +123,20 @@
   "allServices_label": "Tutti i servizi",
   "prof_competenze_label": "Competenze",
   "prof_descrizione_label": "Descrizione",
-  "search_prof": "Ricerca professioni"
+  "search_prof": "Ricerca professioni",
+  "email_placeholder": "inserisci la tua email",
+  "name_placeholder": "Inserisci il tuo nome",
+  "surname_placeholder": "Inserisci il tuo cognome",
+  "address_placeholder": "Inserisci il tuo indirizzo",
+  "cf_placeholder": "Inserisci il tuo codice fiscale",
+  "piva_placeholder": "Inserisci la tua partita iva",
+  "profession_placeholder": "Seleziona la tua professione",
+  "area_placeholder": "Seleziona la zona in cui operi",
+  "registration2_button_label": "Avanti",
+  "retype-password": "Reinserisci la tua password",
+  "reqandoff": "Richieste/Offerte?",
+  "req_tab_1": "Richieste agli altri",
+  "req_tab_2": "Richieste a me",
+  "prof_info": "Info",
+  "prof_services": "Servizi"
 }

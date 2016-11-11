@@ -1,0 +1,49 @@
+<ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="registration">
+  <ion-content class="padding">
+    <h4 class="title">{{'app' | translate}}</h4>
+    <h5>{{'register_new_account' | translate}}</h5>
+
+    <div class="list list-inset">
+      <label class="item item-input item-input-cf">
+        <input type="text" maxlength="16" ng-maxlength="16" ng-model="registration.name" placeholder="{{'name_placeholder' | translate}}">
+      </label>
+      <label class="item item-input">
+        <input type="text" ng-model="registration.surname" placeholder="{{'surname_placeholder' | translate}}">
+      </label>
+      <label class="item item-input">
+        <input type="text" ng-model="registration.address" placeholder="{{'address_placeholder' | translate}}">
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          {{'profession_placeholder' | translate}}
+        </div>
+        <select ng-model="selectedProfession">
+          <option ng-repeat="profession in professions track by $index">{{profession.name}}</option>
+        </select>
+      </label>
+
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          {{' area_placeholder' | translate}}
+        </div>
+        <select ng-model="selectedArea">
+          <option ng-repeat="area in areas track by $index">{{area.name}}</option>
+        </select>
+      </label>
+
+      <label class="item item-input">
+        <input type="text" ng-model="registration.cf" placeholder="{{'cf_placeholder' | translate}}">
+      </label>
+      <label class="item item-input">
+        <input type="text" ng-model="registration.piva" placeholder="{{'piva_placeholder' | translate}}">
+      </label>
+    </div>
+
+
+    <!--    <button class="button button-block button-energized" ng-click="register()" ng-disabled="!registration.privacy">{{'register' | translate}}</button>-->
+    <button class="button button-block button-energized" ng-click="register()">{{'register' | translate}}</button>
+    <a ng-click="cancel()">{{'cancel' | translate}}</a>
+  </ion-content>
+</ion-view>

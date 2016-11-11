@@ -203,125 +203,10 @@ angular.module('gi-pro.services.data', [])
   get ilst with all professionist
   */
   dataService.getProfessionals = function (type, area, page, limit, orderBy) {
-    // var tempProf = [
-    //
-    //      {
-    //        "address": "string",
-    //        "applicationId": "string",
-    //        "area": "idzone_1",
-    //        "balance": 0,
-    //        "cellPhone": "+393401122334",
-    //        "cf": "string",
-    //        "creationDate": "2016-11-08T13:16:30.438Z",
-    //        "customProperties": {},
-    //        "fax": "393401122334",
-    //        "imageUrl": "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
-    //        "lang": "ita",
-    //        "lastUpdate": "2016-11-08T13:16:30.438Z",
-    //        "mail": "aa@bb.com",
-    //        "name": "Tullio",
-    //        "objectId": "id1",
-    //        "passwordHash": "string",
-    //        "pec": "string",
-    //        "phone": "0461112233",
-    //        "piva": "string",
-    //        "surname": "Pinter",
-    //        "type": "idpro_1",
-    //        "username": "string"
-    //  },
-    //      {
-    //        "address": "string",
-    //        "applicationId": "string",
-    //        "area": "idzone_1",
-    //        "balance": 0,
-    //        "cellPhone": "+393401122334",
-    //        "cf": "string",
-    //        "creationDate": "2016-11-08T13:16:30.438Z",
-    //        "customProperties": {},
-    //        "fax": "393401122334",
-    //        "imageUrl": "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
-    //        "lang": "ita",
-    //        "lastUpdate": "2016-11-08T13:16:30.438Z",
-    //        "mail": "aa@bb.com",
-    //        "name": "Tullio",
-    //        "objectId": "id1",
-    //        "passwordHash": "string",
-    //        "pec": "string",
-    //        "phone": "0461112233",
-    //        "piva": "string",
-    //        "surname": "Pinter",
-    //        "type": "idpro_1",
-    //        "username": "string"
-    //  }
 
-    //          {
-    //        professionistId: "id1",
-    //        name: "Tullio Pinter",
-    //        picture: "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
-    //        professionId: "idpro_1",
-    //        zoneId: "idzone_1",
-    //        location: {
-    //          lat: 46.066682,
-    //          long: 11.120470
-    //        },
-    //        phone: ["0461112233", "+393401122334"],
-    //        mail: ["aa@bb.com", "cc@dd.com"],
-    //        description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
-    //        competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
-    //
-    //      }, {
-    //        professionistId: "id2",
-    //
-    //        name: "yabba dabba",
-    //        picture: "http://jovesnavegants.org/wp-content/uploads/2015/09/PerfilSinFotoMujer.jpg",
-    //        professionId: "idpro_2",
-    //        zoneId: "idzone_1",
-    //        location: {
-    //          lat: 46.070761,
-    //          long: 11.122831
-    //        },
-    //        phone: ["0461112233", "+393401122334"],
-    //        mail: ["aa@bb.com", "cc@dd.com"],
-    //        description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
-    //        competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
-    //      }, {
-    //        professionistId: "id3",
-    //
-    //        name: "zigo zago",
-    //        picture: "http://jornaldepenedo-al.com.br/teste/wp-content/uploads/2016/08/user.png",
-    //        professionId: "idpro_1",
-    //        zoneId: "idzone_2",
-    //        location: {
-    //          lat: 46.069719,
-    //          long: 11.124365
-    //        },
-    //        phone: ["0461112233", "+393401122334"],
-    //        mail: ["aa@bb.com", "cc@dd.com"],
-    //        description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
-    //        competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
-    //      }];
     var deferred = $q.defer();
     var httpConfWithParams = Config.getHTTPConfig();
     httpConfWithParams.params = {};
-
-    //    // professionalId is required
-    //    if (!professionalId || !angular.isString(professionalId)) {
-    //      deferred.reject('Invalid professionalId');
-    //    }
-    //
-    //    // serviceType is required
-    //    if (!serviceType || !angular.isString(serviceType)) {
-    //      deferred.reject('Invalid serviceType');
-    //    }
-    //
-    //    httpConfWithParams.params['serviceType'] = serviceType;
-    //
-    //    if (!!timeFrom) {
-    //      httpConfWithParams.params['timeFrom'] = timeFrom;
-    //    }
-    //    if (!!timeTo) {
-    //      httpConfWithParams.params['timeTo'] = timeTo;
-    //    }
     if (!!area) {
       httpConfWithParams.params['area'] = area;
     }
@@ -337,9 +222,6 @@ angular.module('gi-pro.services.data', [])
     if (!!limit) {
       httpConfWithParams.params['orderBy'] = orderBy;
     }
-    //    if (withTime != null) {
-    //      httpConfWithParams.params['withTime'] = withTime;
-    //    }
 
 
     //    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
@@ -354,9 +236,7 @@ angular.module('gi-pro.services.data', [])
         deferred.reject(reason.data ? reason.data.errorMessage : reason);
       }
     );
-    //deferred.resolve(tempProf);
 
-    //});
     return deferred.promise;
 
   }
@@ -376,48 +256,69 @@ angular.module('gi-pro.services.data', [])
             deferred.reject(reason.data ? reason.data.errorMessage : reason);
           }
         );
-      //      deferred.resolve({
-      //        professionistId: "id1",
-      //        name: "Tullio Pinter",
-      //        picture: "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
-      //        professionId: "idpro_1",
-      //        zoneId: "idzone_1",
-      //        location: {
-      //          lat: 46.066682,
-      //          long: 11.120470
-      //        },
-      //        phone: ["0461112233", "+393401122334"],
-      //        mail: ["aa@bb.com", "cc@dd.com"],
-      //        description: "bla bla huyt bgfts mnhjoyl bgfiksndjd jdidjrnhuxz",
-      //        competenze: ["jdn be", "jdn be", "jdn be", "jdn be", "jdn be"]
-      //
-      //      });
+
       return deferred.promise;
 
     }
     /*get list with all services*/
-  dataService.getServices = function () {
-    var tempServ = [{
-      serviceId: "idser_1",
-      owner: "Tullio Pinter",
-      zoneId: "idzone_1"
-            }, {
-      serviceId: "idser_2",
-      owner: "yabba dabba",
-      zoneId: "idzone_1"
-            }, {
-      serviceId: "idser_1",
-      owner: "zigo zago",
-      zoneId: "idzone_2"
-            }];
+  dataService.getServices = function (type, area, page, limit, orderBy) {
     var deferred = $q.defer();
-    dataService.getServicesDefinition().then(function (services) {
-      for (var i = 0; i < tempServ.length; i++) {
-        tempServ[i]["service"] = servicesMap[tempServ[i].serviceId].name;
+    var httpConfWithParams = Config.getHTTPConfig();
+    httpConfWithParams.params = {};
+    if (!!area) {
+      httpConfWithParams.params['area'] = area;
+    }
+    if (!!type) {
+      httpConfWithParams.params['type'] = type;
+    }
+    if (!!page) {
+      httpConfWithParams.params['page'] = page;
+    }
+    if (!!limit) {
+      httpConfWithParams.params['limit'] = limit;
+    }
+    if (!!limit) {
+      httpConfWithParams.params['orderBy'] = orderBy;
+    }
+
+
+    //    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
+    $http.get('data/services_temp.json')
+
+    .then(
+      function (response) {
+        // offers
+        deferred.resolve(response.data);
+      },
+      function (reason) {
+        deferred.reject(reason.data ? reason.data.errorMessage : reason);
       }
-      deferred.resolve(tempServ);
-    });
+    );
+
     return deferred.promise;
+
+    //
+    //    var tempServ = [{
+    //      serviceId: "idser_1",
+    //      owner: "Tullio Pinter",
+    //      zoneId: "idzone_1"
+    //            }, {
+    //      serviceId: "idser_2",
+    //      owner: "yabba dabba",
+    //      zoneId: "idzone_1"
+    //            }, {
+    //      serviceId: "idser_1",
+    //      owner: "zigo zago",
+    //      zoneId: "idzone_2"
+    //            }];
+    //    var deferred = $q.defer();
+    //    dataService.getServicesDefinition().then(function (services) {
+    //      for (var i = 0; i < tempServ.length; i++) {
+    //        tempServ[i]["service"] = servicesMap[tempServ[i].serviceId].name;
+    //      }
+    //      deferred.resolve(tempServ);
+    //    });
+    //    return deferred.promise;
   }
   dataService.getZones = function () {
     var tempZones = [{
