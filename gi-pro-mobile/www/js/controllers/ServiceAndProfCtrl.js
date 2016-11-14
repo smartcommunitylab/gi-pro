@@ -1,6 +1,6 @@
 angular.module('gi-pro.controllers.serviceandprof', [])
 
-.controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, $ionicTabsDelegate, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
+.controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, $ionicTabsDelegate, $ionicPopup, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
   $scope.activeServices = null; //list of active services
   $scope.activeProfessionals = null; //list of active professional
   $scope.activeZones = null; //list of active zones
@@ -11,6 +11,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.listVisualization = true;
   $scope.searchBarVisible = false;
   $scope.searchString = "";
+  $scope.professionistTab = true;
 
 
   var professionMap = null;
@@ -19,9 +20,10 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.title = $filter('translate')('app');
   $scope.filters = {
     allServices: [],
-    selectedService: null,allProfessions: [],
-  selectedProfession: null,
-  allZones: [],
+    selectedService: null,
+    allProfessions: [],
+    selectedProfession: null,
+    allZones: [],
     selectedZone: null
   };
 
@@ -203,6 +205,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   }
 
   $scope.initServiceMap = function () {
+    $scope.professionistTab = false;
+    $scope.searchBarVisible = false;
     if ($ionicTabsDelegate.selectedIndex() == 1) { //1 is the second
 
       mapService.initMap('serviceMap').then(function () {
@@ -222,6 +226,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
   };
   $scope.initProfessionMap = function () {
+    $scope.professionistTab = true;
+
     if ($ionicTabsDelegate.selectedIndex() == 0) { //0 is the first
       mapService.initMap('professionMap').then(function () {
         GeoLocate.locate().then(function (pos) {
@@ -239,6 +245,39 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       });
     }
   };
+
+  $scope.orderServices = function () {
+    $scope.orderList = [
+      {
+        text: $filter('translate')('orderby_alphabetically'),
+        value: "alpha"
+        },
+      {
+        text: $filter('translate')('orderby_price'),
+        value: "price"
+        }
+  ];
+    var orderPopup = $ionicPopup.confirm({
+//      cssClass: 'order-popup',
+      templateUrl: 'templates/order-popover.html',
+      scope: $scope,
+      buttons: [{ // Array[Object] (optional). Buttons to place in the popup footer.
+        text: $filter('translate')('close'),
+
+                }, {
+        text: $filter('translate')('oder_popup_ok'),
+        onTap: function (e) {
+          return $scope.data.actualOrder;
+        }
+  }]
+    });
+    orderPopup.then(function (res) {
+      if (res) {
+        orderList(res);
+      }
+    });
+
+  }
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,
