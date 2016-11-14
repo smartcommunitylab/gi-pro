@@ -34,6 +34,7 @@ angular.module('gi-pro', [
       cordova.plugins.Keyboard.disableScroll(true);
 
     }
+
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
@@ -93,7 +94,6 @@ angular.module('gi-pro', [
   ionicTimePickerProvider.configTimePicker(timePickerObj);
 })
 
-
 .config(function ($stateProvider, $urlRouterProvider) {
   $stateProvider.state('app', {
     url: '/app',
@@ -145,55 +145,61 @@ angular.module('gi-pro', [
           controller: 'ProfessionistDetailsCtrl'
         }
       }
-    }).state('app.servicedetails', {
-      url: '/prof/{objectId}',
+    })
+
+  .state('app.servicedetails', {
+    url: '/prof/{objectId}',
+    params: {
+      'objectId': null,
+      'professionist': null
+    },
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/serviceDetail.html',
+        controller: 'ServiceDetailsCtrl'
+      }
+    }
+  })
+
+  .state('app.map', {
+    url: "/map",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/map.html",
+        controller: 'MapCtrl'
+      }
+    }
+  })
+
+  /*
+    .state('app.requestdetails', {
+      url: '/request/{objectId}',
       params: {
         'objectId': null,
-        'professionist': null
+        'request': null
       },
       views: {
         'menuContent': {
-          templateUrl: 'templates/serviceDetail.html',
-          controller: 'ServiceDetailsCtrl'
+          templateUrl: 'templates/request.html',
+          controller: 'RequestDetailsCtrl'
         }
       }
     })
-    .state('app.map', {
-      url: "/map",
+
+  .state('app.offerdetails', {
+      url: '/offer/{objectId}',
+      params: {
+        'objectId': null,
+        'offer': null
+      },
       views: {
         'menuContent': {
-          templateUrl: "templates/map.html",
-          controller: 'MapCtrl'
+          templateUrl: 'templates/offer.html',
+          controller: 'OfferDetailsCtrl'
         }
       }
     })
-    //        .state('app.requestdetails', {
-    //            url: '/request/{objectId}',
-    //            params: {
-    //                'objectId': null,
-    //                'request': null
-    //            },
-    //            views: {
-    //                'menuContent': {
-    //                    templateUrl: 'templates/request.html',
-    //                    controller: 'RequestDetailsCtrl'
-    //                }
-    //            }
-    //        })
-    //
-    //    .state('app.offerdetails', {
-    //        url: '/offer/{objectId}',
-    //        params: {
-    //            'objectId': null,
-    //            'offer': null
-    //        },
-    //        views: {
-    //            'menuContent': {
-    //                templateUrl: 'templates/offer.html',
-    //                controller: 'OfferDetailsCtrl'
-    //            }
-    //        }
-    //    })
+    */
 
   .state('app.search', {
     url: '/search',
@@ -218,25 +224,27 @@ angular.module('gi-pro', [
     }
   })
 
-  //    .state('app.newrequest', {
-  //        url: '/request/new',
-  //        views: {
-  //            'menuContent': {
-  //                templateUrl: 'templates/form_request.html',
-  //                controller: 'NewRequestCtrl'
-  //            }
-  //        }
-  //    })
-  //
-  //    .state('app.newoffer', {
-  //        url: '/offer/new',
-  //        views: {
-  //            'menuContent': {
-  //                templateUrl: 'templates/form_offer.html',
-  //                controller: 'NewOfferCtrl'
-  //            }
-  //        }
-  //    })
+  /*
+    .state('app.newrequest', {
+      url: '/request/new',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/form_request.html',
+          controller: 'NewRequestCtrl'
+        }
+      }
+    })
+
+    .state('app.newoffer', {
+      url: '/offer/new',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/form_offer.html',
+          controller: 'NewOfferCtrl'
+        }
+      }
+    })
+  */
 
   .state('app.notifications', {
     url: '/notifications',
@@ -248,34 +256,38 @@ angular.module('gi-pro', [
     }
   })
 
-  //    .state('app.history', {
-  //        url: '/history',
-  //        views: {
-  //            'menuContent': {
-  //                templateUrl: 'templates/history.html',
-  //                controller: 'HistoryCtrl'
-  //            }
-  //        }
-  //    })
-  //
+  /*.state('app.history', {
+      url: '/history',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/history.html',
+          controller: 'HistoryCtrl'
+        }
+      }
+    })
+  */
+
   .state('app.profile', {
+    url: '/profile',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/profDetail.html',
+        controller: 'ProfileCtrl'
+      }
+    }
+  })
+
+  /*
+    .state('app.profile', {
       url: '/profile',
       views: {
         'menuContent': {
-          templateUrl: 'templates/profDetail.html',
+          templateUrl: 'templates/profile.html',
           controller: 'ProfileCtrl'
         }
       }
     })
-    //    .state('app.profile', {
-    //    url: '/profile',
-    //    views: {
-    //      'menuContent': {
-    //        templateUrl: 'templates/profile.html',
-    //        controller: 'ProfileCtrl'
-    //      }
-    //    }
-    //  })
+  */
 
   .state('app.credits', {
     url: '/credits',
@@ -322,22 +334,24 @@ angular.module('gi-pro', [
 
   // if none of the above states are matched, use this as the fallback$state
   $urlRouterProvider.otherwise(function ($injector) {
-    //		var Login = $injector.get('Login');
-    //		var logged = Login.getUser();
-    //		if (!logged) {
-    //			return '/app/tutorial';
-    //		} else {
-    //			$injector.get('$rootScope').user = logged;
-    //			Login.updateUser().then(function () {}, function (errCode) {
-    //				if (errCode == Login.USER_ERRORS.NO_USER) {
-    //                    $injector.get('Utils').loaded();
-    //					Login.logout();
-    //					$injector.get('$state').go('app.tutorial', {});
-    //				}
-    //			});
-    //
-    //		}
-    //		return '/app/home';
+    /*
+    var Login = $injector.get('Login');
+    var logged = Login.getUser();
+    if (!logged) {
+      return '/app/tutorial';
+    } else {
+      $injector.get('$rootScope').user = logged;
+      Login.updateUser().then(function () {}, function (errCode) {
+        if (errCode == Login.USER_ERRORS.NO_USER) {
+          $injector.get('Utils').loaded();
+          Login.logout();
+          $injector.get('$state').go('app.tutorial', {});
+        }
+      });
+
+    }
+    return '/app/home';
+    */
     return '/app/serviceandproffessionist'
   });
 });

@@ -151,5 +151,5 @@ public class Registration extends BaseObject {
 	public void setCoordinates(double[] coordinates) {
 		this.coordinates = coordinates;
 	}
-	
+
 }

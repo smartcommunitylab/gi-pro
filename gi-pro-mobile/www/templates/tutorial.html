@@ -1,59 +1,39 @@
 <ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="tutorial">
-    <ion-content scroll="false">
-        <div class="row row-center title">
-            <div class="col">
-                {{'app' | translate}}
-            </div>
+  <ion-content scroll="false">
+    <div class="row row-center title">
+      <div class="col">
+        {{'tutorial_title' | translate}}
+      </div>
+    </div>
+
+    <ion-slides options="options" slider="data.slider">
+      <ion-slide-page>
+        <div class="tutorial-content">
+          <div class="description">{{'tutorial_s1_1' | translate}}</div>
+          <!--<div class="description">{{'tutorial_s1_2' | translate}}</div>-->
+          <!--<div class="description">{{'tutorial_s1_3' | translate}}</div>-->
+          <img src="http://lorempixel.com/400/250/business" />
         </div>
-        <ion-slides options="options" slider="data.slider">
-            <ion-slide-page>
-                <div class="tutorial-content">
-                    <div class="description"></div>
-                    <div class="description">{{'tutorial_welcome1' | translate}}</div>
-                    <div class="description">{{'tutorial_welcome2' | translate}}</div>
-                    <div class="description">{{'tutorial_welcome3' | translate}}</div>
-                </div>
-            </ion-slide-page>
-            <ion-slide-page>
-                <div class="tutorial-content">
-                    <div class="description">{{'tutorial_offers' | translate}}</div>
-                    <img src="img/tutorial/offers.png" />
-                </div>
-            </ion-slide-page>
-            <ion-slide-page>
-                <div class="tutorial-content">
-                    <div class="description">{{'tutorial_search' | translate}}</div>
-                    <img src="img/tutorial/search.png" />
-                </div>
-            </ion-slide-page>
-            <ion-slide-page>
-                <div class="tutorial-content">
-                    <div class="description">{{'tutorial_requests' | translate}}</div>
-                    <img src="img/tutorial/requests.png" />
-                </div>
-            </ion-slide-page>
-            <ion-slide-page>
-                <div class="tutorial-content">
-                    <div class="description">{{'tutorial_details' | translate}}</div>
-                    <img src="img/tutorial/details.png" />
-                </div>
-            </ion-slide-page>
-            <ion-slide-page>
-                <div class="tutorial-content">
-                    <div class="description">{{'tutorial_functions' | translate}}</div>
-                    <img src="img/tutorial/functions.png" />
-                </div>
-            </ion-slide-page>
-        </ion-slides>
-        <div class="row row-center tutorial-footer">
-            <div class="col">
-                <button class="button button-block button-energized" ng-click="endTutorial()">{{'login_as_pro' | translate}}</button>
-            </div>
+      </ion-slide-page>
+      <ion-slide-page>
+        <div class="tutorial-content">
+          <div class="description">{{'tutorial_s2' | translate}}</div>
+          <img src="http://lorempixel.com/400/251/business" />
         </div>
-        <div class="row row-center tutorial-footer">
-            <div class="col">
-                <button class="button button-block button-energized" ui-sref="app.serviceAndProf">{{'enter_no_login' | translate}}</button>
-            </div>
+      </ion-slide-page>
+    </ion-slides>
+
+    <div class="tutorial-footer">
+      <div class="row row-center">
+        <div class="col">
+          <button class="button button-block button-energized" ng-click="endTutorial()">{{'login_as_pro' | translate}}</button>
         </div>
-    </ion-content>
+      </div>
+      <div class="row row-center">
+        <div class="col">
+          <button class="button button-block button-energized" ui-sref="app.serviceAndProf">{{'enter_no_login' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
 </ion-view>
