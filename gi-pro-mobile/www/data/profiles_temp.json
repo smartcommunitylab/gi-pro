@@ -1,0 +1,155 @@
+[{
+    "address": "Via Malvasia 51",
+    "applicationId": "DEMO",
+    "area": "idzone_1",
+    "balance": 0,
+    "cellPhone": "+393401122334",
+    "cf": "AAABBB80R01L378Y",
+    "creationDate": "2016-11-08T13:16:30.438Z",
+    "customProperties": {
+      "competenze": ["avvocato divorzista", "difensore", "perizia"]
+    },
+    "fax": "393401122334",
+    "imageUrl": "https://pixabay.com/static/uploads/photo/2012/04/26/19/43/profile-42914_960_720.png",
+    "lang": "ita",
+    "lastUpdate": "2016-11-08T13:16:30.438Z",
+    "mail": "TullioPinter@bb.com",
+    "name": "Tullio",
+    "objectId": "id1",
+    "passwordHash": "string",
+    "pec": "string",
+    "phone": "0461112233",
+    "piva": "string",
+    "surname": "Pinter",
+    "type": "idpro_1",
+    "username": "string",
+    "location": {
+      "lat": 46.070761,
+      "long": 11.122831
+    },
+    "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo."
+  },
+  {
+    "address": "Via Rosmini 51",
+    "applicationId": "DEMO",
+    "area": "idzone_2",
+    "balance": 0,
+    "cellPhone": "+393404455334",
+    "cf": "AAABBB80R01L378Y",
+    "creationDate": "2016-11-08T13:16:30.438Z",
+    "customProperties": {
+      "competenze": ["competenza 4", "competenza 5", "competenza 6"]
+    },
+    "fax": "393401122334",
+    "imageUrl": "http://jornaldepenedo-al.com.br/teste/wp-content/uploads/2016/08/user.png",
+    "lang": "ita",
+    "lastUpdate": "2016-11-08T13:16:30.438Z",
+    "mail": "PaolinoPaperino@bb.com",
+    "name": "Paolino",
+    "objectId": "id2",
+    "passwordHash": "string",
+    "pec": "string",
+    "phone": "0461112233",
+    "piva": "string",
+    "surname": "Paperino",
+    "type": "idpro_1",
+    "username": "string",
+    "location": {
+      "lat": 46.069719,
+      "long": 11.124365
+    },
+    "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo."
+    },
+  {
+    "address": "Via alla Cascata 51",
+    "applicationId": "DEMO",
+    "area": "idzone_2",
+    "balance": 0,
+    "cellPhone": "+393404455334",
+    "cf": "AAABBB80R01L378Y",
+    "creationDate": "2016-11-08T13:16:30.438Z",
+    "customProperties": {
+      "competenze": ["competenza 1", "competenza 2", "competenza 3"]
+    },
+    "fax": "393401122334",
+    "imageUrl": "http://jovesnavegants.org/wp-content/uploads/2015/09/PerfilSinFotoMujer.jpg",
+    "lang": "ita",
+    "lastUpdate": "2016-11-08T13:16:30.438Z",
+    "mail": "YabbaDabbar@bb.com",
+    "name": "Yabba",
+    "objectId": "id3",
+    "passwordHash": "string",
+    "pec": "string",
+    "phone": "0461112233",
+    "piva": "string",
+    "surname": "Dabba",
+    "type": "idpro_2",
+    "username": "string",
+    "location": {
+      "lat": 46.066682,
+      "long": 11.120470
+    },
+    "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo."
+    },
+  {
+    "address": "Via Matteotti 151",
+    "applicationId": "DEMO",
+    "area": "idzone_3",
+    "balance": 0,
+    "cellPhone": "+393401122336655",
+    "cf": "AAACCC80R01L378Y",
+    "creationDate": "2016-11-08T13:16:30.438Z",
+    "customProperties": {
+      "competenze": ["competenza A", "competenza B", "competenza C"]
+    },
+    "fax": "39340215687",
+    "imageUrl": "https://www.loventine.com/assets/loventine/default_avatares/default_female_avatar_big-2218d1c1f991c078f5006aa7f63ba05c.png",
+    "lang": "ita",
+    "lastUpdate": "2016-11-08T13:16:30.438Z",
+    "mail": "MarinaBellina@bb.com",
+    "name": "Marina",
+    "objectId": "id4",
+    "passwordHash": "string",
+    "pec": "string",
+    "phone": "0461112233",
+    "piva": "string",
+    "surname": "Bellina",
+    "type": "idpro_3",
+    "username": "string",
+    "location": {
+      "lat": 46.066582,
+      "long": 11.121470
+    },
+    "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo."
+    },
+  {
+    "address": "Via Franceschini 1151",
+    "applicationId": "DEMO",
+    "area": "idzone_1",
+    "balance": 0,
+    "cellPhone": "+393401548336655",
+    "cf": "AAHGTC80R01L378Y",
+    "creationDate": "2016-11-08T13:16:30.438Z",
+    "customProperties": {
+      "competenze": ["competenza B", "competenza D", "competenza Z"]
+    },
+    "fax": "39340215687",
+    "imageUrl": "http://3.bp.blogspot.com/_cpgD5Kje564/TJQaJCY0VrI/AAAAAAAAAyo/2QOIuUp5GWo/s400/trucosfacebook-silueta-spiderman.png",
+    "lang": "ita",
+    "lastUpdate": "2016-11-08T13:16:30.438Z",
+    "mail": "SpiderMan@bb.com",
+    "name": "Spider",
+    "objectId": "id5",
+    "passwordHash": "string",
+    "pec": "string",
+    "phone": "0461112233",
+    "piva": "string",
+    "surname": "Man",
+    "type": "idpro_2",
+    "username": "string",
+    "location": {
+      "lat": 46.067682,
+      "long": 11.120770
+    },
+    "description": "Lorem ipsum dolor sit amet, et stet voluptua delectus nam, ius tation vivendum ne, ne verear eleifend nec. Sed at dicta altera molestie, id sed enim affert. His et legere officiis rationibus, eos no electram consequuntur. Eam ei mutat dissentiunt, hinc possit ut eos. Vide commodo partiendo his an, sit ad dolor homero voluptua. Has quem idque id, noster molestiae ius id. Ad apeirian ocurreret mei. Eos nemore appetere iudicabit et. His ei nobis percipitur, ea nostrud intellegam mei. Impedit scripserit inciderint ea eum, melius mediocrem referrentur quo ex. Et viris patrioque duo, putent latine democritum ad quo."
+    }]

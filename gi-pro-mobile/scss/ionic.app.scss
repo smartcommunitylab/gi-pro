@@ -24,19 +24,31 @@ $t_lightblue: #1bafe6;
 $t_orange: #d75719;
 $t_red: #d7193a;
 
-/* Ionic overrides */
+/* Ionic overrides*/
 
 $calm: $t_darkblue !default;
 $energized: $t_orange !default;
 $assertive: $t_red !default;
-
-/* The path for our ionicons font files, relative to the built CSS in www/css */
-
+// The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
-
-/* Include all of Ionic */
-
+// Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+/* Bar */
+
+.bar {
+  .clear-button {
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 5px;*/
+    color: #bbb;
+    height: 20px;
+  }
+  .home-search {
+    height: 24px;
+  }
+}
+
 
 /* IonicDatePicker, IonicTimePicker */
 
@@ -76,18 +88,18 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
   .popup-buttons button {
     background-color: $t_orange;
-    /*border-radius: 0;
-		margin-right: 1px;*/
+    /*border-radius: 0;*/
+    /*margin-right: 1px;*/
     color: #ffffff;
   }
 }
 
 .gi-pro .ionic_datepicker_modal {
-  .footer,
-  .header {
+  .header,
+  .footer {
     background-color: $t_blue;
-    .button,
-    .title {
+    .title,
+    .button {
       color: #ffffff;
     }
   }
@@ -140,10 +152,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
-/* Pages */
-.header-title {
-  box-shadow: 0px 7px 10px 0px rgba(102, 102, 102, 1);
-}
 
 /* Buttons */
 
@@ -241,9 +249,9 @@ input[readonly] {
   font-weight: bold;
 }
 
-.tab-item.activated,
+.tab-item.tab-item-active,
 .tab-item.active,
-.tab-item.tab-item-active {
+.tab-item.activated {
   /*color: $t_lightblue !important;*/
   color: white !important;
 }
@@ -255,15 +263,15 @@ input[readonly] {
 
 .tabs-top.tabs-striped .tab-item {
   max-width: none;
-  margin-top: 0;
+  margin-top: 0px;
   color: white;
 }
 
-.tabs-top.tabs-striped .tab-item.activated,
+.tabs-top.tabs-striped .tab-item.tab-item-active,
 .tabs-top.tabs-striped .tab-item.active,
-.tabs-top.tabs-striped .tab-item.tab-item-active {
-  margin-top: 0;
-  border-width: 0 0 3px 0 !important;
+.tabs-top.tabs-striped .tab-item.activated {
+  margin-top: 0px;
+  border-width: 0px 0px 3px 0px !important;
   /*border-color: $t_lightblue;*/
   border-color: white;
 }
@@ -289,10 +297,12 @@ input[readonly] {
     .swiper-container {
       @extend .header-title;
     }
-    // .description {
-    //   color: white;
-    //   font-size: 16px;
-    // }
+    /*
+    .description {
+       color: white;
+       font-size: 16px;
+    }
+    */
     .swiper-slide {
       text-align: center;
     }
@@ -394,6 +404,13 @@ input[readonly] {
       h3 {
         margin: auto;
       }
+      .list-service-cost {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: right;
+        font-size: 20px;
+      }
     }
     .icon {
       margin-right: 7px;
@@ -449,8 +466,8 @@ input[readonly] {
       margin-bottom: 20px;
       border: none;
       ul {
-        // position: absolute;
-        // bottom: 10px;
+        /*position: absolute;*/
+        /*bottom: 10px;*/
       }
     }
     ul {
@@ -491,7 +508,7 @@ input[readonly] {
       .description_text {}
     }
     .competenze {
-      margin: 10px;
+      margin: 10px 10px 10px 10px;
       .lista-competenze {
         list-style-type: disc;
         li {
@@ -511,8 +528,8 @@ input[readonly] {
 
 .details {
   a,
-  a:active,
   a:hover,
+  a:active,
   a:visited {
     color: $t_orange;
   }
@@ -533,8 +550,8 @@ input[readonly] {
       margin-bottom: 20px;
       border: none;
       ul {
-        /*position: absolute;
-				bottom: 10px;*/
+        /*position: absolute;*/
+        /*bottom: 10px;*/
       }
     }
     ul {
@@ -596,8 +613,8 @@ input[readonly] {
       padding-right: 5px;
     }
   }
-  .email,
-  .phone {
+  .phone,
+  .email {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -625,8 +642,8 @@ input[readonly] {
  */
 
 .search {
-  .col,
-  .row {
+  .row,
+  .col {
     padding: 0;
   }
 }
@@ -658,10 +675,10 @@ input[readonly] {
  * FORMS
  */
 
-.form-offer,
-.form-request {
-  .col,
-  .row {
+.form-request,
+.form-offer {
+  .row,
+  .col {
     padding: 0;
   }
 }
@@ -690,8 +707,8 @@ input[readonly] {
   }
 }
 
-.popup-regions,
-.popup-types {
+.popup-types,
+.popup-regions {
   .popup-head {
     display: none;
   }
@@ -712,14 +729,6 @@ input[readonly] {
 .login,
 .registration {
   text-align: center;
-  .header-title {
-    background-color: $t_darkblue;
-    .title {
-      color: white;
-      font-size: 2em;
-      padding: 30px 0;
-    }
-  }
   .item-checkbox {
     font-size: 14px;
     border: none;
@@ -728,9 +737,11 @@ input[readonly] {
       white-space: normal;
     }
   }
-  /*.item-input-cf input {
-		text-transform: uppercase;
-	}*/
+  /*
+  .item-input-cf input {
+    text-transform: uppercase;
+  }
+  */
 }
 
 

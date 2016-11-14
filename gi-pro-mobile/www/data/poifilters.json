@@ -1,80 +1,84 @@
 {
-    "regions": ["Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"],
-    "types": [
-        {
-            "name": "Corte d'Appello",
-            "region": true
+  "professions": [
+    {
+      "id": "idpro_1",
+      "name": "Architetto"
 		},
-        {
-            "name": "Corte di assise",
-            "region": true
+    {
+      "id": "idpro_2",
+      "name": "Civilista"
 		},
-        {
-            "name": "Corte Suprema di Cassazione",
-            "region": false
-		},
-        {
-            "name": "Giudice di Pace",
-            "region": true
-		},
-        {
-            "name": "Tribunale",
-            "region": true
-		},
-        {
-            "name": "Consiglio di Stato",
-            "region": false
-		},
-        {
-            "name": "Commissione Regionali Tributarie",
-            "region": true
-		},
-        {
-            "name": "Commissione Provinciali Tributarie",
-            "region": true
-		},
-        {
-            "name": "TAR",
-            "region": true
-		}
-	],
-    "professions": [
-        {
-            "id": "idpro_1",
-            "name": "Architetto"
-		},
-        {
-            "id": "idpro_2",
-            "name": "Civilista"
-		},
-        {
-            "id": "idpro_3",
-            "name": "Penalista"
+    {
+      "id": "idpro_3",
+      "name": "Penalista"
 		}],
-    "services": [
-        {
-            "id": "idser_1",
-            "name": "Stampa",
-            "value": "50"
-
-
-		}, {
-            "id": "idser_2",
-            "name": "Office",
-            "value": "100"
-        }],
-    "zones": [
-        {
-            "id": "idzone_1",
-            "name": "Trento"
+  "services": [
+    {
+      "id": "sostituzioneudienza",
+      "name": "Sostituzione udienza",
+      "cost": 10
+    },{
+      "id": "fax",
+      "name": "Fax",
+      "value": 5
         },
-        {
-            "id": "idzone_2",
-            "name": "Mezzolombardo"
+    {
+      "id": "stampante",
+      "name": "Stampante",
+      "subtypes": [{
+        "subtype": "10pages",
+        "name": "< 10 pagine",
+        "cost": 5
+      }, {
+        "subtype": "60pages",
+        "name": "< 50 pagine",
+        "cost": 10
+      }]
         },
-        {
-            "id": "idzone_3",
-            "name": "Rovereto"
+    {
+      "id": "postazione",
+      "name": "Postazione di lavoro",
+      "subtypes": [{
+        "subtype": "halfday",
+        "name": "1/2 giornata",
+        "cost": 15
+      }, {
+        "subtype": "day",
+        "name": "Giornata intera",
+        "cost": 30
+      }]
+        },
+    {
+      "id": "sala",
+      "name": "Sala riunioni",
+      "subtypes": [{
+        "subtype": "1hour",
+        "name": "1 ora",
+        "cost": 10
+      }, {
+        "subtype": "halfday",
+        "name": "1/2 giornata",
+        "cost": 40
+      }]
+        },
+    {
+      "id": "conversazione",
+      "name": "Conversazione in lingua straniera",
+      "cost": 15
+        }
+    ],
+  "zones": [
+    {
+      "id": "idzone_1",
+      "name": "Trento"
+        },
+    {
+      "id": "idzone_2",
+      "name": "Mezzolombardo"
+        },
+    {
+      "id": "idzone_3",
+      "name": "Rovereto"
         }
     ]
 }

@@ -6,6 +6,7 @@ angular.module('gi-pro.services.config', [])
     configService.SERVER_URL = CONF.SERVER_URL;
     configService.APPLICATION_ID = CONF.APPLICATION_ID;
     configService.SENDER_ID = CONF.SENDER_ID;
+    configService.MAP_POSITION = CONF.MAP_POSITION;
 
     configService.PROBLEMLINK = "mailto:tecnotoga@smartcommunitylab.it?subject=TECNOTOGA:%20segnalazione%20problema";
     configService.HELPLINK = "http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/";
@@ -44,21 +45,23 @@ angular.module('gi-pro.services.config', [])
         if (update) res += '&ts=' + new Date().getTime();
         return res;
     };
-
+    configService.getMapPosition = function () {
+        return configService.MAP_POSITION;
+    }
     configService.getUserVarToken = function () {
-        return 'toga-app-usertoken-' + configService.APPLICATION_ID;
+        return 'gi-pro-app-usertoken-' + configService.APPLICATION_ID;
     }
     configService.getUserVar = function () {
-        return 'toga-app-user-' + configService.APPLICATION_ID;
+        return 'gi-pro-app-user-' + configService.APPLICATION_ID;
     }
     configService.getUserVarProfileCheck = function () {
-        return 'toga-app-profilecheck-' + configService.APPLICATION_ID;
+        return 'gi-pro-app-profilecheck-' + configService.APPLICATION_ID;
     }
     configService.getUserNotificationsDownloaded = function () {
-        return 'toga-app-notifications-downloaded-' + configService.APPLICATION_ID;
+        return 'gi-pro-app-notifications-downloaded-' + configService.APPLICATION_ID;
     }
     configService.getUserRegId = function () {
-        return 'toga-app-regid-' + configService.APPLICATION_ID;
+        return 'gi-pro-app-regid-' + configService.APPLICATION_ID;
     }
 
     configService.SERVICE_TYPE = 'sostituzione';

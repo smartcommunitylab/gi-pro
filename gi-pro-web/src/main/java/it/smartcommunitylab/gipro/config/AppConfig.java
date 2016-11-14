@@ -176,7 +176,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
      return new Docket(DocumentationType.SWAGGER_2)
      	.groupName("api")
      	.select()
-     		.paths(PathSelectors.regex("/api/.*"))
+     		.paths(PathSelectors.regex("/api.*/.*"))
      		.build()
         .apiInfo(apiInfo)
         .produces(getContentTypes());

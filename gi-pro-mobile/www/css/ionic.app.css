@@ -9815,6 +9815,13 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.bar .clear-button {
+  color: #bbb;
+  height: 20px; }
+
+.bar .home-search {
+  height: 24px; }
+
 /* IonicDatePicker, IonicTimePicker */
 .gi-pro .ionic_datepicker_popup .today {
   border: 1px solid #1f6ca5;
@@ -10064,6 +10071,13 @@ input[readonly] {
 
 .serviceandprofessionist .card .item h3 {
   margin: auto; }
+
+.serviceandprofessionist .card .item .list-service-cost {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: right;
+  font-size: 20px; }
 
 .serviceandprofessionist .card .icon {
   margin-right: 7px;

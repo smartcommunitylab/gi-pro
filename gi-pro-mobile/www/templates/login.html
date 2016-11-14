@@ -1,21 +1,21 @@
 <ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="login">
-	<ion-content class="padding">
-		<h4 class="title">{{'app' | translate}}</h4>
+  <ion-content class="padding">
+    <h4 class="title">{{'app' | translate}}</h4>
 
-		<div class="list list-inset">
-			<label class="item item-input item-input-cf">
-				<input type="text" ng-maxlength="16" ng-model="user.cf" placeholder="{{'cf' | translate}}">
-			</label>
-			<label class="item item-input">
-				<input type="password" ng-model="user.pwd" placeholder="{{'password' | translate}}">
-			</label>
-		</div>
-		<button class="button button-block button-energized" ng-click="login()">{{'login' | translate}}</button>
-		<a ng-click="reset()">{{'password_lost' | translate}}</a>
+    <div class="list list-inset">
+      <label class="item item-input item-input-cf">
+        <input type="text" ng-model="user.email" placeholder="{{'email_placeholder' | translate}}">
+      </label>
+      <label class="item item-input">
+        <input type="password" ng-model="user.password" placeholder="{{'password' | translate}}">
+      </label>
+    </div>
+    <button class="button button-block button-energized" ng-click="login()">{{'login' | translate}}</button>
+    <a ng-click="reset()">{{'password_lost' | translate}}</a>
 
-		<div class="registration">
-			<p>{{'new_account' | translate}}</p>
-			<button class="button button-small button-block button-energized" ng-click="register()">{{'register' | translate}}</button>
-		</div>
-	</ion-content>
+    <div class="registration">
+      <p>{{'new_account' | translate}}</p>
+      <button class="button button-small button-block button-energized" ng-click="register()">{{'register' | translate}}</button>
+    </div>
+  </ion-content>
 </ion-view>

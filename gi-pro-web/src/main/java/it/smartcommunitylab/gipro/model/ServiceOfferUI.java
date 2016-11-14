@@ -14,6 +14,7 @@ public class ServiceOfferUI {
 	private String area, address;
 	private String note;
 	private Integer cost;
+	private double[] coordinates;
 
 	public String getObjectId() {
 		return objectId;
@@ -86,6 +87,12 @@ public class ServiceOfferUI {
 	}
 	public void setCost(Integer cost) {
 		this.cost = cost;
+	}
+	public double[] getCoordinates() {
+		return coordinates;
+	}
+	public void setCoordinates(double[] coordinates) {
+		this.coordinates = coordinates;
 	}
 	
 }

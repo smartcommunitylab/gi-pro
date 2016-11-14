@@ -148,6 +148,7 @@ public class RepositoryManager {
 		Date now = new Date();
 		professional.setCreationDate(now);
 		professional.setLastUpdate(now);
+		professional.setBalance(Const.INIT_BALANCE);
 		mongoTemplate.save(professional);
 		return professional;
 	}
@@ -684,8 +685,10 @@ public class RepositoryManager {
 //	}
 	
 	private void filterProfessionalFields(Query query) {
-		query.fields().exclude("username");
-		query.fields().exclude("passwordHash");
+		query.fields()
+		.exclude("username")
+		.exclude("passwordHash")
+		.exclude("balance");
 	}
 
 //	public ServiceRequest applyToServiceRequest(String applicationId, String objectId,

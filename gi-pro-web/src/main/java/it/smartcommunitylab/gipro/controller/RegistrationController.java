@@ -58,6 +58,9 @@ public class RegistrationController {
 			Model model, HttpServletRequest request, HttpServletResponse response) 
 					throws Exception {
 		try {
+			if (email != null) {
+				email = email.toLowerCase();
+			}
 			Professional profile = storageManager.loginByEmail(applicationId, email, password);
 			if(profile == null) {
 				logger.error(String.format("login - local profile not found: %s", email));
@@ -84,6 +87,8 @@ public class RegistrationController {
 			@RequestBody Registration registration,
 			HttpServletResponse res) throws Exception 
 	{
+		registration.setApplicationId(applicationId);
+		if (registration.getMail() != null) registration.setMail(registration.getMail().toLowerCase());
 		Registration result = storageManager.registerUser(registration);
 		mailSender.sendConfirmationMail(result);
 	}
@@ -108,9 +113,10 @@ public class RegistrationController {
 	}
 	
 	@RequestMapping(value = "/resend", method = RequestMethod.POST)
-	public ModelAndView resendConfirm(Model model, @RequestParam String cf) {
+	public ModelAndView resendConfirm(Model model, @RequestParam String email) {
 		try {
-			Registration result = storageManager.resendConfirm(cf);
+			if (email != null) email = email.toLowerCase();
+			Registration result = storageManager.resendConfirm(email);
 			mailSender.sendConfirmationMail(result);
 			return new ModelAndView("registration/regsuccess");
 		} catch (Exception e) {
@@ -126,11 +132,12 @@ public class RegistrationController {
 	}
 	
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
-	public ModelAndView reset(Model model, @RequestParam String cf,
+	public ModelAndView reset(Model model, @RequestParam String email,
 			HttpServletRequest req) {
 		try {
-			Registration result = storageManager.resetPassword(cf);
-			req.getSession().setAttribute("changePwdCF", result.getMail());
+			if (email != null) email = email.toLowerCase();
+			Registration result = storageManager.resetPassword(email);
+			req.getSession().setAttribute("changePwd", result.getMail());
 			req.getSession().setAttribute("confirmationCode", result.getConfirmationKey());
 			mailSender.sendResetMail(result);
 		} catch (Exception e) {
@@ -191,6 +198,7 @@ public class RegistrationController {
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public Map<String,String> handleRegistrationError(HttpServletRequest request, Exception exception) {
+		logger.error("registration error", exception);
 		return Utils.handleError(exception);
 	}
 	
@@ -198,6 +206,7 @@ public class RegistrationController {
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public Map<String,String> handleGenericError(HttpServletRequest request, Exception exception) {
+		logger.error("Generic error", exception);
 		return Utils.handleError(exception);
 	}	
 }

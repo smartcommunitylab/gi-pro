@@ -1,35 +1,44 @@
 {
-	"name": "toga",
-	"private": "true",
-	"dependencies": {
-		"ngCordova": "latest",
-		"angular-i18n": "latest",
-		"angular-translate": "latest",
-		"angular-translate-loader-static-files": "latest",
-		"ionic-datepicker": "^1.2.1",
-		"ionic-timepicker": "^0.6.0"
-	},
-	"devDependencies": {
-		"ionic": "driftyco/ionic-bower#1.3.1"
-	},
-	"install": {
-		"path": "www/lib",
-		"sources": {
-			"ionic": "bower_components/ionic/**",
-			"ngCordova": "bower_components/ngCordova/dist/ng-cordova.min.js",
-			"angular-i18n": [
-				"bower_components/angular-i18n/angular-locale_it-it.js",
-				"bower_components/angular-i18n/angular-locale_en-gb.js",
-				"bower_components/angular-i18n/angular-locale_en-us.js"
-			],
-			"angular-translate": "bower_components/angular-translate/angular-translate.min.js",
-			"angular-translate-loader-static-files": "bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
-			"moment": "bower_components/moment/min/moment-with-locales.min.js",
-			"ionic-datepicker": "bower_components/ionic-datepicker/dist/ionic-datepicker.bundle.min.js",
-			"ionic-timepicker": "bower_components/ionic-timepicker/dist/ionic-timepicker.bundle.min.js"
-		}
-	},
-	"resolutions": {
-		"angular": ">= 1.5.3"
-	}
+    "name": "toga",
+    "private": "true",
+    "dependencies": {
+        "ngCordova": "latest",
+        "angular-i18n": "latest",
+        "angular-translate": "latest",
+        "angular-translate-loader-static-files": "latest",
+        "ionic-datepicker": "^1.2.1",
+        "ionic-timepicker": "^0.6.0",
+        "ui-leaflet": "~2.0.0",
+        "angular-leaflet-directive": "~0.10.0"
+    },
+    "devDependencies": {
+        "ionic": "driftyco/ionic-bower#1.3.1"
+    },
+    "install": {
+        "path": "www/lib",
+        "sources": {
+            "ionic": "bower_components/ionic/**",
+            "ngCordova": "bower_components/ngCordova/dist/ng-cordova.min.js",
+            "angular-i18n": [
+        "bower_components/angular-i18n/angular-locale_it-it.js",
+        "bower_components/angular-i18n/angular-locale_en-gb.js",
+        "bower_components/angular-i18n/angular-locale_en-us.js"
+      ],
+            "angular-translate": "bower_components/angular-translate/angular-translate.min.js",
+            "angular-translate-loader-static-files": "bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js",
+            "moment": "bower_components/moment/min/moment-with-locales.min.js",
+            "ionic-datepicker": "bower_components/ionic-datepicker/dist/ionic-datepicker.bundle.min.js",
+            "ionic-timepicker": "bower_components/ionic-timepicker/dist/ionic-timepicker.bundle.min.js",
+            "leaflet": [
+        "bower_components/leaflet/dist/leaflet.js",
+        "bower_components/leaflet/dist/leaflet.css",
+        "bower_components/leaflet/dist/images/*"
+      ],
+            "angular-simple-logger": "bower_components/angular-leaflet-directive/dist/angular-simple-logger.min.js",
+            "angular-leaflet-directive": "bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"
+        }
+    },
+    "resolutions": {
+        "angular": ">= 1.5.3"
+    }
 }

@@ -49,7 +49,7 @@
                 <div>&nbsp;</div>
                 <c:if test="${error != null}"><div class="error"><fmt:message bundle="${res}" key="${error}" /></div></c:if>
                 <div>&nbsp;</div>
-                <input type="hidden" name="cf" value='<%= request.getSession().getAttribute("changePwdCF") %>'/>
+                <input type="hidden" name="email" value='<%= request.getSession().getAttribute("changePwd") %>'/>
                 <input type="hidden" name="confirmationCode" value='<%= request.getSession().getAttribute("confirmationCode") %>'/>
                 <div class="col-md-12 form-group">
                   <label> <fmt:message bundle="${res}" key="lbl_pwd" />*: </label>
