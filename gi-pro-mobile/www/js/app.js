@@ -57,7 +57,7 @@ angular.module('gi-pro', [
   $ionicConfigProvider.tabs.style('striped');
   $ionicConfigProvider.backButton.previousTitleText(false).text('');
 
-  //  	$ionicConfigProvider.navBar.alignTitle('left');
+  //$ionicConfigProvider.navBar.alignTitle('left');
 
   //$translateProvider.translations('it', {});
   $translateProvider.preferredLanguage('it');
@@ -161,6 +161,7 @@ angular.module('gi-pro', [
     }
   })
 
+  /*
   .state('app.map', {
     url: "/map",
     views: {
@@ -170,36 +171,37 @@ angular.module('gi-pro', [
       }
     }
   })
+  */
 
   /*
-    .state('app.requestdetails', {
-      url: '/request/{objectId}',
-      params: {
-        'objectId': null,
-        'request': null
-      },
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/request.html',
-          controller: 'RequestDetailsCtrl'
-        }
+  .state('app.requestdetails', {
+    url: '/request/{objectId}',
+    params: {
+      'objectId': null,
+      'request': null
+    },
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/request.html',
+        controller: 'RequestDetailsCtrl'
       }
-    })
+    }
+  })
 
   .state('app.offerdetails', {
-      url: '/offer/{objectId}',
-      params: {
-        'objectId': null,
-        'offer': null
-      },
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/offer.html',
-          controller: 'OfferDetailsCtrl'
-        }
+    url: '/offer/{objectId}',
+    params: {
+      'objectId': null,
+      'offer': null
+    },
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/offer.html',
+        controller: 'OfferDetailsCtrl'
       }
-    })
-    */
+    }
+  })
+  */
 
   .state('app.search', {
     url: '/search',
@@ -225,25 +227,25 @@ angular.module('gi-pro', [
   })
 
   /*
-    .state('app.newrequest', {
-      url: '/request/new',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/form_request.html',
-          controller: 'NewRequestCtrl'
-        }
+  .state('app.newrequest', {
+    url: '/request/new',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/form_request.html',
+        controller: 'NewRequestCtrl'
       }
-    })
+    }
+  })
 
-    .state('app.newoffer', {
-      url: '/offer/new',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/form_offer.html',
-          controller: 'NewOfferCtrl'
-        }
+  .state('app.newoffer', {
+    url: '/offer/new',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/form_offer.html',
+        controller: 'NewOfferCtrl'
       }
-    })
+    }
+  })
   */
 
   .state('app.notifications', {
@@ -256,15 +258,16 @@ angular.module('gi-pro', [
     }
   })
 
-  /*.state('app.history', {
-      url: '/history',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/history.html',
-          controller: 'HistoryCtrl'
-        }
+  /*
+  .state('app.history', {
+    url: '/history',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/history.html',
+        controller: 'HistoryCtrl'
       }
-    })
+    }
+  })
   */
 
   .state('app.profile', {
@@ -278,15 +281,15 @@ angular.module('gi-pro', [
   })
 
   /*
-    .state('app.profile', {
-      url: '/profile',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/profile.html',
-          controller: 'ProfileCtrl'
-        }
+  .state('app.profile', {
+    url: '/profile',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfileCtrl'
       }
-    })
+    }
+  })
   */
 
   .state('app.credits', {
