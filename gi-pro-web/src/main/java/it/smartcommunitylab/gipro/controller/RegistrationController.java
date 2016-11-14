@@ -152,7 +152,7 @@ public class RegistrationController {
 	@RequestMapping(value = "/changepwd", method = RequestMethod.GET)
 	public String changePasswordPage(@RequestParam String confirmationCode,
 			@RequestParam String cf, HttpServletRequest req) {
-		req.getSession().setAttribute("changePwdCF", cf);
+		req.getSession().setAttribute("changePwd", cf);
 		req.getSession().setAttribute("confirmationCode", confirmationCode);
 		return "registration/changepwd";
 	}

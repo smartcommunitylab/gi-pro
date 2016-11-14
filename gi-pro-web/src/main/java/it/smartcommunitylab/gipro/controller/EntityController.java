@@ -50,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.converter.Converter;
 import it.smartcommunitylab.gipro.exception.EntityNotFoundException;
+import it.smartcommunitylab.gipro.exception.InsufficientBalanceException;
 import it.smartcommunitylab.gipro.exception.InvalidStateException;
 import it.smartcommunitylab.gipro.exception.UnauthorizedException;
 import it.smartcommunitylab.gipro.exception.WrongRequestException;
@@ -637,7 +638,7 @@ public class EntityController {
 		return Utils.handleError(exception);
 	}
 
-	@ExceptionHandler(UnauthorizedException.class)
+	@ExceptionHandler(InsufficientBalanceException.class)
 	@ResponseStatus(value=HttpStatus.PRECONDITION_FAILED)
 	@ResponseBody
 	public Map<String,String> handleBalanceError(HttpServletRequest request, Exception exception) {
@@ -654,7 +655,7 @@ public class EntityController {
 	}
 
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(value=HttpStatus.PRECONDITION_FAILED)
+	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public Map<String,String> handleGenericError(HttpServletRequest request, Exception exception) {
 		exception.printStackTrace();
