@@ -445,7 +445,6 @@ input[readonly] {
   .professional {
     margin-bottom: 10px;
     padding-bottom: 20px;
-    border-bottom: 2px solid $t_blue;
     .profile-image-container {
       display: block;
       .profile-image {
@@ -469,16 +468,18 @@ input[readonly] {
         }
       }
     }
-    .item {
-      margin-bottom: 20px;
-      border: none;
-      ul {
-        /*position: absolute;*/
-        /*bottom: 10px;*/
-      }
+    .profession {
+      text-transform: uppercase;
     }
-    ul {
+    .zone {
+      margin-top: 10px;
+    }
+    ul.contacts {
+      padding-bottom: 10px;
+      margin: 10px;
+      border-bottom: 1px solid #ddd;
       li {
+        height: 3em;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -488,6 +489,12 @@ input[readonly] {
           margin-right: 10px;
           font-size: 20px;
           text-align: center;
+          vertical-align: middle;
+        }
+        input {
+          display: inline-block;
+          border-bottom: 1px solid black;
+          width: 85%;
         }
       }
       .name {
@@ -500,22 +507,22 @@ input[readonly] {
         font-style: italic;
         white-space: normal;
       }
-      .address {
-        padding-top: 5px;
-      }
-      .phone {
-        padding-top: 5px;
-      }
+      .address,
+      .phone,
       .email {
-        padding-top: 5px;
+        //padding-top: 10px;
       }
     }
     .description {
+      margin: 10px;
       .description_label {}
       .description_text {}
     }
     .competenze {
-      margin: 10px 10px 10px 10px;
+      margin: 10px;
+      .title {
+        font-weight: bold;
+      }
       .lista-competenze {
         list-style-type: disc;
         li {

@@ -11,9 +11,6 @@ angular.module('gi-pro.services.data', [])
   var zoneMap = null;
   var servicesMap = null;
 
-
-
-
   var createMap = function (data) {
       map = {};
       //add new object with name id and data the rest of the data
@@ -65,9 +62,7 @@ angular.module('gi-pro.services.data', [])
     if (allProfessions) {
       deferred.resolve(allProfessions);
     } else {
-      $http.get('data/poifilters.json')
-
-      .then(
+      $http.get('data/poifilters.json').then(
         function (response) {
           if (!professionMap) {
             professionMap = createMap(response.data.professions)
@@ -82,6 +77,7 @@ angular.module('gi-pro.services.data', [])
     }
     return deferred.promise;
   };
+
   /* get Services (local) */
   dataService.getServicesDefinition = function () {
     var deferred = $q.defer();
@@ -224,8 +220,8 @@ angular.module('gi-pro.services.data', [])
     }
 
 
-    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
-      //$http.get('data/profiles_temp.json')
+    //$http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
+    $http.get('data/profiles_temp.json')
 
     .then(
       function (response) {
@@ -321,13 +317,18 @@ angular.module('gi-pro.services.data', [])
     //    return deferred.promise;
   }
   dataService.getZones = function () {
-    var tempZones = [{
-      zoneId: "idzone_1",
-            }, {
-      zoneId: "idzone_2",
-            }, {
-      zoneId: "idzone_1",
-            }];
+    var tempZones = [
+      {
+        zoneId: "idzone_1"
+      },
+      {
+        zoneId: "idzone_2"
+      },
+      {
+        zoneId: "idzone_1"
+      }
+    ];
+
     var deferred = $q.defer();
     dataService.getZonesDefinition().then(function (zones) {
       for (var i = 0; i < tempZones.length; i++) {
@@ -337,6 +338,7 @@ angular.module('gi-pro.services.data', [])
     });
     return deferred.promise;
   }
+
   dataService.getProfessionsMap = function () {
     return professionMap;
   }

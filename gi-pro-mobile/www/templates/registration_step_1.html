@@ -19,7 +19,8 @@
       <div class="msg-block" ng-show="myForm.$invalid"> <span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
       </div>
     </form>
--->
+    -->
+
     <form name="myForm">
       <div class="list list-inset">
         <label class="item item-input item-input-cf">
@@ -32,15 +33,15 @@
           <input type="password" id="pw2" name="pw2" ng-model="pw2" ng-required="" placeholder="{{'retype-password' | translate}}" pw-check="registration.password" />
         </label>
 
-        <div class="msg-block" ng-show="myForm.$invalid"> <span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
-
+        <div class="msg-block" ng-show="myForm.$invalid">
+          <span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
           <!--
-        <label for="pw1">Set a password:</label>
-        <input type="password" id="pw1" name="pw1" ng-model="registration.email" ng-required="" />
-        <label for="pw2">Confirm the password:</label>
-        <input type="password" id="pw2" name="pw2" ng-model="pw2" ng-required="" pw-check="registration.email" />
-        <div class="msg-block" ng-show="myForm.$invalid"> <span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
--->
+          <label for="pw1">Set a password:</label>
+          <input type="password" id="pw1" name="pw1" ng-model="registration.email" ng-required="" />
+          <label for="pw2">Confirm the password:</label>
+          <input type="password" id="pw2" name="pw2" ng-model="pw2" ng-required="" pw-check="registration.email" />
+          <div class="msg-block" ng-show="myForm.$invalid"> <span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">Passwords don't match.</span>
+          -->
         </div>
       </div>
     </form>
