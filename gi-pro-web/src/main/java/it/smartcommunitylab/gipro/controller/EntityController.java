@@ -135,9 +135,9 @@ public class EntityController {
 			@RequestParam(required=false) String orderBy,
 			@RequestParam(required=false) String q,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if(Utils.isEmpty(type)) {
-			throw new WrongRequestException("bad parameters");
-		}
+//		if(Utils.isEmpty(type)) {
+//			throw new WrongRequestException("bad parameters");
+//		}
 		if(page == null) {
 			page = 1;
 		}
@@ -218,9 +218,9 @@ public class EntityController {
 			@RequestParam(required=false) Long startTime,  
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
-		if(Utils.isEmpty(poiId) || (startTime == null)) {
-			throw new WrongRequestException("bad parameters");
-		}
+//		if(Utils.isEmpty(poiId) || (startTime == null)) {
+//			throw new WrongRequestException("bad parameters");
+//		}
 		if(page == null) {
 			page = 1;
 		}

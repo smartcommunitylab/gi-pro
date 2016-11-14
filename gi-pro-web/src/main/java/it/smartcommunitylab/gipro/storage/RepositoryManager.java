@@ -291,7 +291,7 @@ public class RepositoryManager {
 			criteria.and("surname").regex("/"+q.toLowerCase()+"/i");
 		}
 		Query query = new Query(criteria);
-		if (orderBy != null && orderBy.length > 0) {
+		if (orderBy != null && orderBy.length > 0 && orderBy[0] != null) {
 			query.with(new Sort(Sort.Direction.ASC, orderBy));
 		} else {
 			query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
