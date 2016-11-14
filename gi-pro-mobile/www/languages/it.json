@@ -138,5 +138,8 @@
   "req_tab_1": "Richieste agli altri",
   "req_tab_2": "Richieste a me",
   "prof_info": "Info",
-  "prof_services": "Servizi"
+  "prof_services": "Servizi",
+  "oder_popup_title": "Ordina per",
+  "orderby_alphabetically": "Alfabeto",
+  "orderby_price": "Prezzo"
 }

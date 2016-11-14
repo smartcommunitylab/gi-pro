@@ -224,8 +224,8 @@ angular.module('gi-pro.services.data', [])
     }
 
 
-    //    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
-    $http.get('data/profiles_temp.json')
+    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
+      //$http.get('data/profiles_temp.json')
 
     .then(
       function (response) {

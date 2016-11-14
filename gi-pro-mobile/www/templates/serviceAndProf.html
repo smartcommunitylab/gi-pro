@@ -22,7 +22,8 @@
       </div>
     </div>
 
-    <button class="button button-icon button-clear ion-search" ng-click="switchSearchBar()" ng-hide="searchBarVisible"></button>
+    <button class="button button-icon button-clear ion-search" ng-click="switchSearchBar()" ng-hide="searchBarVisible || !professionistTab"></button>
+    <button class="button button-icon button-clear ion-android-funnel" ng-click="orderServices()" ng-hide="professionistTab"></button>
     <button class="button button-icon button-clear" ng-class="{'ion-map':listVisualization, 'ion-ios-list-outline':!listVisualization}" ng-click="switchToMap()" ng-hide="searchBarVisible"></button>
   </ion-nav-buttons>
   <ion-tabs class="tabs-calm" ng-class="{'tabs-item-hide':!logged}">
