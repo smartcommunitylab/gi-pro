@@ -108,7 +108,7 @@ angular.module('gi-pro.services.data', [])
   /* get Zones (local) */
   dataService.getZonesDefinition = function () {
     var deferred = $q.defer();
-    if (allServices) {
+    if (allZones) {
       deferred.resolve(allZones);
     } else {
       $http.get('data/poifilters.json')
@@ -224,7 +224,7 @@ angular.module('gi-pro.services.data', [])
     }
 
 
-    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
+    $http.get(Config.SERVER_URL + '/apipublic/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
       //$http.get('data/profiles_temp.json')
 
     .then(
@@ -261,7 +261,7 @@ angular.module('gi-pro.services.data', [])
 
     }
     /*get list with all services*/
-  dataService.getServices = function (type, area, page, limit, orderBy) {
+  dataService.getServices = function (professionalID, type, area, page, limit, orderBy) {
     var deferred = $q.defer();
     var httpConfWithParams = Config.getHTTPConfig();
     httpConfWithParams.params = {};
@@ -282,8 +282,8 @@ angular.module('gi-pro.services.data', [])
     }
 
 
-    //    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/professional/bypage', httpConfWithParams)
-    $http.get('data/services_temp.json')
+    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/searchoffer/' + professionalID, httpConfWithParams)
+      //$http.get('data/services_temp.json')
 
     .then(
       function (response) {
@@ -296,43 +296,21 @@ angular.module('gi-pro.services.data', [])
     );
 
     return deferred.promise;
-
-    //
-    //    var tempServ = [{
-    //      serviceId: "idser_1",
-    //      owner: "Tullio Pinter",
-    //      zoneId: "idzone_1"
-    //            }, {
-    //      serviceId: "idser_2",
-    //      owner: "yabba dabba",
-    //      zoneId: "idzone_1"
-    //            }, {
-    //      serviceId: "idser_1",
-    //      owner: "zigo zago",
-    //      zoneId: "idzone_2"
-    //            }];
-    //    var deferred = $q.defer();
-    //    dataService.getServicesDefinition().then(function (services) {
-    //      for (var i = 0; i < tempServ.length; i++) {
-    //        tempServ[i]["service"] = servicesMap[tempServ[i].serviceId].name;
-    //      }
-    //      deferred.resolve(tempServ);
-    //    });
-    //    return deferred.promise;
   }
+
   dataService.getZones = function () {
-    var tempZones = [{
-      zoneId: "idzone_1",
-            }, {
-      zoneId: "idzone_2",
-            }, {
-      zoneId: "idzone_1",
-            }];
+//    var tempZones = [{
+//      zoneId: "idzone_1",
+//            }, {
+//      zoneId: "idzone_2",
+//            }, {
+//      zoneId: "idzone_1",
+//            }];
     var deferred = $q.defer();
     dataService.getZonesDefinition().then(function (zones) {
-      for (var i = 0; i < tempZones.length; i++) {
-        tempZones[i]["zone"] = zoneMap[tempZones[i].zoneId].name;
-      }
+//      for (var i = 0; i < tempZones.length; i++) {
+//        tempZones[i]["zone"] = zoneMap[tempZones[i].zoneId].name;
+//      }
       deferred.resolve(tempZones);
     });
     return deferred.promise;

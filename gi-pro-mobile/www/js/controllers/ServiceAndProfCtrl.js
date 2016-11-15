@@ -12,7 +12,12 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.searchBarVisible = false;
   $scope.searchString = "";
   $scope.professionistTab = true;
-
+  $scope.allProfessionist = Config.getPageProfessional();
+  $scope.startProfessionist = 0;
+  $scope.endProfessionist_reached = false;
+  $scope.allServices = Config.getPageServices();
+  $scope.startServices = 0;
+  $scope.endServices_reached = false;
 
   var professionMap = null;
   var zoneMap = null;
@@ -32,11 +37,6 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       $scope.searchBarVisible = false;
       $scope.title = $filter('translate')('app');
     }
-    //  $scope.clearSearch = function () {
-    //    $scope.searchString = "";
-    //    $scope.searchBarVisible = false;
-    //    $scope.title = $filter('translate')('app');
-    //  }
   var loadFilters = function () {
     //        load professions
     //        load services
@@ -80,56 +80,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
 
   }
-  var reload = function () {
-    if (!Login.userIsLogged()) {
-      //show tutorial
-    }
-
-    Utils.loading();
-    //get Professionist
-    DataSrv.getProfessionals().then(
-      function (professionals) {
-        if (professionals) {
-          $scope.activeProfessionals = professionals;
-          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.activeProfessionals);
-          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.activeProfessionals);
-        }
-        //                get zones
-        DataSrv.getZones().then(function (zones) {
-            $scope.activeZones = zones;
-            if (Login.userIsLogged()) {
-              //if (true) {
-              DataSrv.getServices().then(
-                function (services) {
-                  $scope.activeServices = services;
-                  loadFilters().then(function () {
-                    addExtraDataToProf();
-                  });
-                  Utils.loaded();
-                },
-                Utils.commError);
-            } else {
-              loadFilters().then(function () {
-                addExtraDataToProf();
-              });
-              Utils.loaded();
-            }
-          },
-          Utils.commError);
-      },
-      Utils.commError);
-    //serve il loading delle chiamate asincrone
 
 
 
-    //if Login.userIsLogged() load services
-
-  };
-
-  if (!$stateParams.reload) {
-    // prevent double load (WHY?!?!?)
-    reload();
-  }
   $scope.openFilters = function (type) {
     $scope.selectingFilter = true;
     if (type === 'service') {
@@ -153,7 +106,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     });
   }
 
-  $scope.selectFilter = function (type, selection) {
+  $scope.selectFilter = function (kind, type, selection) {
     $scope.selectingFilter = false;
     $scope.selectingServices = false;
     $scope.selectingZones = false;
@@ -185,21 +138,22 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           $scope.filters.selectedProfession = null
         }
       }
-
+    }
+    if (kind === 'profession') {
+      $scope.activeProfessionals = null;
+      $scope.startProfessionist = 0;
+      $scope.allProfessionist = Config.getPageProfessional();
+      $scope.loadMoreProfessionist();
+    }
+    if (kind === 'service') {
+      $scope.activeServices = null;
+      $scope.startServices = 0;
+      $scope.allServices = Config.getPageServices();
+      $scope.loadMoreServices();
     }
     $ionicScrollDelegate.resize();
   }
-  $scope.$on('$ionicView.enter', function (event, args) {
-    var params = DataSrv.internalCache['app.serviceAndProf'] || {};
-    if (!!params.reload) {
-      reload();
-    }
 
-    if (!!params.tab) {
-      $ionicTabsDelegate.select(params.tab);
-    }
-    DataSrv.internalCache['app.serviceAndProf'] = null;
-  });
   $scope.switchToMap = function () {
     $scope.listVisualization = !$scope.listVisualization;
   }
@@ -246,38 +200,202 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
   };
 
-  $scope.orderServices = function () {
-    $scope.orderList = [
-      {
-        text: $filter('translate')('orderby_alphabetically'),
-        value: "alpha"
-        },
-      {
-        text: $filter('translate')('orderby_price'),
-        value: "price"
-        }
-  ];
-    var orderPopup = $ionicPopup.confirm({
-//      cssClass: 'order-popup',
-      templateUrl: 'templates/order-popover.html',
-      scope: $scope,
-      buttons: [{ // Array[Object] (optional). Buttons to place in the popup footer.
-        text: $filter('translate')('close'),
+  //currently commented because I can't order by alpha or price because they are fixed
 
-                }, {
-        text: $filter('translate')('oder_popup_ok'),
-        onTap: function (e) {
-          return $scope.data.actualOrder;
+  //  var orderList = function (orderBy) {
+  //    $ionicLoading.show();
+  //    listPathsService.getPathsByCategoryIdAndOrder($stateParams, $scope.data.actualOrder, length).then(function (paths) {
+  //      $scope.emptylist = false;
+  //      $scope.paths = paths;
+  //
+  //      if ($scope.paths.length == 0) {
+  //        $scope.emptylist = true;
+  //      } else {
+  //        $scope.emptylist = false;
+  //      }
+  //      $ionicLoading.hide();
+  //    }, function () {
+  //      $ionicLoading.hide();
+  //    });
+  //  }
+  //  $scope.orderServices = function () {
+  //    $scope.data = {
+  //      actualOrder: 'alpha'
+  //    }
+  //    $scope.orderList = [
+  //      {
+  //        text: $filter('translate')('orderby_alphabetically'),
+  //        value: "alpha"
+  //        },
+  //      {
+  //        text: $filter('translate')('orderby_price'),
+  //        value: "price"
+  //        }
+  //  ];
+  //    var orderPopup = $ionicPopup.confirm({
+  //      //      cssClass: 'order-popup',
+  //      title: $filter('translate')('oder_popup_title'),
+  //      templateUrl: 'templates/order-popover.html',
+  //      scope: $scope,
+  //      buttons: [{ // Array[Object] (optional). Buttons to place in the popup footer.
+  //        text: $filter('translate')('close'),
+  //
+  //                }, {
+  //        text: $filter('translate')('ok'),
+  //        onTap: function (e) {
+  //          return $scope.data.actualOrder;
+  //        }
+  //  }]
+  //    });
+  //    orderPopup.then(function (res) {
+  //      if (res) {
+  //        //orderList(res);
+  //        loadMoreServices
+  //      }
+  //    });
+  //
+  //  }
+
+  $scope.loadMoreServices = function () {
+    var deferred = $q.defer();
+    var professionalID = Login.getUser().objectId
+    DataSrv.getServices(professionalID, ($scope.filters.selectedService == null) ? null : $scope.filters.selectedService.id, ($scope.filters.selectedZone == null) ? null : $scope.filters.selectedZone.id, (($scope.activeServices == null) ? 1 : Math.floor(($scope.activeServices.length / $scope.allServices)) + 1), $scope.allServices, "objectId").then(function (services) { /*type, area, page, limit, orderBy*/
+      if (services) {
+        $scope.activeServices = !!$scope.services ? $scope.services.concat(services) : services;
+        if ($scope.activeServices.length == 0) {
+          $scope.emptylist = true;
         }
-  }]
-    });
-    orderPopup.then(function (res) {
-      if (res) {
-        orderList(res);
+        if (services.length >= $scope.allServices) {
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+          $scope.startServices += $scope.allServices;
+          $scope.servicesMarkers = mapService.getServicesPoints($scope.activeServices);
+          $scope.endServices_reached = false;
+        } else {
+          $scope.endServices_reached = true;
+        }
+      } else {
+        // $scope.emptylist = true;
+        $scope.endServices_reached = true;
+        Toast.show($filter('translate')("pop_up_error_server_template"), "short", "bottom");
+
       }
+      Config.loaded();
+      deferred.resolve();
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+      $scope.$broadcast('scroll.refreshComplete');
+
+
+    }, function (err) {
+      Utils.commError;
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+      $scope.$broadcast('scroll.refreshComplete');
+      $scope.endServices_reached = true;
+      Config.loaded();
     });
+    return deferred.promise;
+  }
+  $scope.loadServices = function () {
+    reload();
+  }
+
+
+  $scope.loadMoreProfessionist = function () {
+    var deferred = $q.defer();
+    DataSrv.getProfessionals(($scope.filters.selectedProfession == null) ? null : $scope.filters.selectedProfession.id, ($scope.filters.selectedZone == null) ? null : $scope.filters.selectedZone.id, (($scope.activeProfessionals == null) ? 1 : Math.floor(($scope.activeProfessionals.length / $scope.allProfessionist)) + 1), $scope.allProfessionist, "surname").then(function (professional) { /*type, area, page, limit, orderBy*/
+      if (professional) {
+        $scope.activeProfessionals = !!$scope.activeProfessionals ? $scope.activeProfessionals.concat(professional) : professional;
+
+        if ($scope.activeProfessionals.length == 0) {
+          $scope.emptylist = true;
+        } else {
+          if ($scope.filters.allZones.length == 0) {
+            loadFilters().then(function () {
+              addExtraDataToProf();
+            });
+          } else {
+            addExtraDataToProf();
+          }
+        }
+        if (professional.length >= $scope.allProfessionist) {
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+          $scope.startProfessionist += $scope.allProfessionist;
+          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.activeProfessionals);
+          $scope.endProfessionist_reached = false;
+        } else {
+          $scope.endProfessionist_reached = true;
+        }
+      } else {
+        // $scope.emptylist = true;
+        $scope.endProfessionist_reached = true;
+        Toast.show($filter('translate')("pop_up_error_server_template"), "short", "bottom");
+
+      }
+      Config.loaded();
+      deferred.resolve();
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+      $scope.$broadcast('scroll.refreshComplete');
+
+
+    }, function (err) {
+      Utils.commError;
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+      $scope.$broadcast('scroll.refreshComplete');
+      $scope.endProfessionist_reached = true;
+      Config.loaded();
+    });
+    return deferred.promise;
 
   }
+  var reload = function () {
+    if (!Login.userIsLogged()) {
+      //show tutorial
+    }
+    $scope.activeProfessionals = null;
+    $scope.activeServices = null;
+    $scope.startProfessionist = 0;
+    $scope.allProfessionist = Config.getPageProfessional();
+    $scope.endProfessionist_reached = false;
+    $scope.startServices = 0;
+    $scope.allServices = Config.getPageServices();
+    $scope.endServices_reached = false;
+    //get Professionist
+    $scope.loadMoreProfessionist().then(
+      function () {
+        //                get zones
+        DataSrv.getZones().then(function (zones) {
+            $scope.activeZones = zones;
+            if (Login.userIsLogged()) {
+              //if (true) {
+              DataSrv.getServices().then(
+                function (services) {
+                  $scope.activeServices = services;
+                  loadFilters().then(function () {
+                    addExtraDataToProf();
+                  });
+                  Utils.loaded();
+                },
+                Utils.commError);
+            } else {
+              loadFilters().then(function () {
+                addExtraDataToProf();
+              });
+              Utils.loaded();
+            }
+          },
+          Utils.commError);
+      },
+      Utils.commError);
+    //serve il loading delle chiamate asincrone
+
+
+
+    //if Login.userIsLogged() load services
+
+  };
+
+  $scope.loadProfessionist = function () {
+      reload();
+    }
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,

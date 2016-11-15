@@ -78,21 +78,22 @@ angular.module('gi-pro.services.mapservice', [])
     var returnPoints = [];
     if (listOfProfessional) {
       for (i = 0; i < listOfProfessional.length; i++) {
-        returnPoints.push({
-          lat: listOfProfessional[i].location.lat,
-          lng: listOfProfessional[i].location.long,
-          message: '<div><button class="button" ui-sref="app.profdetails({objectId: \'' + listOfProfessional[i].objectId + '\'})">' + listOfProfessional[i].name + '</button> </div>',
-          icon: {
-            //                            iconUrl: url,
-            iconSize: [36, 50],
-            iconAnchor: [18, 50],
-            popupAnchor: [-0, -50]
-          },
-          //                        focus: true
-        })
+        if (listOfProfessional[i].coordinates) {
+          returnPoints.push({
+            lat: listOfProfessional[i].location.lat,
+            lng: listOfProfessional[i].location.long,
+            message: '<div><button class="button" ui-sref="app.profdetails({objectId: \'' + listOfProfessional[i].objectId + '\'})">' + listOfProfessional[i].name + '</button> </div>',
+            icon: {
+              //                            iconUrl: url,
+              iconSize: [36, 50],
+              iconAnchor: [18, 50],
+              popupAnchor: [-0, -50]
+            },
+            //                        focus: true
+          })
 
-        var bound = [listOfProfessional[i].location.lat, listOfProfessional[i].location.lon];
-
+          var bound = [listOfProfessional[i].location.lat, listOfProfessional[i].location.lon];
+        }
       }
     }
     return returnPoints;
@@ -103,21 +104,22 @@ angular.module('gi-pro.services.mapservice', [])
     var returnPoints = [];
     if (listOfServices) {
       for (i = 0; i < listOfServices.length; i++) {
-        returnPoints.push({
-          lat: listOfServices[i].coordinates[0],
-          lng: listOfServices[i].coordinates[1],
-          message: '<div><button class="button" ui-sref="app.servicedetails({objectId: \'' + listOfServices[i].objectId + '\'})">' + listOfServices[i].service + '</button> </div>',
-          icon: {
-            //                            iconUrl: url,
-            iconSize: [36, 50],
-            iconAnchor: [18, 50],
-            popupAnchor: [-0, -50]
-          },
-          //                        focus: true
-        })
+        if (listOfServices[i].coordinates) {
+          returnPoints.push({
+            lat: listOfServices[i].coordinates[0],
+            lng: listOfServices[i].coordinates[1],
+            message: '<div><button class="button" ui-sref="app.servicedetails({objectId: \'' + listOfServices[i].objectId + '\'})">' + listOfServices[i].service + '</button> </div>',
+            icon: {
+              //                            iconUrl: url,
+              iconSize: [36, 50],
+              iconAnchor: [18, 50],
+              popupAnchor: [-0, -50]
+            },
+            //                        focus: true
+          })
 
-        var bound = [listOfServices[i].coordinates[0], listOfServices[i].coordinates[1]];
-
+          var bound = [listOfServices[i].coordinates[0], listOfServices[i].coordinates[1]];
+        };
       }
     }
     return returnPoints;

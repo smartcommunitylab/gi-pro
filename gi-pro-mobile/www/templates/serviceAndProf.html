@@ -23,7 +23,9 @@
     </div>
 
     <button class="button button-icon button-clear ion-search" ng-click="switchSearchBar()" ng-hide="searchBarVisible || !professionistTab"></button>
-    <button class="button button-icon button-clear ion-android-funnel" ng-click="orderServices()" ng-hide="professionistTab"></button>
+    <!--not in this phase
+<button class="button button-icon button-clear ion-android-funnel" ng-click="orderServices()" ng-hide="professionistTab"></button>
+-->
     <button class="button button-icon button-clear" ng-class="{'ion-map':listVisualization, 'ion-ios-list-outline':!listVisualization}" ng-click="switchToMap()" ng-hide="searchBarVisible"></button>
   </ion-nav-buttons>
   <ion-tabs class="tabs-calm" ng-class="{'tabs-item-hide':!logged}">
@@ -42,14 +44,14 @@
           <!--                    services-->
           <div class="services-list" ng-if="selectingFilter && selectingServices">
             {{'selectedService_label'|translate}}
-            <div ng-click="selectFilter('service',null)">{{'allServices_label'|translate}}:</div>
-            <div ng-repeat="service in filters.allServices" ng-click="selectFilter('service',service)">{{service.name}}</div>
+            <div ng-click="selectFilter('service','service',null)">{{'allServices_label'|translate}}:</div>
+            <div ng-repeat="service in filters.allServices" ng-click="selectFilter('service','service',service)">{{service.name}}</div>
           </div>
           <!--                    zones-->
           <div class="zones-list" ng-if="selectingFilter && selectingZones">
             {{'selectedZone_label'|translate}}
-            <div ng-click="selectFilter('zone',null)">{{'allZones_label'|translate}}</div>
-            <div ng-repeat="zone in filters.allZones" ng-click="selectFilter('zone',zone)">{{zone.name}}</div>
+            <div ng-click="selectFilter('service','zone',null)">{{'allZones_label'|translate}}</div>
+            <div ng-repeat="zone in filters.allZones" ng-click="selectFilter('service','zone',zone)">{{zone.name}}</div>
           </div>
           <!--                    <h4 class="padding" ng-if="!!activeServices && activeServices.length == 0">{{'requests_empty' | translate}}</h4>-->
           <!--
@@ -61,14 +63,23 @@
           </div>
 -->
           <div class="list-visualization" ng-if="listVisualization">
-            <div class="card" ng-repeat="service in filteredServices = (activeServices | filter :{service:filters.selectedService.name,zone:filters.selectedZone.name})" ng-if="!!activeServices && activeServices.length > 0" ng-click="openRequestDetails(service)">
-              <a class="item" ng-click="openDetailsService(service)">
-                <div><span>{{service.service}}</span></div>
-                <p>{{service.professional.name}}{{service.professional.surname}}</p>
-                <p class="list-service-cost">{{service.cost}}</p>
-              </a>
 
-            </div>
+            <ion-list class="list">
+              <ion-scroll>
+                <ion-refresher on-refresh="loadServices()">
+                </ion-refresher>
+                <div class="card" ng-repeat="service in filteredServices = (activeServices | filter :{service:filters.selectedService.name,zone:filters.selectedZone.name})" ng-if="!!activeServices && activeServices.length > 0" ng-click="openRequestDetails(service)">
+                  <a class="item" ng-click="openDetailsService(service)">
+                    <div><span>{{service.service}}</span></div>
+                    <p>{{service.professional.name}}{{service.professional.surname}}</p>
+                    <p class="list-service-cost">{{service.cost}}</p>
+                  </a>
+
+                </div>
+              </ion-scroll>
+            </ion-list>
+            <ion-infinite-scroll ng-if="!endServices_reached" on-infinite="loadMoreServices()" distance="5%">
+            </ion-infinite-scroll>
             <p ng-hide="filteredServices.length ">{{'services_empty' | translate}}</p>
           </div>
           <div class="map-visualization" ng-if="!listVisualization">
@@ -83,6 +94,7 @@
     <ion-tab title="{{'prof_tab' | translate}}" on-select="initProfessionMap()">
       <ion-pane>
         <ion-content>
+
           <!--                    filter for professionals-->
           <div class="selected-filters row" ng-if="!selectingFilter">
             <div class="col col-50 selected-profession" ng-click="openFilters('profession')"> <span ng-if="filters.selectedProfession">{{'selectedProfession_label'|translate}}:{{filters.selectedProfession.name}}</span>
@@ -93,26 +105,35 @@
           <!--                    professions-->
           <div class="professional-list" ng-if="selectingFilter && selectingProfession">
             {{'selectedProfession_label'|translate}}
-            <div ng-click="selectFilter('profession',null)">{{'allProfession_label'|translate}}</div>
-            <div ng-repeat="profession in filters.allProfessions" ng-click="selectFilter('profession',profession)">{{profession.name}}</div>
+            <div ng-click="selectFilter('profession','profession',null)">{{'allProfession_label'|translate}}</div>
+            <div ng-repeat="profession in filters.allProfessions" ng-click="selectFilter('profession','profession',profession)">{{profession.name}}</div>
           </div>
           <!--                    zones-->
           <div class="zones-list" ng-if="selectingFilter && selectingZones">
             {{'selectedZone_label'|translate}}
-            <div ng-click="selectFilter('zone',null)">{{'allZones_label'|translate}}</div>
-            <div ng-repeat="zone in filters.allZones" ng-click="selectFilter('zone',zone)">{{zone.name}}</div>
+            <div ng-click="selectFilter('profession','zone',null)">{{'allZones_label'|translate}}</div>
+            <div ng-repeat="zone in filters.allZones" ng-click="selectFilter('profession','zone',zone)">{{zone.name}}</div>
 
           </div>
 
           <div class="list-visualization" ng-if="listVisualization">
-            <div class="card" ng-repeat="professionist in filteredProfessional = (activeProfessionals | filter :{profession:filters.selectedProfession.name,zone:filters.selectedZone.name})" ng-if="!!activeProfessionals && activeProfessionals.length > 0" ng-click="openProfDetails(professionist)">
-              <a class="item item-avatar" ng-click="openDetailsProf(professionist)">
-                <img ng-src="{{professionist.imageUrl}}">
-                <div><span>{{professionist.name}}</span><span>{{professionist.surname}}</span></div>
-                <p>{{professionist.profession}}</p>
-              </a>
-            </div>
-            <p ng-hide="filteredProfessional.length ">{{'professional_empty' | translate}}</p>
+
+            <ion-list class="list">
+              <ion-scroll>
+                <ion-refresher on-refresh="loadProfessionist()">
+                </ion-refresher>
+                <div class="card" ng-repeat="professionist in filteredProfessional = (activeProfessionals | filter :{profession:filters.selectedProfession.name,zone:filters.selectedZone.name})" ng-if="!!activeProfessionals && activeProfessionals.length > 0" ng-click="openProfDetails(professionist)">
+                  <a class="item item-avatar" ng-click="openDetailsProf(professionist)">
+                    <img ng-src="{{professionist.imageUrl}}">
+                    <div><span>{{professionist.name}}</span><span>{{professionist.surname}}</span></div>
+                    <p>{{professionist.profession}}</p>
+                  </a>
+                </div>
+              </ion-scroll>
+            </ion-list>
+            <ion-infinite-scroll ng-if="!endProfessionist_reached" on-infinite="loadMoreProfessionist()" distance="5%">
+            </ion-infinite-scroll>
+            <p ng-hide="activeProfessionals.length ">{{'professional_empty' | translate}}</p>
           </div>
           <div class="map-visualization" ng-if="!listVisualization">
             <div id="modal-map-container" data-tap-disabled="true">
