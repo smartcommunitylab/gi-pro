@@ -1,11 +1,13 @@
 <ion-view view-title="{{prof.name}} {{prof.surname}}" class="prof-details">
   <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear" ng-class="{'ion-edit': !editing, 'ion-checkmark': editing}" ng-click="toggleEditing()" ng-show="isMyProfile"></button>
+    <button class="button button-icon button-clear" ng-class="{'ion-edit': !editing, 'ion-checkmark': editing}" ng-click="toggleEditing()" ng-show="isMyProfile&&isOnProfile"></button>
+    <button class="button button-icon button-clear ion-plus-round" ng-click="addNewService()" ng-show="isMyProfile&&!isOnProfile"></button>
+
   </ion-nav-buttons>
 
   <ion-tabs class="tabs-calm">
     <!-- INFO -->
-    <ion-tab title="{{'prof_info' | translate | uppercase}}">
+    <ion-tab title="{{'prof_info' | translate | uppercase}}" on-select="selectProfile()">
       <ion-pane>
         <ion-content>
           <div class="professional">
@@ -90,7 +92,7 @@
     </ion-tab>
 
     <!-- SERVICES -->
-    <ion-tab title="{{'prof_services' | translate|uppercase}}" on-select="initProfessionMap()">
+    <ion-tab title="{{'prof_services' | translate|uppercase}}" on-select="selectServices()">
       <ion-pane>
         <ion-content>
           servizi del profilo

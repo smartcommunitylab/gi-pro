@@ -1,25 +1,32 @@
 angular.module('gi-pro.controllers.profile', [])
 
-.controller('ProfileCtrl', function ($scope, $rootScope, $filter, Config, Login, Utils, DataSrv) {
-  $scope.prof = angular.copy(Login.getUser())
-  $scope.isMyProfile = true;
+.controller('ProfileCtrl', function ($scope, $rootScope, $ionicModal, $filter, Config, Login, Utils, DataSrv) {
 
-  $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true)
-
-  $scope.professions = DataSrv.getProfessionsMap();
-  if (!$scope.professions) {
-    DataSrv.getProfessionsDefinition().then(function () {
-      $scope.professions = DataSrv.getProfessionsMap();
+  function init() {
+    $scope.editing = false;
+    $scope.prof = angular.copy(Login.getUser())
+    $scope.isMyProfile = true;
+    $scope.isOnProfile = false;
+    $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true)
+    $ionicModal.fromTemplateUrl('templates/add_new_service_modal.html', {
+      scope: $scope
+    }).then(function (modal) {
+      $scope.addServiceModal = modal;
     });
-  }
+    $scope.professions = DataSrv.getProfessionsMap();
+    if (!$scope.professions) {
+      DataSrv.getProfessionsDefinition().then(function () {
+        $scope.professions = DataSrv.getProfessionsMap();
+      });
+    }
 
-  $scope.zones = DataSrv.getZonesMap();
-  if (!$scope.zones) {
-    DataSrv.getZonesDefinition().then(function () {
-      $scope.zones = DataSrv.getZonesMap();
-    });
+    $scope.zones = DataSrv.getZonesMap();
+    if (!$scope.zones) {
+      DataSrv.getZonesDefinition().then(function () {
+        $scope.zones = DataSrv.getZonesMap();
+      });
+    }
   }
-
   var validate = function () {
     /*
     if (!$scope.profile.customProperties) {
@@ -30,7 +37,6 @@ angular.module('gi-pro.controllers.profile', [])
     return true;
   }
 
-  $scope.editing = false;
 
   $scope.$on('$ionicView.leave', function (event, args) {
     $scope.editing = false;
@@ -53,7 +59,22 @@ angular.module('gi-pro.controllers.profile', [])
       }
     }
   }
+  $scope.selectServices = function () {
+    $scope.isOnProfile = false;
+  }
 
+  $scope.selectProfile = function () {
+    $scope.isOnProfile = true;
+  }
+
+  $scope.addNewService = function () {
+    //modal e scegli tipologia di servizio
+    $scope.availableServices = DataSrv.getServicesMap();
+    $scope.addServiceModal.show();
+  }
+  $scope.closeNewService = function () {
+    $scope.addServiceModal.hide();
+  }
   $scope.uploadImage = function () {
     if (navigator && navigator.camera) {
       var error = function (err) {
@@ -90,4 +111,8 @@ angular.module('gi-pro.controllers.profile', [])
       });
     }
   };
+
+
+
+  init();
 });

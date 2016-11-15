@@ -1,0 +1,11 @@
+<ion-modal-view>
+  <ion-content>
+    <div class="row"><i class="icon ion-close-round" ng-click="closeNewService()"></i></div>
+    <div class="row">{{'new_service_add' | translate}}</div>
+    <div class="list card">
+      <div class="item item-text-wrap" ng-repeat="service in availableServices">
+        {{service.name}}
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

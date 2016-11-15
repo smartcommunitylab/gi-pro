@@ -1,17 +1,10 @@
 <ion-view view-title="{{title}}" class="serviceandprofessionist" hide-back-button="true">
   <ion-nav-buttons side="left">
-    <!--
-    <button class="button back-button buttons button-clear header-item" ng-click="goBack()" ng-hide="!searchBarVisible">
-      <i class="icon ion-ios-arrow-back"> </i>
-    </button>
-         <ion-nav-buttons side="left">
--->
     <button class="button back-button buttons  header-item" ng-click="goBack()" ng-hide="!searchBarVisible">
       <i class="icon ion-ios-arrow-back"> </i>
     </button>
     <button ng-if="isIOS" class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-hide="searchBarVisible"></button>
     <button ng-if="!isIOS" style="display: block" class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-hide="searchBarVisible"></button>
-    <!--     </ion-nav-buttons>-->
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <div class="bar bar-header item-input-inset" ng-hide="!searchBarVisible">
@@ -30,10 +23,6 @@
   </ion-nav-buttons>
   <ion-tabs class="tabs-calm" ng-class="{'tabs-item-hide':!logged}">
     <ion-tab title="{{'service_tab' | translate}}" on-select="initServiceMap()" ng-if="logged">
-      <!--
-      <ion-tabs class="tabs-calm" ng-class="{'tabs-item-hide':!logged}">
-        <ion-tab title="{{'service_tab' | translate}}" ng-if="logged">
--->
       <ion-pane>
         <ion-content>
           <!--                    filter for services-->
@@ -53,15 +42,6 @@
             <div ng-click="selectFilter('service','zone',null)">{{'allZones_label'|translate}}</div>
             <div ng-repeat="zone in filters.allZones" ng-click="selectFilter('service','zone',zone)">{{zone.name}}</div>
           </div>
-          <!--                    <h4 class="padding" ng-if="!!activeServices && activeServices.length == 0">{{'requests_empty' | translate}}</h4>-->
-          <!--
-          <div class="card" ng-repeat="service in  filteredServices = (activeServices | filter :{service:filters.selectedService.name,zone:filters.selectedZone.name})" ng-if="!!activeServices && activeServices.length > 0" ng-click="openRequestDetails(service)">
-            <a class="item" href="#">
-              <div>{{service.service}}</div>
-            </a>
-
-          </div>
--->
           <div class="list-visualization" ng-if="listVisualization">
 
             <ion-list class="list">
