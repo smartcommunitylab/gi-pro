@@ -1,28 +1,29 @@
 angular.module('gi-pro', [
-	'ionic',
-	'ngCordova',
-	'ngSanitize',
-    'leaflet-directive',
-	'ionic-datepicker',
-	'ionic-timepicker',
-	'gi-pro.services.utils',
-	'gi-pro.services.login',
-	'gi-pro.services.config',
-	'gi-pro.services.push',
-	'gi-pro.services.notifications',
-	'pascalprecht.translate',
-	'gi-pro.services.data',
-	'gi-pro.services.geo',
-	'gi-pro.services.mapservice',
-	'gi-pro.services.data',
-	'gi-pro.controllers.main',
-	'gi-pro.controllers.login',
-	'gi-pro.controllers.reqandoffer',
-	'gi-pro.controllers.serviceandprof',
-    'gi-pro.controllers.details',
-	'gi-pro.controllers.search',
-	'gi-pro.controllers.new',
-	'gi-pro.directives'
+  'ionic',
+  'ngCordova',
+  'ngSanitize',
+  'leaflet-directive',
+  'ionic-datepicker',
+  'ionic-timepicker',
+  'gi-pro.services.utils',
+  'gi-pro.services.login',
+  'gi-pro.services.config',
+  'gi-pro.services.push',
+  'gi-pro.services.notifications',
+  'pascalprecht.translate',
+  'gi-pro.services.data',
+  'gi-pro.services.geo',
+  'gi-pro.services.mapservice',
+  'gi-pro.services.data',
+  'gi-pro.controllers.main',
+  'gi-pro.controllers.login',
+  'gi-pro.controllers.reqandoffer',
+  'gi-pro.controllers.serviceandprof',
+  'gi-pro.controllers.details',
+  'gi-pro.controllers.profile',
+  'gi-pro.controllers.search',
+  'gi-pro.controllers.new',
+  'gi-pro.directives'
 ])
 
 .run(function ($ionicPlatform, $rootScope, Login, PushSrv) {
@@ -32,7 +33,6 @@ angular.module('gi-pro', [
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
 
     if (window.StatusBar) {
@@ -45,7 +45,6 @@ angular.module('gi-pro', [
     PushSrv.fgOf();
   });
 })
-
 
 .config(function ($ionicConfigProvider, $httpProvider, $translateProvider) {
   $httpProvider.defaults.withCredentials = true;
@@ -116,36 +115,38 @@ angular.module('gi-pro', [
   })
 
   .state('app.serviceAndProf', {
-      url: '/serviceandproffessionist',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/serviceAndProf.html',
-          controller: 'ServiceAndProfCtrl'
-        }
+    url: '/serviceandproffessionist',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/serviceAndProf.html',
+        controller: 'ServiceAndProfCtrl'
       }
-    })
-    .state('app.reqAndOffer', {
-      url: '/reqandoffert',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/reqAndOffer.html',
-          controller: 'ReqAndOffCtrl'
-        }
+    }
+  })
+
+  .state('app.reqAndOffer', {
+    url: '/reqandoffert',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/reqAndOffer.html',
+        controller: 'ReqAndOffCtrl'
       }
-    })
-    .state('app.profdetails', {
-      url: '/prof/{objectId}',
-      params: {
-        'objectId': null,
-        'professionist': null
-      },
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/profDetail.html',
-          controller: 'ProfessionistDetailsCtrl'
-        }
+    }
+  })
+
+  .state('app.profdetails', {
+    url: '/prof/{objectId}',
+    params: {
+      'objectId': null,
+      'professionist': null
+    },
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfessionistDetailsCtrl'
       }
-    })
+    }
+  })
 
   .state('app.servicedetails', {
     url: '/prof/{objectId}',
@@ -274,23 +275,11 @@ angular.module('gi-pro', [
     url: '/profile',
     views: {
       'menuContent': {
-        templateUrl: 'templates/profDetail.html',
-        controller: 'ProfileCtrl'
-      }
-    }
-  })
-
-  /*
-  .state('app.profile', {
-    url: '/profile',
-    views: {
-      'menuContent': {
         templateUrl: 'templates/profile.html',
         controller: 'ProfileCtrl'
       }
     }
   })
-  */
 
   .state('app.credits', {
     url: '/credits',
@@ -321,7 +310,9 @@ angular.module('gi-pro', [
         controller: 'RegistrationFirstCtrl'
       }
     }
-  }).state('app.registration2', {
+  })
+
+  .state('app.registration2', {
     cache: false,
     url: '/registration2',
     params: {
