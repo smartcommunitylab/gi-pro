@@ -188,7 +188,9 @@ angular.module('gi-pro', [
       }
     }
   })
+  */
 
+  /*
   .state('app.offerdetails', {
     url: '/offer/{objectId}',
     params: {
