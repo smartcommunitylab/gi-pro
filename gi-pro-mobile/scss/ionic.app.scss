@@ -474,10 +474,10 @@ input[readonly] {
     .zone {
       margin-top: 10px;
     }
-    ul.contacts {
+    .contacts ul,
+    .competenze ul {
       padding-bottom: 10px;
       margin: 10px;
-      border-bottom: 1px solid #ddd;
       li {
         height: 3em;
         white-space: nowrap;
@@ -513,23 +513,29 @@ input[readonly] {
         //padding-top: 10px;
       }
     }
+    .contacts ul {
+      border-bottom: 1px solid #ddd;
+    }
+    /*
     .description {
       margin: 10px;
       .description_label {}
       .description_text {}
     }
+    */
     .competenze {
-      margin: 10px;
       .title {
         font-weight: bold;
+        margin: 10px;
       }
-      .lista-competenze {
-        list-style-type: disc;
-        li {
-          i {
-            font-size: 8px;
-          }
+      ul li {
+        height: 2em;
+        .icon {
+          font-size: 6px;
         }
+      }
+      ul.editing li {
+        height: 3em;
       }
     }
   }
