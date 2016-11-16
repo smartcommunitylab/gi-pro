@@ -144,5 +144,8 @@
   "oder_popup_title": "Ordina per",
   "orderby_alphabetically": "Alfabeto",
   "orderby_price": "Prezzo",
-  "new_service_add": "Aggiungi un servizio:"
+  "new_service_add": "Aggiungi un servizio:",
+  "service_note_placeholder": "Informazioni aggiuntive",
+  "service_zone_placeholder": "Seleziona la zona",
+  "service_address_placeholder": "Indirizzo"
 }

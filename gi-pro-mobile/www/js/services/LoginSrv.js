@@ -5,7 +5,7 @@ angular.module('gi-pro.services.login', [])
 
   var userVarName = Config.getUserVar();
   var userVarToken = Config.getUserVarToken();
-  $rootScope.logged = (localStorage.getItem(userVarToken) == null) ? true : false;
+  $rootScope.logged = (localStorage.getItem(userVarToken) == null) ? false : true;
 
   /* Login call */
   loginService.login = function (email, password) {

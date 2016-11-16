@@ -296,18 +296,23 @@ angular.module('gi-pro.services.data', [])
 
   dataService.getMyServicesOffer = function (userId) {
     var deferred = $q.defer();
-    deferred.resolve([]);
-    //    $http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + userId, Config.getHTTPConfig())
-    //
-    //    .then(
-    //      function (response) {
-    //        // offer created
-    //        deferred.resolve(response.data);
-    //      },
-    //      function (reason) {
-    //        deferred.reject(reason.data ? reason.data.errorMessage : reason);
-    //      }
-    //    );
+    var httpConfWithParams = Config.getHTTPConfig();
+    httpConfWithParams.params = {};
+
+    // professionalId is required
+    if (!userId || !angular.isString(userId)) {
+      deferred.reject('Invalid userId');
+    }
+    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + userId, httpConfWithParams)
+      .then(
+        function (response) {
+          // offer created
+          deferred.resolve(response.data);
+        },
+        function (reason) {
+          deferred.reject(reason.data ? reason.data.errorMessage : reason);
+        }
+      );
 
     return deferred.promise;
   }

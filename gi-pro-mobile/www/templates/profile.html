@@ -95,13 +95,47 @@
     <ion-tab title="{{'prof_services' | translate|uppercase}}" on-select="selectServices()">
       <ion-pane>
         <ion-content>
+          <!--
           <ion-list>
             <div ng-repeat="service in services">
               <ion-item class="item-stable" ng-click="toggleService(service)" ng-class="{active: isServiceShown(service)}">
                 <i class="icon" ng-class="isServiceShown(service) ? 'ion-minus' : 'ion-plus'"></i> &nbsp; {{service.name}}
               </ion-item>
               <ion-item class="item-accordion" ng-show="isServiceShown(service)">
-                {{service.name}}
+                {{service.note}}
+              </ion-item>
+            </div>
+          </ion-list>
+-->
+          <ion-list class="list-accordion">
+            <div class="item-accordion" ng-repeat="service in services">
+              <ion-item class="item-accordion-header item-icon-right" ng-click="toggleService(service)">
+                <div>{{service.serviceType}}</div>
+                <!--<i class="icon" ng-class="{'ion-arrow-down-b': !isActiveItem(entry), 'ion-arrow-up-b': isActiveItem(entry)}"></i>-->
+                <i class="icon ion-arrow-down-b" ng-class="{'open': isServiceShown(service)}"></i>
+              </ion-item>
+              <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
+                <i class="icon ion-ios-location"></i>
+                <div ng-if="!editMode"> {{service.address}}</div>
+                <!--                <input type="text" ng-if="editMode" ng-model="service.address" placeholder="Indirizzo" autofocus>-->
+                <placeautocomplete ng-if="refresh" ng-model="service.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false" data="placesfrom" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
+                <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-click="openMapPlan('from')"></a>
+              </ion-item>
+              <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
+                <i class="icon ion-android-locate"></i>
+                <div ng-if="!editMode"> {{service.area}}</div>
+                <input type="text" ng-if="editMode" ng-model="service.area" placeholder="{{'service_zone_placeholder' | translate}}" autofocus>
+
+              </ion-item>
+              <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
+                <i class="icon ion-ios-information"></i>
+                <div ng-if="!editMode"> {{service.note}}</div>
+                <input type="text" ng-if="editMode" ng-model="service.note" placeholder="{{'service_note_placeholder' | translate}}" autofocus>
+
+              </ion-item>
+              <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
+                <button ng-click="cancel()">Annulla</button>
+                <button ng-click="saveService(service)">Salva</button>
               </ion-item>
             </div>
           </ion-list>

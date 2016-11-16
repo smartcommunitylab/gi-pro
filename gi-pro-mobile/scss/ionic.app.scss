@@ -533,13 +533,43 @@ input[readonly] {
       }
     }
   }
+  .list-accordion {
+    .list {
+      .item-accordion {
+        .item-accordion-header {
+          white-space: normal;
+          i {
+            transition: all 0.2s linear;
+          }
+          i.open {
+            transform: rotate(-180deg);
+          }
+          i::before {
+            font-size: 0.5em;
+          }
+        }
+        .item-accordion-content {
+          white-space: normal;
+          border-top: 0;
+          transition: all 0.2s linear;
+          p {
+            white-space: normal;
+          }
+        }
+        item-accordion-content.ng-hide {
+          line-height: 0px;
+          opacity: 0;
+        }
+      }
+    }
+  }
 }
+
 
 
 /*
  * DETAILS
  */
-
 .details {
   a,
   a:hover,
@@ -547,6 +577,7 @@ input[readonly] {
   a:visited {
     color: $t_orange;
   }
+
   .datetime {
     padding: 10px 0;
     /*text-align: center;*/
@@ -556,6 +587,7 @@ input[readonly] {
       font-weight: bold;
     }
   }
+
   .professional {
     margin-bottom: 10px;
     padding-bottom: 20px;
@@ -602,6 +634,7 @@ input[readonly] {
       }
     }
   }
+
   .poi {
     padding-top: 10px;
     .type {
@@ -617,7 +650,6 @@ input[readonly] {
     }
   }
 }
-
 .card {
   ul {
     padding-top: 5px;
@@ -627,6 +659,7 @@ input[readonly] {
       padding-right: 5px;
     }
   }
+
   .phone,
   .email {
     white-space: nowrap;
@@ -638,11 +671,9 @@ input[readonly] {
   }
 }
 
-
 /*
  * NOTIFICATIONS
  */
-
 .notifications .notification.unread {
   h2,
   h3 {
@@ -650,22 +681,20 @@ input[readonly] {
   }
 }
 
-
 /*
  * SEARCH
  */
-
 .search {
   .row,
   .col {
     padding: 0;
   }
 }
-
 .searchresults {
   p {
     margin: 0;
   }
+
   .card {
     .item {
       ul {
@@ -684,11 +713,9 @@ input[readonly] {
   }
 }
 
-
 /*
  * FORMS
  */
-
 .form-request,
 .form-offer {
   .row,
@@ -697,11 +724,9 @@ input[readonly] {
   }
 }
 
-
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS
  */
-
 .modal-pois {
   .list-container {
     .input-label {
@@ -716,30 +741,30 @@ input[readonly] {
       }
     }
   }
+
   .list-container>.list {
     margin-top: 5px;
   }
 }
-
 .popup-types,
 .popup-regions {
   .popup-head {
     display: none;
   }
+
   .popup-body {
     padding: 0;
     overflow-x: hidden;
   }
+
   .item {
     white-space: normal;
   }
 }
 
-
 /*
  * LOGIN AND REGISTRATION
  */
-
 .login,
 .registration {
   text-align: center;
@@ -758,11 +783,9 @@ input[readonly] {
   */
 }
 
-
 /*
  * PROFILE
  */
-
 .profile {
   .profile-image-container {
     display: block;
@@ -787,6 +810,7 @@ input[readonly] {
       }
     }
   }
+
   .contact {
     overflow: hidden;
     white-space: nowrap;
@@ -799,6 +823,7 @@ input[readonly] {
     }
     span {}
   }
+
   .contacts {
     .row {
       padding: 0;
@@ -815,23 +840,25 @@ input[readonly] {
       height: inherit;
     }
   }
+
   .name {
     font-size: 20px;
     font-weight: 500;
     color: $dark;
     padding-bottom: 8px;
   }
+
   .title {
     font-size: 14px;
     color: $dark;
     font-style: italic;
   }
+
   .address {
     padding-top: 16px;
     color: $dark;
   }
 }
-
 .matches {
   padding-top: 20px;
   span {
@@ -840,15 +867,14 @@ input[readonly] {
   }
 }
 
-
 /*
  * CREDITS
  */
-
 .credits {
   .center {
     text-align: center;
   }
+
   .credits_title {
     text-align: center;
     color: $t_darkblue;
@@ -857,9 +883,11 @@ input[readonly] {
     margin-top: 20px;
     margin-bottom: 10px;
   }
+
   .bg-image {
     background-color: $t_lightblue;
   }
+
   .credits_subtitle {
     margin-top: 20px !important;
     text-align: center;
@@ -867,6 +895,7 @@ input[readonly] {
     font-size: 18px;
     font-weight: bold;
   }
+
   .credits_row {
     padding: 0;
     margin-bottom: 10px;
@@ -874,22 +903,27 @@ input[readonly] {
       text-align: center;
     }
   }
+
   .credits_row.last {
     margin-bottom: 20px;
   }
+
   .credits_row.version {
     color: $t_blue;
     text-transform: uppercase;
   }
+
   .credits_row.version .col {
     font-size: 12px;
     line-height: 12px;
   }
+
   .credits_mail {
     color: black;
     font-size: 14px;
     font-weight: normal;
   }
+
   .credits_version {
     text-align: center;
   }

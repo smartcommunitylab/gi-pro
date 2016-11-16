@@ -33,10 +33,10 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   };
 
   $scope.goBack = function () {
-      $scope.searchString = "";
-      $scope.searchBarVisible = false;
-      $scope.title = $filter('translate')('app');
-    }
+    $scope.searchString = "";
+    $scope.searchBarVisible = false;
+    $scope.title = $filter('translate')('app');
+  }
   var loadFilters = function () {
     //        load professions
     //        load services
@@ -71,7 +71,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       $scope.activeProfessionals[i]["zone"] = zoneMap[$scope.activeProfessionals[i].area].name;
     }
     //if logged add also service meta info
-    if (Login.userIsLogged()) {
+    if (Login.userIsLogged() && $scope.activeServices) {
       //if (true) {
       for (var i = 0; i < $scope.activeServices.length; i++) {
         $scope.activeServices[i]["service"] = servicesMap[$scope.activeServices[i].serviceType].name;
@@ -80,7 +80,6 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
 
   }
-
 
 
   $scope.openFilters = function (type) {
@@ -394,8 +393,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   };
 
   $scope.loadProfessionist = function () {
-      reload();
-    }
+    reload();
+  }
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,
