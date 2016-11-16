@@ -95,7 +95,16 @@
     <ion-tab title="{{'prof_services' | translate|uppercase}}" on-select="selectServices()">
       <ion-pane>
         <ion-content>
-          servizi del profilo
+          <ion-list>
+            <div ng-repeat="service in services">
+              <ion-item class="item-stable" ng-click="toggleService(service)" ng-class="{active: isServiceShown(service)}">
+                <i class="icon" ng-class="isServiceShown(service) ? 'ion-minus' : 'ion-plus'"></i> &nbsp; {{service.name}}
+              </ion-item>
+              <ion-item class="item-accordion" ng-show="isServiceShown(service)">
+                {{service.name}}
+              </ion-item>
+            </div>
+          </ion-list>
         </ion-content>
       </ion-pane>
     </ion-tab>

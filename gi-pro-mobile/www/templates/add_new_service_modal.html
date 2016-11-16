@@ -3,7 +3,7 @@
     <div class="row"><i class="icon ion-close-round" ng-click="closeNewService()"></i></div>
     <div class="row">{{'new_service_add' | translate}}</div>
     <div class="list card">
-      <div class="item item-text-wrap" ng-repeat="service in availableServices">
+      <div class="item item-text-wrap" ng-repeat="service in availableServices" ng-click="addService(service)">
         {{service.name}}
       </div>
     </div>

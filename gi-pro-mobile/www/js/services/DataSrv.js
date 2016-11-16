@@ -293,6 +293,24 @@ angular.module('gi-pro.services.data', [])
     return deferred.promise;
   }
 
+
+  dataService.getMyServicesOffer = function (userId) {
+    var deferred = $q.defer();
+    deferred.resolve([]);
+    //    $http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + userId, Config.getHTTPConfig())
+    //
+    //    .then(
+    //      function (response) {
+    //        // offer created
+    //        deferred.resolve(response.data);
+    //      },
+    //      function (reason) {
+    //        deferred.reject(reason.data ? reason.data.errorMessage : reason);
+    //      }
+    //    );
+
+    return deferred.promise;
+  }
   dataService.getZones = function () {
     var deferred = $q.defer();
     dataService.getZonesDefinition().then(function (zones) {
@@ -346,7 +364,7 @@ angular.module('gi-pro.services.data', [])
     }
 
 
-    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + professionalId, httpConfWithParams)
+    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/searchoffer/' + professionalId, httpConfWithParams)
 
     .then(
       function (response) {

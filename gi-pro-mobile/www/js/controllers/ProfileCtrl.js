@@ -26,6 +26,15 @@ angular.module('gi-pro.controllers.profile', [])
         $scope.zones = DataSrv.getZonesMap();
       });
     }
+    $scope.availableServices = DataSrv.getServicesMap();
+    if (!$scope.availableServices) {
+      DataSrv.getServicesDefinition().then(function () {
+        $scope.availableServices = DataSrv.getServicesMap();
+      });
+    }
+    DataSrv.getMyServicesOffer($scope.prof.objectId).then(function (services) {
+      $scope.services = services;
+    })
   }
   var validate = function () {
     /*
@@ -69,12 +78,26 @@ angular.module('gi-pro.controllers.profile', [])
 
   $scope.addNewService = function () {
     //modal e scegli tipologia di servizio
-    $scope.availableServices = DataSrv.getServicesMap();
     $scope.addServiceModal.show();
   }
   $scope.closeNewService = function () {
     $scope.addServiceModal.hide();
   }
+
+  $scope.addService = function (service) {
+    $scope.addServiceModal.hide();
+    //add an empty Service
+  }
+  $scope.toggleService = function (service) {
+    if ($scope.isServiceShown(service)) {
+      $scope.shownService = null;
+    } else {
+      $scope.shownService = service;
+    }
+  };
+  $scope.isServiceShown = function (service) {
+    return $scope.shownService === service;
+  };
   $scope.uploadImage = function () {
     if (navigator && navigator.camera) {
       var error = function (err) {
