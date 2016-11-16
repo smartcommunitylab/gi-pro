@@ -267,7 +267,7 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/service/offer/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceOfferUI> getServiceOffers(@PathVariable String applicationId,
 			@PathVariable String professionalId,
-			@RequestParam String serviceType,
+			@RequestParam(required=false) String serviceType,
 			@RequestParam(required=false) Long timeFrom,
 			@RequestParam(required=false) Long timeTo,
 			@RequestParam(required=false) Integer page, 

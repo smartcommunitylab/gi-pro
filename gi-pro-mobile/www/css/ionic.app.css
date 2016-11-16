@@ -10119,7 +10119,14 @@ input[readonly] {
  */
 .prof-details .professional {
   margin-bottom: 10px;
-  padding-bottom: 20px; }
+  padding-bottom: 20px;
+  /*
+    .description {
+      margin: 10px;
+      .description_label {}
+      .description_text {}
+    }
+    */ }
   .prof-details .professional .profile-image-container {
     display: block; }
     .prof-details .professional .profile-image-container .profile-image img {
@@ -10141,44 +10148,50 @@ input[readonly] {
     text-transform: uppercase; }
   .prof-details .professional .zone {
     margin-top: 10px; }
-  .prof-details .professional ul.contacts {
+  .prof-details .professional .contacts ul,
+  .prof-details .professional .competenze ul {
     padding-bottom: 10px;
-    margin: 10px;
-    border-bottom: 1px solid #ddd; }
-    .prof-details .professional ul.contacts li {
+    margin: 10px; }
+    .prof-details .professional .contacts ul li,
+    .prof-details .professional .competenze ul li {
       height: 3em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis; }
-      .prof-details .professional ul.contacts li .icon {
+      .prof-details .professional .contacts ul li .icon,
+      .prof-details .professional .competenze ul li .icon {
         display: inline-block;
         width: 20px;
         margin-right: 10px;
         font-size: 20px;
         text-align: center;
         vertical-align: middle; }
-      .prof-details .professional ul.contacts li input {
+      .prof-details .professional .contacts ul li input,
+      .prof-details .professional .competenze ul li input {
         display: inline-block;
         border-bottom: 1px solid black;
         width: 85%; }
-    .prof-details .professional ul.contacts .name {
+    .prof-details .professional .contacts ul .name,
+    .prof-details .professional .competenze ul .name {
       font-weight: bold;
       font-size: larger;
       white-space: normal; }
-    .prof-details .professional ul.contacts .type {
+    .prof-details .professional .contacts ul .type,
+    .prof-details .professional .competenze ul .type {
       padding-top: 5px;
       font-style: italic;
       white-space: normal; }
-  .prof-details .professional .description {
+  .prof-details .professional .contacts ul {
+    border-bottom: 1px solid #ddd; }
+  .prof-details .professional .competenze .title {
+    font-weight: bold;
     margin: 10px; }
-  .prof-details .professional .competenze {
-    margin: 10px; }
-    .prof-details .professional .competenze .title {
-      font-weight: bold; }
-    .prof-details .professional .competenze .lista-competenze {
-      list-style-type: disc; }
-      .prof-details .professional .competenze .lista-competenze li i {
-        font-size: 8px; }
+  .prof-details .professional .competenze ul li {
+    height: 2em; }
+    .prof-details .professional .competenze ul li .icon {
+      font-size: 6px; }
+  .prof-details .professional .competenze ul.editing li {
+    height: 3em; }
 
 .prof-details .list-accordion .list .item-accordion .item-accordion-header {
   white-space: normal; }

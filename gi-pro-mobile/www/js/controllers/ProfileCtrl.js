@@ -4,16 +4,16 @@ angular.module('gi-pro.controllers.profile', [])
 
   function init() {
     $scope.editing = false;
-    $scope.prof = angular.copy(Login.getUser())
+    $scope.prof = angular.copy(Login.getUser());
     $scope.isMyProfile = true;
     $scope.isOnProfile = false;
-    $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true)
+    $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true);
+
     $ionicModal.fromTemplateUrl('templates/add_new_service_modal.html', {
       scope: $scope
     }).then(function (modal) {
       $scope.addServiceModal = modal;
     });
-
 
     $ionicModal.fromTemplateUrl('templates/mapModal.html', {
       scope: $scope,
@@ -22,6 +22,7 @@ angular.module('gi-pro.controllers.profile', [])
     }).then(function (modal) {
       $scope.modalMap = modal;
     });
+
     $scope.professions = DataSrv.getProfessionsMap();
     if (!$scope.professions) {
       DataSrv.getProfessionsDefinition().then(function () {
@@ -35,15 +36,17 @@ angular.module('gi-pro.controllers.profile', [])
         $scope.zones = DataSrv.getZonesMap();
       });
     }
+
     $scope.availableServices = DataSrv.getServicesMap();
     if (!$scope.availableServices) {
       DataSrv.getServicesDefinition().then(function () {
         $scope.availableServices = DataSrv.getServicesMap();
       });
     }
+
     DataSrv.getMyServicesOffer($scope.prof.objectId).then(function (services) {
       $scope.services = services;
-    })
+    });
   }
 
   var selectPlace = function (placeSelected) {
@@ -175,6 +178,7 @@ angular.module('gi-pro.controllers.profile', [])
     }
     return placedata.promise;
   }
+
   var validate = function () {
     /*
     if (!$scope.profile.customProperties) {
@@ -182,9 +186,18 @@ angular.module('gi-pro.controllers.profile', [])
       return false;
     }
     */
+
+    // check for empty competenze
+    var newCompetenze = {};
+    for (var key in Object.keys($scope.prof.customProperties.competenze)) {
+      if ($scope.prof.customProperties.competenze[key]) {
+        newCompetenze[Object.keys(newCompetenze).length] = $scope.prof.customProperties.competenze[key];
+      }
+    }
+    $scope.prof.customProperties.competenze = newCompetenze;
+
     return true;
   }
-
 
   $scope.$on('$ionicView.leave', function (event, args) {
     $scope.editing = false;
@@ -195,6 +208,7 @@ angular.module('gi-pro.controllers.profile', [])
   $scope.toggleEditing = function () {
     if (!$scope.editing) {
       $scope.editing = true;
+      $scope.prof.customProperties.competenze[Object.keys($scope.prof.customProperties.competenze).length] = '';
     } else {
       // TODO validate data; remote save;
       if (validate()) {
@@ -202,14 +216,24 @@ angular.module('gi-pro.controllers.profile', [])
         DataSrv.updateProfile($scope.prof).then(function () {
           $scope.prof = angular.copy(Login.getUser());
           $scope.editing = false;
-          Utils.loaded();
-        }, Utils.commError);
+        }, Utils.commError).finally(function () {
+          Utils.loaded()
+        });
       }
     }
   }
   $scope.changeEditMode = function (value) {
     $scope.editMode = value;
   }
+
+  $scope.addAnotherCompetenza = function () {
+    $scope.prof.customProperties.competenze[Object.keys($scope.prof.customProperties.competenze).length] = '';
+  }
+
+  /*
+   * SERVICES
+   */
+
   $scope.selectServices = function () {
     $scope.isOnProfile = false;
   }
@@ -222,6 +246,7 @@ angular.module('gi-pro.controllers.profile', [])
     //modal e scegli tipologia di servizio
     $scope.addServiceModal.show();
   }
+
   $scope.closeNewService = function () {
     $scope.addServiceModal.hide();
   }
@@ -309,10 +334,12 @@ angular.module('gi-pro.controllers.profile', [])
     } else {
       $scope.shownService = service;
     }
-  };
+  }
+
   $scope.isServiceShown = function (service) {
     return $scope.shownService === service;
-  };
+  }
+
   $scope.uploadImage = function () {
     if (navigator && navigator.camera) {
       var error = function (err) {
@@ -349,8 +376,6 @@ angular.module('gi-pro.controllers.profile', [])
       });
     }
   };
-
-
 
   init();
   angular.extend($scope, {

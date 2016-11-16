@@ -29,36 +29,37 @@
                 </ul>
               </div>
             </div>
-            <ul class="contacts">
-              <li class="phone">
-                <i class="icon ion-android-call"></i>
-                <a href="tel:{{prof.phone}}" ng-if="!editing && prof.phone">{{prof.phone}}</a>
-                <span ng-if="!editing && !prof.phone">-</span>
-                <input type="tel" ng-if="editing" ng-model="prof.phone" placeholder="00112233" autofocus>
-              </li>
-              <li class="phone">
-                <i class="icon ion-android-phone-portrait"></i>
-                <a href="tel:{{prof.cellPhone}}" ng-if="!editing && prof.cellPhone">{{prof.cellPhone}}</a>
-                <span ng-if="!editing && !prof.cellPhone">-</span>
-                <input type="tel" ng-if="editing" ng-model="prof.cellPhone" placeholder="+3912345678" autofocus>
-              </li>
-              <li class="phone">
-                <i class="icon ion-printer"></i>
-                <a href="tel:{{prof.fax}}" ng-if="!editing && prof.fax">{{prof.fax}}</a>
-                <span ng-if="!editing && !prof.fax">-</span>
-                <input type="tel" ng-if="editing" ng-model="prof.fax" placeholder="00112233" autofocus>
-              </li>
-              <li class="email">
-                <i class="icon ion-email"></i>
-                <a ng-href="mailto:{{prof.mail}}" ng-if="!editing && prof.mail">{{prof.mail}}</a>
-                <span ng-if="!editing && !prof.mail">-</span>
-                <input type="email" ng-if="editing" ng-model="prof.mail" placeholder="test@test.it" autofocus>
-              </li>
-              <!--
+            <div class="contacts">
+              <ul>
+                <li class="phone">
+                  <i class="icon ion-android-call"></i>
+                  <a href="tel:{{prof.phone}}" ng-if="!editing && prof.phone">{{prof.phone}}</a>
+                  <span ng-if="!editing && !prof.phone">-</span>
+                  <input type="tel" ng-if="editing" ng-model="prof.phone" placeholder="00112233">
+                </li>
+                <li class="phone">
+                  <i class="icon ion-android-phone-portrait"></i>
+                  <a href="tel:{{prof.cellPhone}}" ng-if="!editing && prof.cellPhone">{{prof.cellPhone}}</a>
+                  <span ng-if="!editing && !prof.cellPhone">-</span>
+                  <input type="tel" ng-if="editing" ng-model="prof.cellPhone" placeholder="+3912345678">
+                </li>
+                <li class="phone">
+                  <i class="icon ion-printer"></i>
+                  <a href="tel:{{prof.fax}}" ng-if="!editing && prof.fax">{{prof.fax}}</a>
+                  <span ng-if="!editing && !prof.fax">-</span>
+                  <input type="tel" ng-if="editing" ng-model="prof.fax" placeholder="00112233">
+                </li>
+                <li class="email">
+                  <i class="icon ion-email"></i>
+                  <a ng-href="mailto:{{prof.mail}}" ng-if="!editing && prof.mail">{{prof.mail}}</a>
+                  <span ng-if="!editing && !prof.mail">-</span>
+                  <input type="email" ng-if="editing" ng-model="prof.mail" placeholder="test@test.it">
+                </li>
+                <!--
               <li class="phone"><i class="icon ion-android-call"></i>{{profile.description}}</li>
               <li class="phone"><i class="icon ion-android-call"></i>{{profile.competenze}}</li>
               -->
-              <!--
+                <!--
               <li class="phone">
                 <i class="icon ion-iphone"></i>
                 <span ng-if="!editing">{{profile.cellPhone}}</span>
@@ -67,7 +68,8 @@
               <li class="email"><i class="icon ion-email"></i>{{profile.mail}}</li>
               <li class="email"><i class="icon ion-email-unread"></i>{{profile.pec}}</li>
               -->
-            </ul>
+              </ul>
+            </div>
 
             <!--
             <div class="description">
@@ -78,12 +80,18 @@
 
             <div class="competenze">
               <div class="title">{{'prof_competenze_label' | translate}}</div>
-              <ul class="lista-competenze">
-                <li ng-if="!editing && !prof.customProperties.competenze">-</li>
-                <li ng-repeat="competenza in prof.customProperties.competenze track by $index">
-                  <i class="icon ion-ios-circle-filled"></i><span ng-if="!editing">{{competenza}}</span>
-                  <input ng-if="editing" type="text" ng-model="competenza" placeholder="inserisci la tua competenza" autofocus>
+              <ul ng-class="{'editing': editing}">
+                <li ng-if="prof.customProperties.competenze" ng-repeat="competenza in prof.customProperties.competenze track by $index">
+                  <i class="icon ion-record"></i>
+                  <span ng-if="!editing">{{competenza}}</span>
+                  <input ng-if="editing" type="text" ng-model="prof.customProperties.competenze[$index]" placeholder="inserisci la tua competenza">
+                  <!--prof.customProperties.competenze[$index]-->
                 </li>
+                <li ng-if="!prof.customProperties.competenze.hasOwnProperty('0')">
+                  <!-- Empty -->
+                  -
+                </li>
+                <button class="button button-dark button-clear button-icon icon ion-plus" ng-if="editing" ng-click="addAnotherCompetenza()"></button>
               </ul>
             </div>
           </div>
