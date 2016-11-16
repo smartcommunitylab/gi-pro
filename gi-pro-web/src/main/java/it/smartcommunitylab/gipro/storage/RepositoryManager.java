@@ -494,8 +494,10 @@ public class RepositoryManager {
 			String serviceType, Long timeFrom, Long timeTo, Boolean withTime, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("professionalId").is(professionalId)
-				.and("serviceType").is(serviceType)
 				.and("state").ne(Const.STATE_DELETED);
+		if (StringUtils.hasText(serviceType)) {
+			criteria.and("serviceType").is(serviceType);
+		}
 		Criteria timeCriteria = null;
 		if((timeFrom != null) && (timeTo != null)) {
 			timeCriteria = new Criteria().andOperator(
