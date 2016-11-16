@@ -9,11 +9,11 @@ angular.module('gi-pro.services.config', [])
   configService.MAP_POSITION = CONF.MAP_POSITION;
   configService.PAGE_PROFESSIONAL = 3;
   configService.PAGE_SERVICES = 3;
-
+  configService.DISTANCE_AUTOCOMPLETE = '25';
   configService.PROBLEMLINK = "mailto:tecnotoga@smartcommunitylab.it?subject=TECNOTOGA:%20segnalazione%20problema";
   configService.HELPLINK = "http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/";
   configService.PRIVACYLINK = "http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/";
-
+  configService.GEOCODER_URL = 'https://os.smartcommunitylab.it/core.geocoder/spring';
   var HTTP_CONFIG = {
     timeout: 50000,
     headers: {
@@ -68,8 +68,21 @@ angular.module('gi-pro.services.config', [])
   configService.loaded = function () {
     $ionicLoading.hide();
   }
+  configService.getGeocoderURL = function () {
+      return configService.GEOCODER_URL;
+    },
+    configService.getGeocoderConf = function () {
+      return {
+        timeout: 5000,
+        headers: {
+          appId: undefined
+        }
+      };
+    };
   configService.SERVICE_TYPE = 'sostituzione';
-
+  configService.getDistanceForAutocomplete = function () {
+    return configService.DISTANCE_AUTOCOMPLETE;
+  }
   $rootScope.problemLink = function () {
     return configService.PROBLEMLINK;
   };

@@ -70,8 +70,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       $scope.activeProfessionals[i]["profession"] = professionMap[$scope.activeProfessionals[i].type].name;
       $scope.activeProfessionals[i]["zone"] = zoneMap[$scope.activeProfessionals[i].area].name;
     }
-    // if logged add also service meta info
-    if (Login.userIsLogged()) {
+
+    //if logged add also service meta info
+    if (Login.userIsLogged() && $scope.activeServices) {
       //if (true) {
       for (var i = 0; i < $scope.activeServices.length; i++) {
         $scope.activeServices[i]["service"] = servicesMap[$scope.activeServices[i].serviceType].name;

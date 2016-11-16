@@ -10193,6 +10193,26 @@ input[readonly] {
   .prof-details .professional .competenze ul.editing li {
     height: 3em; }
 
+.prof-details .list-accordion .list .item-accordion .item-accordion-header {
+  white-space: normal; }
+  .prof-details .list-accordion .list .item-accordion .item-accordion-header i {
+    transition: all 0.2s linear; }
+  .prof-details .list-accordion .list .item-accordion .item-accordion-header i.open {
+    transform: rotate(-180deg); }
+  .prof-details .list-accordion .list .item-accordion .item-accordion-header i::before {
+    font-size: 0.5em; }
+
+.prof-details .list-accordion .list .item-accordion .item-accordion-content {
+  white-space: normal;
+  border-top: 0;
+  transition: all 0.2s linear; }
+  .prof-details .list-accordion .list .item-accordion .item-accordion-content p {
+    white-space: normal; }
+
+.prof-details .list-accordion .list .item-accordion item-accordion-content.ng-hide {
+  line-height: 0px;
+  opacity: 0; }
+
 /*
  * DETAILS
  */
