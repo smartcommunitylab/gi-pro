@@ -186,25 +186,27 @@ angular.module('gi-pro.controllers.details', [])
 })
 
 .controller('ServiceDetailsCtrl', function ($scope, $stateParams, DataSrv) {
-  $scope.title = "";
-  $scope.imageUrl = "";
+  $scope.title = '';
+  $scope.imageUrl = '';
+
   var setService = function (service) {
     $scope.service = service;
   };
 
+  /*
   if (!!$stateParams['service']) {
     setService($stateParams['service']);
     $scope.title = $scope.service.name;
     $scope.imageUrl = $scope.service.picture;
   }
+  */
 
   if (!!$stateParams['objectId']) {
-    DataSrv.getServiceByID($stateParams['objectId']).then(function (service) {
-      setService(service);
-      $scope.title = $scope.service.name;
-      $scope.imageUrl = $scope.service.imageUrl;
-    });
+    setService(DataSrv.getServicesMap()[$stateParams['objectId']]);
+    $scope.title = $scope.service.name;
+    $scope.imageUrl = $scope.service.imageUrl;
   }
+
   /*
   else {
     Utils.loading();

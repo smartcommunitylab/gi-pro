@@ -33,14 +33,15 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   };
 
   $scope.goBack = function () {
-    $scope.searchString = "";
+    $scope.searchString = '';
     $scope.searchBarVisible = false;
     $scope.title = $filter('translate')('app');
   }
+
   var loadFilters = function () {
-    //        load professions
-    //        load services
-    //        load zones
+    // load professions
+    // load services
+    // load zones
     var deferred = $q.defer();
     DataSrv.getProfessionsDefinition().then(function (professions) {
       $scope.filters.allProfessions = professions;
@@ -62,14 +63,14 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       deferred.reject();
     });
     return deferred.promise;
-
-
   }
+
   var addExtraDataToProf = function () {
     for (var i = 0; i < $scope.activeProfessionals.length; i++) {
       $scope.activeProfessionals[i]["profession"] = professionMap[$scope.activeProfessionals[i].type].name;
       $scope.activeProfessionals[i]["zone"] = zoneMap[$scope.activeProfessionals[i].area].name;
     }
+
     //if logged add also service meta info
     if (Login.userIsLogged() && $scope.activeServices) {
       //if (true) {
@@ -78,9 +79,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         $scope.activeServices[i]["zone"] = zoneMap[$scope.activeProfessionals[i].area].name;
       }
     }
-
   }
-
 
   $scope.openFilters = function (type) {
     $scope.selectingFilter = true;
@@ -99,6 +98,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     $scope.searchBarVisible = true;
     $scope.title = '';
   }
+
   $scope.openDetailsProf = function (professionist) {
     $state.go("app.profdetails", {
       'professionist': professionist
@@ -160,8 +160,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.initServiceMap = function () {
     $scope.professionistTab = false;
     $scope.searchBarVisible = false;
-    if ($ionicTabsDelegate.selectedIndex() == 1) { //1 is the second
 
+    if ($ionicTabsDelegate.selectedIndex() == 1) { //1 is the second
       mapService.initMap('serviceMap').then(function () {
         GeoLocate.locate().then(function (pos) {
           $scope.center = {
@@ -172,12 +172,12 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           $scope.servicesMarkers = mapService.getServicesPoints($scope.activeServices);
           mapService.refresh('serviceMap');
         }, function () {
-          //                $scope.filterMarkers(false);
+          //$scope.filterMarkers(false);
         });
-
       });
     }
   };
+
   $scope.initProfessionMap = function () {
     $scope.professionistTab = true;
 
@@ -191,74 +191,78 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           };
           $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.activeProfessionals);
           mapService.refresh('professionMap');
-
         }, function () {
-          //                $scope.filterMarkers(false);
+          //$scope.filterMarkers(false);
         });
       });
     }
   };
 
-  //currently commented because I can't order by alpha or price because they are fixed
+  /* Currently commented because I can't order by alpha or price because they are fixed */
+  /*var orderList = function (orderBy) {
+    $ionicLoading.show();
+    listPathsService.getPathsByCategoryIdAndOrder($stateParams, $scope.data.actualOrder, length).then(function (paths) {
+      $scope.emptylist = false;
+      $scope.paths = paths;
 
-  //  var orderList = function (orderBy) {
-  //    $ionicLoading.show();
-  //    listPathsService.getPathsByCategoryIdAndOrder($stateParams, $scope.data.actualOrder, length).then(function (paths) {
-  //      $scope.emptylist = false;
-  //      $scope.paths = paths;
-  //
-  //      if ($scope.paths.length == 0) {
-  //        $scope.emptylist = true;
-  //      } else {
-  //        $scope.emptylist = false;
-  //      }
-  //      $ionicLoading.hide();
-  //    }, function () {
-  //      $ionicLoading.hide();
-  //    });
-  //  }
-  //  $scope.orderServices = function () {
-  //    $scope.data = {
-  //      actualOrder: 'alpha'
-  //    }
-  //    $scope.orderList = [
-  //      {
-  //        text: $filter('translate')('orderby_alphabetically'),
-  //        value: "alpha"
-  //        },
-  //      {
-  //        text: $filter('translate')('orderby_price'),
-  //        value: "price"
-  //        }
-  //  ];
-  //    var orderPopup = $ionicPopup.confirm({
-  //      //      cssClass: 'order-popup',
-  //      title: $filter('translate')('oder_popup_title'),
-  //      templateUrl: 'templates/order-popover.html',
-  //      scope: $scope,
-  //      buttons: [{ // Array[Object] (optional). Buttons to place in the popup footer.
-  //        text: $filter('translate')('close'),
-  //
-  //                }, {
-  //        text: $filter('translate')('ok'),
-  //        onTap: function (e) {
-  //          return $scope.data.actualOrder;
-  //        }
-  //  }]
-  //    });
-  //    orderPopup.then(function (res) {
-  //      if (res) {
-  //        //orderList(res);
-  //        loadMoreServices
-  //      }
-  //    });
-  //
-  //  }
+      if ($scope.paths.length == 0) {
+        $scope.emptylist = true;
+      } else {
+        $scope.emptylist = false;
+      }
+      $ionicLoading.hide();
+    }, function () {
+      $ionicLoading.hide();
+    });
+  }
+
+  $scope.orderServices = function () {
+    $scope.data = {
+      actualOrder: 'alpha'
+    }
+
+    $scope.orderList = [
+      {
+        text: $filter('translate')('orderby_alphabetically'),
+        value: "alpha"
+      },
+      {
+        text: $filter('translate')('orderby_price'),
+        value: "price"
+      }
+    ];
+
+    var orderPopup = $ionicPopup.confirm({
+      //      cssClass: 'order-popup',
+      title: $filter('translate')('oder_popup_title'),
+      templateUrl: 'templates/order-popover.html',
+      scope: $scope,
+      buttons: [
+        { // Array[Object] (optional). Buttons to place in the popup footer.
+          text: $filter('translate')('close'),
+        },
+        {
+          text: $filter('translate')('ok'),
+          onTap: function (e) {
+            return $scope.data.actualOrder;
+          }
+        }
+      ]
+    });
+
+    orderPopup.then(function (res) {
+      if (res) {
+        //orderList(res);
+        loadMoreServices
+      }
+    });
+  }*/
 
   $scope.loadMoreServices = function () {
     var deferred = $q.defer();
-    var professionalID = Login.getUser().objectId
-    DataSrv.getServices(professionalID, ($scope.filters.selectedService == null) ? null : $scope.filters.selectedService.id, ($scope.filters.selectedZone == null) ? null : $scope.filters.selectedZone.id, (($scope.activeServices == null) ? 1 : Math.floor(($scope.activeServices.length / $scope.allServices)) + 1), $scope.allServices, "objectId").then(function (services) { /*type, area, page, limit, orderBy*/
+    var professionalID = Login.getUser().objectId;
+    DataSrv.getServices(professionalID, ($scope.filters.selectedService == null) ? null : $scope.filters.selectedService.id, ($scope.filters.selectedZone == null) ? null : $scope.filters.selectedZone.id, (($scope.activeServices == null) ? 1 : Math.floor(($scope.activeServices.length / $scope.allServices)) + 1), $scope.allServices, "objectId").then(function (services) {
+      /*type, area, page, limit, orderBy*/
       if (services) {
         $scope.activeServices = !!$scope.services ? $scope.services.concat(services) : services;
         if ($scope.activeServices.length == 0) {
@@ -276,14 +280,12 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         // $scope.emptylist = true;
         $scope.endServices_reached = true;
         Toast.show($filter('translate')("pop_up_error_server_template"), "short", "bottom");
-
       }
+
       Config.loaded();
       deferred.resolve();
       $scope.$broadcast('scroll.infiniteScrollComplete');
       $scope.$broadcast('scroll.refreshComplete');
-
-
     }, function (err) {
       Utils.commError;
       $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -293,10 +295,10 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     });
     return deferred.promise;
   }
+
   $scope.loadServices = function () {
     reload();
   }
-
 
   $scope.loadMoreProfessionist = function () {
     var deferred = $q.defer();
@@ -327,14 +329,12 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         // $scope.emptylist = true;
         $scope.endProfessionist_reached = true;
         Toast.show($filter('translate')("pop_up_error_server_template"), "short", "bottom");
-
       }
+
       Config.loaded();
       deferred.resolve();
       $scope.$broadcast('scroll.infiniteScrollComplete');
       $scope.$broadcast('scroll.refreshComplete');
-
-
     }, function (err) {
       Utils.commError;
       $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -343,8 +343,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       Config.loaded();
     });
     return deferred.promise;
-
   }
+
   var reload = function () {
     if (!Login.userIsLogged()) {
       //show tutorial
@@ -360,7 +360,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     //get Professionist
     $scope.loadMoreProfessionist().then(
       function () {
-        //                get zones
+        // get zones
         DataSrv.getZones().then(function (zones) {
             $scope.activeZones = zones;
             if (Login.userIsLogged()) {
@@ -386,15 +386,13 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       Utils.commError);
     //serve il loading delle chiamate asincrone
 
-
-
     //if Login.userIsLogged() load services
-
   };
 
   $scope.loadProfessionist = function () {
     reload();
   }
+
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,
@@ -405,4 +403,10 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     professionalMarkers: $scope.professionalMarkers,
     events: {}
   });
+
+  $scope.openServiceDetails = function (service) {
+    $scope.goTo('app.servicedetails', {
+      'objectId': service.objectId
+    });
+  };
 });

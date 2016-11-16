@@ -208,6 +208,9 @@ angular.module('gi-pro.controllers.profile', [])
   $scope.toggleEditing = function () {
     if (!$scope.editing) {
       $scope.editing = true;
+      if (!$scope.prof.customProperties.competenze) {
+        $scope.prof.customProperties.competenze = {};
+      }
       $scope.prof.customProperties.competenze[Object.keys($scope.prof.customProperties.competenze).length] = '';
     } else {
       // TODO validate data; remote save;
