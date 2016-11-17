@@ -10213,6 +10213,39 @@ input[readonly] {
   line-height: 0px;
   opacity: 0; }
 
+.placeautocomplete ul {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  z-index: 99; }
+
+.placeautocomplete ul li {
+  padding: 5px; }
+
+.placeautocomplete ul li .highlight {
+  font-weight: bold; }
+
+placeautocomplete {
+  position: relative; }
+
+.placeautocomplete-input {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.placeautocomplete-input:focus {
+  text-overflow: clip; }
+
+.placeautocomplete.notempty .placeautocomplete-input {
+  padding-left: 24px; }
+
+.placeautocomplete.notempty .placeautocomplete-input-clear {
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  color: #AAAAAA; }
+
 /*
  * DETAILS
  */

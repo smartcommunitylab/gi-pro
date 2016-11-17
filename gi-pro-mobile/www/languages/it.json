@@ -147,5 +147,8 @@
   "new_service_add": "Aggiungi un servizio:",
   "service_note_placeholder": "Informazioni aggiuntive",
   "service_zone_placeholder": "Seleziona la zona",
-  "service_address_placeholder": "Indirizzo"
+  "service_address_placeholder": "Indirizzo",
+  "popup_address": "Indirizzo",
+  "btn_close": "Chiudi",
+  "btn_conferma": "Conferma"
 }

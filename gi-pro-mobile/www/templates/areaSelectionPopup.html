@@ -1,0 +1,3 @@
+<div>
+  <ion-radio ng-repeat="(id, name) in zones track by $index" ng-value="id" ng-model="data.selectedZoneID" ng-change="selectZone(id)">{{name.name}}</ion-radio>
+</div>
