@@ -94,12 +94,6 @@ angular.module('gi-pro.services.login', [])
     INVALID_CREDENTIALS: 4
   };
 
-  loginService.logout = function () {
-    localStorage.clear();
-    $rootScope.user = null;
-    PushSrv.unreg();
-  }
-
   loginService.updateUser = function (skipRegistration) {
     var deferred = $q.defer();
     var httpConfWithParams = Config.getHTTPConfig();
@@ -131,9 +125,7 @@ angular.module('gi-pro.services.login', [])
   };
 
   loginService.logout = function () {
-    localStorage.setItem(userVarName, null);
-    localStorage.setItem(userVarToken, null);
-    localStorage.setItem(Config.getUserNotificationsDownloaded(), null);
+    localStorage.clear();
     $rootScope.user = null;
     $rootScope.logged = false;
     PushSrv.unreg();

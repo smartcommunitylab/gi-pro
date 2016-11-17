@@ -53,7 +53,7 @@ public class RegistrationController {
 	
 	@RequestMapping(value = "/login/{applicationId}", method = RequestMethod.POST)
 	public @ResponseBody Professional login(@PathVariable String applicationId,
-			@RequestParam String pec, 
+			@RequestParam String pec,
 			@RequestParam String password,
 			Model model, HttpServletRequest request, HttpServletResponse response) 
 					throws Exception {

@@ -9,7 +9,8 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.isMyProfile = true;
     $scope.isOnProfile = false;
     $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
-
+    $scope.places = [];
+    $scope.newService = {};
     $ionicModal.fromTemplateUrl('templates/add_new_service_modal.html', {
       scope: $scope
     }).then(function (modal) {
@@ -50,11 +51,37 @@ angular.module('gi-pro.controllers.profile', [])
     });
   }
 
-  var selectPlace = function (placeSelected) {
-    $scope.fromName = placeSelected;
-    $scope.addressParams.name = placeSelected;
-    $scope.addressParams.lat = planService.getPosition($scope.place).latitude;
-    $scope.addressParams.long = planService.getPosition($scope.place).longitude;
+  var selectPlace = function (placeSelected, lat, lng) {
+    $scope.newService.address = placeSelected.name;
+    $scope.newService.coordinates = [lat, lng];
+    //        $scope.newService = {
+    //      "applicationId": Config.APPLICATION_ID,
+    //      "address": "Via Malpaga 11",
+    //      "area": "idzone_1",
+    //      "coordinates": [
+    //          46.070761,
+    //          11.122831
+    //        ],
+    //      "note": "",
+    //      "serviceType": "idser_1"
+    //    }
+    //    $scope.newService = {
+    //      "address": placeSelected.name,
+    //      "coordinates": [
+    //              lat,
+    //              lng
+    //            ],
+    //    };
+    //    "address": "Via Malpaga 11",
+    //    "area": "idzone_1",
+    //    "coordinates": [
+    //          46.070761,
+    //          11.122831
+    //        ],
+    //    $scope.fromName = placeSelected;
+    //    $scope.addressParams.name = placeSelected;
+    //    $scope.addressParams.lat = planService.getPosition($scope.place).latitude;
+    //    $scope.addressParams.long = planService.getPosition($scope.place).longitude;
 
     console.log(placeSelected);
     /*close map*/
@@ -71,27 +98,33 @@ angular.module('gi-pro.controllers.profile', [])
         $http.get(encodeURI(url), Config.getGeocoderConf())
           .success(function (data, status, headers, config) {
             $ionicLoading.hide();
-            $scope.name = '';
+            $scope.nameNewAddress = '';
             if (data.response.docs[0]) {
               //planService.setName($scope.place, data.response.docs[0]);
-              //$scope.name = planService.getName($scope.place);
+
+              $scope.clickedPoint = data.response.docs[0];
+              $scope.nameNewAddress = $scope.clickedPoint.name;
               $ionicPopup.show({
                 templateUrl: 'templates/mapPopup.html',
                 cssClass: 'parking-popup',
                 scope: $scope,
-                buttons: [{
-                  text: $filter('translate')('btn_close'),
-                  type: 'button-close'
-                }, {
-                  text: $filter('translate')('btn_conferma'),
-                  onTap: function (e) {
-                    selectPlace($scope.name);
-                  }
-                }]
+                buttons: [
+                  {
+                    text: $filter('translate')('btn_close'),
+                    type: 'button-close'
+                                },
+                  {
+                    text: $filter('translate')('btn_conferma'),
+                    onTap: function (e) {
+                      selectPlace($scope.clickedPoint, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
+                    }
+                            }
+
+                        ]
               });
             } else {
-              /* confirmpopup */
-              $scope.name = $filter('translate')("popup_lat") + args.leafletEvent.latlng.lat.toString().substring(0, 7) + " " + $filter('translate')("popup_long") + args.leafletEvent.latlng.lng.toString().substring(0, 7);
+              /*confirmpopup*/
+              $scope.nameNewAddress = $filter('translate')("popup_lat") + args.leafletEvent.latlng.lat.toString().substring(0, 7) + " " + $filter('translate')("popup_long") + args.leafletEvent.latlng.lng.toString().substring(0, 7);
               $ionicPopup.show({
                 templateUrl: 'templates/mapPopup.html',
                 cssClass: 'parking-popup',
@@ -288,21 +321,28 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.addServiceModal.hide();
   }
 
+  $scope.selectZone = function (index) {
+    $scope.data.selectedZoneID = index;
+  }
+
   var addNewService = function (TypeOfService) {
     //applicationId, address, area, coordinates, note, serviceType
     //take element from viaggia
-    newService = {
+    $scope.newServiceName = TypeOfService.name;
+    $scope.data = {
+      selectedZoneID: $scope.zones[Object.keys($scope.zones)[0]].id
+    };
+    $scope.newService = {
       "applicationId": Config.APPLICATION_ID,
-      "address": "Via Malpaga 11",
+      "address": "",
       "area": "idzone_1",
       "coordinates": [
-        46.070761,
-        11.122831
-      ],
+
+        ],
       "note": "",
-      "serviceType": "idser_1"
+      "serviceType": TypeOfService.id
     }
-    $scope.services.push(newService);
+    $scope.services.push($scope.newService);
   }
 
   $scope.openMapPlan = function (place) {
@@ -320,6 +360,32 @@ angular.module('gi-pro.controllers.profile', [])
     }
   };
 
+  function selectArea(idZone) {
+    //set selected area of service
+    $scope.newService.area = idZone;
+  }
+  $scope.openAreaSelection = function () {
+
+    $ionicPopup.show({
+      templateUrl: 'templates/areaSelectionPopup.html',
+      cssClass: 'parking-popup',
+      scope: $scope,
+      buttons: [
+        {
+          text: $filter('translate')('btn_close'),
+          type: 'button-close'
+                                },
+        {
+          text: $filter('translate')('btn_conferma'),
+          onTap: function (e) {
+            selectArea($scope.data.selectedZoneID);
+          }
+    }
+
+                        ]
+    });
+  }
+
   var typePlace = function (typedthings) {
     if (($scope.placesandcoordinates && $scope.placesandcoordinates[typedthings] == null) || typedthings == '' || $scope.placesandcoordinates == null) {
       $scope.addressParams = {
@@ -332,15 +398,15 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.result = typedthings;
     $scope.getTypedPlaces(typedthings).then(function (data) {
       //merge with favorites and check no double values
-      $scope['places' + fromOrTo] = data;
-      if (data.length > 0) {
-        $scope['places' + fromOrTo] = addFavoritePlaces(typedthings, $scope['places' + fromOrTo]);
-        $scope.placesandcoordinates = planService.getnames();
-        $scope.placesandcoordinates = planService.addnames($scope.favoritePlaces);
-      } else {
-        $scope['places' + fromOrTo] = null;
-        $scope.placesandcoordinates = null;
-      }
+      $scope.places = data;
+      //if (data.length > 0) {
+      // $scope['places'] = addFavoritePlaces(typedthings, $scope['places']);
+      //$scope.placesandcoordinates = planService.getnames();
+      //$scope.placesandcoordinates = planService.addnames($scope.favoritePlaces);
+      // } else {
+      //$scope['places' + fromOrTo] = null;
+      //$scope.placesandcoordinates = null;
+      //}
     });
   }
 
@@ -378,6 +444,16 @@ angular.module('gi-pro.controllers.profile', [])
 
   $scope.isServiceShown = function (service) {
     return $scope.shownService === service;
+  }
+  $scope.getServiceNameByID = function (serviceID) {
+    if ($scope.availableServices[serviceID])
+      return $scope.availableServices[serviceID].name;
+    else return "";
+  }
+  $scope.getAreaNamebuID = function (areaID) {
+    if ($scope.zones[areaID])
+      return $scope.zones[areaID].name;
+    else return "";
   }
 
   $scope.uploadImage = function () {

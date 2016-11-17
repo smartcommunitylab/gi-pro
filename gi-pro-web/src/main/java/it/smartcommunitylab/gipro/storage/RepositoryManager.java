@@ -1030,7 +1030,7 @@ public class RepositoryManager {
 		return dbRegistration;
 	}
 
-	public void updatePassword(String pec, String password, 
+	public void updatePassword(String pec, String password,
 			String confirmationCode) throws Exception {
 		Date now = new Date();
 		Criteria criteria = new Criteria("pec").is(pec)
@@ -1056,7 +1056,7 @@ public class RepositoryManager {
 		}
 	}
 
-	public Professional loginByPEC(String applicationId, String pec, String password) 
+	public Professional loginByPEC(String applicationId, String pec, String password)
 			throws Exception {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("pec").is(pec);
