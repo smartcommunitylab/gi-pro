@@ -1,9 +1,10 @@
 angular.module('gi-pro.controllers.profile', [])
 
 .controller('ProfileCtrl', function ($scope, $rootScope, $ionicModal, $ionicLoading, $ionicPopup, $filter, $q, $http, Config, Login, Utils, DataSrv, mapService) {
+  const SEPARATOR = ';';
 
   function init() {
-    $scope.editing = false;
+    $scope.editing = true; // TODO: fixed to true for dev purpose only!
     $scope.profile = angular.copy(Login.getUser());
     $scope.isMyProfile = true;
     $scope.isOnProfile = false;
@@ -170,6 +171,44 @@ angular.module('gi-pro.controllers.profile', [])
     return placedata.promise;
   }
 
+  $scope.$on('$ionicView.leave', function (event, args) {
+    $scope.editing = false;
+    localStorage.setItem(Config.getUserVarProfileCheck(), 'true');
+    $scope.profile = angular.copy(Login.getUser());
+  });
+
+  $scope.edit = {
+    newItems: {
+      phone: '',
+      cellPhone: '',
+      mail: '',
+      fax: '',
+      competence: '',
+    },
+    phoneList: [],
+    cellPhoneList: [],
+    emailList: [],
+    faxList: []
+  }
+
+  $scope.$watch('profile', function (profile, oldProfile) {
+    if (profile.phone) {
+      $scope.edit.phoneList = profile.phone.split(SEPARATOR);
+    }
+
+    if (profile.cellPhone) {
+      $scope.edit.cellPhoneList = profile.cellPhone.split(SEPARATOR);
+    }
+
+    if (profile.mail) {
+      $scope.edit.mailList = profile.mail.split(SEPARATOR);
+    }
+
+    if (profile.fax) {
+      $scope.edit.faxList = profile.fax.split(SEPARATOR);
+    }
+  });
+
   var validate = function () {
     /*
     if (!$scope.profile.customProperties) {
@@ -177,32 +216,19 @@ angular.module('gi-pro.controllers.profile', [])
       return false;
     }
     */
-
-    // check for empty competences
-    var newCompetences = {};
-    for (var key in Object.keys($scope.profile.customProperties.competences)) {
-      if ($scope.profile.customProperties.competences[key]) {
-        newCompetences[Object.keys(newCompetences).length] = $scope.profile.customProperties.competences[key];
-      }
-    }
-    $scope.profile.customProperties.competences = newCompetences;
-
+    $scope.profile.phone = $scope.edit.phoneList.join(SEPARATOR);
+    $scope.profile.cellPhone = $scope.edit.cellPhoneList.join(SEPARATOR);
+    $scope.profile.mail = $scope.edit.mailList.join(SEPARATOR);
+    $scope.profile.fax = $scope.edit.faxList.join(SEPARATOR);
     return true;
   }
-
-  $scope.$on('$ionicView.leave', function (event, args) {
-    $scope.editing = false;
-    localStorage.setItem(Config.getUserVarProfileCheck(), 'true');
-    $scope.profile = angular.copy(Login.getUser());
-  });
 
   $scope.toggleEditing = function () {
     if (!$scope.editing) {
       $scope.editing = true;
       if (!$scope.profile.customProperties.competences) {
-        $scope.profile.customProperties.competences = {};
+        $scope.profile.customProperties.competences = [];
       }
-      $scope.profile.customProperties.competences[Object.keys($scope.profile.customProperties.competences).length] = '';
     } else {
       // TODO validate data; remote save;
       if (validate()) {
@@ -217,12 +243,28 @@ angular.module('gi-pro.controllers.profile', [])
     }
   }
 
-  $scope.changeEditMode = function (value) {
-    $scope.editMode = value;
+  $scope.addItem = function (list, item) {
+    // TODO: check for duplicates, add item to list, reset the input
+    //list.push(item);
+    //item = '';
   }
 
-  $scope.addAnotherCompetenza = function () {
-    $scope.profile.customProperties.competences[Object.keys($scope.profile.customProperties.competences).length] = '';
+  $scope.removeItem = function (list, index) {
+    list.splice(index, 1);
+  }
+
+  $scope.addCompetence = function () {
+    if ($scope.edit.newItems.competence) {
+      if (!$scope.profile.customProperties.competences) {
+        $scope.profile.customProperties.competences = [];
+      }
+      $scope.profile.customProperties.competences.push($scope.edit.newItems.competence);
+      $scope.edit.newItems.competence = '';
+    }
+  }
+
+  $scope.deleteCompetence = function (index) {
+    $scope.profile.customProperties.competences.splice(index, 1);
   }
 
   /*
