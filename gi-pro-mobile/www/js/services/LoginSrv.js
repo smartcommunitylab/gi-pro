@@ -8,18 +8,16 @@ angular.module('gi-pro.services.login', [])
   $rootScope.logged = (localStorage.getItem(userVarToken) == null) ? false : true;
 
   /* Login call */
-  loginService.login = function (email, password) {
+  loginService.login = function (pec, password) {
     var deferred = $q.defer();
 
     var httpConfWithParams = Config.getHTTPConfig();
     httpConfWithParams.params = {
-      email: email,
+      pec: pec,
       password: password
     };
 
-    $http.post(Config.SERVER_URL + '/login/' + Config.APPLICATION_ID, {}, httpConfWithParams)
-
-    .then(
+    $http.post(Config.SERVER_URL + '/login/' + Config.APPLICATION_ID, {}, httpConfWithParams).then(
       function (response) {
         var user = response.data;
         if (!user || !user.objectId) {
@@ -96,12 +94,6 @@ angular.module('gi-pro.services.login', [])
     INVALID_CREDENTIALS: 4
   };
 
-  loginService.logout = function () {
-    localStorage.clear();
-    $rootScope.user = null;
-    PushSrv.unreg();
-  }
-
   loginService.updateUser = function (skipRegistration) {
     var deferred = $q.defer();
     var httpConfWithParams = Config.getHTTPConfig();
@@ -133,9 +125,7 @@ angular.module('gi-pro.services.login', [])
   };
 
   loginService.logout = function () {
-    localStorage.setItem(userVarName, null);
-    localStorage.setItem(userVarToken, null);
-    localStorage.setItem(Config.getUserNotificationsDownloaded(), null);
+    localStorage.clear();
     $rootScope.user = null;
     $rootScope.logged = false;
     PushSrv.unreg();
@@ -157,15 +147,17 @@ angular.module('gi-pro.services.login', [])
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      //      transformRequest: function (obj) {
-      //        var str = [];
-      //        for (var p in obj) {
-      //          str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-      //        }
-      //        return str.join('&');
-      //      },
+      /*
+      transformRequest: function (obj) {
+        var str = [];
+        for (var p in obj) {
+          str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+        }
+        return str.join('&');
+      },
+      */
       data: {
-        "mail": profile.email,
+        "pec": profile.pec,
         "password": profile.password,
         "name": profile.name,
         "surname": profile.surname,
@@ -174,8 +166,7 @@ angular.module('gi-pro.services.login', [])
         "area": profile.area,
         "cf": profile.cf,
         "piva": profile.piva,
-
-        //        cellPhone: cell || "",
+        //cellPhone: cell || "",
         lang: Utils.getLang()
       }
     }).then(
