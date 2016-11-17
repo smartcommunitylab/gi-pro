@@ -10148,50 +10148,38 @@ input[readonly] {
     text-transform: uppercase; }
   .prof-details .professional .zone {
     margin-top: 10px; }
-  .prof-details .professional .contacts ul,
-  .prof-details .professional .competences ul {
-    padding-bottom: 10px;
-    margin: 10px; }
-    .prof-details .professional .contacts ul li,
-    .prof-details .professional .competences ul li {
-      height: 3em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis; }
-      .prof-details .professional .contacts ul li .icon,
-      .prof-details .professional .competences ul li .icon {
-        display: inline-block;
-        width: 20px;
-        margin-right: 10px;
-        font-size: 20px;
-        text-align: center;
-        vertical-align: middle; }
-      .prof-details .professional .contacts ul li input,
-      .prof-details .professional .competences ul li input {
-        display: inline-block;
-        border-bottom: 1px solid black;
-        width: 85%; }
-    .prof-details .professional .contacts ul .name,
-    .prof-details .professional .competences ul .name {
-      font-weight: bold;
-      font-size: larger;
-      white-space: normal; }
-    .prof-details .professional .contacts ul .type,
-    .prof-details .professional .competences ul .type {
-      padding-top: 5px;
-      font-style: italic;
-      white-space: normal; }
+  .prof-details .professional .contacts .item {
+    border: 0;
+    height: 3em; }
+    .prof-details .professional .contacts .item .icon {
+      font-size: 20px;
+      margin-right: 10px; }
+    .prof-details .professional .contacts .item input {
+      display: inline-block;
+      border-bottom: 1px solid black; }
   .prof-details .professional .contacts ul {
     border-bottom: 1px solid #ddd; }
   .prof-details .professional .competences .title {
     font-weight: bold;
     margin: 10px; }
-  .prof-details .professional .competences ul li {
-    height: 2em; }
-    .prof-details .professional .competences ul li .icon {
-      font-size: 6px; }
-  .prof-details .professional .competences ul.editing li {
-    height: 3em; }
+  .prof-details .professional .competences .item-input-inset {
+    border: 0;
+    padding-top: 0; }
+    .prof-details .professional .competences .item-input-inset input {
+      display: inline-block;
+      width: 100%;
+      border-bottom: 1px solid black; }
+  .prof-details .professional .competences .competences-tags {
+    padding: 0 5px; }
+    .prof-details .professional .competences .competences-tags .tag {
+      display: inline-block;
+      line-height: 28px;
+      background-color: skyblue;
+      padding: 0 7px;
+      margin: 5px;
+      border-radius: 5px; }
+    .prof-details .professional .competences .competences-tags .tag.editing {
+      padding-right: 0; }
 
 .prof-details .list-accordion .list .item-accordion .item-accordion-header {
   white-space: normal; }

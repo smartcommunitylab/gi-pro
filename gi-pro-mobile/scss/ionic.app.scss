@@ -474,43 +474,18 @@ input[readonly] {
     .zone {
       margin-top: 10px;
     }
-    .contacts ul,
-    .competences ul {
-      padding-bottom: 10px;
-      margin: 10px;
-      li {
+    .contacts {
+      .item {
+        border: 0;
         height: 3em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         .icon {
-          display: inline-block;
-          width: 20px;
-          margin-right: 10px;
           font-size: 20px;
-          text-align: center;
-          vertical-align: middle;
+          margin-right: 10px;
         }
         input {
           display: inline-block;
           border-bottom: 1px solid black;
-          width: 85%;
         }
-      }
-      .name {
-        font-weight: bold;
-        font-size: larger;
-        white-space: normal;
-      }
-      .type {
-        padding-top: 5px;
-        font-style: italic;
-        white-space: normal;
-      }
-      .address,
-      .phone,
-      .email {
-        //padding-top: 10px;
       }
     }
     .contacts ul {
@@ -528,14 +503,28 @@ input[readonly] {
         font-weight: bold;
         margin: 10px;
       }
-      ul li {
-        height: 2em;
-        .icon {
-          font-size: 6px;
+      .item-input-inset {
+        border: 0;
+        padding-top: 0;
+        input {
+          display: inline-block;
+          width: 100%;
+          border-bottom: 1px solid black;
         }
       }
-      ul.editing li {
-        height: 3em;
+      .competences-tags {
+        padding: 0 5px;
+        .tag {
+          display: inline-block;
+          line-height: 28px;
+          background-color: skyblue;
+          padding: 0 7px;
+          margin: 5px;
+          border-radius: 5px;
+        }
+        .tag.editing {
+          padding-right: 0;
+        }
       }
     }
   }
