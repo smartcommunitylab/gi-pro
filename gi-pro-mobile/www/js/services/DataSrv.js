@@ -12,20 +12,19 @@ angular.module('gi-pro.services.data', [])
   var servicesMap = null;
 
   var createMap = function (data) {
-      map = {};
-      //add new object with name id and data the rest of the data
-      for (var i = 0; i < data.length; i++) {
-        map[data[i].id] = data[i];
-      }
-      return map;
+    map = {};
+    //add new object with name id and data the rest of the data
+    for (var i = 0; i < data.length; i++) {
+      map[data[i].id] = data[i];
     }
-    /* POI types (local) */
+    return map;
+  }
+
+  /* POI types (local) */
   dataService.getPoiTypes = function () {
     var deferred = $q.defer();
 
-    $http.get('data/poifilters.json')
-
-    .then(
+    $http.get('data/poifilters.json').then(
       function (response) {
         deferred.resolve(response.data.types);
       },
@@ -41,9 +40,7 @@ angular.module('gi-pro.services.data', [])
   dataService.getPoiRegions = function () {
     var deferred = $q.defer();
 
-    $http.get('data/poifilters.json')
-
-    .then(
+    $http.get('data/poifilters.json').then(
       function (response) {
         deferred.resolve(response.data.regions);
       },
@@ -84,9 +81,7 @@ angular.module('gi-pro.services.data', [])
     if (allServices) {
       deferred.resolve(allServices);
     } else {
-      $http.get('data/poifilters.json')
-
-      .then(
+      $http.get('data/poifilters.json').then(
         function (response) {
           if (!servicesMap) {
             servicesMap = createMap(response.data.services);
@@ -101,6 +96,7 @@ angular.module('gi-pro.services.data', [])
     }
     return deferred.promise;
   };
+
   /* get Zones (local) */
   dataService.getZonesDefinition = function () {
     var deferred = $q.defer();
@@ -327,13 +323,16 @@ angular.module('gi-pro.services.data', [])
   dataService.getProfessionsMap = function () {
     return professionMap;
   }
+
   dataService.getServicesMap = function () {
     return servicesMap;
   }
+
   dataService.getZonesMap = function () {
-      return zoneMap;
-    }
-    /* get offers */
+    return zoneMap;
+  }
+
+  /* get offers */
   dataService.getOffers = function (professionalId, serviceType, timeFrom, timeTo, withTime, page, limit) {
     var deferred = $q.defer();
 

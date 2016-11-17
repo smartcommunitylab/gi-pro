@@ -48,7 +48,7 @@
             <form action="login" method="post">
                 <c:if test="${error != null}"><div class="error"><fmt:message bundle="${res}" key="${error}" /></div></c:if>
                 <div>&nbsp;</div>
-                <div class="col-md-12 form-group"><label> <fmt:message bundle="${res}" key="lbl_user" />: </label><input class="form-control" type="text" name="username"/></div>
+                <div class="col-md-12 form-group"><label> <fmt:message bundle="${res}" key="lbl_user" />: </label><input class="form-control" type="text" name="pec"/></div>
                 <div class="col-md-12 form-group"><label> <fmt:message bundle="${res}" key="lbl_pwd" />: </label><input class="form-control" type="password" name="password"/></div>
                 <div class="col-md-12 form-group"><button class="btn btn-primary"><fmt:message bundle="${res}" key="lbl_login" /></button></div>
                 <div class="col-md-12 form-group"><a class="" href="register"><fmt:message bundle="${res}" key="lbl_register" /></a></div>

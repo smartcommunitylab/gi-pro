@@ -151,6 +151,7 @@ angular.module('gi-pro', [
   .state('app.servicedetails', {
     url: '/prof/{objectId}',
     params: {
+      'service': null,
       'objectId': null,
       'professionist': null
     },

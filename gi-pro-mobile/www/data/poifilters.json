@@ -1,84 +1,76 @@
 {
-  "professions": [
-    {
-      "id": "idpro_1",
-      "name": "Architetto"
-		},
-    {
-      "id": "idpro_2",
-      "name": "Civilista"
-		},
-    {
-      "id": "idpro_3",
-      "name": "Penalista"
-		}],
+  "professions": [{
+    "id": "idpro_1",
+    "name": "Architetto"
+  }, {
+    "id": "idpro_2",
+    "name": "Civilista"
+  }, {
+    "id": "idpro_3",
+    "name": "Penalista"
+  }],
   "services": [
     {
-      "id": "sostituzioneudienza",
-      "name": "Sostituzione udienza",
+    "id": "idser_1",
+    "name": "Servizio 1",
+    "cost": 10
+  },{
+    "id": "sostituzioneudienza",
+    "name": "Sostituzione udienza",
+    "cost": 10
+  }, {
+    "id": "fax",
+    "name": "Fax",
+    "value": 5
+  }, {
+    "id": "stampante",
+    "name": "Stampante",
+    "subtypes": [{
+      "subtype": "10pages",
+      "name": "< 10 pagine",
+      "cost": 5
+    }, {
+      "subtype": "60pages",
+      "name": "< 50 pagine",
       "cost": 10
-    },{
-      "id": "fax",
-      "name": "Fax",
-      "value": 5
-        },
-    {
-      "id": "stampante",
-      "name": "Stampante",
-      "subtypes": [{
-        "subtype": "10pages",
-        "name": "< 10 pagine",
-        "cost": 5
-      }, {
-        "subtype": "60pages",
-        "name": "< 50 pagine",
-        "cost": 10
-      }]
-        },
-    {
-      "id": "postazione",
-      "name": "Postazione di lavoro",
-      "subtypes": [{
-        "subtype": "halfday",
-        "name": "1/2 giornata",
-        "cost": 15
-      }, {
-        "subtype": "day",
-        "name": "Giornata intera",
-        "cost": 30
-      }]
-        },
-    {
-      "id": "sala",
-      "name": "Sala riunioni",
-      "subtypes": [{
-        "subtype": "1hour",
-        "name": "1 ora",
-        "cost": 10
-      }, {
-        "subtype": "halfday",
-        "name": "1/2 giornata",
-        "cost": 40
-      }]
-        },
-    {
-      "id": "conversazione",
-      "name": "Conversazione in lingua straniera",
+    }]
+  }, {
+    "id": "postazione",
+    "name": "Postazione di lavoro",
+    "subtypes": [{
+      "subtype": "halfday",
+      "name": "1/2 giornata",
       "cost": 15
-        }
-    ],
-  "zones": [
-    {
-      "id": "idzone_1",
-      "name": "Trento"
-        },
-    {
-      "id": "idzone_2",
-      "name": "Mezzolombardo"
-        },
-    {
-      "id": "idzone_3",
-      "name": "Rovereto"
-        }
-    ]
+    }, {
+      "subtype": "day",
+      "name": "Giornata intera",
+      "cost": 30
+    }]
+  }, {
+    "id": "sala",
+    "name": "Sala riunioni",
+    "subtypes": [{
+      "subtype": "1hour",
+      "name": "1 ora",
+      "cost": 10
+    }, {
+      "subtype": "halfday",
+      "name": "1/2 giornata",
+      "cost": 40
+    }]
+  }, {
+    "id": "conversazione",
+    "name": "Conversazione in lingua straniera",
+    "cost": 15
+  }],
+  "zones": [{
+    "id": "idzone_1",
+    "name": "Trento"
+  }, {
+    "id": "idzone_2",
+    "name": "Mezzolombardo"
+  }, {
+    "id": "idzone_3",
+    "name": "Rovereto"
+  }]
 }

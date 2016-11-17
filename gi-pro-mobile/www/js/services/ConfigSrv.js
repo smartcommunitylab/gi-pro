@@ -7,8 +7,8 @@ angular.module('gi-pro.services.config', [])
   configService.APPLICATION_ID = CONF.APPLICATION_ID;
   configService.SENDER_ID = CONF.SENDER_ID;
   configService.MAP_POSITION = CONF.MAP_POSITION;
-  configService.PAGE_PROFESSIONAL = 3;
-  configService.PAGE_SERVICES = 3;
+  configService.PAGE_PROFESSIONAL = 10;
+  configService.PAGE_SERVICES = 10;
   configService.DISTANCE_AUTOCOMPLETE = '25';
   configService.PROBLEMLINK = "mailto:tecnotoga@smartcommunitylab.it?subject=TECNOTOGA:%20segnalazione%20problema";
   configService.HELPLINK = "http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/";
