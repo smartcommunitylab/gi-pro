@@ -103,7 +103,7 @@ public class MailSender {
 		vars.put("user", reg);
 		vars.put("url", applicationURL + "/confirm?confirmationCode=" + reg.getConfirmationKey());
 		String subject = messageProps.getProperty("confirmation.subject");
-		sendEmail(reg.getMail(), "confirmation_" + lang, subject, vars);
+		sendEmail(reg.getPec(), "confirmation_" + lang, subject, vars);
 	}
 
 	public void sendResetMail(Registration reg) throws RegistrationException {
@@ -112,7 +112,7 @@ public class MailSender {
 		vars.put("user", reg);
 		vars.put("url", applicationURL + "/changepwd?cf=" + reg.getCf() + "&confirmationCode=" + reg.getConfirmationKey());
 		String subject = messageProps.getProperty("reset.subject");
-		sendEmail(reg.getMail(), "reset_" + lang, subject, vars);
+		sendEmail(reg.getPec(), "reset_" + lang, subject, vars);
 	}
 	
 	public void sendEmail(String email, String template, String subject, Map<String, Object> vars)

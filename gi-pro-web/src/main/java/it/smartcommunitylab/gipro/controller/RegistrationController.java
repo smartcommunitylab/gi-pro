@@ -53,17 +53,17 @@ public class RegistrationController {
 	
 	@RequestMapping(value = "/login/{applicationId}", method = RequestMethod.POST)
 	public @ResponseBody Professional login(@PathVariable String applicationId,
-			@RequestParam String email, 
+			@RequestParam String pec, 
 			@RequestParam String password,
 			Model model, HttpServletRequest request, HttpServletResponse response) 
 					throws Exception {
 		try {
-			if (email != null) {
-				email = email.toLowerCase();
+			if (pec != null) {
+				pec = pec.toLowerCase();
 			}
-			Professional profile = storageManager.loginByEmail(applicationId, email, password);
+			Professional profile = storageManager.loginByPEC(applicationId, pec, password);
 			if(profile == null) {
-				logger.error(String.format("login - local profile not found: %s", email));
+				logger.error(String.format("login - local profile not found: %s", pec));
 				throw new UnauthorizedException("local profile not found or invalid credentials");
 			}
 			String token = jwtUtils.generateToken(profile);
@@ -71,7 +71,7 @@ public class RegistrationController {
 //			permissionsManager.authenticateByCF(request, response, profile);
 			return profile;
 		} catch (Exception e) {
-			logger.error(String.format("login error [%s]:%s", email, e.getMessage()));
+			logger.error(String.format("login error [%s]:%s", pec, e.getMessage()));
 			throw e;//new UnauthorizedException("profile not found, generic exception");
 		}
 	}
@@ -88,7 +88,7 @@ public class RegistrationController {
 			HttpServletResponse res) throws Exception 
 	{
 		registration.setApplicationId(applicationId);
-		if (registration.getMail() != null) registration.setMail(registration.getMail().toLowerCase());
+		if (registration.getPec() != null) registration.setPec(registration.getPec().toLowerCase());
 		Registration result = storageManager.registerUser(registration);
 		mailSender.sendConfirmationMail(result);
 	}
@@ -98,7 +98,7 @@ public class RegistrationController {
 		try {
 			Registration confirmUser = storageManager.confirmUser(confirmationCode);
 			Professional professional = Converter.convertRegistrationToProfessional(confirmUser);
-			storageManager.saveProfessionalbyEmail(professional);
+			storageManager.saveProfessionalbyPEC(professional);
 			return new ModelAndView("registration/confirmsuccess");
 		} catch (Exception e) {
 			logger.error("confirm:" + e.getMessage());
@@ -113,10 +113,10 @@ public class RegistrationController {
 	}
 	
 	@RequestMapping(value = "/resend", method = RequestMethod.POST)
-	public ModelAndView resendConfirm(Model model, @RequestParam String email) {
+	public ModelAndView resendConfirm(Model model, @RequestParam String pec) {
 		try {
-			if (email != null) email = email.toLowerCase();
-			Registration result = storageManager.resendConfirm(email);
+			if (pec != null) pec = pec.toLowerCase();
+			Registration result = storageManager.resendConfirm(pec);
 			mailSender.sendConfirmationMail(result);
 			return new ModelAndView("registration/regsuccess");
 		} catch (Exception e) {
@@ -132,12 +132,12 @@ public class RegistrationController {
 	}
 	
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
-	public ModelAndView reset(Model model, @RequestParam String email,
+	public ModelAndView reset(Model model, @RequestParam String pec,
 			HttpServletRequest req) {
 		try {
-			if (email != null) email = email.toLowerCase();
-			Registration result = storageManager.resetPassword(email);
-			req.getSession().setAttribute("changePwd", result.getMail());
+			if (pec != null) pec = pec.toLowerCase();
+			Registration result = storageManager.resetPassword(pec);
+			req.getSession().setAttribute("changePwd", result.getPec());
 			req.getSession().setAttribute("confirmationCode", result.getConfirmationKey());
 			mailSender.sendResetMail(result);
 		} catch (Exception e) {
@@ -151,20 +151,20 @@ public class RegistrationController {
 	
 	@RequestMapping(value = "/changepwd", method = RequestMethod.GET)
 	public String changePasswordPage(@RequestParam String confirmationCode,
-			@RequestParam String cf, HttpServletRequest req) {
-		req.getSession().setAttribute("changePwd", cf);
+			@RequestParam String pec, HttpServletRequest req) {
+		req.getSession().setAttribute("changePwd", pec);
 		req.getSession().setAttribute("confirmationCode", confirmationCode);
 		return "registration/changepwd";
 	}
 	
 	@RequestMapping(value = "/changepwd", method = RequestMethod.POST)
 	public ModelAndView changePassword(Model model,	
-			@RequestParam String cf,
+			@RequestParam String pec,
 			@RequestParam String confirmationCode,
 			@RequestParam String password,
 			HttpServletRequest req) {
 		try {
-			storageManager.updatePassword(cf, password, confirmationCode);
+			storageManager.updatePassword(pec, password, confirmationCode);
 		} catch (Exception e) {
 			logger.error("changepwd:" + e.getMessage());
 			model.addAttribute("error", e.getClass().getSimpleName());

@@ -595,7 +595,7 @@ public class EntityController {
 					new File(imageUploadDir + "/" + name)));
 			FileCopyUtils.copy(file.getInputStream(), stream);
 			stream.close();
-			storageManager.updateProfessionalImageByEmail(applicationId, profile.getMail(), "/"+imageType+ "/" + objectId);
+			storageManager.updateProfessionalImageByPEC(applicationId, profile.getPec(), "/"+imageType+ "/" + objectId);
 		}
 		return "{\"status\":\"OK\"}";
 	}
