@@ -406,6 +406,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
   $scope.openServiceDetails = function (service) {
     $scope.goTo('app.servicedetails', {
+      'service': service,
       'objectId': service.objectId
     });
   };

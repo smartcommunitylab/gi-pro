@@ -4,10 +4,10 @@ angular.module('gi-pro.controllers.profile', [])
 
   function init() {
     $scope.editing = false;
-    $scope.prof = angular.copy(Login.getUser());
+    $scope.profile = angular.copy(Login.getUser());
     $scope.isMyProfile = true;
     $scope.isOnProfile = false;
-    $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true);
+    $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
 
     $ionicModal.fromTemplateUrl('templates/add_new_service_modal.html', {
       scope: $scope
@@ -44,7 +44,7 @@ angular.module('gi-pro.controllers.profile', [])
       });
     }
 
-    DataSrv.getMyServicesOffer($scope.prof.objectId).then(function (services) {
+    DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
       $scope.services = services;
     });
   }
@@ -62,7 +62,6 @@ angular.module('gi-pro.controllers.profile', [])
 
   $scope.initMap = function () {
     mapService.initMap('mapModal').then(function () {
-
       $scope.$on("leafletDirectiveMap.mapModal.click", function (event, args) {
         $ionicLoading.show();
         //planService.setPosition($scope.place, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
@@ -79,47 +78,39 @@ angular.module('gi-pro.controllers.profile', [])
                 templateUrl: 'templates/mapPopup.html',
                 cssClass: 'parking-popup',
                 scope: $scope,
-                buttons: [
-                  {
-                    text: $filter('translate')('btn_close'),
-                    type: 'button-close'
-                                },
-                  {
-                    text: $filter('translate')('btn_conferma'),
-                    onTap: function (e) {
-                      selectPlace($scope.name);
-                    }
-                            }
-
-                        ]
+                buttons: [{
+                  text: $filter('translate')('btn_close'),
+                  type: 'button-close'
+                }, {
+                  text: $filter('translate')('btn_conferma'),
+                  onTap: function (e) {
+                    selectPlace($scope.name);
+                  }
+                }]
               });
             } else {
-              /*confirmpopup*/
+              /* confirmpopup */
               $scope.name = $filter('translate')("popup_lat") + args.leafletEvent.latlng.lat.toString().substring(0, 7) + " " + $filter('translate')("popup_long") + args.leafletEvent.latlng.lng.toString().substring(0, 7);
               $ionicPopup.show({
                 templateUrl: 'templates/mapPopup.html',
                 cssClass: 'parking-popup',
                 scope: $scope,
-                buttons: [
-                  {
-                    text: $filter('translate')('btn_close'),
-                    type: 'button-close'
-                                                },
-                  {
-                    text: '<i class="icon ion-navigate"></i>',
-                    onTap: function (e) {
-                      selectPlace(args.leafletEvent.latlng);
-                    }
-                                    }
-                                            ]
+                buttons: [{
+                  text: $filter('translate')('btn_close'),
+                  type: 'button-close'
+                }, {
+                  text: '<i class="icon ion-navigate"></i>',
+                  onTap: function (e) {
+                    selectPlace(args.leafletEvent.latlng);
+                  }
+                }]
               });
             }
           })
-
-        .error(function (data, status, headers, config) {
-          $ionicLoading.hide();
-          $scope.showNoConnection();
-        });
+          .error(function (data, status, headers, config) {
+            $ionicLoading.hide();
+            $scope.showNoConnection();
+          });
       });
     });
   };
@@ -173,7 +164,7 @@ angular.module('gi-pro.controllers.profile', [])
         placedata.resolve(names);
       }).
       error(function (data, status, headers, config) {
-        //            $scope.error = true;
+        //$scope.error = true;
       });
     }
     return placedata.promise;
@@ -187,14 +178,14 @@ angular.module('gi-pro.controllers.profile', [])
     }
     */
 
-    // check for empty competenze
-    var newCompetenze = {};
-    for (var key in Object.keys($scope.prof.customProperties.competenze)) {
-      if ($scope.prof.customProperties.competenze[key]) {
-        newCompetenze[Object.keys(newCompetenze).length] = $scope.prof.customProperties.competenze[key];
+    // check for empty competences
+    var newCompetences = {};
+    for (var key in Object.keys($scope.profile.customProperties.competences)) {
+      if ($scope.profile.customProperties.competences[key]) {
+        newCompetences[Object.keys(newCompetences).length] = $scope.profile.customProperties.competences[key];
       }
     }
-    $scope.prof.customProperties.competenze = newCompetenze;
+    $scope.profile.customProperties.competences = newCompetences;
 
     return true;
   }
@@ -202,22 +193,22 @@ angular.module('gi-pro.controllers.profile', [])
   $scope.$on('$ionicView.leave', function (event, args) {
     $scope.editing = false;
     localStorage.setItem(Config.getUserVarProfileCheck(), 'true');
-    $scope.prof = angular.copy(Login.getUser());
+    $scope.profile = angular.copy(Login.getUser());
   });
 
   $scope.toggleEditing = function () {
     if (!$scope.editing) {
       $scope.editing = true;
-      if (!$scope.prof.customProperties.competenze) {
-        $scope.prof.customProperties.competenze = {};
+      if (!$scope.profile.customProperties.competences) {
+        $scope.profile.customProperties.competences = {};
       }
-      $scope.prof.customProperties.competenze[Object.keys($scope.prof.customProperties.competenze).length] = '';
+      $scope.profile.customProperties.competences[Object.keys($scope.profile.customProperties.competences).length] = '';
     } else {
       // TODO validate data; remote save;
       if (validate()) {
         Utils.loading();
-        DataSrv.updateProfile($scope.prof).then(function () {
-          $scope.prof = angular.copy(Login.getUser());
+        DataSrv.updateProfile($scope.profile).then(function () {
+          $scope.profile = angular.copy(Login.getUser());
           $scope.editing = false;
         }, Utils.commError).finally(function () {
           Utils.loaded()
@@ -225,12 +216,13 @@ angular.module('gi-pro.controllers.profile', [])
       }
     }
   }
+
   $scope.changeEditMode = function (value) {
     $scope.editMode = value;
   }
 
   $scope.addAnotherCompetenza = function () {
-    $scope.prof.customProperties.competenze[Object.keys($scope.prof.customProperties.competenze).length] = '';
+    $scope.profile.customProperties.competences[Object.keys($scope.profile.customProperties.competences).length] = '';
   }
 
   /*
@@ -262,14 +254,15 @@ angular.module('gi-pro.controllers.profile', [])
       "address": "Via Malpaga 11",
       "area": "idzone_1",
       "coordinates": [
-          46.070761,
-          11.122831
-        ],
+        46.070761,
+        11.122831
+      ],
       "note": "",
       "serviceType": "idser_1"
     }
     $scope.services.push(newService);
   }
+
   $scope.openMapPlan = function (place) {
     $scope.place = place;
     $scope.refresh = false;
@@ -277,13 +270,13 @@ angular.module('gi-pro.controllers.profile', [])
       $scope.modalMap.show();
     }
   };
+
   $scope.closeMap = function () {
     $scope.refresh = true;
     if ($scope.modalMap) {
       $scope.modalMap.hide();
     }
   };
-
 
   var typePlace = function (typedthings) {
     if (($scope.placesandcoordinates && $scope.placesandcoordinates[typedthings] == null) || typedthings == '' || $scope.placesandcoordinates == null) {
@@ -311,11 +304,13 @@ angular.module('gi-pro.controllers.profile', [])
 
   $scope.typePlace = function (typedthings) {
     typePlace(typedthings);
-  };
+  }
+
   $scope.cancel = function () {
     //delete service from the queue
     $scope.services.pop();
   }
+
   $scope.saveService = function (serviceToSave) {
     //send service and update array
     DataSrv.createOffer(serviceToSave).then(function (result) {
@@ -323,12 +318,12 @@ angular.module('gi-pro.controllers.profile', [])
       $scope.changeEditMode(false);
     })
   }
+
   $scope.addService = function (typeOfService) {
     $scope.addServiceModal.hide();
     //add an empty Service
     addNewService(typeOfService);
     $scope.changeEditMode(true);
-
   }
 
   $scope.toggleService = function (service) {
@@ -353,8 +348,8 @@ angular.module('gi-pro.controllers.profile', [])
         var win = function (r) {
           Login.updateUser(true).then(function (user) {
             Utils.loaded();
-            $scope.prof.imageUrl = user.imageUrl;
-            $scope.imageUrl = $rootScope.generateImageUrl($scope.prof.imageUrl, true);
+            $scope.profile.imageUrl = user.imageUrl;
+            $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
             //            $scope.$apply();
           }, Utils.commError);
         }
@@ -368,7 +363,7 @@ angular.module('gi-pro.controllers.profile', [])
         };
         Utils.loading();
         var ft = new FileTransfer();
-        ft.upload(fileURL, encodeURI(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/image/upload/png/' + $scope.prof.objectId), win, Utils.commError, options);
+        ft.upload(fileURL, encodeURI(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/image/upload/png/' + $scope.profile.objectId), win, Utils.commError, options);
       }, error, {
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
         destinationType: Camera.DestinationType.FILE_URI,
@@ -381,6 +376,7 @@ angular.module('gi-pro.controllers.profile', [])
   };
 
   init();
+
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,

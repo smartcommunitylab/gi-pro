@@ -87,7 +87,6 @@ angular.module('gi-pro.controllers.details', [])
 
   var setOffer = function (off) {
     $scope.offer = off;
-
     if ($scope.isMine()) {
       DataSrv.getMatchingRequests(Login.getUser().objectId, off.objectId).then(
         function (requests) {
@@ -189,22 +188,16 @@ angular.module('gi-pro.controllers.details', [])
   $scope.title = '';
   $scope.imageUrl = '';
 
-  var setService = function (service) {
-    $scope.service = service;
-  };
-
-  /*
   if (!!$stateParams['service']) {
-    setService($stateParams['service']);
-    $scope.title = $scope.service.name;
+    $scope.service = $stateParams['service'];
+    $scope.title = DataSrv.getServicesMap()[$scope.service.serviceType].name;
     $scope.imageUrl = $scope.service.picture;
-  }
-  */
-
-  if (!!$stateParams['objectId']) {
-    setService(DataSrv.getServicesMap()[$stateParams['objectId']]);
+  } else if (!!$stateParams['objectId']) {
+    /*$
+    scope.service = DataSrv.getServicesMap()[$stateParams['objectId']];
     $scope.title = $scope.service.name;
     $scope.imageUrl = $scope.service.imageUrl;
+    */
   }
 
   /*

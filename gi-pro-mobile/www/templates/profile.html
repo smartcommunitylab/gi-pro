@@ -1,10 +1,9 @@
-<ion-view view-title="{{prof.name}} {{prof.surname}}" class="prof-details">
+<ion-view view-title="{{profile.name}} {{profile.surname}}" class="prof-details">
   <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear" ng-class="{'ion-edit': !editing, 'ion-checkmark': editing}" ng-click="toggleEditing()" ng-show="isMyProfile&&isOnProfile"></button>
+    <button class="button button-icon button-clear" ng-class="{'ion-edit': !editing, 'ion-checkmark': editing}" ng-click="toggleEditing()"
+      ng-show="isMyProfile&&isOnProfile"></button>
     <button class="button button-icon button-clear ion-plus-round" ng-click="addNewService()" ng-show="isMyProfile&&!isOnProfile"></button>
-
   </ion-nav-buttons>
-
   <ion-tabs class="tabs-calm">
     <!-- INFO -->
     <ion-tab title="{{'prof_info' | translate | uppercase}}" on-select="selectProfile()">
@@ -14,18 +13,18 @@
             <div class="row">
               <div class="col col-33">
                 <div class="profile-image-container" ng-click="uploadImage()">
-                  <div class="profile-image-placeholder" ng-if="!prof.imageUrl">
+                  <div class="profile-image-placeholder" ng-if="!profile.imageUrl">
                     <div class="upload"><i class="icon ion-camera"></i></div>
                   </div>
-                  <div class="profile-image" ng-if="!!prof.imageUrl">
-                    <img ng-src="{{prof.imageUrl}}">
+                  <div class="profile-image" ng-if="!!profile.imageUrl">
+                    <img ng-src="{{profile.imageUrl}}">
                   </div>
                 </div>
               </div>
               <div class="col col-66">
                 <ul>
-                  <li class="profession">{{professions[prof.type].name}}</li>
-                  <li class="zone">{{zones[prof.area].name}}</li>
+                  <li class="profession">{{professions[profile.type].name}}</li>
+                  <li class="zone">{{zones[profile.area].name}}</li>
                 </ul>
               </div>
             </div>
@@ -33,61 +32,64 @@
               <ul>
                 <li class="phone">
                   <i class="icon ion-android-call"></i>
-                  <a href="tel:{{prof.phone}}" ng-if="!editing && prof.phone">{{prof.phone}}</a>
-                  <span ng-if="!editing && !prof.phone">-</span>
-                  <input type="tel" ng-if="editing" ng-model="prof.phone" placeholder="00112233">
+                  <a href="tel:{{profile.phone}}" ng-if="!editing && profile.phone">{{profile.phone}}</a>
+                  <span ng-if="!editing && !profile.phone">-</span>
+                  <input type="tel" ng-if="editing" ng-model="profile.phone" placeholder="00112233">
                 </li>
                 <li class="phone">
                   <i class="icon ion-android-phone-portrait"></i>
-                  <a href="tel:{{prof.cellPhone}}" ng-if="!editing && prof.cellPhone">{{prof.cellPhone}}</a>
-                  <span ng-if="!editing && !prof.cellPhone">-</span>
-                  <input type="tel" ng-if="editing" ng-model="prof.cellPhone" placeholder="+3912345678">
+                  <a href="tel:{{profile.cellPhone}}" ng-if="!editing && profile.cellPhone">{{profile.cellPhone}}</a>
+                  <span ng-if="!editing && !profile.cellPhone">-</span>
+                  <input type="tel" ng-if="editing" ng-model="profile.cellPhone" placeholder="+3912345678">
                 </li>
-                <li class="phone">
-                  <i class="icon ion-printer"></i>
-                  <a href="tel:{{prof.fax}}" ng-if="!editing && prof.fax">{{prof.fax}}</a>
-                  <span ng-if="!editing && !prof.fax">-</span>
-                  <input type="tel" ng-if="editing" ng-model="prof.fax" placeholder="00112233">
+                <li class="email">
+                  <i class="icon ion-email-unread"></i>
+                  <a ng-href="mailto:{{profile.pec}}" ng-if="profile.pec">{{profile.pec}}</a>
+                  <span ng-if="!profile.pec">-</span>
                 </li>
                 <li class="email">
                   <i class="icon ion-email"></i>
-                  <a ng-href="mailto:{{prof.mail}}" ng-if="!editing && prof.mail">{{prof.mail}}</a>
-                  <span ng-if="!editing && !prof.mail">-</span>
-                  <input type="email" ng-if="editing" ng-model="prof.mail" placeholder="test@test.it">
+                  <a ng-href="mailto:{{profile.mail}}" ng-if="!editing && profile.mail">{{profile.mail}}</a>
+                  <span ng-if="!editing && !profile.mail">-</span>
+                  <input type="email" ng-if="editing" ng-model="profile.mail" placeholder="test@test.it">
+                </li>
+                <li class="phone">
+                  <i class="icon ion-printer"></i>
+                  <a href="tel:{{profile.fax}}" ng-if="!editing && profile.fax">{{profile.fax}}</a>
+                  <span ng-if="!editing && !profile.fax">-</span>
+                  <input type="tel" ng-if="editing" ng-model="profile.fax" placeholder="00112233">
                 </li>
                 <!--
-              <li class="phone"><i class="icon ion-android-call"></i>{{profile.description}}</li>
-              <li class="phone"><i class="icon ion-android-call"></i>{{profile.competenze}}</li>
-              -->
+                <li class="phone"><i class="icon ion-android-call"></i>{{profile.description}}</li>
+                <li class="phone"><i class="icon ion-android-call"></i>{{profile.competences}}</li>
+                -->
                 <!--
-              <li class="phone">
-                <i class="icon ion-iphone"></i>
-                <span ng-if="!editing">{{profile.cellPhone}}</span>
-                <input ng-if="editing" type="tel" ng-maxlength="14" ng-model="profile.cellPhone" placeholder="069999999" autofocus>
-              </li>
-              <li class="email"><i class="icon ion-email"></i>{{profile.mail}}</li>
-              <li class="email"><i class="icon ion-email-unread"></i>{{profile.pec}}</li>
-              -->
+                <li class="phone">
+                  <i class="icon ion-iphone"></i>
+                  <span ng-if="!editing">{{profile.cellPhone}}</span>
+                  <input ng-if="editing" type="tel" ng-maxlength="14" ng-model="profile.cellPhone" placeholder="069999999" autofocus>
+                </li>
+                <li class="email"><i class="icon ion-email"></i>{{profile.mail}}</li>
+                <li class="email"><i class="icon ion-email-unread"></i>{{profile.pec}}</li>
+                -->
               </ul>
             </div>
-
             <!--
             <div class="description">
               <div class="description_label">{{'prof_descrizione_label' | translate}}</div>
-              <div class="description_text" ng-if="!editing">{{prof.description}}</div>
+              <div class="description_text" ng-if="!editing">{{profile.description}}</div>
             </div>
             -->
-
-            <div class="competenze">
-              <div class="title">{{'prof_competenze_label' | translate}}</div>
+            <div class="competences">
+              <div class="title">{{'prof_competences_label' | translate}}</div>
               <ul ng-class="{'editing': editing}">
-                <li ng-if="prof.customProperties.competenze" ng-repeat="competenza in prof.customProperties.competenze track by $index">
+                <li ng-if="profile.customProperties.competences" ng-repeat="competenza in profile.customProperties.competences track by $index">
                   <i class="icon ion-record"></i>
                   <span ng-if="!editing">{{competenza}}</span>
-                  <input ng-if="editing" type="text" ng-model="prof.customProperties.competenze[$index]" placeholder="inserisci la tua competenza">
-                  <!--prof.customProperties.competenze[$index]-->
+                  <input ng-if="editing" type="text" ng-model="profile.customProperties.competences[$index]" placeholder="inserisci la tua competenza">
+                  <!--profile.customProperties.competences[$index]-->
                 </li>
-                <li ng-if="!prof.customProperties.competenze.hasOwnProperty('0')">
+                <li ng-if="!profile.customProperties.competences.hasOwnProperty('0')">
                   <!-- Empty -->
                   -
                 </li>
@@ -98,7 +100,6 @@
         </ion-content>
       </ion-pane>
     </ion-tab>
-
     <!-- SERVICES -->
     <ion-tab title="{{'prof_services' | translate|uppercase}}" on-select="selectServices()">
       <ion-pane>
@@ -114,7 +115,7 @@
               </ion-item>
             </div>
           </ion-list>
--->
+          -->
           <ion-list class="list-accordion">
             <div class="item-accordion" ng-repeat="service in services">
               <ion-item class="item-accordion-header item-icon-right" ng-click="toggleService(service)">
@@ -126,20 +127,20 @@
                 <i class="icon ion-ios-location"></i>
                 <div ng-if="!editMode"> {{service.address}}</div>
                 <!--                <input type="text" ng-if="editMode" ng-model="service.address" placeholder="Indirizzo" autofocus>-->
-                <placeautocomplete ng-if="refresh" ng-model="service.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false" data="placesfrom" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
+                <placeautocomplete ng-if="refresh" ng-model="service.address" attr-placeholder="{{'service_address_placeholder' | translate}}"
+                  click-activation="false" data="placesfrom" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}"
+                  on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
                 <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-click="openMapPlan('from')"></a>
               </ion-item>
               <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
                 <i class="icon ion-android-locate"></i>
                 <div ng-if="!editMode"> {{service.area}}</div>
                 <input type="text" ng-if="editMode" ng-model="service.area" placeholder="{{'service_zone_placeholder' | translate}}" autofocus>
-
               </ion-item>
               <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
                 <i class="icon ion-ios-information"></i>
                 <div ng-if="!editMode"> {{service.note}}</div>
                 <input type="text" ng-if="editMode" ng-model="service.note" placeholder="{{'service_note_placeholder' | translate}}" autofocus>
-
               </ion-item>
               <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
                 <button ng-click="cancel()">Annulla</button>
