@@ -53,35 +53,6 @@ angular.module('gi-pro.controllers.profile', [])
   var selectPlace = function (placeSelected, lat, lng) {
     $scope.newService.address = placeSelected.name;
     $scope.newService.coordinates = [lat, lng];
-    //        $scope.newService = {
-    //      "applicationId": Config.APPLICATION_ID,
-    //      "address": "Via Malpaga 11",
-    //      "area": "idzone_1",
-    //      "coordinates": [
-    //          46.070761,
-    //          11.122831
-    //        ],
-    //      "note": "",
-    //      "serviceType": "idser_1"
-    //    }
-    //    $scope.newService = {
-    //      "address": placeSelected.name,
-    //      "coordinates": [
-    //              lat,
-    //              lng
-    //            ],
-    //    };
-    //    "address": "Via Malpaga 11",
-    //    "area": "idzone_1",
-    //    "coordinates": [
-    //          46.070761,
-    //          11.122831
-    //        ],
-    //    $scope.fromName = placeSelected;
-    //    $scope.addressParams.name = placeSelected;
-    //    $scope.addressParams.lat = planService.getPosition($scope.place).latitude;
-    //    $scope.addressParams.long = planService.getPosition($scope.place).longitude;
-
     console.log(placeSelected);
     /*close map*/
     $scope.closeMap();
@@ -253,7 +224,9 @@ angular.module('gi-pro.controllers.profile', [])
   $scope.changeEditMode = function (value) {
     $scope.editMode = value;
   }
-
+  $scope.changeNewServiceMode = function (value) {
+    $scope.newServiceMode = value
+  }
   $scope.addAnotherCompetenza = function () {
     $scope.profile.customProperties.competences[Object.keys($scope.profile.customProperties.competences).length] = '';
   }
@@ -272,6 +245,12 @@ angular.module('gi-pro.controllers.profile', [])
 
   $scope.addNewService = function () {
     //modal e scegli tipologia di servizio
+    if ($scope.editMode || $scope.newServiceMode) {
+      //Toast
+      Utils.toast($filter('translate')('save_first_toggle'));
+      return;
+    }
+    $scope.shownService = null
     $scope.addServiceModal.show();
   }
 
@@ -293,14 +272,15 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.newService = {
       "applicationId": Config.APPLICATION_ID,
       "address": "",
-      "area": "idzone_1",
+      "area": "",
       "coordinates": [
 
         ],
       "note": "",
       "serviceType": TypeOfService.id
     }
-    $scope.services.push($scope.newService);
+    $scope.newServiceMode = true;
+    //$scope.services.push($scope.newService);
   }
 
   $scope.openMapPlan = function (place) {
@@ -322,8 +302,12 @@ angular.module('gi-pro.controllers.profile', [])
     //set selected area of service
     $scope.newService.area = idZone;
   }
-  $scope.openAreaSelection = function () {
+  $scope.openAreaSelection = function (mode) {
 
+    if (mode == 'edit' && !$scope.editMode)
+      return
+    if (mode == 'new' && !$scope.newServiceMode)
+      return
     $ionicPopup.show({
       templateUrl: 'templates/areaSelectionPopup.html',
       cssClass: 'parking-popup',
@@ -340,7 +324,7 @@ angular.module('gi-pro.controllers.profile', [])
           }
     }
 
-                        ]
+   ]
     });
   }
 
@@ -357,14 +341,6 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.getTypedPlaces(typedthings).then(function (data) {
       //merge with favorites and check no double values
       $scope.places = data;
-      //if (data.length > 0) {
-      // $scope['places'] = addFavoritePlaces(typedthings, $scope['places']);
-      //$scope.placesandcoordinates = planService.getnames();
-      //$scope.placesandcoordinates = planService.addnames($scope.favoritePlaces);
-      // } else {
-      //$scope['places' + fromOrTo] = null;
-      //$scope.placesandcoordinates = null;
-      //}
     });
   }
 
@@ -372,16 +348,23 @@ angular.module('gi-pro.controllers.profile', [])
     typePlace(typedthings);
   }
 
-  $scope.cancel = function () {
+  $scope.cancelModify = function (newOrEdit) {
     //delete service from the queue
-    $scope.services.pop();
+    if (newOrEdit == 'edit') {
+      return $scope.changeEditMode(false);
+    } else $scope.changeNewServiceMode(false);
   }
 
   $scope.saveService = function (serviceToSave) {
     //send service and update array
     DataSrv.createOffer(serviceToSave).then(function (result) {
       //save toast;
+      Utils.toast($filter('translate')('saved_new_service_toast'));
+      DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
+        $scope.services = services;
+      });
       $scope.changeEditMode(false);
+      $scope.changeNewServiceMode(false);
     })
   }
 
@@ -389,10 +372,41 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.addServiceModal.hide();
     //add an empty Service
     addNewService(typeOfService);
+    $scope.changeNewServiceMode(true);
+  }
+  $scope.deleteService = function (service) {
+    //delete this service and update list
+    DataSrv.deleteMyService(service.objectId, $scope.profile.objectId).then(function (result) {
+      //save toast;
+      Utils.toast($filter('translate')('service_deleted_toast'));
+      DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
+        $scope.services = services;
+      });
+      $scope.changeEditMode(false);
+      $scope.changeNewServiceMode(false);
+    })
+  }
+  $scope.modifyService = function (service) {
+    $scope.data = {
+      selectedZoneID: $scope.zones[service.area].id
+    };
+    $scope.newService = {
+      "applicationId": Config.APPLICATION_ID,
+      "address": service.address,
+      "area": service.area,
+      "coordinates": service.coordinates,
+      "note": service.note,
+      "serviceType": service.serviceType
+    }
     $scope.changeEditMode(true);
   }
 
   $scope.toggleService = function (service) {
+    if ($scope.editMode || $scope.newServiceMode) {
+      //Toast error, save first
+      Utils.toast($filter('translate')('save_first_toggle'));
+      return;
+    }
     if ($scope.isServiceShown(service)) {
       $scope.shownService = null;
     } else {
@@ -408,7 +422,7 @@ angular.module('gi-pro.controllers.profile', [])
       return $scope.availableServices[serviceID].name;
     else return "";
   }
-  $scope.getAreaNamebuID = function (areaID) {
+  $scope.getAreaNamebyID = function (areaID) {
     if ($scope.zones[areaID])
       return $scope.zones[areaID].name;
     else return "";

@@ -402,7 +402,23 @@ angular.module('gi-pro.services.data', [])
     return deferred.promise;
   };
 
-  /* delete offer */
+  /* delete  My Service */
+  dataService.deleteMyService = function (objectId, professionalId) {
+    var deferred = $q.defer();
+
+    $http.delete(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + objectId + '/' + professionalId, Config.getHTTPConfig())
+
+    .then(
+      function (response) {
+        deferred.resolve(response.data);
+      },
+      function (reason) {
+        deferred.reject(reason.data ? reason.data.errorMessage : reason);
+      }
+    );
+
+    return deferred.promise;
+  }; /* delete offer */
   dataService.deleteOffer = function (objectId, professionalId) {
     var deferred = $q.defer();
 

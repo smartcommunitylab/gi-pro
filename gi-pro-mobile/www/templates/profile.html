@@ -116,6 +116,35 @@
           </ion-list>
           -->
           <ion-list class="list-accordion">
+            <div class="item-accordion" ng-if="newServiceMode">
+              <ion-item class="item-accordion-header item-icon-right">
+                <div>{{getServiceNameByID(newService.serviceType)}}</div>
+                <!--<i class="icon" ng-class="{'ion-arrow-down-b': !isActiveItem(entry), 'ion-arrow-up-b': isActiveItem(entry)}"></i>-->
+              </ion-item>
+              <ion-item class="item-accordion-content">
+                <div class="row">
+                  <i class="icon ion-ios-location"></i>
+                  <placeautocomplete ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
+                  <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-click="openMapPlan('from')"></a>
+                </div>
+              </ion-item>
+              <ion-item class="item-accordion-content" ng-click="openAreaSelection('new')">
+                <div class="row">
+                  <i class="icon ion-android-locate"></i>
+                  <div> {{getAreaNamebuID(newService.area)}}</div>
+                </div>
+              </ion-item>
+              <ion-item class="item-accordion-content">
+                <div class="row">
+                  <i class="icon ion-ios-information"></i>
+                  <input type="text" ng-model="newService.note" placeholder="{{'service_note_placeholder' | translate}}" autofocus>
+                </div>
+              </ion-item>
+              <ion-item class="item-accordion-content" ng-if="newServiceMode">
+                <button class="button" ng-click="cancelModify('new')">{{'cancel' | translate}}</button>
+                <button class="button" ng-click="saveService(newService)">{{'save' | translate}}</button>
+              </ion-item>
+            </div>
             <div class="item-accordion" ng-repeat="service in services">
               <ion-item class="item-accordion-header item-icon-right" ng-click="toggleService(service)">
                 <div>{{getServiceNameByID(service.serviceType)}}</div>
@@ -123,24 +152,35 @@
                 <i class="icon ion-arrow-down-b" ng-class="{'open': isServiceShown(service)}"></i>
               </ion-item>
               <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
-                <i class="icon ion-ios-location"></i>
-                <div ng-if="!editMode"> {{service.address}}</div>
-                <!--                <input type="text" ng-if="editMode" ng-model="service.address" placeholder="Indirizzo" autofocus>-->
-                <placeautocomplete ng-if="refresh" ng-model="service.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
-                <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-click="openMapPlan('from')"></a>
+                <div class="row">
+                  <i class="icon ion-ios-location"></i>
+                  <div ng-if="!editMode"> {{service.address}}</div>
+                  <!--                <input type="text" ng-if="editMode" ng-model="service.address" placeholder="Indirizzo" autofocus>-->
+                  <placeautocomplete ng-if="editMode" ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
+                  <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-if="editMode" ng-click="openMapPlan('from')"></a>
+                </div>
               </ion-item>
-              <ion-item class="item-accordion-content" ng-click="openAreaSelection()" ng-show="isServiceShown(service)">
-                <i class="icon ion-android-locate"></i>
-                <div> {{getAreaNamebuID(service.area)}}</div>
+              <ion-item class="item-accordion-content" ng-click="openAreaSelection('edit')" ng-show="isServiceShown(service)">
+                <div class="row">
+                  <i class="icon ion-android-locate"></i>
+                  <div ng-if="!editMode"> {{getAreaNamebyID(service.area)}}</div>
+                  <div ng-if="editMode"> {{getAreaNamebyID(newService.area)}}</div>
+                </div>
               </ion-item>
               <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
-                <i class="icon ion-ios-information"></i>
-                <div ng-if="!editMode"> {{service.note}}</div>
-                <input type="text" ng-if="editMode" ng-model="service.note" placeholder="{{'service_note_placeholder' | translate}}" autofocus>
+                <div class="row">
+                  <i class="icon ion-ios-information"></i>
+                  <div ng-if="!editMode"> {{service.note}}</div>
+                  <input type="text" ng-if="editMode" ng-model="newService.note" placeholder="{{'service_note_placeholder' | translate}}" autofocus>
+                </div>
               </ion-item>
-              <ion-item class="item-accordion-content" ng-show="isServiceShown(service)">
-                <button ng-click="cancel()">Annulla</button>
-                <button ng-click="saveService(service)">Salva</button>
+              <ion-item class="item-accordion-content" ng-show="isServiceShown(service)" ng-if="editMode">
+                <button class="button" ng-click="cancelModify('edit')">{{'cancel' | translate}}</button>
+                <button class="button" ng-click="saveService()">{{'save' | translate}}</button>
+              </ion-item>
+              <ion-item class="item-accordion-content" ng-show="isServiceShown(service)" ng-if="!editMode">
+                <button class="button" ng-click="deleteService(service)">{{'delete' | translate}}</button>
+                <button class="button" ng-click="modifyService(service)">{{'modify' | translate}}</button>
               </ion-item>
             </div>
           </ion-list>

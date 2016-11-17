@@ -4,6 +4,8 @@
   "ok": "OK",
   "close": "Chiudi",
   "cancel": "Annulla",
+  "save": "Salva",
+  "modify": "Modifica",
   "home": "Home",
   "notifications": "Notifiche",
   "history": "Storico",
@@ -151,5 +153,8 @@
   "service_address_placeholder": "Indirizzo",
   "popup_address": "Indirizzo",
   "btn_close": "Chiudi",
-  "btn_conferma": "Conferma"
+  "btn_conferma": "Conferma",
+  "save_first_toggle": "Salvare o annullare le modifiche",
+  "saved_new_service_toast": "Il nuovo servizio è stato creato",
+  "service_deleted_toast": "Il servizio stato è cancellato"
 }
