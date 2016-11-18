@@ -1,6 +1,7 @@
 <ion-view view-title="{{profile.name}} {{profile.surname}}" class="prof-details">
   <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear" ng-class="{'ion-edit': !editing, 'ion-checkmark': editing}" ng-click="toggleEditing()" ng-show="isMyProfile&&isOnProfile"></button>
+    <button class="button button-icon button-clear" ng-class="{'ion-edit': !editing, 'ion-checkmark': editing}" ng-click="toggleEditing()"
+      ng-show="isMyProfile&&isOnProfile"></button>
     <button class="button button-icon button-clear ion-plus-round" ng-click="addNewService()" ng-show="isMyProfile&&!isOnProfile"></button>
   </ion-nav-buttons>
   <ion-tabs class="tabs-calm">
@@ -29,23 +30,30 @@
             </div>
             <div class="contacts">
               <!-- Phones -->
-              <div class="item item-input" ng-repeat="phone in edit.phoneList">
+              <div class="item item-input" ng-repeat="phone in edit.phone">
                 <i class="icon ion-android-call"></i>
                 <a ng-if="!editing" href="tel:{{phone}}">{{phone}}</a>
-                <input ng-if="editing" type="tel" ng-model="edit.phoneList[$index]">
-                <button ng-if="editing" class="button button-clear button-assertive button-icon icon ion-close-circled" ng-click="removeItem(edit.phoneList, $index)"></button>
+                <input ng-if="editing" type="tel" ng-model="edit.phone[$index]">
+                <button ng-if="editing" class="button button-clear button-positive button-icon icon ion-close-circled" ng-click="removeItem('phone', $index)"></button>
               </div>
               <div class="item item-input" ng-if="editing">
                 <i class="icon ion-android-call"></i>
                 <input type="tel" ng-model="edit.newItems.phone">
-                <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem(edit.phoneList, edit.newItems.phone)"></button>
+                <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('phone')"
+                  ng-disabled="edit.phone.indexOf(edit.newItems.phone) > -1 || !edit.newItems.phone.trim()"></button>
               </div>
               <!-- Cellphones -->
-              <div class="item item-input" ng-repeat="cellPhone in edit.cellPhoneList">
+              <div class="item item-input" ng-repeat="cellPhone in edit.cellPhone">
                 <i class="icon ion-android-phone-portrait"></i>
                 <a ng-if="!editing" href="tel:{{cellPhone}}">{{cellPhone}}</a>
-                <input ng-if="editing" type="tel" ng-model="edit.cellPhoneList[$index]">
-                <button ng-if="editing" class="button button-clear button-assertive button-icon icon ion-close-circled" ng-click="removeItem(edit.cellPhoneList, $index)"></button>
+                <input ng-if="editing" type="tel" ng-model="edit.cellPhone[$index]">
+                <button ng-if="editing" class="button button-clear button-positive button-icon icon ion-close-circled" ng-click="removeItem('cellPhone', $index)"></button>
+              </div>
+              <div class="item item-input" ng-if="editing">
+                <i class="icon ion-android-phone-portrait"></i>
+                <input type="tel" ng-model="edit.newItems.cellPhone">
+                <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('cellPhone')"
+                  ng-disabled="edit.cellPhone.indexOf(edit.newItems.cellPhone) > -1 || !edit.newItems.cellPhone.trim()"></button>
               </div>
               <!-- PEC -->
               <div class="item item-input">
@@ -53,18 +61,30 @@
                 <a href="mailto:{{profile.pec}}">{{profile.pec}}</a>
               </div>
               <!-- Emails -->
-              <div class="item item-input" ng-repeat="mail in edit.mailList">
+              <div class="item item-input" ng-repeat="mail in edit.mail">
                 <i class="icon ion-email"></i>
                 <a ng-if="!editing" href="mailto:{{mail}}">{{mail}}</a>
-                <input ng-if="editing" type="email" ng-model="edit.mailList[$index]">
-                <button ng-if="editing" class="button button-clear button-assertive button-icon icon ion-close-circled" ng-click="removeItem(edit.mailList, $index)"></button>
+                <input ng-if="editing" type="email" ng-model="edit.mail[$index]">
+                <button ng-if="editing" class="button button-clear button-positive button-icon icon ion-close-circled" ng-click="removeItem('mail', $index)"></button>
+              </div>
+              <div class="item item-input" ng-if="editing">
+                <i class="icon ion-email"></i>
+                <input type="email" ng-model="edit.newItems.mail">
+                <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('mail')"
+                  ng-disabled="edit.mail.indexOf(edit.newItems.mail) > -1 || !edit.newItems.mail.trim()"></button>
               </div>
               <!-- Fax -->
-              <div class="item item-input" ng-repeat="fax in edit.faxList">
+              <div class="item item-input" ng-repeat="fax in edit.fax">
                 <i class="icon ion-printer"></i>
                 <a ng-if="!editing" href="tel:{{fax}}">{{fax}}</a>
-                <input ng-if="editing" type="tel" ng-model="edit.faxList[$index]">
-                <button ng-if="editing" class="button button-clear button-assertive button-icon icon ion-close-circled" ng-click="removeItem(edit.faxList, $index)"></button>
+                <input ng-if="editing" type="tel" ng-model="edit.fax[$index]">
+                <button ng-if="editing" class="button button-clear button-positive button-icon icon ion-close-circled" ng-click="removeItem('fax', $index)"></button>
+              </div>
+              <div class="item item-input" ng-if="editing">
+                <i class="icon ion-printer"></i>
+                <input type="tel" ng-model="edit.newItems.fax">
+                <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('fax')"
+                  ng-disabled="edit.fax.indexOf(edit.newItems.fax) > -1 || !edit.newItems.fax.trim()"></button>
               </div>
             </div>
             <!--
@@ -117,7 +137,9 @@
               <ion-item class="item-accordion-content">
                 <div class="row">
                   <i class="icon ion-ios-location"></i>
-                  <placeautocomplete ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
+                  <placeautocomplete ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false"
+                    data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom"
+                    ng-blur="setNameParam"></placeautocomplete>
                   <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-click="openMapPlan('from')"></a>
                 </div>
               </ion-item>
@@ -149,7 +171,9 @@
                   <i class="icon ion-ios-location"></i>
                   <div ng-if="!editMode"> {{service.address}}</div>
                   <!--                <input type="text" ng-if="editMode" ng-model="service.address" placeholder="Indirizzo" autofocus>-->
-                  <placeautocomplete ng-if="editMode" ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
+                  <placeautocomplete ng-if="editMode" ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}"
+                    click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}"
+                    on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
                   <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-if="editMode" ng-click="openMapPlan('from')"></a>
                 </div>
               </ion-item>

@@ -10149,7 +10149,7 @@ input[readonly] {
   .prof-details .professional .zone {
     margin-top: 10px; }
   .prof-details .professional .contacts .item {
-    border: 0;
+    border-color: transparent;
     height: 3em; }
     .prof-details .professional .contacts .item .icon {
       font-size: 20px;
@@ -10157,20 +10157,20 @@ input[readonly] {
     .prof-details .professional .contacts .item input {
       display: inline-block;
       border-bottom: 1px solid black; }
-  .prof-details .professional .contacts ul {
-    border-bottom: 1px solid #ddd; }
-  .prof-details .professional .competences .title {
-    font-weight: bold;
-    margin: 10px; }
-  .prof-details .professional .competences .item-input-inset {
-    border: 0;
-    padding-top: 0; }
-    .prof-details .professional .competences .item-input-inset input {
-      display: inline-block;
-      width: 100%;
-      border-bottom: 1px solid black; }
-  .prof-details .professional .competences .competences-tags {
-    padding: 0 5px; }
+  .prof-details .professional .competences {
+    margin: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px; }
+    .prof-details .professional .competences .title {
+      font-weight: bold;
+      padding: 10px 0; }
+    .prof-details .professional .competences .item-input-inset {
+      border: 0;
+      padding: 0; }
+      .prof-details .professional .competences .item-input-inset input {
+        display: inline-block;
+        width: 100%;
+        border-bottom: 1px solid black; }
     .prof-details .professional .competences .competences-tags .tag {
       display: inline-block;
       line-height: 28px;

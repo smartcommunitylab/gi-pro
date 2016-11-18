@@ -4,7 +4,6 @@ angular.module('gi-pro.controllers.profile', [])
   const SEPARATOR = ';';
 
   function init() {
-    $scope.editing = true; // TODO: fixed to true for dev purpose only!
     $scope.profile = angular.copy(Login.getUser());
     $scope.isMyProfile = true;
     $scope.isOnProfile = false;
@@ -72,29 +71,24 @@ angular.module('gi-pro.controllers.profile', [])
             $scope.nameNewAddress = '';
             if (data.response.docs[0]) {
               //planService.setName($scope.place, data.response.docs[0]);
-
               $scope.clickedPoint = data.response.docs[0];
               $scope.nameNewAddress = $scope.clickedPoint.name;
               $ionicPopup.show({
                 templateUrl: 'templates/mapPopup.html',
                 cssClass: 'parking-popup',
                 scope: $scope,
-                buttons: [
-                  {
-                    text: $filter('translate')('btn_close'),
-                    type: 'button-close'
-                                },
-                  {
-                    text: $filter('translate')('btn_conferma'),
-                    onTap: function (e) {
-                      selectPlace($scope.clickedPoint, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
-                    }
-                            }
-
-                        ]
+                buttons: [{
+                  text: $filter('translate')('btn_close'),
+                  type: 'button-close'
+                }, {
+                  text: $filter('translate')('btn_conferma'),
+                  onTap: function (e) {
+                    selectPlace($scope.clickedPoint, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng);
+                  }
+                }]
               });
             } else {
-              /*confirmpopup*/
+              /* confirm popup */
               $scope.nameNewAddress = $filter('translate')("popup_lat") + args.leafletEvent.latlng.lat.toString().substring(0, 7) + " " + $filter('translate')("popup_long") + args.leafletEvent.latlng.lng.toString().substring(0, 7);
               $ionicPopup.show({
                 templateUrl: 'templates/mapPopup.html',
@@ -131,9 +125,9 @@ angular.module('gi-pro.controllers.profile', [])
       $http.get(url, Config.getGeocoderConf()).
       success(function (data, status, headers, config) {
         geoCoderPlaces = [];
-        //            places = data.response.docs;
-        //store the data
-        //return the labels
+        //places = data.response.docs;
+        // store the data
+        // return the labels
         k = 0;
         for (var i = 0; i < data.response.docs.length; i++) {
           temp = '';
@@ -156,7 +150,7 @@ angular.module('gi-pro.controllers.profile', [])
             temp = temp + data.response.docs[i].city;
           }
 
-          //check se presente
+          // check se presente
           if (!geoCoderPlaces[temp]) {
             //se non presente
             names[k] = temp;
@@ -175,6 +169,10 @@ angular.module('gi-pro.controllers.profile', [])
     return placedata.promise;
   }
 
+  /* PROFILE */
+
+  $scope.editing = true; // TODO: fixed to true for dev purpose only!
+
   $scope.$on('$ionicView.leave', function (event, args) {
     $scope.editing = false;
     localStorage.setItem(Config.getUserVarProfileCheck(), 'true');
@@ -189,41 +187,45 @@ angular.module('gi-pro.controllers.profile', [])
       fax: '',
       competence: '',
     },
-    phoneList: [],
-    cellPhoneList: [],
-    emailList: [],
-    faxList: []
+    phone: [],
+    cellPhone: [],
+    email: [],
+    fax: []
   }
 
   $scope.$watch('profile', function (profile, oldProfile) {
     if (profile.phone) {
-      $scope.edit.phoneList = profile.phone.split(SEPARATOR);
+      $scope.edit.phone = profile.phone.split(SEPARATOR);
     }
 
     if (profile.cellPhone) {
-      $scope.edit.cellPhoneList = profile.cellPhone.split(SEPARATOR);
+      $scope.edit.cellPhone = profile.cellPhone.split(SEPARATOR);
     }
 
     if (profile.mail) {
-      $scope.edit.mailList = profile.mail.split(SEPARATOR);
+      $scope.edit.mail = profile.mail.split(SEPARATOR);
     }
 
     if (profile.fax) {
-      $scope.edit.faxList = profile.fax.split(SEPARATOR);
+      $scope.edit.fax = profile.fax.split(SEPARATOR);
     }
   });
 
   var validate = function () {
-    /*
-    if (!$scope.profile.customProperties) {
-      Utils.toast($filter('translate')('profile_form_phone_empty'));
-      return false;
+    function cleanArray(arr) {
+      var newArr = new Array();
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].trim()) {
+          newArr.push(arr[i]);
+        }
+      }
+      return newArr;
     }
-    */
-    $scope.profile.phone = $scope.edit.phoneList.join(SEPARATOR);
-    $scope.profile.cellPhone = $scope.edit.cellPhoneList.join(SEPARATOR);
-    $scope.profile.mail = $scope.edit.mailList.join(SEPARATOR);
-    $scope.profile.fax = $scope.edit.faxList.join(SEPARATOR);
+
+    $scope.profile.phone = cleanArray($scope.edit.phone).join(SEPARATOR);
+    $scope.profile.cellPhone = cleanArray($scope.edit.cellPhone).join(SEPARATOR);
+    $scope.profile.mail = cleanArray($scope.edit.mail).join(SEPARATOR);
+    $scope.profile.fax = cleanArray($scope.edit.fax).join(SEPARATOR);
     return true;
   }
 
@@ -234,7 +236,6 @@ angular.module('gi-pro.controllers.profile', [])
         $scope.profile.customProperties.competences = [];
       }
     } else {
-      // TODO validate data; remote save;
       if (validate()) {
         Utils.loading();
         DataSrv.updateProfile($scope.profile).then(function () {
@@ -247,14 +248,13 @@ angular.module('gi-pro.controllers.profile', [])
     }
   }
 
-  $scope.addItem = function (list, item) {
-    // TODO: check for duplicates, add item to list, reset the input
-    //list.push(item);
-    //item = '';
+  $scope.addItem = function (type) {
+    $scope.edit[type].push($scope.edit.newItems[type]);
+    $scope.edit.newItems[type] = '';
   }
 
-  $scope.removeItem = function (list, index) {
-    list.splice(index, 1);
+  $scope.removeItem = function (type, index) {
+    $scope.edit[type].splice(index, 1);
   }
 
   $scope.addCompetence = function () {
@@ -266,7 +266,6 @@ angular.module('gi-pro.controllers.profile', [])
       $scope.edit.newItems.competence = '';
     }
   }
-
 
   $scope.deleteCompetence = function (index) {
     $scope.profile.customProperties.competences.splice(index, 1);
@@ -322,7 +321,7 @@ angular.module('gi-pro.controllers.profile', [])
       "area": "",
       "coordinates": [
 
-        ],
+      ],
       "note": "",
       "serviceType": TypeOfService.id
     }
@@ -359,19 +358,17 @@ angular.module('gi-pro.controllers.profile', [])
       templateUrl: 'templates/areaSelectionPopup.html',
       cssClass: 'parking-popup',
       scope: $scope,
-      buttons: [
-        {
+      buttons: [{
           text: $filter('translate')('btn_close'),
           type: 'button-close'
-                                },
-        {
+        }, {
           text: $filter('translate')('btn_conferma'),
           onTap: function (e) {
             selectArea($scope.data.selectedZoneID);
           }
-    }
+        }
 
-   ]
+      ]
     });
   }
 

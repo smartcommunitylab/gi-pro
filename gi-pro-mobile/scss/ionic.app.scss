@@ -476,7 +476,7 @@ input[readonly] {
     }
     .contacts {
       .item {
-        border: 0;
+        border-color: transparent;
         height: 3em;
         .icon {
           font-size: 20px;
@@ -488,9 +488,6 @@ input[readonly] {
         }
       }
     }
-    .contacts ul {
-      border-bottom: 1px solid #ddd;
-    }
     /*
     .description {
       margin: 10px;
@@ -499,13 +496,16 @@ input[readonly] {
     }
     */
     .competences {
+      margin: 10px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
       .title {
         font-weight: bold;
-        margin: 10px;
+        padding: 10px 0;
       }
       .item-input-inset {
         border: 0;
-        padding-top: 0;
+        padding: 0;
         input {
           display: inline-block;
           width: 100%;
@@ -513,7 +513,6 @@ input[readonly] {
         }
       }
       .competences-tags {
-        padding: 0 5px;
         .tag {
           display: inline-block;
           line-height: 28px;
@@ -561,43 +560,44 @@ input[readonly] {
 }
 
 .placeautocomplete ul {
-    position: absolute;
-    background-color: rgba(255, 255, 255, .95);
-    border: 1px solid #ddd;
-    z-index: 99;
+  position: absolute;
+  background-color: rgba(255, 255, 255, .95);
+  border: 1px solid #ddd;
+  z-index: 99;
 }
 
 .placeautocomplete ul li {
-    padding: 5px;
+  padding: 5px;
 }
 
 .placeautocomplete ul li .highlight {
-    font-weight: bold;
+  font-weight: bold;
 }
+
 placeautocomplete {
-    position: relative;
+  position: relative;
 }
 
 .placeautocomplete-input {
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .placeautocomplete-input:focus {
-    text-overflow: clip;
+  text-overflow: clip;
 }
 
 .placeautocomplete.notempty .placeautocomplete-input {
-    padding-left: 24px;
+  padding-left: 24px;
 }
 
 .placeautocomplete.notempty .placeautocomplete-input-clear {
-    position: absolute;
-    top: 0.5em;
-    left: 0;
-    color: #AAAAAA;
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  color: #AAAAAA;
 }
 
 
