@@ -28,7 +28,7 @@
                 </ul>
               </div>
             </div>
-            <div class="contacts">
+            <div class="contacts" ng-class="{'editing': editing}">
               <!-- Phones -->
               <div class="item item-input" ng-repeat="phone in edit.phone">
                 <i class="icon ion-android-call"></i>
@@ -93,7 +93,7 @@
               <div class="description_text" ng-if="!editing">{{profile.description}}</div>
             </div>
             -->
-            <div class="competences">
+            <div class="competences" ng-class="{'editing': editing}">
               <div class="title">{{'prof_competences_label' | translate}}</div>
               <div class="item item-input-inset" ng-if="editing">
                 <input type="text" ng-model="edit.newItems.competence" placeholder="inserisci la tua competenza">

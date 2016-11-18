@@ -10149,11 +10149,17 @@ input[readonly] {
   .prof-details .professional .zone {
     margin-top: 10px; }
   .prof-details .professional .contacts .item {
-    border-color: transparent;
-    height: 3em; }
+    border-color: transparent; }
     .prof-details .professional .contacts .item .icon {
       font-size: 20px;
       margin-right: 10px; }
+    .prof-details .professional .contacts .item a,
+    .prof-details .professional .contacts .item a:link,
+    .prof-details .professional .contacts .item a:visited,
+    .prof-details .professional .contacts .item a:hover,
+    .prof-details .professional .contacts .item a:active {
+      color: inherit;
+      text-decoration: none; }
     .prof-details .professional .contacts .item input {
       display: inline-block;
       border-bottom: 1px solid black; }
