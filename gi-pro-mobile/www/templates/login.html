@@ -1,21 +1,24 @@
 <ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="login">
-  <ion-content class="padding">
-    <h4 class="title">{{'app' | translate}}</h4>
-
-    <div class="list list-inset">
-      <label class="item item-input item-input-cf">
-        <input type="text" ng-model="user.email" placeholder="{{'pec_placeholder' | translate}}">
-      </label>
-      <label class="item item-input">
-        <input type="password" ng-model="user.password" placeholder="{{'password' | translate}}">
-      </label>
+  <ion-content>
+    <div class="header-title title">{{'app' | translate}} {{'app_label' | translate}}</div>
+    <div class="subtitle">
+      <p>{{'login_subtitle_1' | translate}}</p>
+      <p>{{'login_subtitle_2' | translate}}</p>
     </div>
-    <button class="button button-block button-energized" ng-click="login()">{{'login' | translate}}</button>
-    <a ng-click="reset()">{{'password_lost' | translate}}</a>
-
-    <div class="registration">
-      <p>{{'new_account' | translate}}</p>
-      <button class="button button-small button-block button-energized" ng-click="register()">{{'register' | translate}}</button>
+    <div class="padding form">
+      <div class="list list-inset">
+        <label class="item item-input">
+          <input type="text" ng-model="user.email" placeholder="{{'pec_placeholder' | translate}}">
+        </label>
+        <label class="item item-input">
+          <input type="password" ng-model="user.password" placeholder="{{'password' | translate}}">
+        </label>
+      </div>
+      <a class="forgotpassword" ng-click="reset()">{{'password_lost' | translate}}</a>
+      <button class="button button-block button-energized" ng-click="login()">{{'login' | translate}}</button>
+      <div class="bottom">
+        {{'new_account' | translate}} <a ng-click="register()">{{'register' | translate}}</button>
+    </div>
     </div>
   </ion-content>
 </ion-view>

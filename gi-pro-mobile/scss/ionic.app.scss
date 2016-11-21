@@ -815,6 +815,36 @@ placeautocomplete {
 .login,
 .registration {
   text-align: center;
+  .title {
+    height: 4em;
+    line-height: 4em;
+    background-color: $t_blue;
+    color: white;
+    font-size: 2em;
+  }
+  .subtitle {
+    padding-top: 20px;
+    font-size: larger;
+  }
+  .subsubtitle {
+    font-size: 12px;
+  }
+  a.forgotpassword {
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+  }
+  .list-inset {
+    margin: 0;
+    .item-input {
+      margin-bottom: 10px;
+      border-radius: 4px !important;
+    }
+  }
+  .button {
+    margin-top: 30px;
+    text-transform: uppercase;
+  }
   .item-checkbox {
     font-size: 14px;
     border: none;
@@ -823,11 +853,34 @@ placeautocomplete {
       white-space: normal;
     }
   }
-  /*
-  .item-input-cf input {
-    text-transform: uppercase;
+  .form-container {
+    padding: 10px;
+    form {
+      text-align: left;
+      .item-select {
+        .input-label {
+          font-size: 14px;
+          font-weight: normal;
+        }
+        .input-label.placeholder {
+          color: #aaaaaa;
+        }
+      }
+      .error {
+        color: red;
+        font-size: 14px;
+      }
+    }
   }
-  */
+  .cf_piva {
+    margin: 30px 0;
+  }
+  .bottom {
+    margin-top: 20px;
+    border-top: 3px solid $t_blue;
+    padding-top: 20px;
+    font-size: larger;
+  }
 }
 
 

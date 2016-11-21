@@ -10388,12 +10388,37 @@ placeautocomplete {
  */
 .login,
 .registration {
-  text-align: center;
-  /*
-  .item-input-cf input {
-    text-transform: uppercase;
-  }
-  */ }
+  text-align: center; }
+  .login .title,
+  .registration .title {
+    height: 4em;
+    line-height: 4em;
+    background-color: #1f6ca5;
+    color: white;
+    font-size: 2em; }
+  .login .subtitle,
+  .registration .subtitle {
+    padding-top: 20px;
+    font-size: larger; }
+  .login .subsubtitle,
+  .registration .subsubtitle {
+    font-size: 12px; }
+  .login a.forgotpassword,
+  .registration a.forgotpassword {
+    display: block;
+    margin-top: 10px;
+    text-align: left; }
+  .login .list-inset,
+  .registration .list-inset {
+    margin: 0; }
+    .login .list-inset .item-input,
+    .registration .list-inset .item-input {
+      margin-bottom: 10px;
+      border-radius: 4px !important; }
+  .login .button,
+  .registration .button {
+    margin-top: 30px;
+    text-transform: uppercase; }
   .login .item-checkbox,
   .registration .item-checkbox {
     font-size: 14px;
@@ -10402,6 +10427,32 @@ placeautocomplete {
     .registration .item-checkbox .item-content {
       text-align: left;
       white-space: normal; }
+  .login .form-container,
+  .registration .form-container {
+    padding: 10px; }
+    .login .form-container form,
+    .registration .form-container form {
+      text-align: left; }
+      .login .form-container form .item-select .input-label,
+      .registration .form-container form .item-select .input-label {
+        font-size: 14px;
+        font-weight: normal; }
+      .login .form-container form .item-select .input-label.placeholder,
+      .registration .form-container form .item-select .input-label.placeholder {
+        color: #aaaaaa; }
+      .login .form-container form .error,
+      .registration .form-container form .error {
+        color: red;
+        font-size: 14px; }
+  .login .cf_piva,
+  .registration .cf_piva {
+    margin: 30px 0; }
+  .login .bottom,
+  .registration .bottom {
+    margin-top: 20px;
+    border-top: 3px solid #1f6ca5;
+    padding-top: 20px;
+    font-size: larger; }
 
 /*
  * PROFILE

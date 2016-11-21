@@ -1,47 +1,62 @@
 <ion-view view-title="{{'app' | translate}}" hide-nav-bar="true" class="registration">
-  <ion-content class="padding">
-    <h4 class="title">{{'app' | translate}}</h4>
-    <h5>{{'register_new_account' | translate}}</h5>
-
-    <div class="list list-inset">
-      <label class="item item-input item-input-cf">
-        <input type="text" maxlength="16" ng-maxlength="16" ng-model="registration.name" placeholder="{{'name_placeholder' | translate}}">
-      </label>
-      <label class="item item-input">
-        <input type="text" ng-model="registration.surname" placeholder="{{'surname_placeholder' | translate}}">
-      </label>
-      <label class="item item-input">
-        <input type="text" ng-model="registration.address" placeholder="{{'address_placeholder' | translate}}">
-      </label>
-
-      <label class="item item-input item-select">
-        <div class="input-label">
-          {{'profession_placeholder' | translate}}
-        </div>
-        <select ng-model="selectedProfession">
-          <option ng-repeat="profession in professions track by $index">{{profession.name}}</option>
-        </select>
-      </label>
-
-      <label class="item item-input item-select">
-        <div class="input-label">
-          {{' area_placeholder' | translate}}
-        </div>
-        <select ng-model="selectedArea">
-          <option ng-repeat="area in areas track by $index">{{area.name}}</option>
-        </select>
-      </label>
-
-      <label class="item item-input">
-        <input type="text" ng-model="registration.cf" placeholder="{{'cf_placeholder' | translate}}">
-      </label>
-      <label class="item item-input">
-        <input type="text" ng-model="registration.piva" placeholder="{{'piva_placeholder' | translate}}">
-      </label>
+  <ion-content>
+    <div class="header-title title">{{'app' | translate}}</div>
+    <div class="subtitle row">
+      <div class="col col-80 col-offset-10">
+        {{'register_moreinfo' | translate}}
+      </div>
     </div>
-
-    <!--<button class="button button-block button-energized" ng-click="register()" ng-disabled="!registration.privacy">{{'register' | translate}}</button>-->
-    <button class="button button-block button-energized" ng-click="register()">{{'register' | translate}}</button>
-    <a ng-click="cancel()">{{'cancel' | translate}}</a>
+    <div class="subsubtitle row">
+      <div class="col">
+        {{'register_mandatory_fields' | translate}}
+      </div>
+    </div>
+    <div class="form-container">
+      <form name="regform1">
+        <div class="list list-inset">
+          <label class="item item-input">
+            <input type="text" ng-model="registration.name" placeholder="{{'name_placeholder' | translate}}" ng-required="true">
+          </label>
+          <label class="item item-input">
+            <input type="text" ng-model="registration.surname" placeholder="{{'surname_placeholder' | translate}}" ng-required="true">
+          </label>
+          <label class="item item-input">
+            <input type="text" ng-model="registration.address" placeholder="{{'address_placeholder' | translate}}" ng-required="true">
+          </label>
+          <label class="item item-input item-select">
+            <div class="input-label" ng-class="{'placeholder': !selectedProfession}">
+              {{selectedProfession ? selectedProfession.name : ('profession_placeholder' | translate)}}
+            </div>
+            <select ng-model="selectedProfession" ng-required="true" ng-click="openSelectProfessionPopup()">
+            </select>
+          </label>
+          <label class="item item-input item-select">
+            <div class="input-label" ng-class="{'placeholder': !selectedArea}">
+              {{selectedArea ? selectedArea.name : ('area_placeholder' | translate)}}
+            </div>
+            <select ng-model="selectedArea" ng-required="true" ng-click="openSelectAreaPopup()">
+            </select>
+          </label>
+          <div class="cf_piva">
+            <label class="item item-input">
+              <input type="text" ng-model="registration.cf" placeholder="{{'cf_placeholder' | translate}}" ng-required="!registration.piva">
+            </label>
+            <p>{{'register_or' | translate}}</p>
+            <label class="item item-input">
+              <input type="text" ng-model="registration.piva" placeholder="{{'piva_placeholder' | translate}}" ng-required="!registration.cf">
+            </label>
+          </div>
+          <label class="item item-input">
+            <input type="text" ng-model="registration.albo" ng-required="true" placeholder="{{'albo_placeholder' | translate}}">
+          </label>
+          <ion-checkbox class="checkbox-energized" ng-model="registration.declaration" ng-required="true">{{'register_declaration' | translate}}</ion-checkbox>
+        </div>
+        <!--<button class="button button-block button-energized" ng-click="register()" ng-disabled="!registration.privacy">{{'register' | translate}}</button>-->
+        <button class="button button-block button-energized" ng-click="register()" ng-disabled="regform1.$invalid">{{'register' | translate}}</button>
+      </form>
+      <div class="bottom">
+        <a ng-click="cancel()">{{'cancel' | translate}}</a>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

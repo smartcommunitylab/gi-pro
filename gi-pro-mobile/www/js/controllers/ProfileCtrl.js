@@ -171,7 +171,7 @@ angular.module('gi-pro.controllers.profile', [])
 
   /* PROFILE */
 
-  $scope.editing = true; // TODO: fixed to true for dev purpose only!
+  $scope.editing = false; // TODO: fixed to true for dev purpose only!
 
   $scope.$on('$ionicView.leave', function (event, args) {
     $scope.editing = false;
@@ -189,7 +189,7 @@ angular.module('gi-pro.controllers.profile', [])
     },
     phone: [],
     cellPhone: [],
-    email: [],
+    mail: [],
     fax: []
   }
 

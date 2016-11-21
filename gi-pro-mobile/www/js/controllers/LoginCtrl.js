@@ -76,17 +76,67 @@ angular.module('gi-pro.controllers.login', [])
 
   DataSrv.getProfessionsDefinition().then(function (professions) {
     $scope.professions = professions;
+    $scope.selectedProfession = null;
+    /*
     $scope.selectedProfession = $filter('filter')($scope.professions, {
       id: $scope.professions[0].id
     })[0];
+    */
   });
 
   DataSrv.getZonesDefinition().then(function (areas) {
     $scope.areas = areas;
+    $scope.selectedArea = null;
+    /*
     $scope.selectedArea = $filter('filter')($scope.areas, {
       id: $scope.areas[0].id
     })[0];
+    */
   });
+
+  $scope.openSelectProfessionPopup = function () {
+    var selectProfessionPopup = $ionicPopup.alert({
+      scope: $scope,
+      title: $filter('translate')('profession_popup_placeholder'),
+      templateUrl: 'templates/popup_professions.html',
+      buttons: [{
+        text: $filter('translate')('cancel'),
+        type: 'button-default',
+        onTap: function (e) {
+          // will stop the popup from closing when tapped.
+          //e.preventDefault()
+        }
+      }]
+    });
+
+    $scope.selectProfession = function (profession) {
+      $scope.selectedProfession = profession;
+      $scope.registration.type = profession.id;
+      selectProfessionPopup.close();
+    }
+  }
+
+  $scope.openSelectAreaPopup = function () {
+    var selectAreaPopup = $ionicPopup.alert({
+      scope: $scope,
+      title: $filter('translate')('area_popup_placeholder'),
+      templateUrl: 'templates/popup_areas.html',
+      buttons: [{
+        text: $filter('translate')('cancel'),
+        type: 'button-default',
+        onTap: function (e) {
+          // will stop the popup from closing when tapped.
+          //e.preventDefault()
+        }
+      }]
+    });
+
+    $scope.selectArea = function (area) {
+      $scope.selectedArea = area;
+      $scope.registration.area = area.id;
+      selectAreaPopup.close();
+    }
+  }
 
   $scope.register = function () {
     if (!$scope.registration.name) {
@@ -104,18 +154,14 @@ angular.module('gi-pro.controllers.login', [])
       return;
     }
 
-    if (!$scope.selectedProfession) {
+    if (!$scope.selectedProfession || !$scope.registration.type) {
       Utils.toast($filter('translate')('register_form_profession_empty'));
       return;
-    } else {
-      $scope.registration.type = $scope.selectedProfession.id;
     }
 
     if (!$scope.selectedArea) {
       Utils.toast($filter('translate')('register_form_area_empty'));
       return;
-    } else {
-      $scope.registration.area = $scope.selectedArea.id;
     }
 
     if (!$scope.registration.cf && !$scope.registration.piva) {
