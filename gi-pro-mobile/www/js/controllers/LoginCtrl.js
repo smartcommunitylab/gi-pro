@@ -181,13 +181,13 @@ angular.module('gi-pro.controllers.login', [])
     }
     */
 
-    console.log($scope.registration);
-
-    Utils.loading();
-
-    if (!!$scope.registration.cf) {
+    if ($scope.registration.cf) {
       $scope.registration.cf = $scope.registration.cf.toUpperCase();
     }
+
+    //console.log($scope.registration);
+
+    Utils.loading();
 
     Login.register($scope.registration).then(
       function () {

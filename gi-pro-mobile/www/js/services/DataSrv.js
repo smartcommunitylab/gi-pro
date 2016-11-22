@@ -103,9 +103,7 @@ angular.module('gi-pro.services.data', [])
     if (allZones) {
       deferred.resolve(allZones);
     } else {
-      $http.get('data/poifilters.json')
-
-      .then(
+      $http.get('data/poifilters.json').then(
         function (response) {
           if (!zoneMap) {
             zoneMap = createMap(response.data.zones);
@@ -119,7 +117,8 @@ angular.module('gi-pro.services.data', [])
       );
     }
     return deferred.promise;
-  };
+  }
+
   /* get POIs by type and region */
   dataService.getPois = function (type, region, page, limit) {
     var deferred = $q.defer();
@@ -299,19 +298,19 @@ angular.module('gi-pro.services.data', [])
     if (!userId || !angular.isString(userId)) {
       deferred.reject('Invalid userId');
     }
-    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + userId, httpConfWithParams)
-      .then(
-        function (response) {
-          // offer created
-          deferred.resolve(response.data);
-        },
-        function (reason) {
-          deferred.reject(reason.data ? reason.data.errorMessage : reason);
-        }
-      );
 
+    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + userId, httpConfWithParams).then(
+      function (response) {
+        // offer created
+        deferred.resolve(response.data);
+      },
+      function (reason) {
+        deferred.reject(reason.data ? reason.data.errorMessage : reason);
+      }
+    );
     return deferred.promise;
   }
+
   dataService.getZones = function () {
     var deferred = $q.defer();
     dataService.getZonesDefinition().then(function (zones) {

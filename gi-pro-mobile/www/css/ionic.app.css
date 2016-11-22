@@ -10432,7 +10432,10 @@ placeautocomplete {
     padding: 10px; }
     .login .form-container form,
     .registration .form-container form {
-      text-align: left; }
+      text-align: left;
+      /*.item-input-uppercase input {
+        text-transform: uppercase;
+      }*/ }
       .login .form-container form .item-select .input-label,
       .registration .form-container form .item-select .input-label {
         font-size: 14px;
