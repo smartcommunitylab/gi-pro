@@ -314,7 +314,7 @@ angular.module('gi-pro.services.data', [])
   dataService.getZones = function () {
     var deferred = $q.defer();
     dataService.getZonesDefinition().then(function (zones) {
-      deferred.resolve(tempZones);
+      deferred.resolve(zones);
     });
     return deferred.promise;
   }

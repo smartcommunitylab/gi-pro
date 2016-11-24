@@ -138,12 +138,12 @@ angular.module('gi-pro', [
     url: '/prof/{objectId}',
     params: {
       'objectId': null,
-      'professionist': null
+      'professional': null
     },
     views: {
       'menuContent': {
         templateUrl: 'templates/profile.html',
-        controller: 'ProfessionistDetailsCtrl'
+        controller: 'ProfessionalDetailsCtrl'
       }
     }
   })

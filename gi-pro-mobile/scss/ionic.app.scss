@@ -299,7 +299,7 @@ input[readonly] {
     font-size: 2em;
   }
   ion-slides {
-    height: 65%;
+    height: 90%;
     background-color: $t_darkblue;
     .swiper-container {
       @extend .header-title;
@@ -325,27 +325,35 @@ input[readonly] {
     }
   }
   .tutorial-content {
+    /*display: block;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*max-height: 80%;*/
+    height: 90%;
     color: #fff;
-    max-height: 80%;
-    height: 80%;
-    display: block;
     div {
       padding: 0 20px;
       min-height: 20%;
     }
     img {
-      margin-top: 20px;
+      display: block;
       border: 1px solid white;
       max-width: 80%;
     }
+    .button {}
+    .button:first-child {
+      margin-bottom: 50px;
+    }
   }
-  .tutorial-footer {
+  /*.tutorial-footer {
     padding-top: 10px;
     background-color: white;
     .button.button-block {
       margin: 0;
     }
-  }
+  }*/
 }
 
 
@@ -386,21 +394,42 @@ input[readonly] {
 
 
 /*
- * SERVICES AND PROFESSIONISTS TABS
+ * SERVICES AND ProfessionalS TABS
  */
 
-.serviceandprofessionist {
-  .scroll-view {
+.serviceandprofessional {
+  .scroll,
+  .scroll .list {
     height: 100%;
   }
   .selected-filters {
+    text-align: center;
+    color: white;
+    background-color: $t_blue;
+    .col:first-child {
+      border-right: 1px solid white;
+    }
+    .col:last-child {
+      border-left: 1px solid white;
+    }
     .selected-service {
       .selected-zone {}
       .selected-service {}
       .selected-profession {}
     }
   }
-  .professional-list {}
+  div.empty {
+    text-align: center;
+    padding: 10px;
+  }
+  .professionals-list {
+    .card .item {
+      img {
+        border-radius: 0;
+      }
+      img.placeholder {}
+    }
+  }
   .services-list {}
   .zones-list {}
   .card {
@@ -438,7 +467,7 @@ input[readonly] {
 
 
 /*
- * Professionist Details
+ * Professional Details
  */
 
 .prof-details {
@@ -773,6 +802,18 @@ placeautocomplete {
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS
  */
+
+.modal-filter {
+  .bar.bar-header {
+    background-image: none;
+    .title {
+      font-size: 14px;
+    }
+  }
+  .subtitle {
+    text-align: center;
+  }
+}
 
 .modal-pois {
   .list-container {

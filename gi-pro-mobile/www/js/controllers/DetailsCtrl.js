@@ -145,28 +145,22 @@ angular.module('gi-pro.controllers.details', [])
   };
 })
 
-.controller('ProfessionistDetailsCtrl', function ($scope, $stateParams, DataSrv) {
+.controller('ProfessionalDetailsCtrl', function ($scope, $stateParams, DataSrv) {
   $scope.state = 'view';
-  $scope.title = "";
-  $scope.imageUrl = "";
-  var setProfessionist = function (prof) {
-    $scope.prof = prof;
-  };
+  $scope.title = '';
+  $scope.imageUrl = '';
 
-  if (!!$stateParams['professionist']) {
-    setProfessionist($stateParams['professionist']);
-    $scope.title = $scope.prof.name;
-    $scope.imageUrl = $scope.prof.picture;
-
-
+  var setProfessional = function (profile) {
+    $scope.profile = profile;
+    $scope.title = profile.name;
+    $scope.imageUrl = profile.picture;
   }
-  if (!!$stateParams['objectId']) {
 
-    DataSrv.getProfessionistByID($stateParams['objectId']).then(function (professionist) {
-      setProfessionist(professionist);
-      $scope.title = $scope.prof.name;
-      $scope.imageUrl = $scope.prof.imageUrl;
-
+  if ($stateParams['professional']) {
+    setProfessional($stateParams['professional']);
+  } else if ($stateParams['objectId']) {
+    DataSrv.getProfessionistByID($stateParams['objectId']).then(function (professional) {
+      setProfessional(professional);
     });
   }
   /*
@@ -182,6 +176,20 @@ angular.module('gi-pro.controllers.details', [])
   }
   $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
   */
+
+  $scope.professions = DataSrv.getProfessionsMap();
+  if (!$scope.professions) {
+    DataSrv.getProfessionsDefinition().then(function () {
+      $scope.professions = DataSrv.getProfessionsMap();
+    });
+  }
+
+  $scope.zones = DataSrv.getZonesMap();
+  if (!$scope.zones) {
+    DataSrv.getZonesDefinition().then(function () {
+      $scope.zones = DataSrv.getZonesMap();
+    });
+  }
 })
 
 .controller('ServiceDetailsCtrl', function ($scope, $stateParams, DataSrv) {

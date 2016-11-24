@@ -1,0 +1,14 @@
+<ion-modal-view class="modal-filter has-header">
+  <ion-header-bar>
+    <!--<div class="title">{{'modal_services' | translate}}</div>-->
+    <div class="title"></div>
+    <button class="button button-stable button-clear icon ion-close" ng-click="closeFilter('services')"></button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="subtitle">{{'modal_services' | translate}}</div>
+    <ion-list type="list-inset">
+      <ion-item ng-click="selectFilter('services', null)">{{'allServices_label' | translate}}</ion-item>
+      <ion-item ng-repeat="service in filters.allServices" ng-click="selectFilter('services', service)">{{service.name}}</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

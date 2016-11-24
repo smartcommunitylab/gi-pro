@@ -5,7 +5,6 @@
         {{'tutorial_title' | translate}}
       </div>
     </div>
-
     <ion-slides options="options" slider="data.slider">
       <ion-slide-page>
         <div class="tutorial-content">
@@ -21,9 +20,14 @@
           <img src="http://lorempixel.com/400/251/business" />
         </div>
       </ion-slide-page>
+      <ion-slide-page>
+        <div class="tutorial-content padding">
+          <button class="button button-block button-energized" ng-click="endTutorial()">{{'login_as_pro' | translate}}</button>
+          <button class="button button-block button-energized" ui-sref="app.serviceAndProf">{{'enter_no_login' | translate}}</button>
+        </div>
+      </ion-slide-page>
     </ion-slides>
-
-    <div class="tutorial-footer">
+    <!--<div class="tutorial-footer">
       <div class="row row-center">
         <div class="col">
           <button class="button button-block button-energized" ng-click="endTutorial()">{{'login_as_pro' | translate}}</button>
@@ -34,6 +38,6 @@
           <button class="button button-block button-energized" ui-sref="app.serviceAndProf">{{'enter_no_login' | translate}}</button>
         </div>
       </div>
-    </div>
+    </div>-->
   </ion-content>
 </ion-view>

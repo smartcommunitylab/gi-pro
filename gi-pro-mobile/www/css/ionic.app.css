@@ -10011,7 +10011,14 @@ input[readonly] {
  * TUTORIAL
  */
 .tutorial {
-  /*background-color: $t_darkblue;*/ }
+  /*background-color: $t_darkblue;*/
+  /*.tutorial-footer {
+    padding-top: 10px;
+    background-color: white;
+    .button.button-block {
+      margin: 0;
+    }
+  }*/ }
   .tutorial .title {
     height: 10%;
     color: white;
@@ -10020,7 +10027,7 @@ input[readonly] {
     text-align: center;
     font-size: 2em; }
   .tutorial ion-slides {
-    height: 65%;
+    height: 90%;
     background-color: #10406f;
     /*
     .description {
@@ -10039,22 +10046,23 @@ input[readonly] {
     .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
       background: white; }
   .tutorial .tutorial-content {
-    color: #fff;
-    max-height: 80%;
-    height: 80%;
-    display: block; }
+    /*display: block;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*max-height: 80%;*/
+    height: 90%;
+    color: #fff; }
     .tutorial .tutorial-content div {
       padding: 0 20px;
       min-height: 20%; }
     .tutorial .tutorial-content img {
-      margin-top: 20px;
+      display: block;
       border: 1px solid white;
       max-width: 80%; }
-  .tutorial .tutorial-footer {
-    padding-top: 10px;
-    background-color: white; }
-    .tutorial .tutorial-footer .button.button-block {
-      margin: 0; }
+    .tutorial .tutorial-content .button:first-child {
+      margin-bottom: 50px; }
 
 /*
  * HOME
@@ -10083,39 +10091,56 @@ input[readonly] {
     font-size: 16px; }
 
 /*
- * SERVICES AND PROFESSIONISTS TABS
+ * SERVICES AND ProfessionalS TABS
  */
-.serviceandprofessionist .scroll-view {
+.serviceandprofessional .scroll,
+.serviceandprofessional .scroll .list {
   height: 100%; }
 
-.serviceandprofessionist .card .item h2 {
+.serviceandprofessional .selected-filters {
+  text-align: center;
+  color: white;
+  background-color: #1f6ca5; }
+  .serviceandprofessional .selected-filters .col:first-child {
+    border-right: 1px solid white; }
+  .serviceandprofessional .selected-filters .col:last-child {
+    border-left: 1px solid white; }
+
+.serviceandprofessional div.empty {
+  text-align: center;
+  padding: 10px; }
+
+.serviceandprofessional .professionals-list .card .item img {
+  border-radius: 0; }
+
+.serviceandprofessional .card .item h2 {
   margin-bottom: 5px; }
 
-.serviceandprofessionist .card .item h3 {
+.serviceandprofessional .card .item h3 {
   margin: auto; }
 
-.serviceandprofessionist .card .item .list-service-cost {
+.serviceandprofessional .card .item .list-service-cost {
   position: absolute;
   top: 10px;
   right: 10px;
   text-align: right;
   font-size: 20px; }
 
-.serviceandprofessionist .card .icon {
+.serviceandprofessional .card .icon {
   margin-right: 7px;
   font-size: 20px; }
 
-.serviceandprofessionist .card .badge {
+.serviceandprofessional .card .badge {
   top: auto;
   position: absolute;
   bottom: 10px;
   right: 10px; }
-  .serviceandprofessionist .card .badge .icon {
+  .serviceandprofessional .card .badge .icon {
     margin-right: 4px;
     font-size: 16px; }
 
 /*
- * Professionist Details
+ * Professional Details
  */
 .prof-details .professional {
   margin-bottom: 10px;
@@ -10358,6 +10383,14 @@ placeautocomplete {
 /*
  * POIS MODAL, TYPES/REGIONS POPUPS
  */
+.modal-filter .bar.bar-header {
+  background-image: none; }
+  .modal-filter .bar.bar-header .title {
+    font-size: 14px; }
+
+.modal-filter .subtitle {
+  text-align: center; }
+
 .modal-pois .list-container .input-label {
   width: 100%;
   padding-left: 16px;

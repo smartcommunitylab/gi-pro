@@ -1,0 +1,14 @@
+<ion-modal-view class="modal-filter has-header">
+  <ion-header-bar>
+    <div class="title">{{'modal_zones' | translate}}</div>
+    <!--<div class="title"></div>-->
+    <button class="button button-stable button-clear icon ion-close" ng-click="closeFilter('zones')"></button>
+  </ion-header-bar>
+  <ion-content>
+    <!--<div class="subtitle">{{'modal_zones' | translate}}</div>-->
+    <ion-list type="list-inset">
+      <ion-item ng-click="selectFilter('zones', null)">{{'allZones_label' | translate}}</ion-item>
+      <ion-item ng-repeat="zone in filters.allZones" ng-click="selectFilter('zones', zone)">{{zone.name}}</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

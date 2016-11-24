@@ -1,0 +1,14 @@
+<ion-modal-view class="modal-filter has-header">
+  <ion-header-bar>
+    <div class="title">{{'modal_professions' | translate}}</div>
+    <!--<div class="title"></div>-->
+    <button class="button button-stable button-clear icon ion-close" ng-click="closeFilter('professions')"></button>
+  </ion-header-bar>
+  <ion-content>
+    <!--<div class="subtitle">{{'modal_professions' | translate}}</div>-->
+    <ion-list type="list-inset">
+      <ion-item ng-click="selectFilter('professions', null)">{{'allProfession_label' | translate}}</ion-item>
+      <ion-item ng-repeat="profession in filters.allProfessions" ng-click="selectFilter('professions', profession)">{{profession.name}}</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

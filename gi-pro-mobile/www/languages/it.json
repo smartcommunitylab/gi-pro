@@ -91,6 +91,7 @@
   "professional_phone": "Telefono",
   "professional_mail": "Email",
   "professional_pec": "PEC",
+  "professional_empty": "Nessun professionista trovato",
   "professional_type_LAWYER": "avvocato",
   "ERR_SERVER": "Errore di comunicazione con il server",
   "ERR_NETWORK": "Nessuna connessione",
@@ -130,8 +131,9 @@
   "selectedZone_label": "Zona",
   "selectedService_label": "Servizio",
   "allProfession_label": "Tutte le professioni",
-  "allZones_label": "Tutte le zone",
+  "allZones_label": "Tutte le province",
   "allServices_label": "Tutti i servizi",
+  "services_empty": "Nessun servizio trovato",
   "prof_competences_label": "Competenze",
   "prof_descrizione_label": "Descrizione",
   "search_prof": "Ricerca professioni",
@@ -166,5 +168,8 @@
   "btn_conferma": "Conferma",
   "save_first_toggle": "Salvare o annullare le modifiche",
   "saved_new_service_toast": "Il nuovo servizio è stato creato",
-  "service_deleted_toast": "Il servizio stato è cancellato"
+  "service_deleted_toast": "Il servizio stato è cancellato",
+  "modal_professions": "Seleziona una categoria professionale:",
+  "modal_services": "Seleziona una categoria di servizi:",
+  "modal_zones": "Seleziona una provincia:"
 }
