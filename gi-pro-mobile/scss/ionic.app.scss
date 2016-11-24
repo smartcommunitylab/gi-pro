@@ -299,8 +299,29 @@ input[readonly] {
     font-size: 2em;
   }
   ion-slides {
-    height: 90%;
+    height: 60%;
     background-color: $t_darkblue;
+    .tutorial-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      color: #fff;
+      div {
+        padding: 0 20px;
+        min-height: 20%;
+      }
+      img {
+        display: block;
+        border: 1px solid white;
+        max-width: 80%;
+      }
+      .button {}
+      .button:first-child {
+        margin-bottom: 50px;
+      }
+    }
     .swiper-container {
       @extend .header-title;
     }
@@ -324,36 +345,26 @@ input[readonly] {
       background: white;
     }
   }
-  .tutorial-content {
-    /*display: block;*/
+  .tutorial-footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*max-height: 80%;*/
-    height: 90%;
-    color: #fff;
-    div {
-      padding: 0 20px;
-      min-height: 20%;
-    }
-    img {
-      display: block;
-      border: 1px solid white;
-      max-width: 80%;
-    }
-    .button {}
-    .button:first-child {
-      margin-bottom: 50px;
-    }
-  }
-  /*.tutorial-footer {
-    padding-top: 10px;
+    height: 30%;
     background-color: white;
     .button.button-block {
       margin: 0;
     }
-  }*/
+  }
+}
+
+
+/*
+ * MAP
+ */
+
+.angular-leaflet-map {
+  width: 100%;
 }
 
 

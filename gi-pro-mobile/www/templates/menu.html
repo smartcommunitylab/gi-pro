@@ -3,21 +3,18 @@
     <ion-nav-bar class="bar-calm">
       <ion-nav-back-button>
       </ion-nav-back-button>
-
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
       </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
-
   <ion-side-menu side="left">
     <!--
 		<ion-header-bar>
 			<h1 class="title">Left</h1>
 		</ion-header-bar>
 		-->
-
     <ion-content>
       <ion-list>
         <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ui-sref="app.serviceAndProf">
@@ -29,28 +26,29 @@
         <ion-item nav-clear menu-close class="item item-icon-left" ng-if="logged" ui-sref-active="active" ui-sref="app.notifications">
           <i class="icon ion-ios-bell"></i> {{'notifications' | translate}}
         </ion-item>
-
         <ion-item nav-clear menu-close class="item item-icon-left" ng-if="logged" ui-sref-active="active" ui-sref="app.profile">
           <i class="icon ion-person"></i> {{'profile' | translate}}
         </ion-item>
+        <!--
         <ion-item nav-clear menu-close class="item item-icon-left" ng-if="!logged" ui-sref-active="active" ui-sref="app.login">
           <i class="icon ion-log-in"></i> {{'login' | translate}}
         </ion-item>
+        -->
         <ion-item nav-clear menu-close class="item item-icon-left" ng-if="!logged" ui-sref-active="active" ui-sref="app.tutorial">
           <i class="icon ion-help-circled"></i> {{'log_pro' | translate}}
         </ion-item>
         <ion-item nav-clear menu-close class="item item-icon-left" ng-if="logged" ui-sref-active="active" ng-click="logout()">
           <i class="icon ion-log-out"></i> {{'logout' | translate}}
         </ion-item>
-        <!--               <div class="padding-vertical"></div>
-
-                <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" href="{{problemLink()}}">
-                    <i class="icon ion-paper-airplane"></i> {{'problem' | translate}}
-                </ion-item>
-                <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ng-click="helpLink()">
-                    <i class="icon ion-help-circled"></i> {{'tutorial' | translate}}
-                </ion-item>
--->
+        <div class="padding-vertical"></div>
+        <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" href="{{problemLink()}}">
+          <i class="icon ion-alert-circled"></i> {{'problem' | translate}}
+        </ion-item>
+        <!--
+        <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ng-click="helpLink()">
+          <i class="icon ion-help-circled"></i> {{'tutorial' | translate}}
+        </ion-item>
+        -->
         <ion-item nav-clear menu-close class="item item-icon-left" ui-sref-active="active" ui-sref="app.credits">
           <i class="icon ion-information-circled"></i> {{'credits' | translate}}
         </ion-item>

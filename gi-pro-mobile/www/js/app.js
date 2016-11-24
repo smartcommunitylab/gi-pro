@@ -134,16 +134,30 @@ angular.module('gi-pro', [
     }
   })
 
-  .state('app.profdetails', {
-    url: '/prof/{objectId}',
+  .state('app.professionalDetails', {
+    url: '/professional/{objectId}',
     params: {
       'objectId': null,
       'professional': null
     },
     views: {
       'menuContent': {
-        templateUrl: 'templates/profile.html',
-        controller: 'ProfessionalDetailsCtrl'
+        templateUrl: 'templates/professionalDetails.html',
+        controller: 'ProfileCtrl'
+      }
+    }
+  })
+
+  .state('app.professionalWithServices', {
+    url: '/professional/{objectId}',
+    params: {
+      'objectId': null,
+      'professional': null
+    },
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/professionalWithServices.html',
+        controller: 'ProfileCtrl'
       }
     }
   })
@@ -278,7 +292,7 @@ angular.module('gi-pro', [
     url: '/profile',
     views: {
       'menuContent': {
-        templateUrl: 'templates/profile.html',
+        templateUrl: 'templates/professionalWithServices.html',
         controller: 'ProfileCtrl'
       }
     }

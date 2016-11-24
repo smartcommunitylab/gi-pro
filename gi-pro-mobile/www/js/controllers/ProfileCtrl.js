@@ -1,16 +1,29 @@
 angular.module('gi-pro.controllers.profile', [])
 
-.controller('ProfileCtrl', function ($scope, $rootScope, $ionicModal, $ionicLoading, $ionicPopup, $filter, $q, $http, Config, Login, Utils, DataSrv, mapService) {
+.controller('ProfileCtrl', function ($scope, $rootScope, $stateParams, $ionicModal, $ionicLoading, $ionicPopup, $filter, $q, $http, Config, Login, Utils, DataSrv, mapService) {
   const SEPARATOR = ';';
 
   function init() {
-    $scope.profile = angular.copy(Login.getUser());
-    $scope.isMyProfile = true;
+    $scope.isMyProfile = false;
+    $scope.profile = null;
+
+    if ($stateParams['professional']) {
+      $scope.profile = $stateParams['professional'];
+    } else if ($stateParams['objectId']) {
+      DataSrv.getProfessionistByID($stateParams['objectId']).then(function (professional) {
+        $scope.profile = professional;
+      });
+    } else {
+      $scope.profile = angular.copy(Login.getUser());
+      $scope.isMyProfile = true;
+    }
+
     $scope.isOnProfile = false;
     $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
     $scope.places = [];
     $scope.newService = {};
-    $ionicModal.fromTemplateUrl('templates/add_new_service_modal.html', {
+    
+    $ionicModal.fromTemplateUrl('templates/modal_addnewservice.html', {
       scope: $scope
     }).then(function (modal) {
       $scope.addServiceModal = modal;

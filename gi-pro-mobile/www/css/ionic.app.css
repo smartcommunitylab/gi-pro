@@ -10011,14 +10011,7 @@ input[readonly] {
  * TUTORIAL
  */
 .tutorial {
-  /*background-color: $t_darkblue;*/
-  /*.tutorial-footer {
-    padding-top: 10px;
-    background-color: white;
-    .button.button-block {
-      margin: 0;
-    }
-  }*/ }
+  /*background-color: $t_darkblue;*/ }
   .tutorial .title {
     height: 10%;
     color: white;
@@ -10027,7 +10020,7 @@ input[readonly] {
     text-align: center;
     font-size: 2em; }
   .tutorial ion-slides {
-    height: 90%;
+    height: 60%;
     background-color: #10406f;
     /*
     .description {
@@ -10035,6 +10028,22 @@ input[readonly] {
        font-size: 16px;
     }
     */ }
+    .tutorial ion-slides .tutorial-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      color: #fff; }
+      .tutorial ion-slides .tutorial-content div {
+        padding: 0 20px;
+        min-height: 20%; }
+      .tutorial ion-slides .tutorial-content img {
+        display: block;
+        border: 1px solid white;
+        max-width: 80%; }
+      .tutorial ion-slides .tutorial-content .button:first-child {
+        margin-bottom: 50px; }
     .tutorial ion-slides .swiper-slide {
       text-align: center; }
     .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet {
@@ -10045,24 +10054,21 @@ input[readonly] {
       opacity: 1; }
     .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
       background: white; }
-  .tutorial .tutorial-content {
-    /*display: block;*/
+  .tutorial .tutorial-footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*max-height: 80%;*/
-    height: 90%;
-    color: #fff; }
-    .tutorial .tutorial-content div {
-      padding: 0 20px;
-      min-height: 20%; }
-    .tutorial .tutorial-content img {
-      display: block;
-      border: 1px solid white;
-      max-width: 80%; }
-    .tutorial .tutorial-content .button:first-child {
-      margin-bottom: 50px; }
+    height: 30%;
+    background-color: white; }
+    .tutorial .tutorial-footer .button.button-block {
+      margin: 0; }
+
+/*
+ * MAP
+ */
+.angular-leaflet-map {
+  width: 100%; }
 
 /*
  * HOME

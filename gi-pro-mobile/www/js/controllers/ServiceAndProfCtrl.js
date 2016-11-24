@@ -36,10 +36,17 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   }
 
   $scope.openProfessionalDetails = function (professional) {
-    $state.go("app.profdetails", {
-      'objectId': professional.objectId,
-      'professional': professional
-    });
+    if (Login.userIsLogged()) {
+      $state.go("app.professionalWithServices", {
+        'objectId': professional.objectId,
+        'professional': professional
+      });
+    } else {
+      $state.go("app.professionalDetails", {
+        'objectId': professional.objectId,
+        'professional': professional
+      });
+    }
   }
 
   $scope.openServiceDetails = function (service) {
@@ -115,21 +122,22 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
   var addExtraDataToProf = function () {
     for (var i = 0; i < $scope.professionalsList.length; i++) {
-      $scope.professionalsList[i]["profession"] = professionsMap[$scope.professionalsList[i].type].name;
-      $scope.professionalsList[i]["zone"] = zonesMap[$scope.professionalsList[i].area] ? zonesMap[$scope.professionalsList[i].area].name : '';
+      $scope.professionalsList[i]['profession'] = professionsMap[$scope.professionalsList[i].type].name;
+      $scope.professionalsList[i]['zone'] = zonesMap[$scope.professionalsList[i].area] ? zonesMap[$scope.professionalsList[i].area].name : '';
     }
 
     // if logged add also service meta info
     if (Login.userIsLogged() && $scope.servicesList) {
       for (var i = 0; i < $scope.servicesList.length; i++) {
-        $scope.servicesList[i]["service"] = servicesMap[$scope.servicesList[i].serviceType].name;
-        $scope.servicesList[i]["zone"] = zonesMap[$scope.servicesList[i].area] ? zonesMap[$scope.servicesList[i].area].name : '';
+        $scope.servicesList[i]['service'] = servicesMap[$scope.servicesList[i].serviceType].name;
+        $scope.servicesList[i]['zone'] = zonesMap[$scope.servicesList[i].area] ? zonesMap[$scope.servicesList[i].area].name : '';
       }
     }
   }
 
+  // header 44px, tabs 48px, filters 40px
   $scope.styles = {
-    'resultsList': Utils.resizeElement(44 + 48 + 40)
+    'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 48 : 0) + 40)
   };
 
   $scope.openFilter = function (type) {
