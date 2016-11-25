@@ -115,7 +115,7 @@ angular.module('gi-pro', [
   })
 
   .state('app.serviceAndProf', {
-    url: '/serviceandproffessionist',
+    url: '/home',
     views: {
       'menuContent': {
         templateUrl: 'templates/serviceAndProf.html',
@@ -171,7 +171,7 @@ angular.module('gi-pro', [
     },
     views: {
       'menuContent': {
-        templateUrl: 'templates/serviceDetail.html',
+        templateUrl: 'templates/serviceDetails.html',
         controller: 'ServiceDetailsCtrl'
       }
     }
@@ -363,6 +363,6 @@ angular.module('gi-pro', [
     }
     return '/app/home';
     */
-    return '/app/serviceandproffessionist'
+    return '/app/home'
   });
 });

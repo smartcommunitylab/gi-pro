@@ -1,27 +1,24 @@
 <ion-view view-title="{{title}}" class="serviceandprofessional" hide-back-button="true">
-  <ion-nav-buttons side="left">
-    <button class="button back-button buttons  header-item" ng-click="goBack()" ng-hide="!searchBarVisible">
-      <i class="icon ion-ios-arrow-back"> </i>
-    </button>
-    <button ng-if="isIOS" class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-hide="searchBarVisible"></button>
-    <button ng-if="!isIOS" style="display: block" class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-hide="searchBarVisible"></button>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="right">
-    <div class="bar bar-header item-input-inset" ng-hide="!searchBarVisible">
-      <div class="item-input-wrapper textbox-search home-search">
-        <i class="icon ion-ios7-search placeholder-icon"></i>
-        <input type="search" ng-model="searchString" placeholder="{{'search_prof' | translate}}">
-        <button class="input-button button button-icon clear-button ion-android-close" ng-click="searchString=''"></button>
+  <ion-nav-bar class="bar bar-header bar-calm" ng-class="{'item-input-inset': searchBar.show}">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-hide="searchBar.show"></button>
+      <button ng-class="{'ion-android-arrow-back': !isIOS, 'ion-ios-arrow-back': isIOS}" class="button button-icon button-clear"
+        ng-show="searchBar.show" ng-click="toggleSearchBar()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <div class="item-input-wrapper" ng-if="searchBar.show">
+        <input type="search" ng-model="searchBar.searchString" placeholder="{{'search_professionals' | translate}}">
       </div>
-    </div>
-    <button class="button button-icon button-clear ion-search" ng-click="switchSearchBar()" ng-hide="searchBarVisible || !professionalTab"></button>
-    <!-- not in this phase -->
-    <!--
-    <button class="button button-icon button-clear ion-android-funnel" ng-click="orderServices()" ng-hide="professionalTab"></button>
-    -->
-    <button class="button button-icon button-clear" ng-class="{'ion-map':viewAsList, 'ion-ios-list-outline':!viewAsList}" ng-click="switchToMap()"
-      ng-hide="searchBarVisible"></button>
-  </ion-nav-buttons>
+      <button class="button button-clear button-icon ion-close" ng-click="searchBar.searchString = ''" ng-show="searchBar.show"></button>
+      <button class="button button-clear button-icon ion-search" ng-click="toggleSearchBar()" ng-show="!searchBar.show && (activeTab == 'professionals')"></button>
+      <!-- not in this phase -->
+      <!--<button class="button button-icon button-clear ion-android-funnel" ng-click="orderServices()" ng-hide="professionalTab"></button>-->
+      <button class="button button-clear button-icon" ng-class="{'ion-map': viewAsList, 'ion-ios-list-outline': !viewAsList}" ng-click="switchToMap()"
+        ng-hide="searchBar.show"></button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
   <!-- TABS -->
   <ion-tabs class="tabs-calm" ng-class="{'tabs-item-hide': !logged}">
     <!-- Tabs order inverted due to Ionic bug on tabs with ng-if -->
@@ -45,9 +42,9 @@
           <!-- List view -->
           <div ng-if="viewAsList">
             <ion-scroll ng-style="styles.container" ng-show="servicesList && servicesList.length">
+              <ion-refresher on-refresh="loadServices()">
+              </ion-refresher>
               <div class="list results-list services-list">
-                <ion-refresher on-refresh="loadServices()">
-                </ion-refresher>
                 <div class="card" ng-repeat="service in servicesList">
                   <a class="item" ng-click="openServiceDetails(service)">
                     <div>
@@ -58,9 +55,9 @@
                   </a>
                 </div>
               </div>
+              <ion-infinite-scroll ng-if="!endServices_reached" immediate-check="false" on-infinite="loadMoreServices()" distance="5%">
+              </ion-infinite-scroll>
             </ion-scroll>
-            <ion-infinite-scroll ng-if="!endServices_reached" on-infinite="loadMoreServices()" distance="5%">
-            </ion-infinite-scroll>
             <div class="empty" ng-show="servicesList && !servicesList.length ">{{'services_empty' | translate}}</div>
           </div>
           <!-- Map view -->
@@ -93,9 +90,9 @@
           <!-- List view -->
           <div ng-if="viewAsList">
             <ion-scroll ng-style="styles.container" ng-show="professionalsList && professionalsList.length">
+              <ion-refresher on-refresh="loadProfessionals()">
+              </ion-refresher>
               <div class="list results-list professionals-list">
-                <ion-refresher on-refresh="loadProfessional()">
-                </ion-refresher>
                 <div class="card" ng-repeat="professional in professionalsList">
                   <a class="item item-avatar" ng-click="openProfessionalDetails(professional)">
                     <img ng-src="{{professional.imageUrl}}" ng-class="{'placeholder': !professional.imageUrl}">
@@ -106,9 +103,9 @@
                   </a>
                 </div>
               </div>
+              <ion-infinite-scroll ng-if="!endProfessional_reached" immediate-check="false" on-infinite="loadMoreProfessional()" distance="5%">
+              </ion-infinite-scroll>
             </ion-scroll>
-            <ion-infinite-scroll ng-if="!endProfessional_reached" on-infinite="loadMoreProfessional()" distance="5%">
-            </ion-infinite-scroll>
             <div class="empty" ng-show="professionalsList && !professionalsList.length">{{'professional_empty' | translate}}</div>
           </div>
           <!-- Map view -->

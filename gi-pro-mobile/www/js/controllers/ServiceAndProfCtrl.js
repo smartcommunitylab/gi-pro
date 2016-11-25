@@ -6,10 +6,14 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   $scope.zonesList = null; //list of active zones
   $scope.viewAsList = true;
 
+  // can be 'professionals' or 'services'
   $scope.activeTab = null;
+
   // Search Bar
-  $scope.searchBarVisible = false;
-  $scope.searchString = "";
+  $rootScope.searchBar = {
+    show: false,
+    searchString: ''
+  }
 
   $scope.allProfessional = Config.getPageProfessional();
   $scope.startProfessional = 0;
@@ -24,15 +28,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
   $scope.title = $filter('translate')('app');
 
-  $scope.goBack = function () {
-    $scope.searchString = '';
-    $scope.searchBarVisible = false;
-    $scope.title = $filter('translate')('app');
-  }
-
-  $scope.switchSearchBar = function () {
-    $scope.searchBarVisible = true;
-    $scope.title = '';
+  $scope.toggleSearchBar = function () {
+    $rootScope.searchBar.show = !$rootScope.searchBar.show;
   }
 
   $scope.openProfessionalDetails = function (professional) {
@@ -135,9 +132,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
   }
 
-  // header 44px, tabs 48px, filters 40px
+  // header 44px, tabs 49px, filters 40px
   $scope.styles = {
-    'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 48 : 0) + 40)
+    'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + 40)
   };
 
   $scope.openFilter = function (type) {
@@ -198,7 +195,11 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
   $scope.initServicesTab = function () {
     $scope.activeTab = 'services';
-    $scope.searchBarVisible = false;
+    $rootScope.searchBar.show = false;
+
+    if (!$scope.servicesList) {
+      $scope.loadMoreServices();
+    }
 
     if ($ionicTabsDelegate.selectedIndex() == 1) { //1 is the second
       mapService.initMap('serviceMap').then(function () {
@@ -219,6 +220,10 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
   $scope.initProfessionalsTab = function () {
     $scope.activeTab = 'professionals';
+
+    if (!$scope.professionalsList) {
+      $scope.loadMoreProfessional();
+    }
 
     if ($ionicTabsDelegate.selectedIndex() == 0) { //0 is the first
       mapService.initMap('professionsMap').then(function () {

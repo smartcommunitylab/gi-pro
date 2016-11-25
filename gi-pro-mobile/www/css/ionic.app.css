@@ -9817,18 +9817,9 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-/* Bar */
-.bar .clear-button {
-  /*position: absolute;*/
-  /*right: 0;*/
-  /*top: 5px;*/
-  color: #bbb;
-  height: 20px; }
-
-.bar .home-search {
-  height: 24px; }
-
-/* IonicDatePicker, IonicTimePicker */
+/*
+ * IonicDatePicker, IonicTimePicker
+ */
 .gi-pro .ionic_datepicker_popup .today {
   border: 1px solid #1f6ca5;
   /*border-radius: 50%;*/ }
@@ -10099,6 +10090,9 @@ input[readonly] {
 /*
  * SERVICES AND ProfessionalS TABS
  */
+.serviceandprofessional .tabs {
+  top: 44px !important; }
+
 .serviceandprofessional .scroll,
 .serviceandprofessional .scroll .list {
   height: 100%; }
@@ -10148,7 +10142,48 @@ input[readonly] {
 /*
  * Professional Details
  */
-.prof-details .professional {
+.prof-details .contacts .item,
+.prof-details .details .item,
+.service-details .contacts .item,
+.service-details .details .item {
+  border-color: transparent; }
+  .prof-details .contacts .item .icon,
+  .prof-details .details .item .icon,
+  .service-details .contacts .item .icon,
+  .service-details .details .item .icon {
+    font-size: 20px;
+    margin-right: 10px; }
+  .prof-details .contacts .item a,
+  .prof-details .contacts .item a:link,
+  .prof-details .contacts .item a:visited,
+  .prof-details .contacts .item a:hover,
+  .prof-details .contacts .item a:active,
+  .prof-details .details .item a,
+  .prof-details .details .item a:link,
+  .prof-details .details .item a:visited,
+  .prof-details .details .item a:hover,
+  .prof-details .details .item a:active,
+  .service-details .contacts .item a,
+  .service-details .contacts .item a:link,
+  .service-details .contacts .item a:visited,
+  .service-details .contacts .item a:hover,
+  .service-details .contacts .item a:active,
+  .service-details .details .item a,
+  .service-details .details .item a:link,
+  .service-details .details .item a:visited,
+  .service-details .details .item a:hover,
+  .service-details .details .item a:active {
+    color: inherit;
+    text-decoration: none; }
+  .prof-details .contacts .item input,
+  .prof-details .details .item input,
+  .service-details .contacts .item input,
+  .service-details .details .item input {
+    display: inline-block;
+    border-bottom: 1px solid black; }
+
+.prof-details .professional,
+.service-details .professional {
   margin-bottom: 10px;
   padding-bottom: 20px;
   /*
@@ -10158,83 +10193,66 @@ input[readonly] {
       .description_text {}
     }
     */ }
-  .prof-details .professional .profile-image-container {
-    display: block; }
-    .prof-details .professional .profile-image-container .profile-image img {
-      width: 100%;
-      height: auto; }
-    .prof-details .professional .profile-image-container .profile-image-placeholder {
-      display: block;
-      border-radius: 8px;
-      height: 100px;
-      background-color: #f8f8f8;
-      position: relative; }
-      .prof-details .professional .profile-image-container .profile-image-placeholder .upload {
-        position: absolute;
-        bottom: 4px;
-        right: 8px;
-        font-size: 28px;
-        color: #444; }
-  .prof-details .professional .profession {
+  .prof-details .professional .profession,
+  .service-details .professional .profession {
     text-transform: uppercase; }
-  .prof-details .professional .zone {
+  .prof-details .professional .zone,
+  .service-details .professional .zone {
     margin-top: 10px; }
-  .prof-details .professional .contacts .item {
-    border-color: transparent; }
-    .prof-details .professional .contacts .item .icon {
-      font-size: 20px;
-      margin-right: 10px; }
-    .prof-details .professional .contacts .item a,
-    .prof-details .professional .contacts .item a:link,
-    .prof-details .professional .contacts .item a:visited,
-    .prof-details .professional .contacts .item a:hover,
-    .prof-details .professional .contacts .item a:active {
-      color: inherit;
-      text-decoration: none; }
-    .prof-details .professional .contacts .item input {
-      display: inline-block;
-      border-bottom: 1px solid black; }
-  .prof-details .professional .competences {
+  .prof-details .professional .competences,
+  .service-details .professional .competences {
     margin: 10px;
     border-top: 1px solid #ddd;
     padding-top: 10px; }
-    .prof-details .professional .competences .title {
+    .prof-details .professional .competences .title,
+    .service-details .professional .competences .title {
       font-weight: bold;
       padding: 10px 0; }
-    .prof-details .professional .competences .item-input-inset {
+    .prof-details .professional .competences .item-input-inset,
+    .service-details .professional .competences .item-input-inset {
       border: 0;
       padding: 0; }
-      .prof-details .professional .competences .item-input-inset input {
+      .prof-details .professional .competences .item-input-inset input,
+      .service-details .professional .competences .item-input-inset input {
         display: inline-block;
         width: 100%;
         border-bottom: 1px solid black; }
-    .prof-details .professional .competences .competences-tags .tag {
+    .prof-details .professional .competences .competences-tags .tag,
+    .service-details .professional .competences .competences-tags .tag {
       display: inline-block;
       line-height: 28px;
       background-color: skyblue;
       padding: 0 7px;
       margin: 5px;
       border-radius: 5px; }
-    .prof-details .professional .competences .competences-tags .tag.editing {
+    .prof-details .professional .competences .competences-tags .tag.editing,
+    .service-details .professional .competences .competences-tags .tag.editing {
       padding-right: 0; }
 
-.prof-details .list-accordion .list .item-accordion .item-accordion-header {
+.prof-details .list-accordion .list .item-accordion .item-accordion-header,
+.service-details .list-accordion .list .item-accordion .item-accordion-header {
   white-space: normal; }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-header i {
+  .prof-details .list-accordion .list .item-accordion .item-accordion-header i,
+  .service-details .list-accordion .list .item-accordion .item-accordion-header i {
     transition: all 0.2s linear; }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-header i.open {
+  .prof-details .list-accordion .list .item-accordion .item-accordion-header i.open,
+  .service-details .list-accordion .list .item-accordion .item-accordion-header i.open {
     transform: rotate(-180deg); }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-header i::before {
+  .prof-details .list-accordion .list .item-accordion .item-accordion-header i::before,
+  .service-details .list-accordion .list .item-accordion .item-accordion-header i::before {
     font-size: 0.5em; }
 
-.prof-details .list-accordion .list .item-accordion .item-accordion-content {
+.prof-details .list-accordion .list .item-accordion .item-accordion-content,
+.service-details .list-accordion .list .item-accordion .item-accordion-content {
   white-space: normal;
   border-top: 0;
   transition: all 0.2s linear; }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-content p {
+  .prof-details .list-accordion .list .item-accordion .item-accordion-content p,
+  .service-details .list-accordion .list .item-accordion .item-accordion-content p {
     white-space: normal; }
 
-.prof-details .list-accordion .list .item-accordion item-accordion-content.ng-hide {
+.prof-details .list-accordion .list .item-accordion item-accordion-content.ng-hide,
+.service-details .list-accordion .list .item-accordion item-accordion-content.ng-hide {
   line-height: 0px;
   opacity: 0; }
 
@@ -10497,70 +10515,35 @@ placeautocomplete {
     font-size: larger; }
 
 /*
- * PROFILE
+ * Details
  */
-.profile .profile-image-container {
+.profile-image-container {
   display: block; }
-  .profile .profile-image-container .profile-image img {
-    width: 100%;
-    height: auto; }
-  .profile .profile-image-container .profile-image-placeholder {
+  .profile-image-container .profile-image {
     display: block;
-    border-radius: 8px;
+    /*border-radius: 8px;*/
     height: 100px;
     background-color: #f8f8f8;
     position: relative; }
-    .profile .profile-image-container .profile-image-placeholder .upload {
+    .profile-image-container .profile-image .upload {
       position: absolute;
       bottom: 4px;
       right: 8px;
       font-size: 28px;
       color: #444; }
+    .profile-image-container .profile-image img {
+      width: 100%;
+      height: auto; }
 
-.profile .contact {
-  overflow: hidden;
-  white-space: nowrap;
-  line-height: 28px;
-  text-overflow: ellipsis; }
-  .profile .contact i {
-    font-size: 28px;
-    color: #444;
-    padding: 0 12px; }
-
-.profile .contacts .row {
-  padding: 0; }
-
-.profile .contacts .col {
-  padding: 0; }
-
-.profile .contacts .edit {
-  color: #10406f; }
-
-.profile .contacts input {
-  display: inline;
-  border-bottom: 1px solid black; }
-
-.profile .name {
-  font-size: 20px;
-  font-weight: 500;
-  color: #444;
-  padding-bottom: 8px; }
-
-.profile .title {
-  font-size: 14px;
-  color: #444;
-  font-style: italic; }
-
-.profile .address {
-  padding-top: 16px;
-  color: #444; }
-
+/*
 .matches {
-  padding-top: 20px; }
-  .matches span {
+  padding-top: 20px;
+  span {
     font-weight: bold;
-    color: #10406f; }
-
+    color: $t_darkblue;
+  }
+}
+*/
 /*
  * CREDITS
  */

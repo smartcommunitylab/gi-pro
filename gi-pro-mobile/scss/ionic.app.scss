@@ -34,23 +34,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
-/* Bar */
-
-.bar {
-  .clear-button {
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 5px;*/
-    color: #bbb;
-    height: 20px;
-  }
-  .home-search {
-    height: 24px;
-  }
-}
-
-
-/* IonicDatePicker, IonicTimePicker */
+/*
+ * IonicDatePicker, IonicTimePicker
+ */
 
 .gi-pro .ionic_datepicker_popup {
   .today {
@@ -409,6 +395,9 @@ input[readonly] {
  */
 
 .serviceandprofessional {
+  .tabs {
+    top: 44px !important;
+  }
   .scroll,
   .scroll .list {
     height: 100%;
@@ -481,59 +470,38 @@ input[readonly] {
  * Professional Details
  */
 
-.prof-details {
+.prof-details,
+.service-details {
+  .contacts,
+  .details {
+    .item {
+      border-color: transparent;
+      .icon {
+        font-size: 20px;
+        margin-right: 10px;
+      }
+      a,
+      a:link,
+      a:visited,
+      a:hover,
+      a:active {
+        color: inherit;
+        text-decoration: none;
+      }
+      input {
+        display: inline-block;
+        border-bottom: 1px solid black;
+      }
+    }
+  }
   .professional {
     margin-bottom: 10px;
     padding-bottom: 20px;
-    .profile-image-container {
-      display: block;
-      .profile-image {
-        img {
-          width: 100%;
-          height: auto;
-        }
-      }
-      .profile-image-placeholder {
-        display: block;
-        border-radius: 8px;
-        height: 100px;
-        background-color: $stable;
-        position: relative;
-        .upload {
-          position: absolute;
-          bottom: 4px;
-          right: 8px;
-          font-size: 28px;
-          color: $dark;
-        }
-      }
-    }
     .profession {
       text-transform: uppercase;
     }
     .zone {
       margin-top: 10px;
-    }
-    .contacts {
-      .item {
-        border-color: transparent;
-        .icon {
-          font-size: 20px;
-          margin-right: 10px;
-        }
-        a,
-        a:link,
-        a:visited,
-        a:hover,
-        a:active {
-          color: inherit;
-          text-decoration: none;
-        }
-        input {
-          display: inline-block;
-          border-bottom: 1px solid black;
-        }
-      }
     }
     /*
     .description {
@@ -940,77 +908,33 @@ placeautocomplete {
 
 
 /*
- * PROFILE
+ * Details
  */
 
-.profile {
-  .profile-image-container {
+.profile-image-container {
+  display: block;
+  .profile-image {
     display: block;
-    .profile-image {
-      img {
-        width: 100%;
-        height: auto;
-      }
-    }
-    .profile-image-placeholder {
-      display: block;
-      border-radius: 8px;
-      height: 100px;
-      background-color: $stable;
-      position: relative;
-      .upload {
-        position: absolute;
-        bottom: 4px;
-        right: 8px;
-        font-size: 28px;
-        color: $dark;
-      }
-    }
-  }
-  .contact {
-    overflow: hidden;
-    white-space: nowrap;
-    line-height: 28px;
-    text-overflow: ellipsis;
-    i {
+    /*border-radius: 8px;*/
+    height: 100px;
+    background-color: $stable;
+    position: relative;
+    .upload {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
       font-size: 28px;
       color: $dark;
-      padding: 0 12px;
     }
-    span {}
-  }
-  .contacts {
-    .row {
-      padding: 0;
+    img {
+      width: 100%;
+      height: auto;
     }
-    .col {
-      padding: 0;
-    }
-    .edit {
-      color: $calm;
-    }
-    input {
-      display: inline;
-      border-bottom: 1px solid black;
-    }
-  }
-  .name {
-    font-size: 20px;
-    font-weight: 500;
-    color: $dark;
-    padding-bottom: 8px;
-  }
-  .title {
-    font-size: 14px;
-    color: $dark;
-    font-style: italic;
-  }
-  .address {
-    padding-top: 16px;
-    color: $dark;
   }
 }
 
+
+/*
 .matches {
   padding-top: 20px;
   span {
@@ -1018,6 +942,7 @@ placeautocomplete {
     color: $t_darkblue;
   }
 }
+*/
 
 
 /*

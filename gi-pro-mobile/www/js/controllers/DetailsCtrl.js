@@ -145,7 +145,7 @@ angular.module('gi-pro.controllers.details', [])
   };
 })
 
-.controller('ServiceDetailsCtrl', function ($scope, $stateParams, DataSrv) {
+.controller('ServiceDetailsCtrl', function ($scope, $state, $stateParams, $ionicModal, Login, DataSrv) {
   $scope.title = '';
   $scope.imageUrl = '';
 
@@ -159,6 +159,36 @@ angular.module('gi-pro.controllers.details', [])
     $scope.title = $scope.service.name;
     $scope.imageUrl = $scope.service.imageUrl;
     */
+  }
+
+  $scope.openProfessionalDetails = function (professional) {
+    if (Login.userIsLogged()) {
+      $state.go("app.professionalWithServices", {
+        'objectId': professional.objectId,
+        'professional': professional
+      });
+    } else {
+      $state.go("app.professionalDetails", {
+        'objectId': professional.objectId,
+        'professional': professional
+      });
+    }
+  }
+
+  $ionicModal.fromTemplateUrl('templates/modal_newrequest.html', {
+    scope: $scope
+  }).then(function (modal) {
+    $scope.newRequestModal = modal;
+  }, function (error) {
+    console.log(error);
+  });
+
+  $scope.openNewRequestModal = function () {
+    $scope.newRequestModal.show()
+  }
+
+  $scope.closeNewRequestModal = function () {
+    $scope.newRequestModal.hide()
   }
 
   /*

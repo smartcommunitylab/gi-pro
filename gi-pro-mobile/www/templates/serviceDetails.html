@@ -1,0 +1,36 @@
+<ion-view view-title="{{title}}" class="service-details">
+  <ion-content>
+    <div class="service">
+      <div class="row">
+        <div class="col col-33">
+          <div class="profile-image-container">
+            <div class="profile-image">
+              <img ng-if="service.professional.imageUrl" ng-src="{{service.professional.imageUrl}}">
+            </div>
+          </div>
+        </div>
+        <div class="col col-67">
+          <ul>
+            <li class="name">{{service.professional.name}} {{service.professional.surname}}</li>
+            <li class="toprofile"><a ng-click="openProfessionalDetails(service.professional)">{{'service_viewprofile' | translate}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="details">
+        <div class="item">
+          <i class="icon ion-ios-location"></i>
+          <span>{{service.address}}</span>
+        </div>
+        <div class="item">
+          <i class="icon ion-social-euro"></i>
+          <span>{{service.cost ? service.cost : ('service_cost_free' | translate)}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-80 col-offset-10">
+          <button class="button button-energized button-block" ng-click="openNewRequestModal()">{{'service_new_request' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -3,11 +3,9 @@
     <div class="row">
       <div class="col col-33">
         <div class="profile-image-container" ng-click="uploadImage()">
-          <div class="profile-image-placeholder" ng-if="!profile.imageUrl">
-            <div class="upload"><i class="icon ion-camera"></i></div>
-          </div>
-          <div class="profile-image" ng-if="!!profile.imageUrl">
-            <img ng-src="{{profile.imageUrl}}">
+          <div class="profile-image">
+            <img ng-if="profile.imageUrl" ng-src="{{profile.imageUrl}}">
+            <div class="upload" ng-if="!profile.imageUrl"><i class="icon ion-camera"></i></div>
           </div>
         </div>
       </div>
@@ -90,9 +88,9 @@
       <div class="competences-tags">
         <span class="padding-horizontal" ng-if="!editing && (!profile.customProperties.competences || profile.customProperties.competences.length == 0)">-</span>
         <span class="tag" ng-class="{'editing': editing}" ng-repeat="competenza in profile.customProperties.competences">
-                  {{competenza}}
-                  <button class="button button-small button-clear button-positive icon ion-close-circled" ng-if="editing" ng-click="deleteCompetence($index)"></button>
-                </span>
+          {{competenza}}
+          <button class="button button-small button-clear button-positive icon ion-close-circled" ng-if="editing" ng-click="deleteCompetence($index)"></button>
+        </span>
       </div>
     </div>
   </div>
