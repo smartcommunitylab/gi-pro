@@ -10229,47 +10229,62 @@ input[readonly] {
     .service-details .professional .competences .competences-tags .tag.editing {
       padding-right: 0; }
 
-.prof-details .list-accordion .list .item-accordion .item-accordion-header,
-.service-details .list-accordion .list .item-accordion .item-accordion-header {
-  white-space: normal; }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-header i,
-  .service-details .list-accordion .list .item-accordion .item-accordion-header i {
-    transition: all 0.2s linear; }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-header i.open,
-  .service-details .list-accordion .list .item-accordion .item-accordion-header i.open {
-    transform: rotate(-180deg); }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-header i::before,
-  .service-details .list-accordion .list .item-accordion .item-accordion-header i::before {
-    font-size: 0.5em; }
-
-.prof-details .list-accordion .list .item-accordion .item-accordion-content,
-.service-details .list-accordion .list .item-accordion .item-accordion-content {
-  white-space: normal;
-  border-top: 0;
-  transition: all 0.2s linear; }
-  .prof-details .list-accordion .list .item-accordion .item-accordion-content p,
-  .service-details .list-accordion .list .item-accordion .item-accordion-content p {
+.prof-details .prof-services .list-accordion .list .item-accordion,
+.service-details .prof-services .list-accordion .list .item-accordion {
+  border: 1px solid #ddd;
+  padding: 1px 0; }
+  .prof-details .prof-services .list-accordion .list .item-accordion .item,
+  .service-details .prof-services .list-accordion .list .item-accordion .item {
+    border: 0; }
+  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header,
+  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header {
     white-space: normal; }
+    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header .title,
+    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header .title {
+      text-transform: uppercase; }
+    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i,
+    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i {
+      transition: all 0.2s; }
+    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i.open,
+    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i.open {
+      transform: rotate(180deg); }
+    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i::before,
+    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i::before {
+      font-size: 0.5em; }
+  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content,
+  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content {
+    transition: all 0.2s;
+    border-top: 0;
+    padding: 0; }
+    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content div,
+    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content div {
+      white-space: normal;
+      font-size: 14px; }
+  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content.ng-hide,
+  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content.ng-hide {
+    line-height: 0px;
+    opacity: 0; }
+  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-footer,
+  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-footer {
+    padding: 16px;
+    text-align: right; }
 
-.prof-details .list-accordion .list .item-accordion item-accordion-content.ng-hide,
-.service-details .list-accordion .list .item-accordion item-accordion-content.ng-hide {
-  line-height: 0px;
-  opacity: 0; }
+.prof-details .prof-services .list-accordion .list .item-accordion:not(:first-child),
+.service-details .prof-services .list-accordion .list .item-accordion:not(:first-child) {
+  margin-top: 16px; }
+
+placeautocomplete {
+  position: relative; }
 
 .placeautocomplete ul {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.95);
   border: 1px solid #ddd;
   z-index: 99; }
-
-.placeautocomplete ul li {
-  padding: 5px; }
-
-.placeautocomplete ul li .highlight {
-  font-weight: bold; }
-
-placeautocomplete {
-  position: relative; }
+  .placeautocomplete ul li {
+    padding: 5px; }
+    .placeautocomplete ul li .highlight {
+      font-weight: bold; }
 
 .placeautocomplete-input {
   width: 100%;
@@ -10405,12 +10420,13 @@ placeautocomplete {
   padding: 0; }
 
 /*
- * POIS MODAL, TYPES/REGIONS POPUPS
+ * MODALS, POPUPS
  */
-.modal-filter .bar.bar-header {
+.modal .bar.bar-header {
   background-image: none; }
-  .modal-filter .bar.bar-header .title {
-    font-size: 14px; }
+
+.modal-filter .title {
+  font-size: 14px; }
 
 .modal-filter .subtitle {
   text-align: center; }

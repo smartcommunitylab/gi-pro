@@ -542,36 +542,58 @@ input[readonly] {
       }
     }
   }
-  .list-accordion {
-    .list {
-      .item-accordion {
-        .item-accordion-header {
-          white-space: normal;
-          i {
-            transition: all 0.2s linear;
+  .prof-services {
+    .list-accordion {
+      .list {
+        .item-accordion {
+          border: 1px solid #ddd;
+          padding: 1px 0;
+          .item {
+            border: 0;
           }
-          i.open {
-            transform: rotate(-180deg);
-          }
-          i::before {
-            font-size: 0.5em;
-          }
-        }
-        .item-accordion-content {
-          white-space: normal;
-          border-top: 0;
-          transition: all 0.2s linear;
-          p {
+          .item-accordion-header {
             white-space: normal;
+            .title {
+              text-transform: uppercase;
+            }
+            i {
+              transition: all 0.2s;
+            }
+            i.open {
+              transform: rotate(180deg);
+            }
+            i::before {
+              font-size: 0.5em;
+            }
+          }
+          .item-accordion-content {
+            transition: all 0.2s;
+            border-top: 0;
+            padding: 0;
+            div {
+              white-space: normal;
+              font-size: 14px;
+            }
+          }
+          .item-accordion-content.ng-hide {
+            line-height: 0px;
+            opacity: 0;
+          }
+          .item-accordion-footer {
+            padding: 16px;
+            text-align: right;
           }
         }
-        item-accordion-content.ng-hide {
-          line-height: 0px;
-          opacity: 0;
+        .item-accordion:not(:first-child) {
+          margin-top: 16px;
         }
       }
     }
   }
+}
+
+placeautocomplete {
+  position: relative;
 }
 
 .placeautocomplete ul {
@@ -579,18 +601,12 @@ input[readonly] {
   background-color: rgba(255, 255, 255, .95);
   border: 1px solid #ddd;
   z-index: 99;
-}
-
-.placeautocomplete ul li {
-  padding: 5px;
-}
-
-.placeautocomplete ul li .highlight {
-  font-weight: bold;
-}
-
-placeautocomplete {
-  position: relative;
+  li {
+    padding: 5px;
+    .highlight {
+      font-weight: bold;
+    }
+  }
 }
 
 .placeautocomplete-input {
@@ -779,15 +795,18 @@ placeautocomplete {
 
 
 /*
- * POIS MODAL, TYPES/REGIONS POPUPS
+ * MODALS, POPUPS
  */
 
-.modal-filter {
+.modal {
   .bar.bar-header {
     background-image: none;
-    .title {
-      font-size: 14px;
-    }
+  }
+}
+
+.modal-filter {
+  .title {
+    font-size: 14px;
   }
   .subtitle {
     text-align: center;

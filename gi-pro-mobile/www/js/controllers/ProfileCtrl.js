@@ -22,11 +22,11 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true);
     $scope.places = [];
     $scope.newService = {};
-    
-    $ionicModal.fromTemplateUrl('templates/modal_addnewservice.html', {
+
+    $ionicModal.fromTemplateUrl('templates/modal_newservice.html', {
       scope: $scope
     }).then(function (modal) {
-      $scope.addServiceModal = modal;
+      $scope.newServiceModal = modal;
     });
 
     $ionicModal.fromTemplateUrl('templates/mapModal.html', {
@@ -61,6 +61,11 @@ angular.module('gi-pro.controllers.profile', [])
     DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
       $scope.services = services;
     });
+  }
+
+  $scope.selectedTab = 'profile';
+  $scope.selectTab = function (tabName) {
+    $scope.selectedTab = tabName;
   }
 
   var selectPlace = function (placeSelected, lat, lng) {
@@ -184,10 +189,10 @@ angular.module('gi-pro.controllers.profile', [])
 
   /* PROFILE */
 
-  $scope.editing = false; // TODO: fixed to true for dev purpose only!
+  $scope.editingProfile = false;
 
   $scope.$on('$ionicView.leave', function (event, args) {
-    $scope.editing = false;
+    $scope.editingProfile = false;
     localStorage.setItem(Config.getUserVarProfileCheck(), 'true');
     $scope.profile = angular.copy(Login.getUser());
   });
@@ -242,9 +247,9 @@ angular.module('gi-pro.controllers.profile', [])
     return true;
   }
 
-  $scope.toggleEditing = function () {
-    if (!$scope.editing) {
-      $scope.editing = true;
+  $scope.toggleEditingProfile = function () {
+    if (!$scope.editingProfile) {
+      $scope.editingProfile = true;
       if (!$scope.profile.customProperties.competences) {
         $scope.profile.customProperties.competences = [];
       }
@@ -253,7 +258,7 @@ angular.module('gi-pro.controllers.profile', [])
         Utils.loading();
         DataSrv.updateProfile($scope.profile).then(function () {
           $scope.profile = angular.copy(Login.getUser());
-          $scope.editing = false;
+          $scope.editingProfile = false;
         }, Utils.commError).finally(function () {
           Utils.loaded()
         });
@@ -288,57 +293,73 @@ angular.module('gi-pro.controllers.profile', [])
    * SERVICES
    */
 
-  $scope.changeNewServiceMode = function (value) {
-    $scope.newServiceMode = value;
-  }
-  $scope.changeEditMode = function (value) {
-    $scope.editMode = value;
-  }
-  $scope.selectServices = function () {
-    $scope.isOnProfile = false;
+  $scope.editingServices = false;
+  $scope.toggleEditingServices = function () {
+    $scope.editingServices = value;
   }
 
-  $scope.selectProfile = function () {
-    $scope.isOnProfile = true;
+  $scope.toggleAddingNewService = function (value) {
+    $scope.addingNewService = value;
   }
 
-  $scope.addNewService = function () {
-    //modal e scegli tipologia di servizio
-    if ($scope.editMode || $scope.newServiceMode) {
-      //Toast
+  var expandedServices = [];
+
+  $scope.toggleService = function (serviceId) {
+    if ($scope.editingServices || $scope.addingNewService) {
+      // Toast error, save first
       Utils.toast($filter('translate')('save_first_toggle'));
       return;
     }
-    $scope.shownService = null
-    $scope.addServiceModal.show();
+
+    if (!$scope.isExpandedService(serviceId)) {
+      expandedServices.push(serviceId);
+    } else {
+      expandedServices.splice(expandedServices.indexOf(serviceId), 1);
+    }
   }
 
-  $scope.closeNewService = function () {
-    $scope.addServiceModal.hide();
+  $scope.isExpandedService = function (serviceId) {
+    return expandedServices.indexOf(serviceId) !== -1;
+  }
+
+  $scope.openNewServiceModal = function () {
+    if ($scope.editingServices || $scope.addingNewService) {
+      // Toast
+      Utils.toast($filter('translate')('save_first_toggle'));
+      return;
+    }
+    // modal e scegli tipologia di servizio
+    $scope.shownService = null
+    $scope.newServiceModal.show();
+  }
+
+  $scope.closeNewServiceModal = function () {
+    $scope.newServiceModal.hide();
   }
 
   $scope.selectZone = function (index) {
     $scope.data.selectedZoneID = index;
   }
 
-  var addNewService = function (TypeOfService) {
+  $scope.addNewService = function (serviceType) {
     //applicationId, address, area, coordinates, note, serviceType
-    //take element from viaggia
-    $scope.newServiceName = TypeOfService.name;
+    // take element from viaggia
+    $scope.newServiceName = serviceType.name;
     $scope.data = {
       selectedZoneID: $scope.zones[Object.keys($scope.zones)[0]].id
     };
-    $scope.newService = {
-      "applicationId": Config.APPLICATION_ID,
-      "address": "",
-      "area": "",
-      "coordinates": [
 
-      ],
-      "note": "",
-      "serviceType": TypeOfService.id
+    $scope.newService = {
+      'applicationId': Config.APPLICATION_ID,
+      'address': '',
+      'area': '',
+      'coordinates': [],
+      'note': '',
+      'serviceType': serviceType.id
     }
-    $scope.newServiceMode = true;
+
+    $scope.addingNewService = true;
+    $scope.closeNewServiceModal();
     //$scope.services.push($scope.newService);
   }
 
@@ -361,27 +382,25 @@ angular.module('gi-pro.controllers.profile', [])
     //set selected area of service
     $scope.newService.area = idZone;
   }
-  $scope.openAreaSelection = function (mode) {
 
+  $scope.openAreaSelection = function (mode) {
     if (mode == 'edit' && !$scope.editMode)
       return
-    if (mode == 'new' && !$scope.newServiceMode)
+    if (mode == 'new' && !$scope.addingNewService)
       return
     $ionicPopup.show({
       templateUrl: 'templates/areaSelectionPopup.html',
       cssClass: 'parking-popup',
       scope: $scope,
       buttons: [{
-          text: $filter('translate')('btn_close'),
-          type: 'button-close'
-        }, {
-          text: $filter('translate')('btn_conferma'),
-          onTap: function (e) {
-            selectArea($scope.data.selectedZoneID);
-          }
+        text: $filter('translate')('btn_close'),
+        type: 'button-close'
+      }, {
+        text: $filter('translate')('btn_conferma'),
+        onTap: function (e) {
+          selectArea($scope.data.selectedZoneID);
         }
-
-      ]
+      }]
     });
   }
 
@@ -408,8 +427,10 @@ angular.module('gi-pro.controllers.profile', [])
   $scope.cancelModify = function (newOrEdit) {
     //delete service from the queue
     if (newOrEdit == 'edit') {
-      return $scope.changeEditMode(false);
-    } else $scope.changeNewServiceMode(false);
+      return $scope.toggleEditingServices(false);
+    } else {
+      $scope.toggleAddingNewService(false);
+    }
   }
 
   $scope.saveService = function (serviceToSave) {
@@ -420,17 +441,18 @@ angular.module('gi-pro.controllers.profile', [])
       DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
         $scope.services = services;
       });
-      $scope.changeEditMode(false);
-      $scope.changeNewServiceMode(false);
+      $scope.toggleEditingServices(false);
+      $scope.toggleAddingNewService(false);
     })
   }
 
-  $scope.addService = function (typeOfService) {
-    $scope.addServiceModal.hide();
+  $scope.addService = function (serviceType) {
+    $scope.newServiceModal.hide();
     //add an empty Service
-    addNewService(typeOfService);
-    $scope.changeNewServiceMode(true);
+    addNewService(serviceType);
+    $scope.toggleAddingNewService(true);
   }
+
   $scope.deleteService = function (service) {
     //delete this service and update list
     DataSrv.deleteMyService(service.objectId, $scope.profile.objectId).then(function (result) {
@@ -439,46 +461,33 @@ angular.module('gi-pro.controllers.profile', [])
       DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
         $scope.services = services;
       });
-      $scope.changeEditMode(false);
-      $scope.changeNewServiceMode(false);
+      $scope.toggleEditingServices(false);
+      $scope.toggleAddingNewService(false);
     })
   }
+
   $scope.modifyService = function (service) {
     $scope.data = {
       selectedZoneID: $scope.zones[service.area].id
     };
+
     $scope.newService = {
-      "applicationId": Config.APPLICATION_ID,
-      "address": service.address,
-      "area": service.area,
-      "coordinates": service.coordinates,
-      "note": service.note,
-      "serviceType": service.serviceType
+      'applicationId': Config.APPLICATION_ID,
+      'address': service.address,
+      'area': service.area,
+      'coordinates': service.coordinates,
+      'note': service.note,
+      'serviceType': service.serviceType
     }
-    $scope.changeEditMode(true);
+    $scope.toggleEditingServices(true);
   }
 
-  $scope.toggleService = function (service) {
-    if ($scope.editMode || $scope.newServiceMode) {
-      //Toast error, save first
-      Utils.toast($filter('translate')('save_first_toggle'));
-      return;
-    }
-    if ($scope.isServiceShown(service)) {
-      $scope.shownService = null;
-    } else {
-      $scope.shownService = service;
-    }
-  }
-
-  $scope.isServiceShown = function (service) {
-    return $scope.shownService === service;
-  }
   $scope.getServiceNameByID = function (serviceID) {
     if ($scope.availableServices[serviceID])
       return $scope.availableServices[serviceID].name;
     else return "";
   }
+
   $scope.getAreaNamebyID = function (areaID) {
     if ($scope.zones[areaID])
       return $scope.zones[areaID].name;

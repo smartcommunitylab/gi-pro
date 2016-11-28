@@ -1,0 +1,11 @@
+<ion-modal-view class="has-header">
+  <ion-header-bar>
+    <div class="title">{{'new_service_add' | translate}}</div>
+    <button class="button button-stable button-clear icon ion-close" ng-click="closeNewServiceModal()"></button>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list type="list-inset">
+      <ion-item ng-repeat="serviceType in availableServices" ng-click="addNewService(serviceType)">{{serviceType.name}}</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>
