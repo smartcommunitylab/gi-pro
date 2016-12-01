@@ -476,6 +476,9 @@ public class RepositoryManager {
 		Date now = new Date();
 		serviceRequest.setCreationDate(now);
 		serviceRequest.setLastUpdate(now);
+		serviceRequest.setAddress(offer.getAddress());
+		serviceRequest.setArea(offer.getArea());
+		serviceRequest.setPoiId(offer.getPoiId());
 		
 		mongoTemplate.save(serviceRequest);
 		
