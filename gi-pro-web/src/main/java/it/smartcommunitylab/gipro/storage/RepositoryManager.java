@@ -233,11 +233,10 @@ public class RepositoryManager {
 				ServiceOffer offer = getServiceOfferById(applicationId, serviceOfferId);
 				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
 				Professional p = findProfessionalById(applicationId, offer.getProfessionalId());
-				Poi poi = findPoiById(applicationId, request.getPoiId());
 				params = new String[]{ 
 						p.getSurname(), 
 						p.getName(), 
-						poi.getName(),
+						offer.getAddress(),
 						translationHelper.dateTime(request.getStartTime(), lang)
 						};
 				break;
