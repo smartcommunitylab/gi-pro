@@ -408,6 +408,9 @@ public class RepositoryManager {
 					Criteria.where("endTime").gte(new Date(startTime)));
 			criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
 		}
+		if (StringUtils.hasText(serviceType)) {
+			criteria.and("serviceType").is(serviceType);
+		}
 		if (StringUtils.hasText(area)) {
 			criteria.and("area").is(area);
 		}
@@ -570,8 +573,11 @@ public class RepositoryManager {
 	public List<ServiceRequest> getServiceRequests(String applicationId, String professionalId,
 			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("requesterId").is(professionalId).and("serviceType").is(serviceType)
+				.and("requesterId").is(professionalId)
 				.and("state").ne(Const.STATE_DELETED);
+		if (StringUtils.hasText(serviceType)) {
+			criteria.and("serviceType").is(serviceType);
+		}
 		if((timeFrom != null) && (timeTo != null)) {
 			criteria = criteria.andOperator(
 				new Criteria("startTime").gte(new Date(timeFrom)),
