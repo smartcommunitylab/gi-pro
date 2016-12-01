@@ -242,13 +242,13 @@ public class RepositoryManager {
 				break;
 			}
 			case Const.NT_NEW_SERVICE_REQUEST: {
+				ServiceOffer offer = getServiceOfferById(applicationId, serviceOfferId);
 				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
 				Professional p = findProfessionalById(applicationId, request.getRequesterId());
-				Poi poi = findPoiById(applicationId, request.getPoiId());
 				params = new String[]{ 
 						p.getSurname(), 
 						p.getName(), 
-						poi.getName(),
+						offer.getAddress(),
 						translationHelper.dateTime(request.getStartTime(), lang)
 						};
 				break;
