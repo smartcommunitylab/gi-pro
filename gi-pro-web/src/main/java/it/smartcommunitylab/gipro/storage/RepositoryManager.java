@@ -599,7 +599,35 @@ public class RepositoryManager {
 		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
 		return result;
 	}
-
+	public List<ServiceRequest> getServiceRequestsToMe(String applicationId, String professionalId,
+			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("professionalId").is(professionalId)
+				.and("state").ne(Const.STATE_DELETED);
+		if (StringUtils.hasText(serviceType)) {
+			criteria.and("serviceType").is(serviceType);
+		}
+		if((timeFrom != null) && (timeTo != null)) {
+			criteria = criteria.andOperator(
+				new Criteria("startTime").gte(new Date(timeFrom)),
+				new Criteria("startTime").lte(new Date(timeTo))
+			);
+		} else if(timeFrom != null) {
+			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timeFrom)));
+		} else if(timeTo != null) {
+			criteria = criteria.andOperator(new Criteria("startTime").lte(new Date(timeTo)));
+		}
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.DESC, "startTime"));
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
+		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
+		return result;
+	}
 	public ServiceOffer deleteServiceOffer(String applicationId, String objectId,
 			String professionalId) {
 		ServiceOffer result = null;

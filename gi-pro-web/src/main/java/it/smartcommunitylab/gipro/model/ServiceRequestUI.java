@@ -14,6 +14,7 @@ public class ServiceRequestUI {
 	private boolean privateRequest;
 	private String state;
 	private Professional requester;
+	private Professional professional;
 	private Map<String, ServiceApplication> applicants = new HashMap<String, ServiceApplication>();
 	private List<String> recipients = Lists.newArrayList();
 	private Map<String, Object> customProperties = new HashMap<String, Object>();
@@ -105,6 +106,11 @@ public class ServiceRequestUI {
 	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
-
+	public Professional getProfessional() {
+		return professional;
+	}
+	public void setProfessional(Professional professional) {
+		this.professional = professional;
+	}
 	
 }
