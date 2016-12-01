@@ -1107,8 +1107,10 @@ public class RepositoryManager {
 		criteria = new Criteria("applicationId").is(applicationId)
 				.and("pec").is(pec);
 		query = new Query(criteria);
-		filterProfessionalFields(query);
+//		filterProfessionalFields(query);
+		
 		Professional professional = mongoTemplate.findOne(query, Professional.class);
+		professional.setPasswordHash(null);
 		return professional;
 	}
 
