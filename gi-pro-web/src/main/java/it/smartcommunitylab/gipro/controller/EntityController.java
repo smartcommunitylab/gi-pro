@@ -84,7 +84,7 @@ public class EntityController {
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String professionalId = Utils.getContextProfessionalId();
 
-		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
+		Professional profile = storageManager.findAndUpdateBalanceProfessionalById(applicationId, professionalId);
 		if(profile == null) {
 			logger.error(String.format("local profile not found:%s", professionalId));
 			throw new UnauthorizedException("local profile not found: " + professionalId);

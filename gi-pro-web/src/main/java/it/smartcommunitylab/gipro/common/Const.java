@@ -1,5 +1,8 @@
 package it.smartcommunitylab.gipro.common;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Const {
 	public static final String ERRORTYPE = "errorType";
 	public static final String ERRORMSG = "errorMsg";
@@ -29,5 +32,17 @@ public class Const {
 	public static final String LawyerDataIscrizioneAlbo = "LawyerDataIscrizioneAlbo";
 	public static final String LawyerCassazionista = "LawyerCassazionista";
 	public static final String LawyerOrdineCompetenza = "LawyerOrdineCompetenza";
+	
 	public static final int INIT_BALANCE = 100;
+	public static final int BALANCE_DURATION_DAYS = 30;
+	/**
+	 * @param date
+	 * @return the date of the next balance update
+	 */
+	public static Date nextBalanceUpdate(Date date) {
+		Calendar c = Calendar.getInstance();
+		if (date != null) c.setTime(date);
+		c.add(Calendar.DATE, BALANCE_DURATION_DAYS);
+		return c.getTime();
+	}
 }

@@ -131,6 +131,8 @@ public class Converter {
 		professional.setCoordinates(registration.getCoordinates());
 		professional.setType(registration.getType());
 		professional.setPasswordHash(registration.getPassword());
+		professional.setBalance(registration.getBalance());
+		professional.setNextBalanceUpdate(registration.getNextBalanceUpdate());
 		if (StringUtils.hasText(registration.getCellPhone())) {
 			professional.setCellPhone(registration.getCellPhone());
 		}

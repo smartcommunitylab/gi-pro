@@ -149,6 +149,7 @@ public class RepositoryManager {
 		professional.setCreationDate(now);
 		professional.setLastUpdate(now);
 		professional.setBalance(Const.INIT_BALANCE);
+		professional.setNextBalanceUpdate(Const.nextBalanceUpdate(new Date()));
 		mongoTemplate.save(professional);
 		return professional;
 	}
@@ -327,7 +328,30 @@ public class RepositoryManager {
 		Professional result = mongoTemplate.findOne(query, Professional.class);
 		return result;
 	}
-	
+	public Professional findAndUpdateBalanceProfessionalById(String applicationId, String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(professionalId);
+		Query query = new Query(criteria);
+		Professional result = mongoTemplate.findOne(query, Professional.class);
+		if (result != null) {
+			updateBalance(result);
+		}
+		result.setPasswordHash(null);
+		return result;
+	}
+
+	private void updateBalance(Professional p) {
+		Date now = new Date();
+		if (p.getNextBalanceUpdate() == null || p.getNextBalanceUpdate().before(now)) {
+			Date next = Const.nextBalanceUpdate(p.getNextBalanceUpdate());
+			while (next.before(now)) {
+				next = Const.nextBalanceUpdate(next);
+			}
+			p.setNextBalanceUpdate(next);
+			mongoTemplate.save(p);
+		}
+	}
+
 	public Professional findProfessionalByPEC(String applicationId, String pec) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("pec").is(pec);
@@ -429,7 +453,7 @@ public class RepositoryManager {
 
 	public ServiceRequest saveServiceRequest(ServiceRequest serviceRequest) throws EntityNotFoundException, InsufficientBalanceException {
 		// check balance
-		Professional requester = findProfessionalById(serviceRequest.getApplicationId(), serviceRequest.getRequesterId());
+		Professional requester = findAndUpdateBalanceProfessionalById(serviceRequest.getApplicationId(), serviceRequest.getRequesterId());
 		if (requester == null) throw new EntityNotFoundException("No requester found");
 		
 		ServiceOffer offer = getServiceOfferById(serviceRequest.getApplicationId(), serviceRequest.getOfferId());
@@ -976,6 +1000,8 @@ public class RepositoryManager {
 		update.set("confirmed", Boolean.TRUE);
 		update.set("confirmationKey", null);
 		update.set("confirmationDeadline", null);
+		update.set("balance", Const.INIT_BALANCE);
+		update.set("balanceNextUpdate", Const.nextBalanceUpdate(new Date()));
 		update.set("lastUpdate", now);
 		mongoTemplate.updateFirst(query, update, Registration.class);
 		dbRegistration.setConfirmed(true);
