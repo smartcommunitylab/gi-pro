@@ -12,6 +12,7 @@ public class ServiceRequestUI {
 	private Poi poi;
 	private Date startTime;
 	private boolean privateRequest;
+	private String offerId;
 	private String state;
 	private Professional requester;
 	private Professional professional;
@@ -112,5 +113,10 @@ public class ServiceRequestUI {
 	public void setProfessional(Professional professional) {
 		this.professional = professional;
 	}
-	
+	public String getOfferId() {
+		return offerId;
+	}
+	public void setOfferId(String offerId) {
+		this.offerId = offerId;
+	}
 }

@@ -84,6 +84,7 @@ public class Converter {
 			serviceRequestUI.setArea(serviceRequest.getArea());
 			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
 			serviceRequestUI.setCost(serviceRequest.getCost());
+			serviceRequestUI.setOfferId(serviceRequest.getOfferId());
 			if (serviceRequest.getPoiId() != null) {
 				Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 				serviceRequestUI.setPoi(poi);
@@ -118,6 +119,7 @@ public class Converter {
 			serviceRequestUI.setArea(serviceRequest.getArea());
 			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
 			serviceRequestUI.setCost(serviceRequest.getCost());
+			serviceRequestUI.setOfferId(serviceRequest.getOfferId());
 			if (serviceRequest.getPoiId() != null) {
 				Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 				serviceRequestUI.setPoi(poi);
