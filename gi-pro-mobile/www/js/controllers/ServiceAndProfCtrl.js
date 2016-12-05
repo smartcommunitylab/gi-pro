@@ -32,20 +32,6 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     $rootScope.searchBar.show = !$rootScope.searchBar.show;
   }
 
-  $scope.openProfessionalDetails = function (professional) {
-    if (Login.userIsLogged()) {
-      $state.go("app.professionalWithServices", {
-        'objectId': professional.objectId,
-        'professional': professional
-      });
-    } else {
-      $state.go("app.professionalDetails", {
-        'objectId': professional.objectId,
-        'professional': professional
-      });
-    }
-  }
-
   $scope.openServiceDetails = function (service) {
     $scope.goTo('app.servicedetails', {
       'service': service,

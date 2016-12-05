@@ -10260,6 +10260,16 @@ input[readonly] {
     .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content div {
       white-space: normal;
       font-size: 14px; }
+    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select,
+    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select {
+      padding-left: 0; }
+      .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label,
+      .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label {
+        width: 100%;
+        font-weight: normal; }
+      .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label.placeholder,
+      .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label.placeholder {
+        color: #aaaaaa; }
   .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content.ng-hide,
   .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content.ng-hide {
     line-height: 0px;
@@ -10272,6 +10282,10 @@ input[readonly] {
 .prof-details .prof-services .list-accordion .list .item-accordion:not(:first-child),
 .service-details .prof-services .list-accordion .list .item-accordion:not(:first-child) {
   margin-top: 16px; }
+
+.prof-details .prof-services .input-label .address,
+.service-details .prof-services .input-label .address {
+  font-style: italic; }
 
 placeautocomplete {
   position: relative; }
@@ -10317,6 +10331,8 @@ placeautocomplete {
   padding: 10px 0;
   /*text-align: center;*/
   /*font-size: larger;*/ }
+  .details .datetime .title {
+    text-transform: uppercase; }
   .details .datetime .date,
   .details .datetime .time {
     font-weight: bold; }
@@ -10355,6 +10371,14 @@ placeautocomplete {
     padding-top: 5px; }
   .details .professional ul .email {
     padding-top: 5px; }
+
+.details .info .item {
+  border: none; }
+
+.details .state {
+  font-style: italic; }
+  .details .state .label {
+    font-style: normal; }
 
 .details .poi {
   padding-top: 10px; }
@@ -10442,6 +10466,27 @@ placeautocomplete {
 
 .modal-pois .list-container > .list {
   margin-top: 5px; }
+
+.modal-newrequest .list .item-input {
+  border: 0; }
+  .modal-newrequest .list .item-input span.input-label {
+    text-transform: uppercase; }
+  .modal-newrequest .list .item-input span.input-value {
+    padding: 0 5px;
+    border-bottom: 1px solid #444; }
+
+.modal-newrequest .subtitle {
+  margin-top: 32px;
+  padding-left: 16px;
+  font-size: 16px;
+  text-align: left;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #444; }
+
+.modal-newrequest .subtype .cost {
+  float: right;
+  font-style: italic; }
 
 .popup-types .popup-head,
 .popup-regions .popup-head {

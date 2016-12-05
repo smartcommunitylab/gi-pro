@@ -1,9 +1,30 @@
-<ion-modal-view class="modal-filter has-header">
+<ion-modal-view class="modal-filter has-header modal-newrequest">
   <ion-header-bar>
     <div class="title">{{'service_request' | translate}}</div>
     <button class="button button-stable button-clear icon ion-close" ng-click="closeNewRequestModal()"></button>
   </ion-header-bar>
   <ion-content>
-    <div class="row"></div>
+    <ion-list type="">
+      <ion-item class="item-input" ng-click="openDatePicker()">
+        <span class="input-label">{{'newrequest_date' | translate}}:</span> <span class="input-value">{{newRequest.startTime | date:'dd/MM/yyyy'}}</span>
+      </ion-item>
+      <ion-item class="item-input" ng-click="openTimePicker()">
+        <span class="input-label">{{'newrequest_time' | translate}}:</span> <span class="input-value">{{newRequestForm.startTime | date:'HH:mm':'UTC'}}</span>
+      </ion-item>
+    <div class="subtitle" ng-if="subtypes">{{'newrequest_subtypes' | translate}}:</div>
+    </ion-list>
+    <ion-list type="list-inset">
+      <ion-radio class="subtype" ng-repeat="subtype in subtypes" ng-model="newRequestForm.subtype" ng-value="subtype">
+        {{subtype.name}} <span class="cost" ng-if="subtype.cost">€ {{subtype.cost}}</span>
+      </ion-radio>
+    </ion-list>
+    <div class="row">
+      <div class="col col-50">
+        <button class="button button-block button-calm" ng-click="closeNewRequestModal()">{{'cancel' | translate}}</button>
+      </div>
+      <div class="col col-50">
+        <button class="button button-block button-energized" ng-click="sendNewRequest()">{{'newrequest_send' | translate}}</button>
+      </div>
+    </div>
   </ion-content>
 </ion-modal-view>

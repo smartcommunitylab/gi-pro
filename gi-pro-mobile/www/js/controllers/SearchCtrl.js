@@ -49,7 +49,7 @@ angular.module('gi-pro.controllers.search', [])
         var startTime = $scope.searchOffer.date + $scope.searchOffer.time;
 
         // FIXME dev only: hardcoded professionalId
-        DataSrv.searchOffers(Login.getUser().objectId, $scope.searchOffer.poi.objectId, Config.SERVICE_TYPE, startTime).then(
+        DataSrv.searchOffers(Login.getUser().objectId, $scope.searchOffer.poi.objectId, startTime).then(
             function (results) {
                 $scope.goTo('app.searchresults', {
                     'results': results

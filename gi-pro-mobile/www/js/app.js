@@ -17,7 +17,7 @@ angular.module('gi-pro', [
   'gi-pro.services.data',
   'gi-pro.controllers.main',
   'gi-pro.controllers.login',
-  'gi-pro.controllers.reqandoffer',
+  'gi-pro.controllers.requestsandoffers',
   'gi-pro.controllers.serviceandprof',
   'gi-pro.controllers.details',
   'gi-pro.controllers.profile',
@@ -124,12 +124,12 @@ angular.module('gi-pro', [
     }
   })
 
-  .state('app.reqAndOffer', {
-    url: '/reqandoffert',
+  .state('app.requestsAndOffers', {
+    url: '/requestsandoffers',
     views: {
       'menuContent': {
-        templateUrl: 'templates/reqAndOffer.html',
-        controller: 'ReqAndOffCtrl'
+        templateUrl: 'templates/requestsAndOffers.html',
+        controller: 'RequestAndOffersCtrl'
       }
     }
   })
@@ -189,7 +189,6 @@ angular.module('gi-pro', [
   })
   */
 
-  /*
   .state('app.requestdetails', {
     url: '/request/{objectId}',
     params: {
@@ -203,7 +202,6 @@ angular.module('gi-pro', [
       }
     }
   })
-  */
 
   /*
   .state('app.offerdetails', {

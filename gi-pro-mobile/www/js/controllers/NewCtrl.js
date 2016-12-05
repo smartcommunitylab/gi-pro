@@ -52,7 +52,6 @@ angular.module('gi-pro.controllers.new', [])
             poiId: $scope.newRequest.poi.objectId,
             privateRequest: false,
             requesterId: Login.getUser().objectId,
-            serviceType: Config.SERVICE_TYPE,
             startTime: $scope.newRequest.date + $scope.newRequest.time,
             customProperties: {},
         };
@@ -60,7 +59,7 @@ angular.module('gi-pro.controllers.new', [])
         DataSrv.createRequestPublic(serviceRequest).then(
             function (data) {
                 Utils.loaded();
-                $scope.goTo('app.reqAndOffer', {
+                $scope.goTo('app.requestsAndOffers', {
                     'reload': true,
                     'tab': 0
                 }, false, true, true, true);
@@ -129,7 +128,6 @@ angular.module('gi-pro.controllers.new', [])
 
     $scope.createNewOffer = function () {
         var serviceOffer = {
-            serviceType: Config.SERVICE_TYPE,
             poiId: $scope.newOffer.poi.objectId,
             professionalId: Login.getUser().objectId
         };
@@ -144,7 +142,7 @@ angular.module('gi-pro.controllers.new', [])
             function (data) {
                 Utils.loaded();
                 unregisterNewOfferWatch();
-                $scope.goTo('app.reqAndOffer', {
+                $scope.goTo('app.requestsAndOffers', {
                     'reload': true,
                     'tab': 1
                 }, false, true, true, true);

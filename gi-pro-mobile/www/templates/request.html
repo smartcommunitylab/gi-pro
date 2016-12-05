@@ -1,59 +1,52 @@
 <ion-view view-title="{{'request_detail' | translate}}" class="request details">
-	<ion-nav-buttons side="right">
-	</ion-nav-buttons>
-
-	<ion-content class="padding">
-		<div class="professional" ng-if="!isMine()">
-			<div class="item item-text-wrap item-thumbnail-left">
-				<img ng-src="{{generateImageUrl(request.requester.imageUrl)}}" />
-				<ul>
-					<li class="name">{{request.requester.surname}} {{request.requester.name}}</li>
-					<!--<li class="type">{{'professional_type_' + request.requester.type | translate}}</li>-->
-					<li class="type">{{request.requester.type}}</li>
-				</ul>
-			</div>
-			<ul>
-				<li class="address"><i class="icon ion-location"></i>{{request.requester.address}}</li>
-				<li class="phone"><i class="icon ion-android-call"></i><a ng-href="tel:{{request.requester.phone}}">{{request.requester.phone}}</a></li>
-				<li class="phone" ng-if="!!request.requester.cellPhone"><i class="icon ion-iphone"></i><a ng-href="tel:{{request.requester.cellPhone}}">{{request.requester.cellPhone}}</a></li>
-				<li class="email"><i class="icon ion-email"></i><a ng-href="mailto:{{request.requester.mail}}">{{request.requester.mail}}</a></li>
-				<li class="email"><i class="icon ion-email-unread"></i><a ng-href="mailto:{{request.requester.pec}}">{{request.requester.pec}}</a></li>
-			</ul>
-		</div>
-
-		<div class="poi">
-			<div>{{'request_detail_poi' | translate}}:</div>
-			<ul>
-				<!--<li class="type">{{request.poi.type}}</li>-->
-				<li class="name">{{request.poi.name}}</li>
-				<li class="description">{{request.poi.description}}</li>
-				<li class="address">{{request.poi.address}}</li>
-			</ul>
-		</div>
-
-		<div class="datetime" ng-if="!!request.startTime">
-			<div>{{'request_detail_date' | translate}} <span class="date">{{request.startTime | date:'longDate'}}</span>, <span class="time">{{request.startTime | date:'shortTime'}}</span></div>
-		</div>
-
-		<div ng-if="matchingOffers != null  && matchingOffers.length > 0" class="matches">
-			<span>{{'matching_offers' | translate}}</span>
-			<div class="card" ng-repeat="offer in matchingOffers" ng-if="!!matchingOffers && matchingOffers.length > 0" ng-click="openOfferDetails(offer)">
-				<div class="item item-text-wrap item-thumbnail-left" ng-class="{'item-thumbnail-left': !!offer.professional.imageUrl}">
-					<img ng-src="{{generateImageUrl(offer.professional.imageUrl)}}" />
-					<h2>{{offer.professional.surname}} {{offer.professional.name}}</h2>
-					<!--<h3 ng-if="!!offer.startTime">{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}}</h3>-->
-					<ul>
-						<li class="phone"><i class="icon ion-android-call"></i>{{offer.professional.phone}}</li>
-						<li class="email"><i class="icon ion-email"></i>{{offer.professional.mail}}</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</ion-content>
-
-	<ion-footer-bar ng-if="isEditable()">
-		<button class="button button-assertive button-block" ng-click="deleteRequest()">
-			{{'delete' | translate}}
-		</button>
-	</ion-footer-bar>
+  <ion-nav-buttons side="right">
+  </ion-nav-buttons>
+  <ion-content class="padding">
+    <div class="professional" ng-if="isMine()">
+      <div class="row">
+        <div class="col col-33">
+          <div class="profile-image-container">
+            <div class="profile-image">
+              <img ng-if="request.professional.imageUrl" ng-src="{{request.professional.imageUrl}}">
+            </div>
+          </div>
+        </div>
+        <div class="col col-67">
+          <ul>
+            <li class="name">{{request.professional.name}} {{request.professional.surname}}</li>
+            <li class="toprofile"><a ng-click="openProfessionalDetails(request.professional)">{{'view_profile' | translate}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="list">
+        <div class="item item-icon-left">
+          <i class="icon ion-location"></i>
+          <span>{{request.address}}</span>
+        </div>
+        <div class="item item-icon-left">
+          <i class="icon ion-social-euro"></i>
+          <span>{{request.cost ? request.cost : ('cost_free' | translate)}}</span>
+        </div>
+        <div class="item item-icon-left" ng-if="offer && offer.note">
+          <i class="icon ion-information-circled"></i>
+          <span>{{offer.note}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="datetime" ng-if="request.startTime">
+      <div class="title">{{'request_detail_request' | translate}}</div>
+      <div>{{'request_detail_date' | translate}} <span class="date">{{request.startTime | date:'longDate'}}</span> {{'request_detail_time'
+        | translate}}
+        <span class="time">{{request.startTime | date:'shortTime'}}</span>
+      </div>
+    </div>
+    <div class="state">
+      <span class="label">{{'request_detail_state' | translate}}:</span> {{'state_long_' + request.state | translate}}
+    </div>
+  </ion-content>
+  <ion-footer-bar>
+    <button class="button button-assertive button-block" ng-if="isEditable()" ng-click="deleteRequest()">{{'delete' | translate}}</button>
+  </ion-footer-bar>
 </ion-view>

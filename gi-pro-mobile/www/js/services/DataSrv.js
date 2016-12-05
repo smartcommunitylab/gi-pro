@@ -324,7 +324,7 @@ angular.module('gi-pro.services.data', [])
   }
 
   /* get offers */
-  dataService.getOffers = function (professionalId, serviceType, timeFrom, timeTo, withTime, page, limit) {
+  dataService.getOffers = function (professionalId, timeFrom, timeTo, withTime, page, limit) {
     var deferred = $q.defer();
 
     var httpConfWithParams = Config.getHTTPConfig();
@@ -334,13 +334,6 @@ angular.module('gi-pro.services.data', [])
     if (!professionalId || !angular.isString(professionalId)) {
       deferred.reject('Invalid professionalId');
     }
-
-    // serviceType is required
-    if (!serviceType || !angular.isString(serviceType)) {
-      deferred.reject('Invalid serviceType');
-    }
-
-    httpConfWithParams.params['serviceType'] = serviceType;
 
     if (!!timeFrom) {
       httpConfWithParams.params['timeFrom'] = timeFrom;
@@ -421,7 +414,7 @@ angular.module('gi-pro.services.data', [])
   };
 
   /* search offers */
-  dataService.searchOffers = function (professionalId, poiId, serviceType, startTime, page, limit) {
+  dataService.searchOffers = function (professionalId, poiId, startTime, page, limit) {
     var deferred = $q.defer();
 
     var httpConfWithParams = Config.getHTTPConfig();
@@ -437,18 +430,12 @@ angular.module('gi-pro.services.data', [])
       deferred.reject('Invalid poiId');
     }
 
-    // serviceType is required
-    if (!serviceType || !angular.isString(serviceType)) {
-      deferred.reject('Invalid serviceType');
-    }
-
     // startTime is required
     if (!startTime || !angular.isNumber(startTime)) {
       deferred.reject('Invalid startTime');
     }
 
     httpConfWithParams.params['poiId'] = poiId;
-    httpConfWithParams.params['serviceType'] = serviceType;
     httpConfWithParams.params['startTime'] = startTime;
 
     if (page) {
@@ -473,7 +460,7 @@ angular.module('gi-pro.services.data', [])
   };
 
   /* get requests */
-  dataService.getRequests = function (professionalId, serviceType, timeFrom, timeTo, page, limit) {
+  dataService.getRequests = function (professionalId, timeFrom, timeTo, page, limit) {
     var deferred = $q.defer();
 
     var httpConfWithParams = Config.getHTTPConfig();
@@ -483,13 +470,6 @@ angular.module('gi-pro.services.data', [])
     if (!professionalId || !angular.isString(professionalId)) {
       deferred.reject('Invalid professionalId');
     }
-
-    // serviceType is required
-    if (!serviceType || !angular.isString(serviceType)) {
-      deferred.reject('Invalid serviceType');
-    }
-
-    httpConfWithParams.params['serviceType'] = serviceType;
 
     if (!!timeFrom) {
       httpConfWithParams.params['timeFrom'] = timeFrom;
@@ -521,10 +501,10 @@ angular.module('gi-pro.services.data', [])
   };
 
   /* create request */
-  dataService.createRequestPublic = function (serviceRequest) {
+  dataService.createRequest = function (serviceRequest) {
     var deferred = $q.defer();
 
-    $http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/public', serviceRequest, Config.getHTTPConfig()).then(
+    $http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request', serviceRequest, Config.getHTTPConfig()).then(
       function (response) {
         // request created
         deferred.resolve(response.data);
@@ -657,7 +637,7 @@ angular.module('gi-pro.services.data', [])
 
     // objectId is required
     if (!objectId || !angular.isString(objectId)) {
-      deferred.reject('Invalid serviceType');
+      deferred.reject('Invalid objectId');
     }
 
     $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + professionalId + '/' + objectId, httpConfWithParams).then(
@@ -687,7 +667,7 @@ angular.module('gi-pro.services.data', [])
 
     // objectId is required
     if (!objectId || !angular.isString(objectId)) {
-      deferred.reject('Invalid serviceType');
+      deferred.reject('Invalid objectId');
     }
 
     $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + professionalId + '/' + objectId, httpConfWithParams).then(
