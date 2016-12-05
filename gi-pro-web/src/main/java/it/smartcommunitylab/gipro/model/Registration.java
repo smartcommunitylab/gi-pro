@@ -43,6 +43,9 @@ public class Registration extends BaseObject {
 
 	private String cellPhone;
 	
+	private int balance;
+	private Date nextBalanceUpdate;
+
 	public String getName() {
 		return name;
 	}
@@ -151,5 +154,18 @@ public class Registration extends BaseObject {
 	public void setCoordinates(double[] coordinates) {
 		this.coordinates = coordinates;
 	}
+	public int getBalance() {
+		return balance;
+	}
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+	public Date getNextBalanceUpdate() {
+		return nextBalanceUpdate;
+	}
+	public void setNextBalanceUpdate(Date nextBalanceUpdate) {
+		this.nextBalanceUpdate = nextBalanceUpdate;
+	}
 
+	
 }

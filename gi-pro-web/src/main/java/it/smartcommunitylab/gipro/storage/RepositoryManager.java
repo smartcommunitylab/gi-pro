@@ -149,6 +149,7 @@ public class RepositoryManager {
 		professional.setCreationDate(now);
 		professional.setLastUpdate(now);
 		professional.setBalance(Const.INIT_BALANCE);
+		professional.setNextBalanceUpdate(Const.nextBalanceUpdate(new Date()));
 		mongoTemplate.save(professional);
 		return professional;
 	}
@@ -232,23 +233,22 @@ public class RepositoryManager {
 				ServiceOffer offer = getServiceOfferById(applicationId, serviceOfferId);
 				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
 				Professional p = findProfessionalById(applicationId, offer.getProfessionalId());
-				Poi poi = findPoiById(applicationId, request.getPoiId());
 				params = new String[]{ 
 						p.getSurname(), 
 						p.getName(), 
-						poi.getName(),
+						offer.getAddress(),
 						translationHelper.dateTime(request.getStartTime(), lang)
 						};
 				break;
 			}
 			case Const.NT_NEW_SERVICE_REQUEST: {
+				ServiceOffer offer = getServiceOfferById(applicationId, serviceOfferId);
 				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
 				Professional p = findProfessionalById(applicationId, request.getRequesterId());
-				Poi poi = findPoiById(applicationId, request.getPoiId());
 				params = new String[]{ 
 						p.getSurname(), 
 						p.getName(), 
-						poi.getName(),
+						offer.getAddress(),
 						translationHelper.dateTime(request.getStartTime(), lang)
 						};
 				break;
@@ -327,7 +327,30 @@ public class RepositoryManager {
 		Professional result = mongoTemplate.findOne(query, Professional.class);
 		return result;
 	}
-	
+	public Professional findAndUpdateBalanceProfessionalById(String applicationId, String professionalId) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(professionalId);
+		Query query = new Query(criteria);
+		Professional result = mongoTemplate.findOne(query, Professional.class);
+		if (result != null) {
+			updateBalance(result);
+		}
+		result.setPasswordHash(null);
+		return result;
+	}
+
+	private void updateBalance(Professional p) {
+		Date now = new Date();
+		if (p.getNextBalanceUpdate() == null || p.getNextBalanceUpdate().before(now)) {
+			Date next = Const.nextBalanceUpdate(p.getNextBalanceUpdate());
+			while (next.before(now)) {
+				next = Const.nextBalanceUpdate(next);
+			}
+			p.setNextBalanceUpdate(next);
+			mongoTemplate.save(p);
+		}
+	}
+
 	public Professional findProfessionalByPEC(String applicationId, String pec) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("pec").is(pec);
@@ -385,6 +408,9 @@ public class RepositoryManager {
 					Criteria.where("endTime").gte(new Date(startTime)));
 			criteria = criteria.orOperator(new Criteria("startTime").exists(false), new Criteria("startTime").is(null), timeCriteria);
 		}
+		if (StringUtils.hasText(serviceType)) {
+			criteria.and("serviceType").is(serviceType);
+		}
 		if (StringUtils.hasText(area)) {
 			criteria.and("area").is(area);
 		}
@@ -429,7 +455,7 @@ public class RepositoryManager {
 
 	public ServiceRequest saveServiceRequest(ServiceRequest serviceRequest) throws EntityNotFoundException, InsufficientBalanceException {
 		// check balance
-		Professional requester = findProfessionalById(serviceRequest.getApplicationId(), serviceRequest.getRequesterId());
+		Professional requester = findAndUpdateBalanceProfessionalById(serviceRequest.getApplicationId(), serviceRequest.getRequesterId());
 		if (requester == null) throw new EntityNotFoundException("No requester found");
 		
 		ServiceOffer offer = getServiceOfferById(serviceRequest.getApplicationId(), serviceRequest.getOfferId());
@@ -453,6 +479,9 @@ public class RepositoryManager {
 		Date now = new Date();
 		serviceRequest.setCreationDate(now);
 		serviceRequest.setLastUpdate(now);
+		serviceRequest.setAddress(offer.getAddress());
+		serviceRequest.setArea(offer.getArea());
+		serviceRequest.setPoiId(offer.getPoiId());
 		
 		mongoTemplate.save(serviceRequest);
 		
@@ -544,8 +573,11 @@ public class RepositoryManager {
 	public List<ServiceRequest> getServiceRequests(String applicationId, String professionalId,
 			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("requesterId").is(professionalId).and("serviceType").is(serviceType)
+				.and("requesterId").is(professionalId)
 				.and("state").ne(Const.STATE_DELETED);
+		if (StringUtils.hasText(serviceType)) {
+			criteria.and("serviceType").is(serviceType);
+		}
 		if((timeFrom != null) && (timeTo != null)) {
 			criteria = criteria.andOperator(
 				new Criteria("startTime").gte(new Date(timeFrom)),
@@ -567,7 +599,35 @@ public class RepositoryManager {
 		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
 		return result;
 	}
-
+	public List<ServiceRequest> getServiceRequestsToMe(String applicationId, String professionalId,
+			String serviceType, Long timeFrom, Long timeTo, Integer page, Integer limit) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("professionalId").is(professionalId)
+				.and("state").ne(Const.STATE_DELETED);
+		if (StringUtils.hasText(serviceType)) {
+			criteria.and("serviceType").is(serviceType);
+		}
+		if((timeFrom != null) && (timeTo != null)) {
+			criteria = criteria.andOperator(
+				new Criteria("startTime").gte(new Date(timeFrom)),
+				new Criteria("startTime").lte(new Date(timeTo))
+			);
+		} else if(timeFrom != null) {
+			criteria = criteria.andOperator(new Criteria("startTime").gte(new Date(timeFrom)));
+		} else if(timeTo != null) {
+			criteria = criteria.andOperator(new Criteria("startTime").lte(new Date(timeTo)));
+		}
+		Query query = new Query(criteria);
+		query.with(new Sort(Sort.Direction.DESC, "startTime"));
+		if(limit != null) {
+			query.limit(limit);
+		}
+		if(page != null) {
+			query.skip((page - 1) * limit);
+		}
+		List<ServiceRequest> result = mongoTemplate.find(query, ServiceRequest.class);
+		return result;
+	}
 	public ServiceOffer deleteServiceOffer(String applicationId, String objectId,
 			String professionalId) {
 		ServiceOffer result = null;
@@ -976,6 +1036,8 @@ public class RepositoryManager {
 		update.set("confirmed", Boolean.TRUE);
 		update.set("confirmationKey", null);
 		update.set("confirmationDeadline", null);
+		update.set("balance", Const.INIT_BALANCE);
+		update.set("balanceNextUpdate", Const.nextBalanceUpdate(new Date()));
 		update.set("lastUpdate", now);
 		mongoTemplate.updateFirst(query, update, Registration.class);
 		dbRegistration.setConfirmed(true);
@@ -1081,8 +1143,10 @@ public class RepositoryManager {
 		criteria = new Criteria("applicationId").is(applicationId)
 				.and("pec").is(pec);
 		query = new Query(criteria);
-		filterProfessionalFields(query);
+//		filterProfessionalFields(query);
+		
 		Professional professional = mongoTemplate.findOne(query, Professional.class);
+		professional.setPasswordHash(null);
 		return professional;
 	}
 

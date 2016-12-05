@@ -1,5 +1,6 @@
 package it.smartcommunitylab.gipro.model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class Professional extends BaseObject {
 	private String lang;
 	
 	private int balance;
+	private Date nextBalanceUpdate;
 	
 	private String cellPhone;
 	private String imageUrl;
@@ -147,6 +149,12 @@ public class Professional extends BaseObject {
 	}
 	public void setCoordinates(double[] coordinates) {
 		this.coordinates = coordinates;
+	}
+	public Date getNextBalanceUpdate() {
+		return nextBalanceUpdate;
+	}
+	public void setNextBalanceUpdate(Date nextBalanceUpdate) {
+		this.nextBalanceUpdate = nextBalanceUpdate;
 	}
 	
 }

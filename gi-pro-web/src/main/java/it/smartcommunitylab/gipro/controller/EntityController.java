@@ -84,7 +84,7 @@ public class EntityController {
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String professionalId = Utils.getContextProfessionalId();
 
-		Professional profile = storageManager.findProfessionalById(applicationId, professionalId);
+		Professional profile = storageManager.findAndUpdateBalanceProfessionalById(applicationId, professionalId);
 		if(profile == null) {
 			logger.error(String.format("local profile not found:%s", professionalId));
 			throw new UnauthorizedException("local profile not found: " + professionalId);
@@ -307,7 +307,7 @@ public class EntityController {
 	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceRequestUI> getMyServiceRequests(@PathVariable String applicationId,
 			@PathVariable String professionalId,
-			@RequestParam String serviceType,
+			@RequestParam(required=false) String serviceType,
 			@RequestParam(required=false) Long timeFrom,
 			@RequestParam(required=false) Long timeTo,
 			@RequestParam(required=false) Integer page, 
@@ -325,7 +325,31 @@ public class EntityController {
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
 		}
-		List<ServiceRequestUI> resultUI = Converter.convertServiceRequest(storageManager, applicationId, result);
+		List<ServiceRequestUI> resultUI = Converter.convertServiceRequest(storageManager, applicationId, result, true);
+		return resultUI;
+	}
+	@RequestMapping(value = "/api/{applicationId}/service/request/{professionalId}/tome", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceRequestUI> getServiceRequestsToMe(@PathVariable String applicationId,
+			@PathVariable String professionalId,
+			@RequestParam(required=false) String serviceType,
+			@RequestParam(required=false) Long timeFrom,
+			@RequestParam(required=false) Long timeTo,
+			@RequestParam(required=false) Integer page, 
+			@RequestParam(required=false) Integer limit, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		professionalId = Utils.getContextProfessionalId();
+		if(page == null) {
+			page = 1;
+		}
+		if(limit == null) {
+			limit = 10;
+		}
+		List<ServiceRequest> result = storageManager.getServiceRequestsToMe(applicationId, professionalId, 
+				serviceType, timeFrom, timeTo, page, limit);
+		if(logger.isInfoEnabled()) {
+			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
+		}
+		List<ServiceRequestUI> resultUI = Converter.convertServiceRequest(storageManager, applicationId, result, false);
 		return resultUI;
 	}
 	
@@ -338,7 +362,7 @@ public class EntityController {
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("getServiceRequests[%s]:%d", applicationId, result.size()));
 		}
-		List<ServiceRequestUI> resultUI = Converter.convertServiceRequest(storageManager, applicationId, result);
+		List<ServiceRequestUI> resultUI = Converter.convertServiceRequest(storageManager, applicationId, result, false);
 		return resultUI;
 	}
 	

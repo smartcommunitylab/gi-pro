@@ -71,24 +71,30 @@ public class Converter {
 	}
 	
 	public static List<ServiceRequestUI> convertServiceRequest(RepositoryManager storageManager,
-			String applicationId, List<ServiceRequest> requestList) {
+			String applicationId, List<ServiceRequest> requestList, boolean forRequester) {
 		List<ServiceRequestUI> result = Lists.newArrayList();
 		for(ServiceRequest serviceRequest : requestList) {
 			ServiceRequestUI serviceRequestUI = new ServiceRequestUI();
-			Professional professional = storageManager.findProfessionalById(applicationId, serviceRequest.getRequesterId());
 			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
 			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
 			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
 			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
-			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
 			serviceRequestUI.setAddress(serviceRequest.getAddress());
 			serviceRequestUI.setArea(serviceRequest.getArea());
 			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
 			serviceRequestUI.setCost(serviceRequest.getCost());
+			serviceRequestUI.setOfferId(serviceRequest.getOfferId());
 			if (serviceRequest.getPoiId() != null) {
 				Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 				serviceRequestUI.setPoi(poi);
+			}
+			if (forRequester) {
+				Professional professional = storageManager.findProfessionalById(applicationId, serviceRequest.getProfessionalId());
+				serviceRequestUI.setProfessional(professional);
+			} else {
+				Professional professional = storageManager.findProfessionalById(applicationId, serviceRequest.getRequesterId());
+				serviceRequestUI.setRequester(professional);
 			}
 			result.add(serviceRequestUI);
 		}
@@ -98,17 +104,22 @@ public class Converter {
 	public static ServiceRequestUI convertServiceRequest(RepositoryManager storageManager,
 			String applicationId, ServiceRequest serviceRequest) {
 			ServiceRequestUI serviceRequestUI = new ServiceRequestUI();
-			Professional professional = storageManager.findProfessionalById(applicationId, serviceRequest.getRequesterId());
+			
+			Professional professional = storageManager.findProfessionalById(applicationId, serviceRequest.getProfessionalId());
+			serviceRequestUI.setProfessional(professional);
+			professional = storageManager.findProfessionalById(applicationId, serviceRequest.getRequesterId());
+			serviceRequestUI.setRequester(professional);
+
 			serviceRequestUI.setObjectId(serviceRequest.getObjectId()); 
 			serviceRequestUI.setServiceType(serviceRequest.getServiceType());
 			serviceRequestUI.setStartTime(serviceRequest.getStartTime());
 			serviceRequestUI.setCustomProperties(serviceRequest.getCustomProperties());
-			serviceRequestUI.setRequester(professional);
 			serviceRequestUI.setState(serviceRequest.getState());
 			serviceRequestUI.setAddress(serviceRequest.getAddress());
 			serviceRequestUI.setArea(serviceRequest.getArea());
 			serviceRequestUI.setServiceSubtype(serviceRequest.getServiceSubtype());
 			serviceRequestUI.setCost(serviceRequest.getCost());
+			serviceRequestUI.setOfferId(serviceRequest.getOfferId());
 			if (serviceRequest.getPoiId() != null) {
 				Poi poi = storageManager.findPoiById(applicationId, serviceRequest.getPoiId());
 				serviceRequestUI.setPoi(poi);
@@ -131,6 +142,8 @@ public class Converter {
 		professional.setCoordinates(registration.getCoordinates());
 		professional.setType(registration.getType());
 		professional.setPasswordHash(registration.getPassword());
+		professional.setBalance(registration.getBalance());
+		professional.setNextBalanceUpdate(registration.getNextBalanceUpdate());
 		if (StringUtils.hasText(registration.getCellPhone())) {
 			professional.setCellPhone(registration.getCellPhone());
 		}

@@ -1,0 +1,7 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Users/raman/workspace/gi-pro/gi-pro-mobile/www/js/services/LoginSrv.js",
+        "/Users/raman/workspace/gi-pro/gi-pro-mobile/www/js/controllers/HomeCtrl.js",
+        "/Users/raman/workspace/gi-pro/gi-pro-mobile/www/js/controllers/NewCtrl.js"
+    ]
+}
