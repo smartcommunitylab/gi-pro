@@ -399,6 +399,11 @@ public class EntityController {
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
+		
+		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
+		if (req == null) return null;
+		
+		if (!req.getProfessionalId().equals(professionalId) && !req.getRequesterId().equals(professionalId)) throw new UnauthorizedException("Only service provider or requester can delete");
 		ServiceRequest result = storageManager.deleteServiceRequest(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("deleteServiceRequest[%s]:%s - %s", applicationId, objectId, professionalId));

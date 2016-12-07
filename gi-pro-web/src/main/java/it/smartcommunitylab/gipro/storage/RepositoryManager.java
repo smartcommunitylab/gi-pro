@@ -696,24 +696,22 @@ public class RepositoryManager {
 	}
 	
 	
-	public ServiceRequest deleteServiceRequest(String applicationId, String objectId, String professionalId) {
+	public ServiceRequest deleteServiceRequest(String applicationId, String objectId, String professionalId) throws InvalidStateException {
 		ServiceRequest result = null;
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("objectId").is(objectId)
 				.and("requesterId").is(professionalId);
 		Query query = new Query(criteria);
-		try {
-			result = mongoTemplate.findOne(query, ServiceRequest.class);
-			if(result != null) {
-				if(!Const.STATE_ACCEPTED.equals(result.getState())) {
-					mongoTemplate.findAndRemove(query, ServiceRequest.class);
-				} else {
-					throw new InvalidStateException("Already accepted");
-				}
+		result = mongoTemplate.findOne(query, ServiceRequest.class);
+		if(result != null) {
+			if (result.getRequesterId().equals(professionalId) && !Const.STATE_OPEN.equals(result.getState())) {
+				throw new InvalidStateException("Already accepted/rejected");
 			}
-		} catch (Exception e) {
-			logger.warn("deleteServiceOffer:" + e.getMessage());
-		} 
+			if (result.getProfessionalId().equals(professionalId) && !Const.STATE_ACCEPTED.equals(result.getState())) {
+				throw new InvalidStateException("Not yet accepted/rejected");
+			}
+			mongoTemplate.findAndRemove(query, ServiceRequest.class);
+		}
 		return result;
 	}
 
