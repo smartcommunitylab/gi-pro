@@ -413,7 +413,7 @@ public class EntityController {
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
-		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can delete");
+		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can accept");
 		
 		ServiceRequest result = storageManager.acceptServiceRequest(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
@@ -429,7 +429,7 @@ public class EntityController {
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
-		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can delete");
+		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can reject");
 		
 		ServiceRequest result = storageManager.rejectServiceRequest(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
