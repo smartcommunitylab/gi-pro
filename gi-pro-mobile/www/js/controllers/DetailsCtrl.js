@@ -5,21 +5,28 @@ angular.module('gi-pro.controllers.details', [])
   $scope.matchingOffers = null;
 
   $scope.isMine = function () {
-    return $scope.request != null && $scope.request.requester.objectId == Login.getUser().objectId;
+    if ($scope.request) {
+      var mine = $scope.request.professional.objectId !== Login.getUser().objectId
+      return mine
+    }
+    return null
   };
 
   $scope.isEditable = function () {
-    return $scope.isMine() && (!$scope.request.startTime || $scope.request.startTime > moment().startOf('date').valueOf());
+    if ($scope.request) {
+      var today = moment().startOf('date').valueOf()
+      return $scope.isMine() && (!$scope.request.startTime || $scope.request.startTime > moment().startOf('date').valueOf());
+    }
+    return null
   };
 
   var setRequest = function (req) {
     $scope.request = req;
 
-    if ($scope.isMine()) {
-      DataSrv.getMatchingOffers(Login.getUser().objectId, req.objectId).then(
-        function (offers) {
-          $scope.matchingOffers = offers;
-          NotifDB.markAsReadByRequestId($scope.request.objectId);
+    if ($scope.request.offerId) {
+      DataSrv.getOfferById($scope.request.professional.objectId, $scope.request.offerId).then(
+        function (offer) {
+          $scope.offer = offer;
         },
         Utils.commError
       );
@@ -28,7 +35,7 @@ angular.module('gi-pro.controllers.details', [])
 
   if (!!$stateParams['request']) {
     setRequest($stateParams['request']);
-  } else {
+  } else if (!!$stateParams['objectId']) {
     Utils.loading();
     DataSrv.getRequestById(Login.getUser().objectId, $stateParams.objectId).then(
       function (request) {
@@ -61,7 +68,7 @@ angular.module('gi-pro.controllers.details', [])
         Utils.loading();
         DataSrv.deleteRequest($scope.request.objectId, Login.getUser().objectId).then(
           function (data) {
-            $scope.goTo('app.reqAndOffer', {
+            $scope.goTo('app.requestsAndOffers', {
               'reload': true,
               'tab': 0
             }, false, true, true, true);
@@ -133,7 +140,7 @@ angular.module('gi-pro.controllers.details', [])
         Utils.loading();
         DataSrv.deleteOffer($scope.offer.objectId, Login.getUser().objectId).then(
           function (data) {
-            $scope.goTo('app.reqAndOffer', {
+            $scope.goTo('app.requestsAndOffers', {
               'reload': true,
               'tab': 1
             }, false, true, true, true);
@@ -145,7 +152,7 @@ angular.module('gi-pro.controllers.details', [])
   };
 })
 
-.controller('ServiceDetailsCtrl', function ($scope, $state, $stateParams, $ionicModal, Login, DataSrv) {
+.controller('ServiceDetailsCtrl', function ($scope, $state, $stateParams, $filter, $ionicModal, Utils, ionicDatePicker, ionicTimePicker, Login, DataSrv) {
   $scope.title = '';
   $scope.imageUrl = '';
 
@@ -161,27 +168,34 @@ angular.module('gi-pro.controllers.details', [])
     */
   }
 
-  $scope.openProfessionalDetails = function (professional) {
-    if (Login.userIsLogged()) {
-      $state.go("app.professionalWithServices", {
-        'objectId': professional.objectId,
-        'professional': professional
-      });
-    } else {
-      $state.go("app.professionalDetails", {
-        'objectId': professional.objectId,
-        'professional': professional
-      });
-    }
+  /* new request */
+  $scope.newRequest = {
+    offerId: $scope.service.objectId,
+    serviceType: $scope.service ? $scope.service.serviceType : null,
+    startTime: new Date()
+  }
+
+  $scope.newRequestForm = {
+    // keep formTime in millis
+    startTime: Math.floor((($scope.newRequest.startTime.getHours() * 60) + $scope.newRequest.startTime.getMinutes()) / 15) * 15 * 60 * 1000,
+    subtype: null
+  }
+
+  if (!$scope.subtypes) {
+    $scope.subtypes = DataSrv.getServicesMap()[$scope.service.serviceType].subtypes
+  }
+
+  if ($scope.subtypes && !$scope.newRequestForm.subtype) {
+    $scope.newRequestForm.subtype = $scope.subtypes[0]
   }
 
   $ionicModal.fromTemplateUrl('templates/modal_newrequest.html', {
     scope: $scope
   }).then(function (modal) {
-    $scope.newRequestModal = modal;
+    $scope.newRequestModal = modal
   }, function (error) {
-    console.log(error);
-  });
+    console.log(error)
+  })
 
   $scope.openNewRequestModal = function () {
     $scope.newRequestModal.show()
@@ -189,6 +203,50 @@ angular.module('gi-pro.controllers.details', [])
 
   $scope.closeNewRequestModal = function () {
     $scope.newRequestModal.hide()
+  }
+
+  $scope.openDatePicker = function () {
+    ionicDatePicker.openDatePicker({
+      setLabel: $filter('translate')('set'),
+      todayLabel: $filter('translate')('today'),
+      closeLabel: $filter('translate')('close'),
+      callback: function (val) {
+        $scope.newRequest.startTime = new Date(val)
+      }
+    });
+  }
+
+  $scope.openTimePicker = function (field) {
+    //var epochs = (((new Date()).getHours() * 60) + ((new Date()).getMinutes()))
+    //epochs = Math.floor(epochs / 15) * 15 * 60;
+    ionicTimePicker.openTimePicker({
+      setLabel: $filter('translate')('set'),
+      closeLabel: $filter('translate')('close'),
+      step: 15,
+      inputTime: $scope.newRequestForm.startTime / 1000,
+      callback: function (val) {
+        $scope.newRequestForm.startTime = val * 1000
+      }
+    })
+  };
+
+  $scope.sendNewRequest = function () {
+    $scope.newRequest.startTime.setTime($scope.newRequest.startTime.getTime() + $scope.newRequestForm.startTime)
+    if ($scope.newRequestForm.subtype) {
+      $scope.newRequest.serviceSubtype = $scope.newRequestForm.subtype.subtype
+      $scope.newRequest.cost = $scope.newRequestForm.subtype.cost
+    }
+    console.log($scope.newRequest)
+
+    DataSrv.createRequest($scope.newRequest).then(
+      function (request) {
+        $scope.closeNewRequestModal();
+        Utils.toast($filter('translate')('request_create_done'));
+      },
+      function (reason) {
+        console.log(reason)
+      }
+    )
   }
 
   /*

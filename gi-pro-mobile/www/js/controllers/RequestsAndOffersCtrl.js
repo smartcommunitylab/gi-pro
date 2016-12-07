@@ -1,24 +1,33 @@
-angular.module('gi-pro.controllers.reqandoffer', [])
+angular.module('gi-pro.controllers.requestsandoffers', [])
 
-.controller('ReqAndOffCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login, PushSrv, NotifDB) {
-  $scope.requests = null;
-  $scope.offers = null;
-  $scope.requestsNotifications = {};
-  $scope.offersNotifications = {};
+.controller('RequestAndOffersCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login, PushSrv, NotifDB) {
+  $scope.requests = null
+  $scope.offers = null
+  $scope.requestsNotifications = {}
+  $scope.offersNotifications = {}
+
+  // state: OPEN, CLOSED, ACCEPTED, REJECTED, (DELETED)
+
+  $scope.availableServices = DataSrv.getServicesMap()
+  if (!$scope.availableServices) {
+    DataSrv.getServicesDefinition().then(function () {
+      $scope.availableServices = DataSrv.getServicesMap()
+    })
+  }
 
   var reload = function () {
     if (!Login.getUser()) {
-      //			$scope.goTo('app.tutorial', {forceReload:true}, true, true, true);
-      //not logged
+      //$scope.goTo('app.tutorial', {forceReload:true}, true, true, true);
+      // not logged
       return;
     }
 
     Utils.loading();
     var from = moment().startOf('date').valueOf();
-    DataSrv.getRequests(Login.getUser().objectId, Config.SERVICE_TYPE, from, null, 1, 100).then(
+    DataSrv.getRequests(Login.getUser().objectId, from, null, 1, 100).then(
       function (requests) {
         $scope.requests = requests;
-        DataSrv.getOffers(Login.getUser().objectId, Config.SERVICE_TYPE, from, null, null, 1, 100).then(
+        DataSrv.getOffers(Login.getUser().objectId, from, null, null, 1, 100).then(
           function (offers) {
             $scope.offers = offers;
             Utils.loaded();
@@ -28,7 +37,7 @@ angular.module('gi-pro.controllers.reqandoffer', [])
       },
       Utils.commError
     );
-  };
+  }
 
   if (!$stateParams.reload) {
     // prevent double load (WHY?!?!?)
@@ -36,15 +45,15 @@ angular.module('gi-pro.controllers.reqandoffer', [])
   }
 
   $scope.$on('$ionicView.enter', function (event, args) {
-    var params = DataSrv.internalCache['app.reqAndOffer'] || {};
-    if (!!params.reload) {
+    var params = DataSrv.internalCache['app.requestsAndOffers'] || {};
+    if (params.reload) {
       reload();
     }
 
-    if (!!params.tab) {
+    if (params.tab) {
       $ionicTabsDelegate.select(params.tab);
     }
-    DataSrv.internalCache['app.reqAndOffer'] = null;
+    DataSrv.internalCache['app.requestsAndOffers'] = null;
   });
 
   $scope.selectedTab = function () {
@@ -184,6 +193,7 @@ angular.module('gi-pro.controllers.reqandoffer', [])
   };
 })
 
+/* History */
 .controller('HistoryCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login) {
   var limit = 10;
 
@@ -204,7 +214,7 @@ angular.module('gi-pro.controllers.reqandoffer', [])
 
     Utils.loading();
     var to = moment().startOf('date').valueOf();
-    DataSrv.getRequests(Login.getUser().objectId, Config.SERVICE_TYPE, 0, to, $scope.requestsPage, limit).then(
+    DataSrv.getRequests(Login.getUser().objectId, 0, to, $scope.requestsPage, limit).then(
       function (requests) {
         if (requests.length < limit) {
           $scope.hasMoreRequests = false;
@@ -237,7 +247,7 @@ angular.module('gi-pro.controllers.reqandoffer', [])
 
     Utils.loading();
     var to = moment().startOf('date').valueOf();
-    DataSrv.getOffers(Login.getUser().objectId, Config.SERVICE_TYPE, 0, to, true, $scope.offersPage, limit).then(
+    DataSrv.getOffers(Login.getUser().objectId, 0, to, true, $scope.offersPage, limit).then(
       function (offers) {
         if (offers.length < limit) {
           $scope.hasMoreOffers = false;

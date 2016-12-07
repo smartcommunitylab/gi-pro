@@ -33,6 +33,20 @@ angular.module('gi-pro.controllers.main', [])
     }
   };
 
+  $rootScope.openProfessionalDetails = function (professional) {
+    if (Login.userIsLogged()) {
+      $state.go("app.professionalWithServices", {
+        'objectId': professional.objectId,
+        'professional': professional
+      });
+    } else {
+      $state.go("app.professionalDetails", {
+        'objectId': professional.objectId,
+        'professional': professional
+      });
+    }
+  }
+
   /*
    * POIs MODAL
    */
@@ -79,11 +93,9 @@ angular.module('gi-pro.controllers.main', [])
         templateUrl: 'templates/popup_types.html',
         scope: $scope,
         cssClass: 'popup-types',
-        buttons: [
-          {
-            text: $filter('translate')('cancel')
-					}
-				]
+        buttons: [{
+          text: $filter('translate')('cancel')
+        }]
       });
 
       $scope.selectType = function (type) {
@@ -104,11 +116,9 @@ angular.module('gi-pro.controllers.main', [])
           templateUrl: 'templates/popup_regions.html',
           scope: $scope,
           cssClass: 'popup-regions',
-          buttons: [
-            {
-              text: $filter('translate')('cancel')
-						}
-					]
+          buttons: [{
+            text: $filter('translate')('cancel')
+          }]
         });
 
         $scope.selectRegion = function (region) {

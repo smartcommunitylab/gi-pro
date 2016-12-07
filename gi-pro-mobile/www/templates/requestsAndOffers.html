@@ -1,18 +1,19 @@
-<ion-view view-title="{{'app' | translate}}" class="home">
+<ion-view view-title="{{'app' | translate}}" class="requests-offers">
   <ion-nav-buttons side="right">
     <button class="button button-icon button-clear ion-search" ng-click="goTo('app.search')" ng-if="selectedTab() == 0"></button>
     <button class="button button-icon button-clear ion-ios-bell" ng-click="goTo('app.notifications', {}, true, true, true)"></button>
   </ion-nav-buttons>
-
   <ion-tabs class="tabs-calm">
     <ion-tab title="{{'req_tab_1' | translate |uppercase}}">
       <ion-pane>
         <ion-content>
-          <h4 class="padding" ng-if="!!requests && requests.length == 0">{{'requests_empty' | translate}}</h4>
-          <div class="card" ng-repeat="request in requests" ng-if="!!requests && requests.length > 0" ng-click="openRequestDetails(request)">
+          <h4 class="padding" ng-if="requests && !requests.length">{{'requests_empty' | translate}}</h4>
+          <div class="card" ng-repeat="request in requests" ng-if="requests && requests.length" ng-click="openRequestDetails(request)">
             <div class="item item-text-wrap">
-              <h2>{{request.poi.name}}</h2>
-              <h3><i class="icon ion-calendar"></i>{{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</h3>
+              <div class="service-type">{{availableServices[request.serviceType].name}}</div>
+              <div class="professional">{{'request_detail_offered_by' | translate}}: {{request.professional.name}} {{request.professional.surname}}</div>
+              <div class="when"><i class="icon ion-calendar"></i> {{request.startTime | date:'longDate'}}, {{request.startTime | date:'shortTime'}}</div>
+              <div class="state">{{'state' | translate}}: {{'state_' + request.state | translate}}</div>
               <span class="badge badge-energized" ng-if="!!requestsNotifications[request.objectId]">
 								<i class="icon ion-ios-bell"></i>
 								{{requestsNotifications[request.objectId].length}}
@@ -25,7 +26,6 @@
         </button>
       </ion-pane>
     </ion-tab>
-
     <ion-tab title="{{'req_tab_2' | translate |uppercase}}">
       <ion-pane>
         <ion-content>
@@ -34,8 +34,9 @@
             <div class="item item-text-wrap">
               <h2>{{offer.poi.name}}</h2>
               <h3 ng-if="!!offer.startTime && !!offer.endTime">
-									<i class="icon ion-clock"></i>{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}} - {{offer.endTime | date:'shortTime'}}
-							</h3>
+                <i class="icon ion-clock"></i>{{offer.startTime | date:'longDate'}}, {{offer.startTime | date:'shortTime'}}
+                - {{offer.endTime | date:'shortTime'}}
+              </h3>
               <span class="badge badge-energized" ng-if="!!offersNotifications[offer.objectId]">
 								<i class="icon ion-ios-bell"></i>
 								{{offersNotifications[offer.objectId].length}}

@@ -294,7 +294,7 @@ angular.module('gi-pro.controllers.profile', [])
    */
 
   $scope.editingServices = false;
-  $scope.toggleEditingServices = function () {
+  $scope.toggleEditingServices = function (value) {
     $scope.editingServices = value;
   }
 
@@ -361,6 +361,34 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.addingNewService = true;
     $scope.closeNewServiceModal();
     //$scope.services.push($scope.newService);
+  }
+
+  $scope.selectedOffice = null;
+  $scope.openSelectOfficePopup = function () {
+    $scope.offices = $scope.availableServices['sostituzioneudienza'].customOptions.offices;
+
+    var selectOfficePopup = $ionicPopup.alert({
+      scope: $scope,
+      title: $filter('translate')('profession_popup_placeholder'),
+      templateUrl: 'templates/popup_office.html',
+      buttons: [{
+        text: $filter('translate')('cancel'),
+        type: 'button-default',
+        onTap: function (e) {
+          // will stop the popup from closing when tapped.
+          //e.preventDefault()
+        }
+      }]
+    });
+
+    $scope.selectOffice = function (office) {
+      if (office) {
+        $scope.selectedOffice = office;
+        $scope.newService.address = office.name;
+        $scope.newService.coordinates = office.coordinates;
+      }
+      selectOfficePopup.close();
+    }
   }
 
   $scope.openMapPlan = function (place) {

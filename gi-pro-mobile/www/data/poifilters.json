@@ -16,11 +16,66 @@
   }, {
     "id": "sostituzioneudienza",
     "name": "Sostituzione udienza",
-    "cost": 10
+    "cost": 10,
+    "customOptions": {
+      "offices": [{
+        "name": "Giudice di Pace Borgo Valsugana",
+        "address": "Via della Fossa, 5 - Borgo Valsugana",
+        "coordinates": [11.453857, 46.052012]
+      }, {
+        "name": "Giudice di Pace Cavalese",
+        "address": "Piazza Verdi, 5 - Cavalese",
+        "coordinates": [11.46056, 46.290918]
+      }, {
+        "name": "Giudice di Pace Cles",
+        "address": "Piazza Municipio, 3 - Cles",
+        "coordinates": [11.03422, 46.364969]
+      }, {
+        "name": "Giudice di Pace Mezzolombardo",
+        "address": "Corso del Popolo, 35 - Mezzolombardo",
+        "coordinates": [11.091599, 46.21404]
+      }, {
+        "name": "Giudice di Pace Pergine Valsugana",
+        "address": "Via Crivelli, 55 - Pergine Valsugana",
+        "coordinates": [11.242193, 46.061806]
+      }, {
+        "name": "Giudice di Pace Riva del Garda",
+        "address": "Via Bastione, 3 - Riva del Garda",
+        "coordinates": [10.839493, 45.886734]
+      }, {
+        "name": "Giudice di Pace Rovereto",
+        "address": "Piazza Leoni, 22 - Rovereto",
+        "coordinates": [11.03752, 45.887836]
+      }, {
+        "name": "Giudice di Pace Tione di Trento",
+        "address": "Viale Mons. Donato Perli, 2 - Tione di Trento",
+        "coordinates": [10.726628, 46.034684]
+      }, {
+        "name": "Giudice di Pace Trento",
+        "address": "Via Diaz, 15 - Trento",
+        "coordinates": [11.123255, 46.069189]
+      }, {
+        "name": "Tribunale Trento",
+        "address": "Largo Pigarelli, 1 - Trento",
+        "coordinates": [11.125821, 46.066088]
+      }, {
+        "name": "Tribunale Rovereto",
+        "address": "Corso Antonio Rosmini, 65 - Rovereto",
+        "coordinates": [11.036057, 45.891218]
+      }, {
+        "name": "Commissione Tributaria Trento",
+        "address": "Via Vannetti, 15 - Trento",
+        "coordinates": [11.12281, 46.073646]
+      }, {
+        "name": "TAR Trento",
+        "address": "Via Calepina, 50 - Trento",
+        "coordinates": [11.125223, 46.067147]
+      }]
+    }
   }, {
     "id": "fax",
     "name": "Fax",
-    "value": 5
+    "cost": 5
   }, {
     "id": "stampante",
     "name": "Stampante",

@@ -34,22 +34,27 @@
                 <div class="title">{{getServiceNameByID(newService.serviceType)}}</div>
                 <!--<i class="icon" ng-class="{'ion-chevron-down': !isExpandedService(service.objectId), 'ion-chevron-up': isExpandedService(service.objectId)}"></i>-->
               </ion-item>
-              <ion-item class="item-accordion-content item-icon-left item-icon-right" ng-if="newService.serviceType !== 'sostituzioneudienza'">
-                <div class="item item-icon-left item-icon-right">
+              <ion-item class="item-accordion-content">
+                <div class="item item-icon-left item-icon-right" ng-if="newService.serviceType !== 'sostituzioneudienza'">
                   <i class="icon ion-ios-location"></i>
                   <placeautocomplete ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false"
                     data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom"
                     ng-blur="setNameParam"></placeautocomplete>
                   <i class="icon ion-map plan-viaggia-fromto" ng-click="openMapPlan('from')"></i>
                 </div>
-                <div class="item-icon-left item-icon-right" ng-if="newService.serviceType === 'sostituzioneudienza'">
+                <div class="item item-icon-left" ng-if="newService.serviceType === 'sostituzioneudienza'">
                   <i class="icon ion-ios-location"></i>
-                  <input type="text">
-                  <i class="icon ion-map plan-viaggia-fromto" ng-click="openMapPlan('from')"></i>
+                  <div class="item item-input item-select" ng-click="openSelectOfficePopup()">
+                    <div class="input-label" ng-class="{'placeholder': !selectedOffice}">
+                      <span class="name">{{selectedOffice ? selectedOffice.name : ('office_placeholder' | translate)}}</span>
+                      <span class="address" ng-if="selectedOffice"><br/>{{selectedOffice.address}}</span>
+                    </div>
+                    <select ng-model="selectedOffice" ng-required="true"></select>
+                  </div>
                 </div>
-                <div class="item-icon-left">
-                  <i class="icon ion-ios-information"></i>
-                  <input type="text" ng-model="newService.note" placeholder="{{'service_note_placeholder' | translate}}" autofocus>
+                <div class="item item-icon-left">
+                  <i class="icon ion-information-circled"></i>
+                  <input type="text" ng-model="newService.note" placeholder="{{'service_note_placeholder' | translate}}">
                 </div>
                 <div class="item-accordion-footer">
                   <button class="button button-outline button-small button-positive" ng-click="cancelModify('new')">{{'cancel' | translate}}</button>
@@ -74,17 +79,17 @@
                     on-select="changeStringFrom" ng-blur="setNameParam"></placeautocomplete>
                   <a class="button-icon plan-viaggia-fromto  icon ion-map" ng-if="editingServices" ng-click="openMapPlan('from')"></a>-->
                 </div>
-                <div class="item item-icon-left">
-                  <i class="icon ion-ios-information"></i>
-                  <div ng-if="!editingServices"> {{service.note}}</div>
+                <div class="item item-icon-left" ng-if="service.note">
+                  <i class="icon ion-information-circled"></i>
+                  <div ng-if="!editingServices">{{service.note}}</div>
                   <!--<input type="text" ng-if="editingServices" ng-model="newService.note" placeholder="{{'service_note_placeholder' | translate}}"
                       autofocus>-->
                 </div>
-                <div class="item item-accordion-content item-accordion-footer" ng-if="editingServices">
+                <div class="item item-accordion-content item-accordion-footer" ng-if="isMyProfile && editingServices">
                   <button class="button" ng-click="cancelModify('edit')">{{'cancel' | translate}}</button>
                   <button class="button" ng-click="saveService()">{{'save' | translate}}</button>
                 </div>
-                <div class="item item-accordion-content item-accordion-footer" ng-if="!editingServices">
+                <div class="item item-accordion-content item-accordion-footer" ng-if="isMyProfile && !editingServices">
                   <button class="button button-small button-outline button-assertive" ng-click="deleteService(service)">{{'delete' | translate}}</button>
                   <!--<button class="button" ng-click="modifyService(service)">{{'modify' | translate}}</button>-->
                 </div>

@@ -574,6 +574,16 @@ input[readonly] {
               white-space: normal;
               font-size: 14px;
             }
+            .item-select {
+              padding-left: 0;
+              .input-label {
+                width: 100%;
+                font-weight: normal;
+              }
+              .input-label.placeholder {
+                color: #aaaaaa;
+              }
+            }
           }
           .item-accordion-content.ng-hide {
             line-height: 0px;
@@ -587,6 +597,11 @@ input[readonly] {
         .item-accordion:not(:first-child) {
           margin-top: 16px;
         }
+      }
+    }
+    .input-label {
+      .address {
+        font-style: italic;
       }
     }
   }
@@ -647,6 +662,9 @@ placeautocomplete {
     padding: 10px 0;
     /*text-align: center;*/
     /*font-size: larger;*/
+    .title {
+      text-transform: uppercase;
+    }
     .date,
     .time {
       font-weight: bold;
@@ -696,6 +714,17 @@ placeautocomplete {
       .email {
         padding-top: 5px;
       }
+    }
+  }
+  .info {
+    .item {
+      border: none;
+    }
+  }
+  .state {
+    font-style: italic;
+    .label {
+      font-style: normal;
     }
   }
   .poi {
@@ -829,6 +858,32 @@ placeautocomplete {
   }
   .list-container>.list {
     margin-top: 5px;
+  }
+}
+
+.modal-newrequest {
+  .list .item-input {
+    border: 0;
+    span.input-label {
+      text-transform: uppercase;
+    }
+    span.input-value {
+      padding: 0 5px;
+      border-bottom: 1px solid $dark;
+    }
+  }
+  .subtitle {
+    margin-top: 32px;
+    padding-left: 16px;
+    font-size: 16px;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $dark;
+  }
+  .subtype .cost {
+    float: right;
+    font-style: italic;
   }
 }
 
