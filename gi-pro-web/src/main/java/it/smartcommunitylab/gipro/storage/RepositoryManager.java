@@ -699,8 +699,7 @@ public class RepositoryManager {
 	public ServiceRequest deleteServiceRequest(String applicationId, String objectId, String professionalId) throws InvalidStateException {
 		ServiceRequest result = null;
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
-				.and("objectId").is(objectId)
-				.and("requesterId").is(professionalId);
+				.and("objectId").is(objectId);
 		Query query = new Query(criteria);
 		result = mongoTemplate.findOne(query, ServiceRequest.class);
 		if(result != null) {
@@ -710,7 +709,8 @@ public class RepositoryManager {
 			if (result.getProfessionalId().equals(professionalId) && !Const.STATE_ACCEPTED.equals(result.getState())) {
 				throw new InvalidStateException("Not yet accepted/rejected");
 			}
-			mongoTemplate.findAndRemove(query, ServiceRequest.class);
+			Update update = new Update().set("state", Const.STATE_DELETED);
+			mongoTemplate.updateFirst(query, update, ServiceRequest.class);
 		}
 		return result;
 	}
