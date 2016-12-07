@@ -406,7 +406,7 @@ public class EntityController {
 		return result;
 	}
 
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/accept", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/accept", method = RequestMethod.PUT)
 	public @ResponseBody ServiceRequest acceptServiceRequest(@PathVariable String applicationId,
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
@@ -422,7 +422,7 @@ public class EntityController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/reject", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/reject", method = RequestMethod.PUT)
 	public @ResponseBody ServiceRequest rejectServiceRequest(@PathVariable String applicationId,
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
