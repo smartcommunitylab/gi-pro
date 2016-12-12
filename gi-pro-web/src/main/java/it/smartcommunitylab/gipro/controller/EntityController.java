@@ -399,6 +399,11 @@ public class EntityController {
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
+		
+		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
+		if (req == null) return null;
+		
+		if (!req.getProfessionalId().equals(professionalId) && !req.getRequesterId().equals(professionalId)) throw new UnauthorizedException("Only service provider or requester can delete");
 		ServiceRequest result = storageManager.deleteServiceRequest(applicationId, objectId, professionalId);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("deleteServiceRequest[%s]:%s - %s", applicationId, objectId, professionalId));
@@ -406,14 +411,14 @@ public class EntityController {
 		return result;
 	}
 
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/accept", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/accept", method = RequestMethod.PUT)
 	public @ResponseBody ServiceRequest acceptServiceRequest(@PathVariable String applicationId,
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
-		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can delete");
+		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can accept");
 		
 		ServiceRequest result = storageManager.acceptServiceRequest(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
@@ -422,14 +427,14 @@ public class EntityController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/reject", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/{applicationId}/service/request/{objectId}/{professionalId}/reject", method = RequestMethod.PUT)
 	public @ResponseBody ServiceRequest rejectServiceRequest(@PathVariable String applicationId,
 			@PathVariable String objectId,
 			@PathVariable String professionalId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		ServiceRequest req = storageManager.getServiceRequestById(applicationId, objectId);
-		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can delete");
+		if (!req.getProfessionalId().equals(professionalId)) throw new UnauthorizedException("Only service provider can reject");
 		
 		ServiceRequest result = storageManager.rejectServiceRequest(applicationId, objectId);
 		if(logger.isInfoEnabled()) {
