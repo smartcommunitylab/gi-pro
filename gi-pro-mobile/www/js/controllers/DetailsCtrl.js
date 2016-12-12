@@ -4,27 +4,24 @@ angular.module('gi-pro.controllers.details', [])
   $scope.request = null;
   $scope.matchingOffers = null;
 
-  $scope.isMine = function () {
-    if ($scope.request) {
-      var mine = $scope.request.professional.objectId !== Login.getUser().objectId
-      return mine
-    }
-    return null
+  $scope.isToMe = function () {
+    //return !!$scope.request && $scope.request.requester.objectId !== Login.getUser().objectId
+    return !!$scope.request && !!$scope.request.requester
   };
 
-  $scope.isEditable = function () {
+  $scope.isFuture = function () {
     if ($scope.request) {
-      var today = moment().startOf('date').valueOf()
-      return $scope.isMine() && (!$scope.request.startTime || $scope.request.startTime > moment().startOf('date').valueOf());
+      return (!$scope.request.startTime || $scope.request.startTime > moment().startOf('date').valueOf())
     }
     return null
-  };
+  }
 
   var setRequest = function (req) {
     $scope.request = req;
+    $scope.professional = $scope.isToMe() ? $scope.request.professional : $scope.request.requester
 
     if ($scope.request.offerId) {
-      DataSrv.getOfferById($scope.request.professional.objectId, $scope.request.offerId).then(
+      DataSrv.getOfferById($scope.professional.objectId, $scope.request.offerId).then(
         function (offer) {
           $scope.offer = offer;
         },
@@ -68,7 +65,7 @@ angular.module('gi-pro.controllers.details', [])
         Utils.loading();
         DataSrv.deleteRequest($scope.request.objectId, Login.getUser().objectId).then(
           function (data) {
-            $scope.goTo('app.requestsAndOffers', {
+            $scope.goTo('app.requests', {
               'reload': true,
               'tab': 0
             }, false, true, true, true);
@@ -78,23 +75,62 @@ angular.module('gi-pro.controllers.details', [])
       }
     });
   };
+
+  $scope.acceptRequest = function () {
+    Utils.loading();
+    DataSrv.acceptRequest($scope.request.objectId, Login.getUser().objectId).then(
+      function (data) {
+        $scope.goTo('app.requests', {
+          'reload': true,
+          'tab': 0
+        }, false, true, true, true);
+        Utils.toast($filter('translate')('request_delete_done'));
+      }, Utils.commError
+    );
+  }
+
+  $scope.rejectRequest = function () {
+    var confirmPopup = $ionicPopup.confirm({
+      title: $filter('translate')('request_reject_confirm_title'),
+      template: $filter('translate')('request_reject_confirm_text'),
+      cancelText: $filter('translate')('cancel'),
+      cancelType: 'button-light',
+      okText: $filter('translate')('delete'),
+      okType: 'button-assertive'
+    });
+
+    confirmPopup.then(function (yes) {
+      if (yes) {
+        Utils.loading();
+        DataSrv.rejectRequest($scope.request.objectId, Login.getUser().objectId).then(
+          function (data) {
+            $scope.goTo('app.requests', {
+              'reload': true,
+              'tab': 0
+            }, false, true, true, true);
+            Utils.toast($filter('translate')('request_reject_done'));
+          }, Utils.commError
+        );
+      }
+    });
+  }
 })
 
 .controller('OfferDetailsCtrl', function ($scope, $stateParams, $filter, $ionicPopup, Utils, Config, DataSrv, Login, NotifDB) {
   $scope.offer = null;
   $scope.matchingRequests = null;
 
-  $scope.isMine = function () {
+  $scope.isToMe = function () {
     return $scope.offer != null && $scope.offer.professional.objectId == Login.getUser().objectId;
   };
 
   $scope.isEditable = function () {
-    return $scope.isMine() && (!$scope.offer.startTime || $scope.offer.startTime > moment().startOf('date').valueOf());
+    return $scope.isToMe() && (!$scope.offer.startTime || $scope.offer.startTime > moment().startOf('date').valueOf());
   };
 
   var setOffer = function (off) {
     $scope.offer = off;
-    if ($scope.isMine()) {
+    if ($scope.isToMe()) {
       DataSrv.getMatchingRequests(Login.getUser().objectId, off.objectId).then(
         function (requests) {
           $scope.matchingRequests = requests;
@@ -140,7 +176,7 @@ angular.module('gi-pro.controllers.details', [])
         Utils.loading();
         DataSrv.deleteOffer($scope.offer.objectId, Login.getUser().objectId).then(
           function (data) {
-            $scope.goTo('app.requestsAndOffers', {
+            $scope.goTo('app.requests', {
               'reload': true,
               'tab': 1
             }, false, true, true, true);

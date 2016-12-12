@@ -459,8 +459,8 @@ angular.module('gi-pro.services.data', [])
     return deferred.promise;
   };
 
-  /* get requests */
-  dataService.getRequests = function (professionalId, timeFrom, timeTo, page, limit) {
+  /* get my service requests */
+  dataService.getMyRequests = function (professionalId, timeFrom, timeTo, page, limit) {
     var deferred = $q.defer();
 
     var httpConfWithParams = Config.getHTTPConfig();
@@ -488,6 +488,47 @@ angular.module('gi-pro.services.data', [])
     }
 
     $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + professionalId, httpConfWithParams).then(
+      function (response) {
+        // requests
+        deferred.resolve(response.data);
+      },
+      function (reason) {
+        deferred.reject(reason.data ? reason.data.errorMessage : reason);
+      }
+    );
+
+    return deferred.promise;
+  };
+
+  /* get service requests to me */
+  dataService.getRequestsToMe = function (professionalId, timeFrom, timeTo, page, limit) {
+    var deferred = $q.defer();
+
+    var httpConfWithParams = Config.getHTTPConfig();
+    httpConfWithParams.params = {};
+
+    // professionalId is required
+    if (!professionalId || !angular.isString(professionalId)) {
+      deferred.reject('Invalid professionalId');
+    }
+
+    if (!!timeFrom) {
+      httpConfWithParams.params['timeFrom'] = timeFrom;
+    }
+
+    if (!!timeTo) {
+      httpConfWithParams.params['timeTo'] = timeTo;
+    }
+
+    if (!!page) {
+      httpConfWithParams.params['page'] = page;
+    }
+
+    if (!!limit) {
+      httpConfWithParams.params['limit'] = limit;
+    }
+
+    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + professionalId + '/tome', httpConfWithParams).then(
       function (response) {
         // requests
         deferred.resolve(response.data);
@@ -533,6 +574,38 @@ angular.module('gi-pro.services.data', [])
     return deferred.promise;
   };
 
+  /* accept request */
+  dataService.acceptRequest = function (objectId, professionalId) {
+    var deferred = $q.defer();
+
+    $http.put(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + objectId + '/' + professionalId + '/accept', null, Config.getHTTPConfig()).then(
+      function (response) {
+        deferred.resolve(response.data);
+      },
+      function (reason) {
+        deferred.reject(reason.data ? reason.data.errorMessage : reason);
+      }
+    );
+
+    return deferred.promise;
+  };
+
+  /* reject request */
+  dataService.rejectRequest = function (objectId, professionalId) {
+    var deferred = $q.defer();
+
+    $http.put(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/request/' + objectId + '/' + professionalId + '/reject', null, Config.getHTTPConfig()).then(
+      function (response) {
+        deferred.resolve(response.data);
+      },
+      function (reason) {
+        deferred.reject(reason.data ? reason.data.errorMessage : reason);
+      }
+    );
+
+    return deferred.promise;
+  };
+
   dataService.notificationTypes = {
     NEW_SERVICE_REQUEST: 'NEW_SERVICE_REQUEST',
     NEW_SERVICE_OFFER: 'NEW_SERVICE_OFFER',
@@ -543,6 +616,8 @@ angular.module('gi-pro.services.data', [])
     NEW_APPLICATION: 'NEW_APPLICATION',
     APPLICATION_DELETED: 'APPLICATION_DELETED'
   };
+
+
 
   /* get matching offers */
   dataService.getMatchingOffers = function (professionalId, requestId) {
@@ -623,7 +698,7 @@ angular.module('gi-pro.services.data', [])
     return deferred.promise;
   };
 
-  /* single offer */
+  /* single service */
   dataService.getOfferById = function (professionalId, objectId) {
     var deferred = $q.defer();
 

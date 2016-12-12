@@ -1,21 +1,13 @@
-<ion-view view-title="{{'request_detail' | translate}}" class="request details">
+<ion-view view-title="{{isToMe() ? 'request_detail_tome' : 'request_detail_mine' | translate}}" class="request details">
   <ion-nav-buttons side="right">
   </ion-nav-buttons>
   <ion-content class="padding">
-    <div class="professional" ng-if="isMine()">
-      <div class="row">
-        <div class="col col-33">
-          <div class="profile-image-container">
-            <div class="profile-image">
-              <img ng-if="request.professional.imageUrl" ng-src="{{request.professional.imageUrl}}">
-            </div>
-          </div>
-        </div>
-        <div class="col col-67">
-          <ul>
-            <li class="name">{{request.professional.name}} {{request.professional.surname}}</li>
-            <li class="toprofile"><a ng-click="openProfessionalDetails(request.professional)">{{'view_profile' | translate}}</a></li>
-          </ul>
+      <div class="card professional" ng-click="openProfessionalDetails(professional)">
+        <div class="item item-thumbnail-left">
+          <img ng-src="{{professional.imageUrl}}">
+          <p>{{isToMe() ? 'request_detail_by' : 'request_detail_to' | translate}}</p>
+          <h2 class="name">{{professional.name}} {{professional.surname}}</h2>
+          <p><a ng-click="openProfessionalDetails(professional)">{{'view_profile' | translate}}</a></p>
         </div>
       </div>
     </div>
@@ -47,6 +39,16 @@
     </div>
   </ion-content>
   <ion-footer-bar>
-    <button class="button button-assertive button-block" ng-if="isEditable()" ng-click="deleteRequest()">{{'delete' | translate}}</button>
+    <button class="button button-assertive button-block" ng-if="!isToMe() && isFuture()" ng-click="deleteRequest()">{{'delete' | translate}}</button>
+    <div class="row" ng-if="isToMe() && isFuture() && request.state === requestState.OPEN">
+      <div class="col col-50">
+        <button class="button button-calm button-block" ng-click="rejectRequest()">{{'reject' | translate}}</button>
+      </div>
+      <div class="col col-50">
+        <button class="button button-assertive button-block" ng-click="acceptRequest()">{{'accept' | translate}}</button>
+      </div>
+    </div>
+    <button class="button button-assertive button-block" ng-if="isToMe() && isFuture() && request.state === requestState.ACCEPTED"
+      ng-click="deleteRequest()">{{'cancel_reservation' | translate}}</button>
   </ion-footer-bar>
 </ion-view>

@@ -47,6 +47,14 @@ angular.module('gi-pro.controllers.main', [])
     }
   }
 
+  $rootScope.requestState = {
+    OPEN: 'OPEN',
+    CLOSED: 'CLOSED',
+    ACCEPTED: 'ACCEPTED',
+    REJECTED: 'REJECTED',
+    DELETED: 'DELETED'
+  }
+
   /*
    * POIs MODAL
    */

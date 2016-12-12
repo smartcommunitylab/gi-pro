@@ -10088,7 +10088,7 @@ input[readonly] {
     font-size: 16px; }
 
 /*
- * SERVICES AND ProfessionalS TABS
+ * SERVICES AND PROFESSIONALS TABS
  */
 .serviceandprofessional .tabs {
   top: 44px !important; }
@@ -10142,27 +10142,52 @@ input[readonly] {
 /*
  * Professional Details
  */
-.prof-details .contacts .item,
-.prof-details .details .item,
+.item-icon-left.item-input {
+  padding: 0 16px 0 54px !important; }
+  .item-icon-left.item-input input {
+    padding-right: 0;
+    border-bottom: 1px solid #10406f; }
+  .item-icon-left.item-input .button.icon {
+    position: relative; }
+
+.contacts .item {
+  border: none; }
+
+.contacts .list {
+  margin-bottom: 0;
+  padding: 0; }
+
+.competences {
+  margin: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px; }
+  .competences .title {
+    font-weight: bold;
+    padding: 10px 0; }
+  .competences .item-input-inset {
+    border: 0;
+    padding: 0; }
+    .competences .item-input-inset input {
+      display: inline-block;
+      width: 100%;
+      border-bottom: 1px solid black; }
+  .competences .competences-tags .tag {
+    display: inline-block;
+    line-height: 28px;
+    background-color: skyblue;
+    padding: 0 7px;
+    margin: 5px;
+    border-radius: 5px; }
+  .competences .competences-tags .tag.editing {
+    padding-right: 0; }
+
 .service-details .contacts .item,
 .service-details .details .item {
   border-color: transparent; }
-  .prof-details .contacts .item .icon,
-  .prof-details .details .item .icon,
   .service-details .contacts .item .icon,
   .service-details .details .item .icon {
     font-size: 20px;
     margin-right: 10px; }
-  .prof-details .contacts .item a,
-  .prof-details .contacts .item a:link,
-  .prof-details .contacts .item a:visited,
-  .prof-details .contacts .item a:hover,
-  .prof-details .contacts .item a:active,
-  .prof-details .details .item a,
-  .prof-details .details .item a:link,
-  .prof-details .details .item a:visited,
-  .prof-details .details .item a:hover,
-  .prof-details .details .item a:active,
   .service-details .contacts .item a,
   .service-details .contacts .item a:link,
   .service-details .contacts .item a:visited,
@@ -10175,14 +10200,11 @@ input[readonly] {
   .service-details .details .item a:active {
     color: inherit;
     text-decoration: none; }
-  .prof-details .contacts .item input,
-  .prof-details .details .item input,
   .service-details .contacts .item input,
   .service-details .details .item input {
     display: inline-block;
     border-bottom: 1px solid black; }
 
-.prof-details .professional,
 .service-details .professional {
   margin-bottom: 10px;
   padding-bottom: 20px;
@@ -10193,98 +10215,51 @@ input[readonly] {
       .description_text {}
     }
     */ }
-  .prof-details .professional .profession,
   .service-details .professional .profession {
     text-transform: uppercase; }
-  .prof-details .professional .zone,
   .service-details .professional .zone {
     margin-top: 10px; }
-  .prof-details .professional .competences,
-  .service-details .professional .competences {
-    margin: 10px;
-    border-top: 1px solid #ddd;
-    padding-top: 10px; }
-    .prof-details .professional .competences .title,
-    .service-details .professional .competences .title {
-      font-weight: bold;
-      padding: 10px 0; }
-    .prof-details .professional .competences .item-input-inset,
-    .service-details .professional .competences .item-input-inset {
-      border: 0;
-      padding: 0; }
-      .prof-details .professional .competences .item-input-inset input,
-      .service-details .professional .competences .item-input-inset input {
-        display: inline-block;
-        width: 100%;
-        border-bottom: 1px solid black; }
-    .prof-details .professional .competences .competences-tags .tag,
-    .service-details .professional .competences .competences-tags .tag {
-      display: inline-block;
-      line-height: 28px;
-      background-color: skyblue;
-      padding: 0 7px;
-      margin: 5px;
-      border-radius: 5px; }
-    .prof-details .professional .competences .competences-tags .tag.editing,
-    .service-details .professional .competences .competences-tags .tag.editing {
-      padding-right: 0; }
 
-.prof-details .prof-services .list-accordion .list .item-accordion,
-.service-details .prof-services .list-accordion .list .item-accordion {
+.list-accordion .list .item-accordion {
   border: 1px solid #ddd;
   padding: 1px 0; }
-  .prof-details .prof-services .list-accordion .list .item-accordion .item,
-  .service-details .prof-services .list-accordion .list .item-accordion .item {
+  .list-accordion .list .item-accordion .item {
     border: 0; }
-  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header,
-  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header {
+  .list-accordion .list .item-accordion .item-accordion-header {
     white-space: normal; }
-    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header .title,
-    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header .title {
+    .list-accordion .list .item-accordion .item-accordion-header .title {
       text-transform: uppercase; }
-    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i,
-    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i {
+    .list-accordion .list .item-accordion .item-accordion-header i {
       transition: all 0.2s; }
-    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i.open,
-    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i.open {
+    .list-accordion .list .item-accordion .item-accordion-header i.open {
       transform: rotate(180deg); }
-    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i::before,
-    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-header i::before {
+    .list-accordion .list .item-accordion .item-accordion-header i::before {
       font-size: 0.5em; }
-  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content,
-  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content {
+  .list-accordion .list .item-accordion .item-accordion-content {
     transition: all 0.2s;
     border-top: 0;
     padding: 0; }
-    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content div,
-    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content div {
+    .list-accordion .list .item-accordion .item-accordion-content div {
       white-space: normal;
       font-size: 14px; }
-    .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select,
-    .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select {
+    .list-accordion .list .item-accordion .item-accordion-content .item-select {
       padding-left: 0; }
-      .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label,
-      .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label {
+      .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label {
         width: 100%;
         font-weight: normal; }
-      .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label.placeholder,
-      .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label.placeholder {
+      .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label.placeholder {
         color: #aaaaaa; }
-  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-content.ng-hide,
-  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-content.ng-hide {
+  .list-accordion .list .item-accordion .item-accordion-content.ng-hide {
     line-height: 0px;
     opacity: 0; }
-  .prof-details .prof-services .list-accordion .list .item-accordion .item-accordion-footer,
-  .service-details .prof-services .list-accordion .list .item-accordion .item-accordion-footer {
+  .list-accordion .list .item-accordion .item-accordion-footer {
     padding: 16px;
     text-align: right; }
 
-.prof-details .prof-services .list-accordion .list .item-accordion:not(:first-child),
-.service-details .prof-services .list-accordion .list .item-accordion:not(:first-child) {
+.list-accordion .list .item-accordion:not(:first-child) {
   margin-top: 16px; }
 
-.prof-details .prof-services .input-label .address,
-.service-details .prof-services .input-label .address {
+.input-label .address {
   font-style: italic; }
 
 placeautocomplete {
@@ -10321,6 +10296,38 @@ placeautocomplete {
 /*
  * DETAILS
  */
+.card.professional {
+  box-shadow: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-bottom: 10px; }
+  .card.professional img {
+    background-color: #f8f8f8; }
+  .card.professional .name {
+    font-weight: bold;
+    font-size: larger;
+    white-space: normal; }
+
+.profile-image-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  max-width: 80px;
+  max-height: 80px;
+  width: 100%;
+  height: 100%; }
+  .profile-image-container .upload {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    color: #444;
+    background-color: #f8f8f8; }
+    .profile-image-container .upload .icon {
+      position: absolute;
+      bottom: 0;
+      right: 5px; }
+
 .details a,
 .details a:hover,
 .details a:active,
@@ -10337,43 +10344,16 @@ placeautocomplete {
   .details .datetime .time {
     font-weight: bold; }
 
-.details .professional {
-  margin-bottom: 10px;
-  padding-bottom: 20px;
+.details .card.professional {
+  margin-top: 0;
   border-bottom: 2px solid #1f6ca5; }
-  .details .professional .item {
-    margin-bottom: 20px;
-    border: none; }
-    .details .professional .item ul {
-      /*position: absolute;*/
-      /*bottom: 10px;*/ }
-  .details .professional ul li {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
-    .details .professional ul li .icon {
-      display: inline-block;
-      width: 20px;
-      margin-right: 10px;
-      font-size: 20px;
-      text-align: center; }
-  .details .professional ul .name {
-    font-weight: bold;
-    font-size: larger;
-    white-space: normal; }
-  .details .professional ul .type {
-    padding-top: 5px;
-    font-style: italic;
-    white-space: normal; }
-  .details .professional ul .address {
-    padding-top: 5px; }
-  .details .professional ul .phone {
-    padding-top: 5px; }
-  .details .professional ul .email {
-    padding-top: 5px; }
+  .details .card.professional img {
+    background-color: #f8f8f8; }
 
 .details .info .item {
   border: none; }
+  .details .info .item .icon {
+    font-size: 26px; }
 
 .details .state {
   font-style: italic; }
@@ -10550,6 +10530,9 @@ placeautocomplete {
     padding: 10px; }
     .login .form-container form,
     .registration .form-container form {
+      /*
+ * Details
+ */
       text-align: left;
       /*.item-input-uppercase input {
         text-transform: uppercase;
@@ -10574,27 +10557,6 @@ placeautocomplete {
     border-top: 3px solid #1f6ca5;
     padding-top: 20px;
     font-size: larger; }
-
-/*
- * Details
- */
-.profile-image-container {
-  display: block; }
-  .profile-image-container .profile-image {
-    display: block;
-    /*border-radius: 8px;*/
-    height: 100px;
-    background-color: #f8f8f8;
-    position: relative; }
-    .profile-image-container .profile-image .upload {
-      position: absolute;
-      bottom: 4px;
-      right: 8px;
-      font-size: 28px;
-      color: #444; }
-    .profile-image-container .profile-image img {
-      width: 100%;
-      height: auto; }
 
 /*
 .matches {

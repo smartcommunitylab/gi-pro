@@ -1,10 +1,10 @@
-angular.module('gi-pro.controllers.requestsandoffers', [])
+angular.module('gi-pro.controllers.requests', [])
 
-.controller('RequestAndOffersCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login, PushSrv, NotifDB) {
-  $scope.requests = null
-  $scope.offers = null
-  $scope.requestsNotifications = {}
-  $scope.offersNotifications = {}
+.controller('RequestsCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login, PushSrv, NotifDB) {
+  $scope.myRequests = null
+  $scope.requestsToMe = null
+  $scope.myRequestsNotifications = {}
+  $scope.requestsToMeNotifications = {}
 
   // state: OPEN, CLOSED, ACCEPTED, REJECTED, (DELETED)
 
@@ -24,12 +24,12 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
 
     Utils.loading();
     var from = moment().startOf('date').valueOf();
-    DataSrv.getRequests(Login.getUser().objectId, from, null, 1, 100).then(
+    DataSrv.getMyRequests(Login.getUser().objectId, from, null, 1, 100).then(
       function (requests) {
-        $scope.requests = requests;
-        DataSrv.getOffers(Login.getUser().objectId, from, null, null, 1, 100).then(
+        $scope.myRequests = requests;
+        DataSrv.getRequestsToMe(Login.getUser().objectId, from, null, null, 1, 100).then(
           function (offers) {
-            $scope.offers = offers;
+            $scope.requestsToMe = offers;
             Utils.loaded();
           },
           Utils.commError
@@ -45,7 +45,7 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
   }
 
   $scope.$on('$ionicView.enter', function (event, args) {
-    var params = DataSrv.internalCache['app.requestsAndOffers'] || {};
+    var params = DataSrv.internalCache['app.requests'] || {};
     if (params.reload) {
       reload();
     }
@@ -53,7 +53,7 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
     if (params.tab) {
       $ionicTabsDelegate.select(params.tab);
     }
-    DataSrv.internalCache['app.requestsAndOffers'] = null;
+    DataSrv.internalCache['app.requests'] = null;
   });
 
   $scope.selectedTab = function () {
@@ -64,13 +64,6 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
     $scope.goTo('app.requestdetails', {
       'objectId': request.objectId,
       'request': request
-    });
-  };
-
-  $scope.openOfferDetails = function (offer) {
-    $scope.goTo('app.offerdetails', {
-      'objectId': offer.objectId,
-      'offer': offer
     });
   };
 
@@ -87,7 +80,7 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
           }
         });
 
-        $scope.requestsNotifications = newNotificationsMap;
+        $scope.myRequestsNotifications = newNotificationsMap;
 
         // Requests for user offers
         NotifDB.getNotifications(Login.getUser().objectId, DataSrv.notificationTypes.NEW_SERVICE_REQUEST, false).then(
@@ -101,7 +94,7 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
               }
             });
 
-            $scope.offersNotifications = newNotificationsMap;
+            $scope.requestsToMeNotifications = newNotificationsMap;
           }
         );
       }
@@ -197,12 +190,12 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
 .controller('HistoryCtrl', function ($scope, $stateParams, $ionicTabsDelegate, Utils, Config, DataSrv, Login) {
   var limit = 10;
 
-  $scope.requests = null;
-  $scope.requestsPage = 1;
+  $scope.myRequests = null;
+  $scope.myRequestsPage = 1;
   $scope.hasMoreRequests = true;
 
-  $scope.offers = null;
-  $scope.offersPage = 1;
+  $scope.requestsToMe = null;
+  $scope.requestsToMePage = 1;
   $scope.hasMoreOffers = true;
 
   $scope.loadMoreRequests = function () {
@@ -214,17 +207,17 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
 
     Utils.loading();
     var to = moment().startOf('date').valueOf();
-    DataSrv.getRequests(Login.getUser().objectId, 0, to, $scope.requestsPage, limit).then(
+    DataSrv.getRequests(Login.getUser().objectId, 0, to, $scope.myRequestsPage, limit).then(
       function (requests) {
         if (requests.length < limit) {
           $scope.hasMoreRequests = false;
         } else {
-          $scope.requestsPage++;
+          $scope.myRequestsPage++;
         }
-        if ($scope.requests == null) {
-          $scope.requests = requests;
+        if ($scope.myRequests == null) {
+          $scope.myRequests = requests;
         } else {
-          $scope.requests = $scope.requests.concat(requests);
+          $scope.myRequests = $scope.myRequests.concat(requests);
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.$broadcast('scroll.refreshComplete');
@@ -247,17 +240,17 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
 
     Utils.loading();
     var to = moment().startOf('date').valueOf();
-    DataSrv.getOffers(Login.getUser().objectId, 0, to, true, $scope.offersPage, limit).then(
+    DataSrv.getOffers(Login.getUser().objectId, 0, to, true, $scope.requestsToMePage, limit).then(
       function (offers) {
         if (offers.length < limit) {
           $scope.hasMoreOffers = false;
         } else {
-          $scope.offersPage++;
+          $scope.requestsToMePage++;
         }
-        if ($scope.offers == null) {
-          $scope.offers = offers;
+        if ($scope.requestsToMe == null) {
+          $scope.requestsToMe = offers;
         } else {
-          $scope.offers = $scope.offers.concat(offers);
+          $scope.requestsToMe = $scope.requestsToMe.concat(offers);
         }
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -272,15 +265,15 @@ angular.module('gi-pro.controllers.requestsandoffers', [])
   };
 
   $scope.refreshRequests = function () {
-    $scope.requestsPage = 1;
-    $scope.requests = null;
+    $scope.myRequestsPage = 1;
+    $scope.myRequests = null;
     $scope.hasMoreRequests = true;
     $scope.loadMoreRequests();
   };
 
   $scope.refreshOffers = function () {
-    $scope.offersPage = 1;
-    $scope.offers = null;
+    $scope.requestsToMePage = 1;
+    $scope.requestsToMe = null;
     $scope.hasMoreOffers = true;
     $scope.loadMoreOffers();
   };

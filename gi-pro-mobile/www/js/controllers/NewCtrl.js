@@ -59,7 +59,7 @@ angular.module('gi-pro.controllers.new', [])
         DataSrv.createRequestPublic(serviceRequest).then(
             function (data) {
                 Utils.loaded();
-                $scope.goTo('app.requestsAndOffers', {
+                $scope.goTo('app.requests', {
                     'reload': true,
                     'tab': 0
                 }, false, true, true, true);
@@ -142,7 +142,7 @@ angular.module('gi-pro.controllers.new', [])
             function (data) {
                 Utils.loaded();
                 unregisterNewOfferWatch();
-                $scope.goTo('app.requestsAndOffers', {
+                $scope.goTo('app.requests', {
                     'reload': true,
                     'tab': 1
                 }, false, true, true, true);
