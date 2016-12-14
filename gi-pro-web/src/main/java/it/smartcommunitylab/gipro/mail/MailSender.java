@@ -129,7 +129,7 @@ public class MailSender {
 			final MimeMessage mimeMessage = mailSender.createMimeMessage();
 			final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			message.setSubject(subject);
-			message.setFrom("GiPro <" + mailUser + "@mail.smartcommunitylab.it>");
+			message.setFrom("GiPro <" + mailUser + ">");
 			message.setTo(email);
 
 			// Create the HTML body using Thymeleaf
