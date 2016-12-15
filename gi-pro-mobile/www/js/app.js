@@ -18,6 +18,7 @@ angular.module('gi-pro', [
   'gi-pro.controllers.main',
   'gi-pro.controllers.login',
   'gi-pro.controllers.requests',
+  'gi-pro.controllers.notifications',
   'gi-pro.controllers.serviceandprof',
   'gi-pro.controllers.details',
   'gi-pro.controllers.profile',
@@ -40,6 +41,11 @@ angular.module('gi-pro', [
       StatusBar.styleDefault();
     }
   });
+
+  if (Login.getUser()) {
+    console.log('user logged: ' + Login.getUser().objectId + ' (' + Login.getUser().name + ' ' + Login.getUser().surname + ')')
+    PushSrv.init()
+  }
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
     PushSrv.fgOf();

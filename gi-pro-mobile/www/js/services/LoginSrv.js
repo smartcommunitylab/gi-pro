@@ -75,7 +75,9 @@ angular.module('gi-pro.services.login', [])
         }
         localStorage.setItem(userVarName, JSON.stringify(user));
         $rootScope.user = user;
-        if (!skipRegistration) PushSrv.init();
+        if (!skipRegistration) {
+          PushSrv.init();
+        }
         deferred.resolve(user);
       }, function (reason) {
         if (reason.status == 401 || reason.status == 403) {
@@ -107,7 +109,9 @@ angular.module('gi-pro.services.login', [])
         localStorage.setItem(userVarName, JSON.stringify(user));
         $rootScope.user = user;
         $rootScope.logged = true;
-        if (!skipRegistration) PushSrv.init();
+        if (!skipRegistration) {
+          PushSrv.init();
+        }
         deferred.resolve(user);
       }, function (reason) {
         if (reason.status == 401 || reason.status == 403) {

@@ -254,7 +254,7 @@ angular.module('gi-pro.services.data', [])
       httpConfWithParams.params['area'] = area;
     }
     if (!!type) {
-      httpConfWithParams.params['type'] = type;
+      httpConfWithParams.params['serviceType'] = type;
     }
     if (!!page) {
       httpConfWithParams.params['page'] = page;

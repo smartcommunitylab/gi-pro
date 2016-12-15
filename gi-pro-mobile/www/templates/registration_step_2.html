@@ -49,10 +49,10 @@
           <label class="item item-input">
             <input type="text" ng-model="registration.albo" ng-required="true" placeholder="{{'albo_placeholder' | translate}}">
           </label>
-          <ion-checkbox class="checkbox-energized" ng-model="registration.declaration" ng-required="true">{{'register_declaration' | translate}}</ion-checkbox>
+          <ion-checkbox class="checkbox-assertive" ng-model="registration.declaration" ng-required="true">{{'register_declaration' | translate}}</ion-checkbox>
         </div>
-        <!--<button class="button button-block button-energized" ng-click="register()" ng-disabled="!registration.privacy">{{'register' | translate}}</button>-->
-        <button class="button button-block button-energized" ng-click="register()" ng-disabled="regform1.$invalid">{{'register' | translate}}</button>
+        <!--<button class="button button-block button-assertive" ng-click="register()" ng-disabled="!registration.privacy">{{'register' | translate}}</button>-->
+        <button class="button button-block button-assertive" ng-click="register()" ng-disabled="regform1.$invalid">{{'register' | translate}}</button>
       </form>
       <div class="bottom">
         <a ng-click="cancel()">{{'cancel' | translate}}</a>

@@ -104,9 +104,11 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   }
 
   var addExtraDataToProf = function () {
-    for (var i = 0; i < $scope.professionalsList.length; i++) {
-      $scope.professionalsList[i]['profession'] = professionsMap[$scope.professionalsList[i].type].name;
-      $scope.professionalsList[i]['zone'] = zonesMap[$scope.professionalsList[i].area] ? zonesMap[$scope.professionalsList[i].area].name : '';
+    if ($scope.professionalsList) {
+      for (var i = 0; i < $scope.professionalsList.length; i++) {
+        $scope.professionalsList[i]['profession'] = professionsMap[$scope.professionalsList[i].type].name;
+        $scope.professionalsList[i]['zone'] = zonesMap[$scope.professionalsList[i].area] ? zonesMap[$scope.professionalsList[i].area].name : '';
+      }
     }
 
     // if logged add also service meta info
@@ -331,10 +333,6 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     return deferred.promise;
   }
 
-  $scope.loadServices = function () {
-    reload();
-  }
-
   $scope.loadMoreProfessional = function () {
     var deferred = $q.defer();
     DataSrv.getProfessionals(($scope.filters.selectedProfession == null) ? null : $scope.filters.selectedProfession.id, ($scope.filters.selectedZone == null) ? null : $scope.filters.selectedZone.id, (($scope.professionalsList == null) ? 1 : Math.floor(($scope.professionalsList.length / $scope.allProfessional)) + 1), $scope.allProfessional, "surname").then(function (professional) {
@@ -380,7 +378,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     return deferred.promise;
   }
 
-  var reload = function () {
+  $scope.reload = function () {
     if (!Login.userIsLogged()) {
       //show tutorial
     }
@@ -419,10 +417,6 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
     //if Login.userIsLogged() load services
   };
-
-  $scope.loadProfessional = function () {
-    reload();
-  }
 
   angular.extend($scope, {
     center: {

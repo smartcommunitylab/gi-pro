@@ -3,7 +3,8 @@ angular.module('gi-pro.controllers.main', [])
 /*
  * App generic controller
  */
-.controller('AppCtrl', function ($scope, $rootScope, $state, $location, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login) {
+.controller('AppCtrl', function ($scope, $rootScope, $state, $ionicSideMenuDelegate, $location, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login, NotifDB) {
+  /* This function is useful for forcing reload and other similar stuff */
   $scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot, internalCache) {
     var options = {
       disableAnimate: false,
@@ -31,6 +32,26 @@ angular.module('gi-pro.controllers.main', [])
     } else {
       $state.go(state, params);
     }
+  };
+
+  /* This is for update the unread notifications counter in the menu */
+  $rootScope.updateUnreadCount = function () {
+    NotifDB.getUnreadCount().then(function (count) {
+      console.log('unread: ' + count)
+      $rootScope.unreadNotifications = count
+    })
+  }
+
+  $rootScope.openNotificationDetails = function (notification) {
+    if (!notification.read) {
+      NotifDB.markAsRead(notification.objectId)
+      notification.read = true
+      $rootScope.updateUnreadCount()
+    }
+
+    $scope.goTo('app.requestdetails', {
+      'objectId': notification.requestId
+    })
   };
 
   $rootScope.openProfessionalDetails = function (professional) {
