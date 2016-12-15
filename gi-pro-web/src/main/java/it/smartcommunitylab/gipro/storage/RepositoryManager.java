@@ -333,21 +333,22 @@ public class RepositoryManager {
 		Query query = new Query(criteria);
 		Professional result = mongoTemplate.findOne(query, Professional.class);
 		if (result != null) {
-			updateBalance(result);
+			updateBalance(result, query);
 		}
 		result.setPasswordHash(null);
 		return result;
 	}
 
-	private void updateBalance(Professional p) {
+	private void updateBalance(Professional p, Query q) {
 		Date now = new Date();
 		if (p.getNextBalanceUpdate() == null || p.getNextBalanceUpdate().before(now)) {
 			Date next = Const.nextBalanceUpdate(p.getNextBalanceUpdate());
 			while (next.before(now)) {
 				next = Const.nextBalanceUpdate(next);
 			}
-			p.setNextBalanceUpdate(next);
-			mongoTemplate.save(p);
+			Update u = new Update();
+			u.set("nextBalanceUpdate", next);
+			mongoTemplate.updateFirst(q,u, Professional.class);
 		}
 	}
 
@@ -486,7 +487,7 @@ public class RepositoryManager {
 		mongoTemplate.save(serviceRequest);
 		
 		Criteria criteria = new Criteria("applicationId").is(requester.getApplicationId()).and("objectId").is(requester.getObjectId());
-		mongoTemplate.updateFirst(Query.query(criteria), new Update().set("balance", requester.getBalance() - cost), Professional.class);
+		mongoTemplate.updateFirst(Query.query(criteria), new Update().inc("balance", -cost), Professional.class);
 		
 		//search matching offers
 		Date timestamp = new Date();
@@ -683,6 +684,10 @@ public class RepositoryManager {
 		Update update = new Update().set("state", Const.STATE_REJECTED);
 		mongoTemplate.updateFirst(Query.query(criteria), update, ServiceRequest.class);
 
+		criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(req.getRequesterId());
+		mongoTemplate.updateFirst(Query.query(criteria), new Update().inc("balance", req.getCost()), Professional.class);
+
+		
 		req = getServiceRequestById(applicationId, objectId);
 		Notification notification = new Notification();
 		notification.setApplicationId(applicationId);
