@@ -93,6 +93,9 @@ public class NotificationManager {
 		if (platform != null) {
 			signature.setPlatform(platform);
 		}
+		if (logger.isInfoEnabled()) {
+			logger.info("Registering user for push: "+ userId +" with "+registrationId);
+		}
 		communicator.registerUserToPush(signature, env.getProperty("push.appName"), userId, getAppToken());
 
 	}

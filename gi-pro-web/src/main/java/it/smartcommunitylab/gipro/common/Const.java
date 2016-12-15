@@ -24,6 +24,7 @@ public class Const {
 	public static final String NT_REQUEST_REJECTED = "REQUEST_REJECTED"; 
 	public static final String NT_SERVICE_REQUEST_DELETED = "SERVICE_REQUEST_DELETED";  
 	public static final String NT_SERVICE_OFFER_DELETED = "SERVICE_OFFER_DELETED";  
+	public static final String NT_REQUEST_DELETED = "REQUEST_DELETED"; 
 	
 	public static final String LawyerDataNascita = "LawyerDataNascita";
 	public static final String LawyerLuogoNascita = "LawyerLuogoNascita";

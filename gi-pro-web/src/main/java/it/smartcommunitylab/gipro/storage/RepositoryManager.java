@@ -253,10 +253,22 @@ public class RepositoryManager {
 						};
 				break;
 			}
+			case Const.NT_REQUEST_ACCEPTED: 
+			case Const.NT_REQUEST_DELETED: 
+			case Const.NT_REQUEST_REJECTED: {
+				ServiceOffer offer = getServiceOfferById(applicationId, serviceOfferId);
+				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
+				Professional p = findProfessionalById(applicationId, request.getProfessionalId());
+				params = new String[]{ 
+						p.getSurname(), 
+						p.getName(), 
+						offer.getAddress(),
+						translationHelper.dateTime(request.getStartTime(), lang)
+						};
+				break;
+			}
 			// TODO
 			case Const.NT_SERVICE_OFFER_DELETED:
-			case Const.NT_REQUEST_ACCEPTED: 
-			case Const.NT_REQUEST_REJECTED: 
 		}
 		return translationHelper.getNotificationText(lang, type, serviceType, params);
 	}
@@ -333,21 +345,22 @@ public class RepositoryManager {
 		Query query = new Query(criteria);
 		Professional result = mongoTemplate.findOne(query, Professional.class);
 		if (result != null) {
-			updateBalance(result);
+			updateBalance(result, query);
 		}
 		result.setPasswordHash(null);
 		return result;
 	}
 
-	private void updateBalance(Professional p) {
+	private void updateBalance(Professional p, Query q) {
 		Date now = new Date();
 		if (p.getNextBalanceUpdate() == null || p.getNextBalanceUpdate().before(now)) {
 			Date next = Const.nextBalanceUpdate(p.getNextBalanceUpdate());
 			while (next.before(now)) {
 				next = Const.nextBalanceUpdate(next);
 			}
-			p.setNextBalanceUpdate(next);
-			mongoTemplate.save(p);
+			Update u = new Update();
+			u.set("nextBalanceUpdate", next);
+			mongoTemplate.updateFirst(q,u, Professional.class);
 		}
 	}
 
@@ -486,7 +499,7 @@ public class RepositoryManager {
 		mongoTemplate.save(serviceRequest);
 		
 		Criteria criteria = new Criteria("applicationId").is(requester.getApplicationId()).and("objectId").is(requester.getObjectId());
-		mongoTemplate.updateFirst(Query.query(criteria), new Update().set("balance", requester.getBalance() - cost), Professional.class);
+		mongoTemplate.updateFirst(Query.query(criteria), new Update().inc("balance", -cost), Professional.class);
 		
 		//search matching offers
 		Date timestamp = new Date();
@@ -683,6 +696,10 @@ public class RepositoryManager {
 		Update update = new Update().set("state", Const.STATE_REJECTED);
 		mongoTemplate.updateFirst(Query.query(criteria), update, ServiceRequest.class);
 
+		criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(req.getRequesterId());
+		mongoTemplate.updateFirst(Query.query(criteria), new Update().inc("balance", req.getCost()), Professional.class);
+
+		
 		req = getServiceRequestById(applicationId, objectId);
 		Notification notification = new Notification();
 		notification.setApplicationId(applicationId);
@@ -709,6 +726,23 @@ public class RepositoryManager {
 			if (result.getProfessionalId().equals(professionalId) && !Const.STATE_ACCEPTED.equals(result.getState())) {
 				throw new InvalidStateException("Not yet accepted/rejected");
 			}
+
+			// notify requester when service provider cancels the request
+			if (result.getProfessionalId().equals(professionalId)) {
+				Notification notification = new Notification();
+				notification.setApplicationId(applicationId);
+				notification.setTimestamp(new Date());
+				notification.setProfessionalId(result.getRequesterId());
+				notification.setType(Const.NT_REQUEST_DELETED);
+				notification.setServiceOfferId(result.getOfferId());
+				notification.setServiceRequestId(result.getObjectId());
+				addNotification(notification, result.getRequesterId(), result.getServiceType());
+			// update balance
+			} else {
+				criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(result.getRequesterId());
+				mongoTemplate.updateFirst(Query.query(criteria), new Update().inc("balance", result.getCost()), Professional.class);
+			}
+
 			Update update = new Update().set("state", Const.STATE_DELETED);
 			mongoTemplate.updateFirst(query, update, ServiceRequest.class);
 		}
