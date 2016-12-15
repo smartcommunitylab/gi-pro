@@ -253,10 +253,22 @@ public class RepositoryManager {
 						};
 				break;
 			}
+			case Const.NT_REQUEST_ACCEPTED: 
+			case Const.NT_REQUEST_DELETED: 
+			case Const.NT_REQUEST_REJECTED: {
+				ServiceOffer offer = getServiceOfferById(applicationId, serviceOfferId);
+				ServiceRequest request = getServiceRequestById(applicationId, serviceRequestId);
+				Professional p = findProfessionalById(applicationId, request.getProfessionalId());
+				params = new String[]{ 
+						p.getSurname(), 
+						p.getName(), 
+						offer.getAddress(),
+						translationHelper.dateTime(request.getStartTime(), lang)
+						};
+				break;
+			}
 			// TODO
 			case Const.NT_SERVICE_OFFER_DELETED:
-			case Const.NT_REQUEST_ACCEPTED: 
-			case Const.NT_REQUEST_REJECTED: 
 		}
 		return translationHelper.getNotificationText(lang, type, serviceType, params);
 	}
@@ -714,6 +726,23 @@ public class RepositoryManager {
 			if (result.getProfessionalId().equals(professionalId) && !Const.STATE_ACCEPTED.equals(result.getState())) {
 				throw new InvalidStateException("Not yet accepted/rejected");
 			}
+
+			// notify requester when service provider cancels the request
+			if (result.getProfessionalId().equals(professionalId)) {
+				Notification notification = new Notification();
+				notification.setApplicationId(applicationId);
+				notification.setTimestamp(new Date());
+				notification.setProfessionalId(result.getRequesterId());
+				notification.setType(Const.NT_REQUEST_DELETED);
+				notification.setServiceOfferId(result.getOfferId());
+				notification.setServiceRequestId(result.getObjectId());
+				addNotification(notification, result.getRequesterId(), result.getServiceType());
+			// update balance
+			} else {
+				criteria = new Criteria("applicationId").is(applicationId).and("objectId").is(result.getRequesterId());
+				mongoTemplate.updateFirst(Query.query(criteria), new Update().inc("balance", result.getCost()), Professional.class);
+			}
+
 			Update update = new Update().set("state", Const.STATE_DELETED);
 			mongoTemplate.updateFirst(query, update, ServiceRequest.class);
 		}
