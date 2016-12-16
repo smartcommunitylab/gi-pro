@@ -526,8 +526,11 @@ input[readonly] {
     .item {
       border-color: transparent;
       .icon {
-        font-size: 20px;
-        margin-right: 10px;
+        /*font-size: 20px;
+        margin-right: 10px;*/
+      }
+      span {
+        white-space: normal;
       }
       .cost {
         font-weight: bold;
