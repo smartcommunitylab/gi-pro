@@ -1,3 +1,4 @@
+/* global angular, cordova, ionic, StatusBar, moment */
 angular.module('gi-pro', [
   'ionic',
   'ngCordova',
@@ -32,15 +33,15 @@ angular.module('gi-pro', [
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true)
+      cordova.plugins.Keyboard.disableScroll(true)
     }
 
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
+      StatusBar.styleDefault()
     }
-  });
+  })
 
   if (Login.getUser()) {
     console.log('user logged: ' + Login.getUser().objectId + ' (' + Login.getUser().name + ' ' + Login.getUser().surname + ')')
@@ -48,36 +49,37 @@ angular.module('gi-pro', [
   }
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
-    PushSrv.fgOf();
-  });
+    PushSrv.fgOf()
+  })
 })
 
 .config(function ($ionicConfigProvider, $httpProvider, $translateProvider) {
-  $httpProvider.defaults.withCredentials = true;
+  $httpProvider.defaults.withCredentials = true
 
   // PROBLEM WITH SCROLL RESIZE ON OLD ANDROID DEVICES
-  $ionicConfigProvider.scrolling.jsScrolling(ionic.Platform.isIOS() || (ionic.Platform.isAndroid() && parseFloat(ionic.Platform.version()) < 4.4));
+  $ionicConfigProvider.scrolling.jsScrolling(ionic.Platform.isIOS() || (ionic.Platform.isAndroid() && parseFloat(ionic.Platform.version()) < 4.4))
 
-  $ionicConfigProvider.tabs.position('top');
-  $ionicConfigProvider.tabs.style('striped');
-  $ionicConfigProvider.backButton.previousTitleText(false).text('');
+  $ionicConfigProvider.tabs.position('top')
+  $ionicConfigProvider.tabs.style('striped')
+  $ionicConfigProvider.backButton.previousTitleText(false).text('')
 
-  //$ionicConfigProvider.navBar.alignTitle('left');
+  // $ionicConfigProvider.navBar.alignTitle('left');
 
-  //$translateProvider.translations('it', {});
-  $translateProvider.preferredLanguage('it');
+  // $translateProvider.translations('it', {});
+  $translateProvider.preferredLanguage('it')
   $translateProvider.useStaticFilesLoader({
     prefix: 'languages/',
     suffix: '.json'
-  });
-  //$translateProvider.useSanitizeValueStrategy('sanitize');
-  //$translateProvider.useSanitizeValueStrategy('sanitizeParameters');
-  $translateProvider.useSanitizeValueStrategy('escapeParameters');
+  })
+
+  // $translateProvider.useSanitizeValueStrategy('sanitize');
+  // $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+  $translateProvider.useSanitizeValueStrategy('escapeParameters')
 })
 
 .config(function (ionicDatePickerProvider, ionicTimePickerProvider) {
   // FIXME language fixed to 'it' dev only!
-  moment.locale('it');
+  moment.locale('it')
 
   var datePickerObj = {
     inputDate: new Date(),
@@ -87,16 +89,16 @@ angular.module('gi-pro', [
     templateType: 'popup',
     from: new Date(),
     showTodayButton: true,
-    dateFormat: 'dd MMMM yyyy',
-  };
-  ionicDatePickerProvider.configDatePicker(datePickerObj);
+    dateFormat: 'dd MMMM yyyy'
+  }
+  ionicDatePickerProvider.configDatePicker(datePickerObj)
 
   var timePickerObj = {
     inputTime: (((new Date()).getHours() * 60 * 60) + ((new Date()).getMinutes() * 60)),
     format: 24,
     step: 1
-  };
-  ionicTimePickerProvider.configTimePicker(timePickerObj);
+  }
+  ionicTimePickerProvider.configTimePicker(timePickerObj)
 })
 
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -110,7 +112,7 @@ angular.module('gi-pro', [
   .state('app.tutorial', {
     url: '/tutorial',
     params: {
-      forceReload: false,
+      forceReload: false
     },
     views: {
       'menuContent': {
@@ -345,7 +347,7 @@ angular.module('gi-pro', [
         controller: 'RegistrationSecondCtrl'
       }
     }
-  });
+  })
 
   // if none of the above states are matched, use this as the fallback$state
   $urlRouterProvider.otherwise(function ($injector) {
@@ -368,5 +370,5 @@ angular.module('gi-pro', [
     return '/app/home';
     */
     return '/app/home'
-  });
-});
+  })
+})

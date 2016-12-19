@@ -478,6 +478,13 @@ input[readonly] {
   }
 }
 
+.professional-details {
+  .profession {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+
 .contacts {
   .item {
     border: none;
@@ -485,6 +492,15 @@ input[readonly] {
   .list {
     margin-bottom: 0;
     padding: 0;
+  }
+  placeautocomplete {
+    width: 100%;
+    .placeautocomplete-input {
+      padding-left: 0 !important;
+    }
+    .placeautocomplete-input-clear {
+      display: none;
+    }
   }
 }
 
@@ -636,12 +652,13 @@ placeautocomplete {
 }
 
 .placeautocomplete ul {
-  position: absolute;
+  position: relative;
   background-color: rgba(255, 255, 255, .95);
   border: 1px solid #ddd;
   z-index: 99;
   li {
     padding: 5px;
+    white-space: normal;
     .highlight {
       font-weight: bold;
     }
@@ -977,9 +994,12 @@ placeautocomplete {
     padding: 10px;
     form {
       /*
- * Details
- */
+       * Details
+       */
       text-align: left;
+      placeautocomplete {
+        width: 90%;
+      }
       .item-select {
         .input-label {
           font-size: 14px;

@@ -10148,12 +10148,23 @@ input[readonly] {
   .item-icon-left.item-input .button.icon {
     position: relative; }
 
+.professional-details .profession {
+  text-transform: uppercase;
+  font-weight: bold; }
+
 .contacts .item {
   border: none; }
 
 .contacts .list {
   margin-bottom: 0;
   padding: 0; }
+
+.contacts placeautocomplete {
+  width: 100%; }
+  .contacts placeautocomplete .placeautocomplete-input {
+    padding-left: 0 !important; }
+  .contacts placeautocomplete .placeautocomplete-input-clear {
+    display: none; }
 
 .competences {
   margin: 10px;
@@ -10270,12 +10281,13 @@ placeautocomplete {
   position: relative; }
 
 .placeautocomplete ul {
-  position: absolute;
+  position: relative;
   background-color: rgba(255, 255, 255, 0.95);
   border: 1px solid #ddd;
   z-index: 99; }
   .placeautocomplete ul li {
-    padding: 5px; }
+    padding: 5px;
+    white-space: normal; }
     .placeautocomplete ul li .highlight {
       font-weight: bold; }
 
@@ -10535,12 +10547,15 @@ placeautocomplete {
     .login .form-container form,
     .registration .form-container form {
       /*
- * Details
- */
+       * Details
+       */
       text-align: left;
       /*.item-input-uppercase input {
         text-transform: uppercase;
       }*/ }
+      .login .form-container form placeautocomplete,
+      .registration .form-container form placeautocomplete {
+        width: 90%; }
       .login .form-container form .item-select .input-label,
       .registration .form-container form .item-select .input-label {
         font-size: 14px;
