@@ -80,24 +80,27 @@ angular.module('gi-pro.services.mapservice', [])
   }
 
   /* extract coordinates from list (professionals/services?) and generate points */
-  mapService.getPoints = function (list, state) {
+  mapService.getPoints = function (list) {
     var points = []
     if (list) {
       for (var i = 0; i < list.length; i++) {
         if (list[i].coordinates) {
-          var point = {
-            // focus: true,
-            lat: list[i].coordinates[0],
-            lng: list[i].coordinates[1],
-            message: '<div><button class="button" ui-sref="' + state + '({objectId: \'' +
+          /*
+          message: '<div><button class="button" ui-sref="' + state + '({objectId: \'' +
               list[i].objectId + '\'})">' +
               list[i].name + '</button> </div>',
+              */
+          var point = {
+            //message: '',
+            lat: list[i].coordinates[0],
+            lng: list[i].coordinates[1],
             icon: {
               // iconUrl: url,
               iconSize: [36, 50],
               iconAnchor: [18, 50],
               popupAnchor: [-0, -50]
-            }
+            },
+            object: list[i]
           }
           points.push(point)
             // var bound = [list[i].location.lat, list[i].location.lon]

@@ -183,7 +183,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
 
     if ($ionicTabsDelegate.selectedIndex() === 1) { // 1 is the second
-      mapService.initMap('serviceMap').then(function () {
+      mapService.initMap('servicesMap').then(function () {
         GeoLocate.locate().then(function (pos) {
           $scope.center = {
             lat: pos[0],
@@ -191,7 +191,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             zoom: 18
           }
           $scope.servicesMarkers = mapService.getPoints($scope.servicesList, 'app.servicedetails')
-          mapService.refresh('serviceMap')
+          mapService.refresh('servicesMap')
         }, function () {
           // $scope.filterMarkers(false)
         })
@@ -207,7 +207,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
 
     if ($ionicTabsDelegate.selectedIndex() === 0) { // 0 is the first
-      mapService.initMap('professionsMap').then(function () {
+      mapService.initMap('professionalsMap').then(function () {
         GeoLocate.locate().then(function (pos) {
           $scope.center = {
             lat: pos[0],
@@ -215,7 +215,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             zoom: 18
           }
           $scope.professionalMarkers = mapService.getPoints($scope.professionalsList, 'app.profdetails')
-          mapService.refresh('professionsMap')
+          mapService.refresh('professionalsMap')
         }, function () {
           // $scope.filterMarkers(false)
         })
@@ -308,7 +308,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           }
 
           $scope.$broadcast('scroll.infiniteScrollComplete')
-          $scope.servicesMarkers = mapService.getPoints($scope.servicesList, 'app.servicedetails')
+          $scope.servicesMarkers = mapService.getPoints($scope.servicesList)
 
           if (services.length < Config.getServicesPageSize()) {
             $scope.endServices_reached = true
@@ -361,7 +361,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           }
 
           $scope.$broadcast('scroll.infiniteScrollComplete')
-          $scope.professionalMarkers = mapService.getPoints($scope.professionalsList, 'app.profdetails')
+          $scope.professionalMarkers = mapService.getPoints($scope.professionalsList)
 
           if (professional.length < Config.getProfessionalsPageSize()) {
             $scope.endProfessional_reached = true
@@ -417,5 +417,17 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     servicesMarkers: $scope.servicesMarkers,
     professionalMarkers: $scope.professionalMarkers,
     events: {}
+  })
+
+  $scope.$on('leafletDirectiveMarker.professionalsMap.click', function (e, args) {
+    e.stopPropagation()
+    // args.model.object is object
+    $scope.openProfessionalDetails(args.model.object)
+  })
+
+  $scope.$on('leafletDirectiveMarker.servicesMap.click', function (e, args) {
+    e.preventDefault()
+    // args.model.object is object
+    $scope.openServiceDetails(args.model.object)
   })
 })

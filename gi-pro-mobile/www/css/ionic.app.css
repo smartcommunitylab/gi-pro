@@ -10153,7 +10153,8 @@ input[readonly] {
   font-weight: bold; }
 
 .contacts .item {
-  border: none; }
+  border: none;
+  white-space: normal; }
 
 .contacts .list {
   margin-bottom: 0;
