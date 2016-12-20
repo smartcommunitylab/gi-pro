@@ -9,13 +9,28 @@ angular.module('gi-pro.controllers.profile', [])
 
     if ($stateParams['professional']) {
       $scope.profile = $stateParams['professional']
+      if ($rootScope.logged) {
+        DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
+          $scope.services = services
+        })
+      }
     } else if ($stateParams['objectId']) {
       DataSrv.getProfessionistByID($stateParams['objectId']).then(function (professional) {
         $scope.profile = professional
+        if ($rootScope.logged) {
+          DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
+            $scope.services = services
+          })
+        }
       })
     } else {
       $scope.profile = angular.copy(Login.getUser())
       $scope.isMyProfile = true
+      if ($rootScope.logged) {
+        DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
+          $scope.services = services
+        })
+      }
     }
 
     $scope.isOnProfile = false
@@ -57,10 +72,6 @@ angular.module('gi-pro.controllers.profile', [])
         $scope.availableServices = DataSrv.getServicesMap()
       })
     }
-
-    DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
-      $scope.services = services
-    })
   }
 
   $scope.selectedTab = 'profile'
@@ -80,7 +91,7 @@ angular.module('gi-pro.controllers.profile', [])
     mapService.initMap('mapModal').then(function () {
       $scope.$on('leafletDirectiveMap.mapModal.click', function (event, args) {
         $ionicLoading.show()
-        // planService.setPosition($scope.place, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng)
+          // planService.setPosition($scope.place, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng)
         var placedata = $q.defer()
         var url = Config.getGeocoderURL() + '/location?latlng=' + args.leafletEvent.latlng.lat + ',' + args.leafletEvent.latlng.lng
         $http.get(encodeURI(url), Config.getGeocoderConf()).then(function (response) {
@@ -152,9 +163,9 @@ angular.module('gi-pro.controllers.profile', [])
         var docs = response.data.response.docs
 
         var geoCoderPlaces = []
-        // places = data.response.docs
-        // store the data
-        // return the labels
+          // places = data.response.docs
+          // store the data
+          // return the labels
         var k = 0
         for (var i = 0; i < docs.length; i++) {
           var temp = ''
@@ -503,7 +514,7 @@ angular.module('gi-pro.controllers.profile', [])
     DataSrv.createOffer(serviceToSave).then(function (result) {
       // save toast;
       Utils.toast($filter('translate')('saved_new_service_toast'))
-      DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
+      DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
         $scope.services = services
       })
       $scope.toggleEditingServices(false)
@@ -523,7 +534,7 @@ angular.module('gi-pro.controllers.profile', [])
     DataSrv.deleteMyService(service.objectId, $scope.profile.objectId).then(function (result) {
       // save toast;
       Utils.toast($filter('translate')('service_deleted_toast'))
-      DataSrv.getMyServicesOffer($scope.profile.objectId).then(function (services) {
+      DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
         $scope.services = services
       })
       $scope.toggleEditingServices(false)

@@ -69,6 +69,13 @@ angular.module('gi-pro.controllers.main', [])
     }
   }
 
+  $rootScope.openServiceDetails = function (service) {
+    $scope.goTo('app.servicedetails', {
+      'service': service,
+      'objectId': service.objectId
+    })
+  }
+
   $rootScope.requestState = {
     OPEN: 'OPEN',
     CLOSED: 'CLOSED',

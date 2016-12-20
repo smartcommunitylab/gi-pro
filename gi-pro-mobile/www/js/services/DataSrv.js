@@ -281,17 +281,17 @@ angular.module('gi-pro.services.data', [])
   }
 
   /* get my services offer */
-  dataService.getMyServicesOffer = function (userId) {
+  dataService.getServicesOfferByProfessional = function (objectId) {
     var deferred = $q.defer();
     var httpConfWithParams = Config.getHTTPConfig();
     httpConfWithParams.params = {};
 
     // professionalId is required
-    if (!userId || !angular.isString(userId)) {
-      deferred.reject('Invalid userId');
+    if (!objectId || !angular.isString(objectId)) {
+      deferred.reject('Invalid objectId');
     }
 
-    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + userId, httpConfWithParams).then(
+    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/service/offer/' + objectId, httpConfWithParams).then(
       function (response) {
         // offer created
         deferred.resolve(response.data);

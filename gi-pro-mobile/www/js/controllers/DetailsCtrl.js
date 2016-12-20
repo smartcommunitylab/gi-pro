@@ -285,6 +285,7 @@ angular.module('gi-pro.controllers.details', [])
       },
       function (reason) {
         console.log(reason)
+        Utils.commError(reason)
       }
     )
   }

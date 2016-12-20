@@ -29,13 +29,6 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     $rootScope.searchBar.show = !$rootScope.searchBar.show
   }
 
-  $scope.openServiceDetails = function (service) {
-    $scope.goTo('app.servicedetails', {
-      'service': service,
-      'objectId': service.objectId
-    })
-  }
-
   $scope.filters = {
     allServices: [],
     selectedService: null,

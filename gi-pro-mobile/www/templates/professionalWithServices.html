@@ -5,6 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-tabs class="tabs-calm">
+    <!-- ng-class="{'tabs-item-hide': !logged || !isMyProfile}" -->
     <!-- INFO -->
     <ion-tab title="{{'prof_info' | translate | uppercase}}" on-select="selectTab('profile')">
       <ion-pane>
@@ -12,7 +13,8 @@
       </ion-pane>
     </ion-tab>
     <!-- SERVICES -->
-    <ion-tab title="{{'prof_services' | translate | uppercase}}" on-select="selectTab('services')">
+    <ion-tab title="{{'prof_services' | translate | uppercase}}" on-select="selectTab('services')" ng-if="logged">
+      <!-- ng-if="logged && isMyProfile" -->
       <ion-pane>
         <ion-content class="prof-services">
           <!--
@@ -96,6 +98,9 @@
                 <div class="item item-accordion-content item-accordion-footer" ng-if="isMyProfile && !editingServices">
                   <button class="button button-small button-outline button-assertive" ng-click="deleteService(service)">{{'delete' | translate}}</button>
                   <!--<button class="button" ng-click="modifyService(service)">{{'modify' | translate}}</button>-->
+                </div>
+                <div class="item item-accordion-content item-accordion-footer" ng-if="!isMyProfile">
+                  <button class="button button-small button-outline button-assertive" ng-click="openServiceDetails(service)">{{'view_details' | translate}}</button>
                 </div>
               </ion-item>
             </div>
