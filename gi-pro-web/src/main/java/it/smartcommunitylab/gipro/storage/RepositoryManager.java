@@ -360,6 +360,7 @@ public class RepositoryManager {
 			}
 			Update u = new Update();
 			u.set("nextBalanceUpdate", next);
+			u.set("balance", Math.max(p.getBalance(), Const.INIT_BALANCE));
 			mongoTemplate.updateFirst(q,u, Professional.class);
 		}
 	}
