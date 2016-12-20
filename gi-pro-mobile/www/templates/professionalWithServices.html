@@ -44,12 +44,16 @@
                 </div>
                 <div class="item item-icon-left" ng-if="newService.serviceType === 'sostituzioneudienza'">
                   <i class="icon ion-ios-location"></i>
-                  <div class="item item-input item-select" ng-click="openSelectOfficePopup()">
+                  <div class="item item-input item-input-select" ng-click="openSelectOfficePopup()">
+                    <!--
                     <div class="input-label" ng-class="{'placeholder': !selectedOffice}">
                       <span class="name">{{selectedOffice ? selectedOffice.name : ('office_placeholder' | translate)}}</span>
                       <span class="address" ng-if="selectedOffice"><br/>{{selectedOffice.address}}</span>
                     </div>
                     <select ng-model="selectedOffice" ng-required="true"></select>
+                    -->
+                    <input type="text" readonly ng-model="selectedOffice.name" placeholder="{{'office_placeholder' | translate}}" ng-required="true">
+                    <a class="button button-small button-icon ion-arrow-down-b"></a>
                   </div>
                 </div>
                 <div class="item item-icon-left">

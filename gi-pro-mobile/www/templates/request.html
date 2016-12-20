@@ -2,6 +2,7 @@
   <ion-nav-buttons side="right">
   </ion-nav-buttons>
   <ion-content class="padding">
+    <div ng-if="request">
       <div class="card professional" ng-click="openProfessionalDetails(professional)">
         <div class="item item-thumbnail-left">
           <img ng-src="{{professional.imageUrl}}">
@@ -10,36 +11,36 @@
           <p><a ng-click="openProfessionalDetails(professional)">{{'view_profile' | translate}}</a></p>
         </div>
       </div>
-    </div>
-    <div class="info">
-      <div class="list">
-        <div class="item item-icon-left">
-          <i class="icon ion-location"></i>
-          <span>{{request.address}}</span>
-        </div>
-        <div class="item item-icon-left">
-          <i class="icon ion-social-euro"></i>
-          <span>{{request.cost ? request.cost : ('cost_free' | translate)}}</span>
-        </div>
-        <div class="item item-icon-left" ng-if="offer && offer.note">
-          <i class="icon ion-information-circled"></i>
-          <span>{{offer.note}}</span>
+      <div class="info">
+        <div class="list">
+          <div class="item item-icon-left">
+            <i class="icon ion-location"></i>
+            <span>{{request.address}}</span>
+          </div>
+          <div class="item item-icon-left">
+            <i class="icon ion-social-euro"></i>
+            <span>{{request.cost ? request.cost : ('cost_free' | translate)}}</span>
+          </div>
+          <div class="item item-icon-left" ng-if="offer && offer.note">
+            <i class="icon ion-information-circled"></i>
+            <span>{{offer.note}}</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="datetime" ng-if="request.startTime">
-      <div class="title">{{'request_detail_request' | translate}}</div>
-      <div>{{'request_detail_date' | translate}} <span class="date">{{request.startTime | date:'longDate'}}</span> {{'request_detail_time'
-        | translate}}
-        <span class="time">{{request.startTime | date:'shortTime'}}</span>
+      <div class="datetime" ng-if="request.startTime">
+        <div class="title">{{'request_detail_request' | translate}}</div>
+        <div>{{'request_detail_date' | translate}} <span class="date">{{request.startTime | date:'longDate'}}</span> {{'request_detail_time'
+          | translate}}
+          <span class="time">{{request.startTime | date:'shortTime'}}</span>
+        </div>
       </div>
-    </div>
-    <div class="state">
-      <span class="label">{{'request_detail_state' | translate}}:</span> {{'state_long_' + request.state | translate}}
+      <div class="state">
+        <span class="label">{{'request_detail_state' | translate}}:</span> {{'state_long_' + request.state | translate}}
+      </div>
     </div>
   </ion-content>
-  <ion-footer-bar>
-    <button class="button button-assertive button-block" ng-if="!isToMe() && isFuture()" ng-click="deleteRequest()">{{'delete' | translate}}</button>
+  <ion-footer-bar ng-if="request">
+    <!--<button class="button button-assertive button-block" ng-if="!isToMe() && isFuture()" ng-click="deleteRequest()">{{'delete' | translate}}</button>-->
     <div class="row" ng-if="isToMe() && isFuture() && request.state === requestState.OPEN">
       <div class="col col-50">
         <button class="button button-calm button-block" ng-click="rejectRequest()">{{'reject' | translate}}</button>

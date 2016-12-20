@@ -1,13 +1,14 @@
+/* global angular */
 angular.module('gi-pro.controllers.serviceandprof', [])
 
 .controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, $ionicTabsDelegate, $ionicModal, $ionicPopup, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
-  $scope.servicesList = null; //list of active services
-  $scope.professionalsList = null; //list of active professional
-  $scope.zonesList = null; //list of active zones
-  $scope.viewAsList = true;
+  $scope.title = $filter('translate')('app')
+  $scope.servicesList = null
+  $scope.professionalsList = null
+  $scope.viewAsList = true
 
   // can be 'professionals' or 'services'
-  $scope.activeTab = null;
+  $scope.activeTab = null
 
   // Search Bar
   $rootScope.searchBar = {
@@ -15,28 +16,24 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     searchString: ''
   }
 
-  $scope.allProfessional = Config.getPageProfessional();
-  $scope.startProfessional = 0;
-  $scope.endProfessional_reached = false;
-  $scope.allServices = Config.getPageServices();
-  $scope.startServices = 0;
-  $scope.endServices_reached = false;
+  $scope.allProfessional = Config.getProfessionalsPageSize()
+  $scope.endProfessional_reached = false
+  $scope.allServices = Config.getServicesPageSize()
+  $scope.endServices_reached = false
 
-  var professionsMap = null;
-  var zonesMap = null;
-  var servicesMap = null;
-
-  $scope.title = $filter('translate')('app');
+  var professionsMap = null
+  var zonesMap = null
+  var servicesMap = null
 
   $scope.toggleSearchBar = function () {
-    $rootScope.searchBar.show = !$rootScope.searchBar.show;
+    $rootScope.searchBar.show = !$rootScope.searchBar.show
   }
 
   $scope.openServiceDetails = function (service) {
     $scope.goTo('app.servicedetails', {
       'service': service,
       'objectId': service.objectId
-    });
+    })
   }
 
   $scope.filters = {
@@ -54,66 +51,68 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     // load professions
     // load services
     // load zones
-    var deferred = $q.defer();
+    var deferred = $q.defer()
     DataSrv.getProfessionsDefinition().then(function (professions) {
-      $scope.filters.allProfessions = professions;
+      $scope.filters.allProfessions = professions
       DataSrv.getServicesDefinition().then(function (services) {
-        $scope.filters.allServices = services;
+        $scope.filters.allServices = services
         DataSrv.getZonesDefinition().then(function (zones) {
-          $scope.filters.allZones = zones;
+          $scope.filters.allZones = zones
 
-          professionsMap = DataSrv.getProfessionsMap();
+          professionsMap = DataSrv.getProfessionsMap()
           $ionicModal.fromTemplateUrl('templates/modal_professions.html', {
             scope: $scope
           }).then(function (modal) {
-            $scope.filterModals['professions'] = modal;
+            $scope.filterModals['professions'] = modal
           }, function (error) {
-            console.log(error);
-          });
+            console.log(error)
+          })
 
-          servicesMap = DataSrv.getServicesMap();
+          servicesMap = DataSrv.getServicesMap()
           $ionicModal.fromTemplateUrl('templates/modal_services.html', {
             scope: $scope
           }).then(function (modal) {
-            $scope.filterModals['services'] = modal;
+            $scope.filterModals['services'] = modal
           }, function (error) {
-            console.log(error);
-          });
+            console.log(error)
+          })
 
-          zonesMap = DataSrv.getZonesMap();
+          zonesMap = DataSrv.getZonesMap()
           $ionicModal.fromTemplateUrl('templates/modal_zones.html', {
             scope: $scope
           }).then(function (modal) {
-            $scope.filterModals['zones'] = modal;
+            $scope.filterModals['zones'] = modal
           }, function (error) {
-            console.log(error);
-          });
+            console.log(error)
+          })
 
-          addExtraDataToProf();
-          deferred.resolve();
+          addExtraDataToProf()
+          deferred.resolve()
         }, function (error) {
-          deferred.reject();
-        });
+          deferred.reject(error)
+        })
       }, function (error) {
-        deferred.reject();
-      });
+        deferred.reject(error)
+      })
     }, function (error) {
-      deferred.reject();
-    });
-    return deferred.promise;
+      deferred.reject(error)
+    })
+    return deferred.promise
   }
 
   var addExtraDataToProf = function () {
-    for (var i = 0; i < $scope.professionalsList.length; i++) {
-      $scope.professionalsList[i]['profession'] = professionsMap[$scope.professionalsList[i].type].name;
-      $scope.professionalsList[i]['zone'] = zonesMap[$scope.professionalsList[i].area] ? zonesMap[$scope.professionalsList[i].area].name : '';
+    if ($scope.professionalsList) {
+      for (var i = 0; i < $scope.professionalsList.length; i++) {
+        $scope.professionalsList[i]['profession'] = professionsMap[$scope.professionalsList[i].type].name
+        $scope.professionalsList[i]['zone'] = zonesMap[$scope.professionalsList[i].area] ? zonesMap[$scope.professionalsList[i].area].name : ''
+      }
     }
 
     // if logged add also service meta info
     if (Login.userIsLogged() && $scope.servicesList) {
-      for (var i = 0; i < $scope.servicesList.length; i++) {
-        $scope.servicesList[i]['service'] = servicesMap[$scope.servicesList[i].serviceType].name;
-        $scope.servicesList[i]['zone'] = zonesMap[$scope.servicesList[i].area] ? zonesMap[$scope.servicesList[i].area].name : '';
+      for (var j = 0; j < $scope.servicesList.length; j++) {
+        $scope.servicesList[j]['service'] = servicesMap[$scope.servicesList[j].serviceType].name
+        $scope.servicesList[j]['zone'] = zonesMap[$scope.servicesList[j].area] ? zonesMap[$scope.servicesList[j].area].name : ''
       }
     }
   }
@@ -121,28 +120,28 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   // header 44px, tabs 49px, filters 40px
   $scope.styles = {
     'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + 40)
-  };
+  }
 
   $scope.openFilter = function (type) {
-    $scope.filterModals[type].show();
+    $scope.filterModals[type].show()
   }
 
   $scope.closeFilter = function (type) {
-    $scope.filterModals[type].hide();
+    $scope.filterModals[type].hide()
   }
 
   $scope.selectFilter = function (type, selection) {
     if (type === 'services' && servicesMap) {
       if (selection) {
-        $scope.filters.selectedService = servicesMap[selection.id];
+        $scope.filters.selectedService = servicesMap[selection.id]
       } else {
-        $scope.filters.selectedService = null;
+        $scope.filters.selectedService = null
       }
     }
 
     if (type === 'zones' && zonesMap) {
       if (selection) {
-        $scope.filters.selectedZone = zonesMap[selection.id];
+        $scope.filters.selectedZone = zonesMap[selection.id]
       } else {
         $scope.filters.selectedZone = null
       }
@@ -150,86 +149,83 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
     if (type === 'professions' && professionsMap) {
       if (selection) {
-        $scope.filters.selectedProfession = professionsMap[selection.id];
+        $scope.filters.selectedProfession = professionsMap[selection.id]
       } else {
         $scope.filters.selectedProfession = null
       }
     }
 
     if ($scope.activeTab === 'professionals') {
-      $scope.professionalsList = null;
-      $scope.startProfessional = 0;
-      $scope.allProfessional = Config.getPageProfessional();
-      $scope.loadMoreProfessional();
+      $scope.professionalsList = null
+      $scope.loadMoreProfessional()
     }
 
     if ($scope.activeTab === 'services') {
-      $scope.servicesList = null;
-      $scope.startServices = 0;
-      $scope.allServices = Config.getPageServices();
-      $scope.loadMoreServices();
+      $scope.servicesList = null
+      $scope.loadMoreServices()
     }
 
-    $scope.closeFilter(type);
+    $scope.closeFilter(type)
 
-    $ionicScrollDelegate.resize();
+    $ionicScrollDelegate.resize()
   }
 
   $scope.switchToMap = function () {
-    $scope.viewAsList = !$scope.viewAsList;
+    $scope.viewAsList = !$scope.viewAsList
   }
 
   $scope.initServicesTab = function () {
-    $scope.activeTab = 'services';
-    $rootScope.searchBar.show = false;
+    $scope.activeTab = 'services'
+    $rootScope.searchBar.show = false
 
     if (!$scope.servicesList) {
-      $scope.loadMoreServices();
+      $scope.loadMoreServices()
     }
 
-    if ($ionicTabsDelegate.selectedIndex() == 1) { //1 is the second
-      mapService.initMap('serviceMap').then(function () {
+    if ($ionicTabsDelegate.selectedIndex() === 1) { // 1 is the second
+      mapService.initMap('servicesMap').then(function () {
         GeoLocate.locate().then(function (pos) {
           $scope.center = {
             lat: pos[0],
             lng: pos[1],
             zoom: 18
-          };
-          $scope.servicesMarkers = mapService.getServicesPoints($scope.servicesList);
-          mapService.refresh('serviceMap');
+          }
+          $scope.servicesMarkers = mapService.getPoints($scope.servicesList, 'app.servicedetails')
+          mapService.refresh('servicesMap')
         }, function () {
-          //$scope.filterMarkers(false);
-        });
-      });
+          // $scope.filterMarkers(false)
+        })
+      })
     }
-  };
+  }
 
   $scope.initProfessionalsTab = function () {
-    $scope.activeTab = 'professionals';
+    $scope.activeTab = 'professionals'
 
     if (!$scope.professionalsList) {
-      $scope.loadMoreProfessional();
+      $scope.loadMoreProfessional()
     }
 
-    if ($ionicTabsDelegate.selectedIndex() == 0) { //0 is the first
-      mapService.initMap('professionsMap').then(function () {
+    if ($ionicTabsDelegate.selectedIndex() === 0) { // 0 is the first
+      mapService.initMap('professionalsMap').then(function () {
         GeoLocate.locate().then(function (pos) {
           $scope.center = {
             lat: pos[0],
             lng: pos[1],
             zoom: 18
-          };
-          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.professionalsList);
-          mapService.refresh('professionsMap');
+          }
+          $scope.professionalMarkers = mapService.getPoints($scope.professionalsList, 'app.profdetails')
+          mapService.refresh('professionalsMap')
         }, function () {
-          //$scope.filterMarkers(false);
-        });
-      });
+          // $scope.filterMarkers(false)
+        })
+      })
     }
-  };
+  }
 
-  /* Currently commented because I can't order by alpha or price because they are fixed */
-  /*var orderList = function (orderBy) {
+  // Currently commented because I can't order by alpha or price because they are fixed
+  /*
+  var orderList = function (orderBy) {
     $ionicLoading.show();
     listPathsService.getPathsByCategoryIdAndOrder($stateParams, $scope.data.actualOrder, length).then(function (paths) {
       $scope.emptylist = false;
@@ -286,144 +282,132 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         loadMoreServices
       }
     });
-  }*/
+  }
+  */
 
+  /*
+   * This function loads more services using filters
+   */
   $scope.loadMoreServices = function () {
-    var deferred = $q.defer();
-    var professionalID = Login.getUser().objectId;
+    var deferred = $q.defer()
 
-    DataSrv.getServices(professionalID, ($scope.filters.selectedService == null) ? null : $scope.filters.selectedService.id, ($scope.filters.selectedZone == null) ? null : $scope.filters.selectedZone.id, (($scope.servicesList == null) ? 1 : Math.floor(($scope.servicesList.length / $scope.allServices)) + 1), $scope.allServices, "objectId").then(function (services) {
-      /*type, area, page, limit, orderBy*/
-      if (services) {
-        $scope.servicesList = !!$scope.servicesList ? $scope.servicesList.concat(services) : services;
-
-        if (!$scope.servicesList.length) {
-          $scope.emptylist = true;
-        } else {
-          addExtraDataToProf();
-        }
-
-        if (services.length >= $scope.allServices) {
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-          $scope.startServices += $scope.allServices;
-          $scope.servicesMarkers = mapService.getServicesPoints($scope.servicesList);
-          $scope.endServices_reached = false;
-        } else {
-          $scope.endServices_reached = true;
-        }
-      } else {
-        // $scope.emptylist = true;
-        $scope.endServices_reached = true;
-        Toast.show($filter('translate')("pop_up_error_server_template"), "short", "bottom");
-      }
-
-      Config.loaded();
-      deferred.resolve();
-      $scope.$broadcast('scroll.infiniteScrollComplete');
-      $scope.$broadcast('scroll.refreshComplete');
-    }, function (err) {
-      Utils.commError;
-      $scope.$broadcast('scroll.infiniteScrollComplete');
-      $scope.$broadcast('scroll.refreshComplete');
-      $scope.endServices_reached = true;
-      Config.loaded();
-    });
-    return deferred.promise;
-  }
-
-  $scope.loadServices = function () {
-    reload();
-  }
-
-  $scope.loadMoreProfessional = function () {
-    var deferred = $q.defer();
-    DataSrv.getProfessionals(($scope.filters.selectedProfession == null) ? null : $scope.filters.selectedProfession.id, ($scope.filters.selectedZone == null) ? null : $scope.filters.selectedZone.id, (($scope.professionalsList == null) ? 1 : Math.floor(($scope.professionalsList.length / $scope.allProfessional)) + 1), $scope.allProfessional, "surname").then(function (professional) {
-      /*type, area, page, limit, orderBy*/
-      if (professional) {
-        $scope.professionalsList = !!$scope.professionalsList ? $scope.professionalsList.concat(professional) : professional;
-
-        if (!$scope.professionalsList.length) {
-          $scope.emptylist = true;
-        } else {
-          if (!$scope.filters.allZones.length) {
-            loadFilters();
+    /* type, area, page, limit, orderBy */
+    DataSrv.getServices(
+      Login.getUser().objectId,
+      $scope.filters.selectedService == null ? null : $scope.filters.selectedService.id,
+      $scope.filters.selectedZone == null ? null : $scope.filters.selectedZone.id,
+      $scope.servicesList == null ? 1 : Math.floor($scope.servicesList.length / Config.getServicesPageSize()) + 1,
+      Config.getServicesPageSize(), 'objectId').then(
+      function (services) {
+        if (services && services.length) {
+          $scope.servicesList = $scope.servicesList ? $scope.servicesList.concat(services) : services
+          if (!$scope.servicesList.length) {
+            $scope.emptylist = true
           } else {
-            addExtraDataToProf();
+            addExtraDataToProf()
           }
-        }
 
-        if (professional.length >= $scope.allProfessional) {
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-          $scope.startProfessional += $scope.allProfessional;
-          $scope.professionalMarkers = mapService.getProfessionalsPoints($scope.professionalsList);
-          $scope.endProfessional_reached = false;
+          $scope.$broadcast('scroll.infiniteScrollComplete')
+          $scope.servicesMarkers = mapService.getPoints($scope.servicesList)
+
+          if (services.length < Config.getServicesPageSize()) {
+            $scope.endServices_reached = true
+          }
         } else {
-          $scope.endProfessional_reached = true;
+          $scope.endServices_reached = true
+          Utils.toast($filter('translate')('pop_up_error_server_template'), 'short', 'bottom')
         }
-      } else {
-        // $scope.emptylist = true;
-        $scope.endProfessional_reached = true;
-        Toast.show($filter('translate')("pop_up_error_server_template"), "short", "bottom");
-      }
 
-      Config.loaded();
-      deferred.resolve();
-      $scope.$broadcast('scroll.infiniteScrollComplete');
-      $scope.$broadcast('scroll.refreshComplete');
-    }, function (err) {
-      Utils.commError;
-      $scope.$broadcast('scroll.infiniteScrollComplete');
-      $scope.$broadcast('scroll.refreshComplete');
-      $scope.endProfessional_reached = true;
-      Config.loaded();
-    });
-    return deferred.promise;
-  }
-
-  var reload = function () {
-    if (!Login.userIsLogged()) {
-      //show tutorial
-    }
-    $scope.professionalsList = null;
-    $scope.servicesList = null;
-    $scope.startProfessional = 0;
-    $scope.allProfessional = Config.getPageProfessional();
-    $scope.endProfessional_reached = false;
-    $scope.startServices = 0;
-    $scope.allServices = Config.getPageServices();
-    $scope.endServices_reached = false;
-    //get Professional
-    $scope.loadMoreProfessional().then(
-      function () {
-        // get zones
-        DataSrv.getZones().then(function (zones) {
-            $scope.zonesList = zones;
-            if (Login.userIsLogged()) {
-              //if (true) {
-              DataSrv.getServices().then(
-                function (services) {
-                  $scope.servicesList = services;
-                  loadFilters();
-                  Utils.loaded();
-                },
-                Utils.commError);
-            } else {
-              loadFilters();
-              Utils.loaded();
-            }
-          },
-          Utils.commError);
+        Config.loaded()
+        $scope.$broadcast('scroll.infiniteScrollComplete')
+        $scope.$broadcast('scroll.refreshComplete')
+        deferred.resolve()
       },
-      Utils.commError);
-    //serve il loading delle chiamate asincrone
-
-    //if Login.userIsLogged() load services
-  };
-
-  $scope.loadProfessional = function () {
-    reload();
+      function () {
+        Utils.commError
+        $scope.$broadcast('scroll.infiniteScrollComplete')
+        $scope.$broadcast('scroll.refreshComplete')
+        $scope.endServices_reached = true
+        Config.loaded()
+      }
+    )
+    return deferred.promise
   }
 
+  /*
+   * This function loads more professionals using filters
+   */
+  $scope.loadMoreProfessional = function () {
+    var deferred = $q.defer()
+
+    /* type, area, page, limit, orderBy */
+    DataSrv.getProfessionals(
+      $scope.filters.selectedProfession == null ? null : $scope.filters.selectedProfession.id,
+      $scope.filters.selectedZone == null ? null : $scope.filters.selectedZone.id,
+      $scope.professionalsList == null ? 1 : Math.floor($scope.professionalsList.length / Config.getProfessionalsPageSize()) + 1,
+      Config.getProfessionalsPageSize(), 'surname').then(
+      function (professional) {
+        if (professional) {
+          $scope.professionalsList = $scope.professionalsList ? $scope.professionalsList.concat(professional) : professional
+
+          if (!$scope.professionalsList.length) {
+            $scope.emptylist = true
+          } else {
+            if (!$scope.filters.allZones.length) {
+              loadFilters()
+            } else {
+              addExtraDataToProf()
+            }
+          }
+
+          $scope.$broadcast('scroll.infiniteScrollComplete')
+          $scope.professionalMarkers = mapService.getPoints($scope.professionalsList)
+
+          if (professional.length < Config.getProfessionalsPageSize()) {
+            $scope.endProfessional_reached = true
+          }
+        } else {
+          $scope.endProfessional_reached = true
+          Utils.toast($filter('translate')('pop_up_error_server_template'), 'short', 'bottom')
+        }
+
+        Config.loaded()
+        deferred.resolve()
+        $scope.$broadcast('scroll.infiniteScrollComplete')
+        $scope.$broadcast('scroll.refreshComplete')
+      },
+      function () {
+        Utils.commError
+        $scope.$broadcast('scroll.infiniteScrollComplete')
+        $scope.$broadcast('scroll.refreshComplete')
+        $scope.endProfessional_reached = true
+        Config.loaded()
+      })
+    return deferred.promise
+  }
+
+  /*
+   * This function resets the professionals/services list and reloads it using filters
+   */
+  $scope.reload = function () {
+    var reloader = null
+
+    if ($scope.activeTab === 'professionals') {
+      $scope.professionalsList = null
+      $scope.endProfessional_reached = false
+      reloader = $scope.loadMoreProfessional
+    }
+
+    if ($scope.activeTab === 'services') {
+      $scope.servicesList = null
+      $scope.endServices_reached = false
+      reloader = $scope.loadMoreServices
+    }
+
+    reloader().then(loadFilters, Utils.commError)
+  }
+
+  /* Map config */
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,
@@ -433,5 +417,17 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     servicesMarkers: $scope.servicesMarkers,
     professionalMarkers: $scope.professionalMarkers,
     events: {}
-  });
-});
+  })
+
+  $scope.$on('leafletDirectiveMarker.professionalsMap.click', function (e, args) {
+    e.stopPropagation()
+    // args.model.object is object
+    $scope.openProfessionalDetails(args.model.object)
+  })
+
+  $scope.$on('leafletDirectiveMarker.servicesMap.click', function (e, args) {
+    e.preventDefault()
+    // args.model.object is object
+    $scope.openServiceDetails(args.model.object)
+  })
+})

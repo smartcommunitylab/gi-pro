@@ -18,8 +18,9 @@ angular.module('gi-pro.controllers.details', [])
 
   var setRequest = function (req) {
     $scope.request = req;
-    $scope.professional = $scope.isToMe() ? $scope.request.professional : $scope.request.requester
+    $scope.professional = $scope.isToMe() ? $scope.request.requester : $scope.request.professional
 
+    /*
     if ($scope.request.offerId) {
       DataSrv.getOfferById($scope.professional.objectId, $scope.request.offerId).then(
         function (offer) {
@@ -28,6 +29,7 @@ angular.module('gi-pro.controllers.details', [])
         Utils.commError
       );
     }
+    */
   };
 
   if (!!$stateParams['request']) {
@@ -68,7 +70,7 @@ angular.module('gi-pro.controllers.details', [])
             $scope.goTo('app.requests', {
               'reload': true,
               'tab': 0
-            }, false, true, true, true);
+            }, false, true, true, false);
             Utils.toast($filter('translate')('request_delete_done'));
           }, Utils.commError
         );
@@ -84,7 +86,7 @@ angular.module('gi-pro.controllers.details', [])
           'reload': true,
           'tab': 0
         }, false, true, true, true);
-        Utils.toast($filter('translate')('request_delete_done'));
+        Utils.toast($filter('translate')('request_accept_done'));
       }, Utils.commError
     );
   }
@@ -194,8 +196,10 @@ angular.module('gi-pro.controllers.details', [])
 
   if (!!$stateParams['service']) {
     $scope.service = $stateParams['service'];
-    $scope.title = DataSrv.getServicesMap()[$scope.service.serviceType].name;
-    $scope.imageUrl = $scope.service.picture;
+    $scope.serviceType = DataSrv.getServicesMap()[$scope.service.serviceType]
+    $scope.title = $scope.serviceType.name
+    $scope.cost = $scope.serviceType.cost
+    $scope.imageUrl = $scope.service.picture
   } else if (!!$stateParams['objectId']) {
     /*$
     scope.service = DataSrv.getServicesMap()[$stateParams['objectId']];
@@ -218,7 +222,7 @@ angular.module('gi-pro.controllers.details', [])
   }
 
   if (!$scope.subtypes) {
-    $scope.subtypes = DataSrv.getServicesMap()[$scope.service.serviceType].subtypes
+    $scope.subtypes = $scope.serviceType.subtypes
   }
 
   if ($scope.subtypes && !$scope.newRequestForm.subtype) {

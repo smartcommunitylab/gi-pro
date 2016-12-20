@@ -20,6 +20,7 @@
   "login_as_pro": "ACCEDI COME PROFESSIONISTA",
   "enter_no_login": "ENTRA SENZA LOGIN",
   "logout": "Esci",
+  "error_signin": "Errore in fase di login",
   "credits": "Credits",
   "tutorial": "Tutorial",
   "log_pro": "Sei un professionista?",
@@ -92,6 +93,7 @@
   "request_detail_time": "alle ore",
   "request_detail_state": "Stato",
   "request_create_done": "Richiesta inviata",
+  "request_accept_done": "Richiesta accettata",
   "request_delete_confirm_title": "Conferma eliminazione",
   "request_delete_confirm_text": "Vuoi davvero eliminare questa richiesta?",
   "request_delete_done": "Richiesta eliminata",
@@ -124,6 +126,7 @@
   "notifications_empty": "Nessuna notifica trovata",
   "NEW_SERVICE_OFFER": "Nuova disponibilità di sostituzione",
   "NEW_SERVICE_REQUEST": "Nuova richiesta di sostituzione",
+  "REQUEST_ACCEPTED": "Richiesta accettata",
   "matching_requests": "Richieste corrispondenti",
   "matching_offers": "Disponibilità corrispondenti",
   "credits_project": "Un progetto di:",
@@ -203,5 +206,7 @@
   "state_ACCEPTED": "accettata",
   "state_long_ACCEPTED": "accettata dall'offerente",
   "state_REJECTED": "rifiutata",
-  "state_long_REJECTED": "rifiutata dall'offerente"
+  "state_long_REJECTED": "rifiutata dall'offerente",
+  "state_DELETED": "cancellata",
+  "state_long_DELETED": "cancellata dall'offerente"
 }

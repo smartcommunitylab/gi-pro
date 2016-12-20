@@ -10,10 +10,6 @@
     "name": "Penalista"
   }],
   "services": [{
-    "id": "idser_1",
-    "name": "Servizio 1",
-    "cost": 10
-  }, {
     "id": "sostituzioneudienza",
     "name": "Sostituzione udienza",
     "cost": 10,
