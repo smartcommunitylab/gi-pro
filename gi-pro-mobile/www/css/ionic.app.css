@@ -9941,6 +9941,15 @@ input[readonly] {
 .item-toggle {
   border: 0; }
 
+.item-input.item-input-select {
+  padding-right: 10px; }
+  .item-input.item-input-select input {
+    padding-right: 0 !important; }
+  .item-input.item-input-select .button.button-icon {
+    margin: 0 !important; }
+  .item-input.item-input-select .button.button-icon::before {
+    font-size: 12px; }
+
 /* Footer */
 .bar-footer {
   background: none; }

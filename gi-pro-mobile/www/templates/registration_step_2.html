@@ -25,23 +25,17 @@
             <input type="text" ng-model="registration.address" placeholder="{{'address_placeholder' | translate}}" ng-required="true">
           </div>
           -->
-          <div class="item item-input item-input-right">
+          <div class="item item-input item-input">
             <placeautocomplete ng-model="registration.address" attr-placeholder="{{'address_placeholder' | translate}}" click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="selectAddress"></placeautocomplete>
             <i class="icon ion-map plan-viaggia-fromto" ng-click="openMapPlan('from')"></i>
           </div>
-          <div class="item item-input item-select">
-            <div class="input-label" ng-class="{'placeholder': !selectedProfession}">
-              {{selectedProfession ? selectedProfession.name : ('profession_placeholder' | translate)}}
-            </div>
-            <select ng-model="selectedProfession" ng-required="true" ng-click="openSelectProfessionPopup()">
-            </select>
+          <div class="item item-input item-input-select" ng-click="openSelectProfessionPopup()">
+            <input type="text" readonly ng-model="selectedProfession.name" placeholder="{{'profession_placeholder' | translate}}" ng-required="true">
+            <a class="button button-small button-icon icon ion-arrow-down-b"></a>
           </div>
-          <div class="item item-input item-select">
-            <div class="input-label" ng-class="{'placeholder': !selectedArea}">
-              {{selectedArea ? selectedArea.name : ('area_placeholder' | translate)}}
-            </div>
-            <select ng-model="selectedArea" ng-required="true" ng-click="openSelectAreaPopup()">
-            </select>
+          <div class="item item-input item-input-select" ng-click="openSelectAreaPopup()">
+            <input type="text" readonly ng-model="selectedArea.name" placeholder="{{'area_placeholder' | translate}}" ng-required="true">
+            <a class="button button-small button-icon icon ion-arrow-down-b"></a>
           </div>
           <div class="cf_piva">
             <div class="item item-input item-input-uppercase">

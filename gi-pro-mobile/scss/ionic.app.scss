@@ -189,6 +189,19 @@ input[readonly] {
   border: 0;
 }
 
+.item-input.item-input-select {
+  padding-right: 10px;
+  input {
+    padding-right: 0 !important;
+  }
+  .button.button-icon {
+    margin: 0 !important;
+  }
+  .button.button-icon::before {
+    font-size: 12px;
+  }
+}
+
 
 /* Footer */
 
