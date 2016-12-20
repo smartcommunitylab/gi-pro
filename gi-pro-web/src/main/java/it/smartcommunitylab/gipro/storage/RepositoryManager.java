@@ -355,13 +355,18 @@ public class RepositoryManager {
 		Date now = new Date();
 		if (p.getNextBalanceUpdate() == null || p.getNextBalanceUpdate().before(now)) {
 			Date next = Const.nextBalanceUpdate(p.getNextBalanceUpdate());
+			int nextBalance = Math.max(p.getBalance(), Const.INIT_BALANCE);
+
 			while (next.before(now)) {
 				next = Const.nextBalanceUpdate(next);
 			}
 			Update u = new Update();
 			u.set("nextBalanceUpdate", next);
-			u.set("balance", Math.max(p.getBalance(), Const.INIT_BALANCE));
+			u.set("balance", nextBalance);
 			mongoTemplate.updateFirst(q,u, Professional.class);
+			
+			p.setNextBalanceUpdate(next);
+			p.setBalance(nextBalance);
 		}
 	}
 
