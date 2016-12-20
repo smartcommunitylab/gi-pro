@@ -274,7 +274,6 @@ public class EntityController {
 			@RequestParam(required=false) Integer limit, 
 			@RequestParam(required=false) Boolean withTime,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		professionalId = Utils.getContextProfessionalId();
 		if(page == null) {
 			page = 1;
 		}
