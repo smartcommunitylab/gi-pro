@@ -88,7 +88,7 @@ angular.module('gi-pro.controllers.profile', [])
   }
 
   $scope.initMap = function () {
-    mapService.initMap('mapModal').then(function () {
+    mapService.getMap('mapModal').then(function () {
       $scope.$on('leafletDirectiveMap.mapModal.click', function (event, args) {
         $ionicLoading.show()
           // planService.setPosition($scope.place, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng)
@@ -213,9 +213,9 @@ angular.module('gi-pro.controllers.profile', [])
     return placedata.promise
   }
 
-  $scope.selectAddress = function (suggestion) {
-    $scope.edit.address = suggestion
-    $scope.edit.coordinates = $scope.placesandcoordinates[suggestion].coordinates
+  $scope.selectServiceAddress = function (suggestion) {
+    $scope.newService.address = suggestion
+    $scope.newService.coordinates = $scope.placesandcoordinates[suggestion].coordinates
   }
 
   $scope.$watch('edit.address', function (newValue, oldValue) {
@@ -228,10 +228,33 @@ angular.module('gi-pro.controllers.profile', [])
 
   $scope.editingProfile = false
 
+  function profile2edit(profile, edit) {
+    if (profile.address) {
+      edit.address = profile.address
+      edit.coordinates = profile.coordinates
+    }
+
+    if (profile.phone) {
+      edit.phone = profile.phone.split(SEPARATOR)
+    }
+
+    if (profile.cellPhone) {
+      edit.cellPhone = profile.cellPhone.split(SEPARATOR)
+    }
+
+    if (profile.mail) {
+      edit.mail = profile.mail.split(SEPARATOR)
+    }
+
+    if (profile.fax) {
+      edit.fax = profile.fax.split(SEPARATOR)
+    }
+  }
+
   $scope.$on('$ionicView.leave', function (event, args) {
     $scope.editingProfile = false
-    localStorage.setItem(Config.getUserVarProfileCheck(), 'true')
-    $scope.profile = angular.copy(Login.getUser())
+    profile2edit($scope.profile, $scope.edit)
+      // localStorage.setItem(Config.getUserVarProfileCheck(), 'true')
   })
 
   $scope.edit = {
@@ -251,26 +274,7 @@ angular.module('gi-pro.controllers.profile', [])
   }
 
   $scope.$watch('profile', function (profile, oldProfile) {
-    if (profile.address) {
-      $scope.edit.address = profile.address
-      $scope.edit.coordinates = profile.coordinates
-    }
-
-    if (profile.phone) {
-      $scope.edit.phone = profile.phone.split(SEPARATOR)
-    }
-
-    if (profile.cellPhone) {
-      $scope.edit.cellPhone = profile.cellPhone.split(SEPARATOR)
-    }
-
-    if (profile.mail) {
-      $scope.edit.mail = profile.mail.split(SEPARATOR)
-    }
-
-    if (profile.fax) {
-      $scope.edit.fax = profile.fax.split(SEPARATOR)
-    }
+    profile2edit(profile, $scope.edit)
   })
 
   var validate = function () {
@@ -296,6 +300,7 @@ angular.module('gi-pro.controllers.profile', [])
   $scope.toggleEditingProfile = function () {
     if (!$scope.editingProfile) {
       $scope.editingProfile = true
+      $scope.initMap
       if (!$scope.profile.customProperties.competences) {
         $scope.profile.customProperties.competences = []
       }
@@ -387,6 +392,11 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.data.selectedZoneID = index
   }
 
+  $scope.selectProfessionalAddress = function (suggestion) {
+    $scope.edit.address = suggestion
+    $scope.edit.coordinates = $scope.placesandcoordinates[suggestion].coordinates
+  }
+
   $scope.addNewService = function (serviceType) {
     // applicationId, address, area, coordinates, note, serviceType
     // take element from viaggia
@@ -399,14 +409,13 @@ angular.module('gi-pro.controllers.profile', [])
       'applicationId': Config.APPLICATION_ID,
       'address': '',
       'area': '',
-      'coordinates': [],
+      'coordinates': null,
       'note': '',
       'serviceType': serviceType.id
     }
 
     $scope.addingNewService = true
     $scope.closeNewServiceModal()
-      // $scope.services.push($scope.newService);
   }
 
   $scope.selectedOffice = null
@@ -437,7 +446,7 @@ angular.module('gi-pro.controllers.profile', [])
     }
   }
 
-  $scope.openMapPlan = function (place) {
+  $scope.openMap = function (place) {
     $scope.place = place
     $scope.refresh = false
     if ($scope.modalMap) {

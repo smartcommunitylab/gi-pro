@@ -40,9 +40,8 @@
                 <div class="item item-icon-left item-icon-right" ng-if="newService.serviceType !== 'sostituzioneudienza'">
                   <i class="icon ion-ios-location"></i>
                   <placeautocomplete ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false"
-                    data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="changeStringFrom"
-                    ng-blur="setNameParam"></placeautocomplete>
-                  <i class="icon ion-map plan-viaggia-fromto" ng-click="openMapPlan('from')"></i>
+                    data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="selectServiceAddress"></placeautocomplete>
+                  <i class="icon ion-map" ng-click="openMap()"></i>
                 </div>
                 <div class="item item-icon-left" ng-if="newService.serviceType === 'sostituzioneudienza'">
                   <i class="icon ion-ios-location"></i>
@@ -63,8 +62,8 @@
                   <input type="text" ng-model="newService.note" placeholder="{{'service_note_placeholder' | translate}}">
                 </div>
                 <div class="item-accordion-footer">
-                  <button class="button button-outline button-small button-positive" ng-click="cancelModify('new')">{{'cancel' | translate}}</button>
-                  <button class="button button-outline button-small button-assertive" ng-click="saveService(newService)">{{'save' | translate}}</button>
+                  <button class="button button-clear button-small button-positive" ng-click="cancelModify('new')">{{'cancel' | translate}}</button>
+                  <button class="button button-clear button-small button-assertive" ng-click="saveService(newService)" ng-disabled="!newService.coordinates">{{'save' | translate}}</button>
                 </div>
               </ion-item>
             </div>
@@ -96,11 +95,11 @@
                   <button class="button" ng-click="saveService()">{{'save' | translate}}</button>
                 </div>
                 <div class="item item-accordion-content item-accordion-footer" ng-if="isMyProfile && !editingServices">
-                  <button class="button button-small button-outline button-assertive" ng-click="deleteService(service)">{{'delete' | translate}}</button>
+                  <button class="button button-small button-clear button-assertive" ng-click="deleteService(service)">{{'delete' | translate}}</button>
                   <!--<button class="button" ng-click="modifyService(service)">{{'modify' | translate}}</button>-->
                 </div>
                 <div class="item item-accordion-content item-accordion-footer" ng-if="!isMyProfile">
-                  <button class="button button-small button-outline button-assertive" ng-click="openServiceDetails(service)">{{'view_details' | translate}}</button>
+                  <button class="button button-small button-clear button-assertive" ng-click="openServiceDetails(service)">{{'view_details' | translate}}</button>
                 </div>
               </ion-item>
             </div>

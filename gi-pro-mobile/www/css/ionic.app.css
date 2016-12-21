@@ -10178,7 +10178,7 @@ input[readonly] {
 
 .competences {
   margin: 10px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #bdbdbd;
   padding-top: 10px; }
   .competences .title {
     font-weight: bold;
@@ -10246,7 +10246,7 @@ input[readonly] {
     margin-top: 10px; }
 
 .list-accordion .list .item-accordion {
-  border: 1px solid #ddd;
+  border: 1px solid #bdbdbd;
   padding: 1px 0; }
   .list-accordion .list .item-accordion .item {
     border: 0; }
@@ -10274,12 +10274,22 @@ input[readonly] {
         font-weight: normal; }
       .list-accordion .list .item-accordion .item-accordion-content .item-select .input-label.placeholder {
         color: #aaaaaa; }
+    .list-accordion .list .item-accordion .item-accordion-content .placeautocomplete.notempty .placeautocomplete-input-clear {
+      position: static; }
+      .list-accordion .list .item-accordion .item-accordion-content .placeautocomplete.notempty .placeautocomplete-input-clear .icon {
+        font-size: 16px; }
+      .list-accordion .list .item-accordion .item-accordion-content .placeautocomplete.notempty .placeautocomplete-input-clear .icon::before {
+        width: 16px; }
   .list-accordion .list .item-accordion .item-accordion-content.ng-hide {
     line-height: 0px;
     opacity: 0; }
   .list-accordion .list .item-accordion .item-accordion-footer {
-    padding: 16px;
+    border-top: 1px solid #bdbdbd;
+    margin: 16px;
+    padding-top: 16px;
     text-align: right; }
+    .list-accordion .list .item-accordion .item-accordion-footer .button {
+      text-transform: uppercase; }
 
 .list-accordion .list .item-accordion:not(:first-child) {
   margin-top: 16px; }
@@ -10293,7 +10303,7 @@ placeautocomplete {
 .placeautocomplete ul {
   position: relative;
   background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ddd;
+  border: 1px solid #bdbdbd;
   z-index: 99; }
   .placeautocomplete ul li {
     padding: 5px;

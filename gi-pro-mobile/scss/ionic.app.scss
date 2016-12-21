@@ -22,6 +22,7 @@ $t_blue: #1786c8;
 $t_lightblue: #38a3dc;
 $t_orange: #d75719;
 $t_red: #ea5456;
+$t_grey: #bdbdbd;
 
 /* Ionic overrides*/
 
@@ -520,7 +521,7 @@ input[readonly] {
 
 .competences {
   margin: 10px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid $t_grey;
   padding-top: 10px;
   .title {
     font-weight: bold;
@@ -601,7 +602,7 @@ input[readonly] {
 .list-accordion {
   .list {
     .item-accordion {
-      border: 1px solid #ddd;
+      border: 1px solid $t_grey;
       padding: 1px 0;
       .item {
         border: 0;
@@ -639,14 +640,28 @@ input[readonly] {
             color: #aaaaaa;
           }
         }
+        .placeautocomplete.notempty .placeautocomplete-input-clear {
+          position: static;
+          .icon {
+            font-size: 16px;
+          }
+          .icon::before {
+            width: 16px;
+          }
+        }
       }
       .item-accordion-content.ng-hide {
         line-height: 0px;
         opacity: 0;
       }
       .item-accordion-footer {
-        padding: 16px;
+        border-top: 1px solid $t_grey;
+        margin: 16px;
+        padding-top: 16px;
         text-align: right;
+        .button {
+          text-transform: uppercase;
+        }
       }
     }
     .item-accordion:not(:first-child) {
@@ -668,7 +683,7 @@ placeautocomplete {
 .placeautocomplete ul {
   position: relative;
   background-color: rgba(255, 255, 255, .95);
-  border: 1px solid #ddd;
+  border: 1px solid $t_grey;
   z-index: 99;
   li {
     padding: 5px;

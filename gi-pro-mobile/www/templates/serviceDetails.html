@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="details">
-        <div class="item item-icon-left">
+        <div class="item item-icon-left" ng-if="service.address">
           <i class="icon ion-ios-location"></i>
           <span>{{service.address}}</span>
         </div>
@@ -24,7 +24,7 @@
           <span>{{subtype.name}}</span>: <span class="cost">{{subtype.cost ? subtype.cost : ('cost_free' | translate)}}</span>
         </div>
       </div>
-      <div class="row">
+      <div class="row" ng-if="!isMine">
         <div class="col col-80 col-offset-10">
           <button class="button button-energized button-block" ng-click="openNewRequestModal()">{{'service_new_request' | translate}}</button>
         </div>

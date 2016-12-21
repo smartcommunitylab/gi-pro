@@ -197,6 +197,7 @@ angular.module('gi-pro.controllers.details', [])
   if (!!$stateParams['service']) {
     $scope.service = $stateParams['service'];
     $scope.serviceType = DataSrv.getServicesMap()[$scope.service.serviceType]
+    $scope.isMine = Login.getUser().objectId === $scope.service.professional.objectId
     $scope.title = $scope.serviceType.name
     $scope.cost = $scope.serviceType.cost
     $scope.imageUrl = $scope.service.picture
