@@ -62,6 +62,7 @@ angular.module('gi-pro', [
   $ionicConfigProvider.tabs.position('top')
   $ionicConfigProvider.tabs.style('striped')
   $ionicConfigProvider.backButton.previousTitleText(false).text('')
+  $ionicConfigProvider.navBar.alignTitle('left')
 
   // $ionicConfigProvider.navBar.alignTitle('left');
 

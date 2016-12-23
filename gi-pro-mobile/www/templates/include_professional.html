@@ -13,6 +13,7 @@
         <ul>
           <li class="profession">{{professions[profile.type].name}}</li>
           <li class="zone">{{zones[profile.area].name}}</li>
+          <li class="balance" ng-if="isMyProfile">{{profile.balance ? profile.balance : '0'}} {{(profile.balance == 1 ? 'gipro_point' : 'gipro_points') | translate}}</li>
         </ul>
       </div>
     </div>

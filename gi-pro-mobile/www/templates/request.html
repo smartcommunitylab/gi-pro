@@ -18,8 +18,8 @@
             <span>{{request.address}}</span>
           </div>
           <div class="item item-icon-left">
-            <i class="icon ion-social-euro"></i>
-            <span>{{request.cost ? request.cost : ('cost_free' | translate)}}</span>
+            <i class="icon ion-pricetags"></i>
+            <span>{{request.cost ? request.cost : '0'}} {{(request.cost === 1 ? 'gipro_point' : 'gipro_points') | translate}}</span>
           </div>
           <div class="item item-icon-left" ng-if="offer && offer.note">
             <i class="icon ion-information-circled"></i>

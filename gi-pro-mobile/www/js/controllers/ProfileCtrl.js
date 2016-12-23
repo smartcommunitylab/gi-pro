@@ -134,7 +134,7 @@ angular.module('gi-pro.controllers.profile', [])
               }]
             })
           }
-        }, function (error) {
+        }, function () {
           $ionicLoading.hide()
           $scope.showNoConnection()
         })
@@ -157,7 +157,7 @@ angular.module('gi-pro.controllers.profile', [])
     if (i.length === 0) {
       placedata.resolve(names)
     } else {
-      i = i.replace(/\ /g, '+')
+      i = i.replace(/ /g, '+')
       var url = Config.getGeocoderURL() + '/address?latlng=' + Config.getMapPosition().lat + ', ' + Config.getMapPosition().long + '&distance=' + Config.getDistanceForAutocomplete() + '&address=' + i
       $http.get(url, Config.getGeocoderConf()).then(function (response) {
         var docs = response.data.response.docs

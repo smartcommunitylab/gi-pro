@@ -26,7 +26,8 @@
           </div>
           -->
           <div class="item item-input item-input">
-            <placeautocomplete ng-model="registration.address" attr-placeholder="{{'address_placeholder' | translate}}" click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="selectAddress"></placeautocomplete>
+            <placeautocomplete ng-model="registration.address" attr-placeholder="{{'address_placeholder' | translate}}" click-activation="false"
+              data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="selectAddress"></placeautocomplete>
             <i class="icon ion-map plan-viaggia-fromto" ng-click="openMapPlan('from')"></i>
           </div>
           <div class="item item-input item-input-select" ng-click="openSelectProfessionPopup()">
@@ -37,14 +38,13 @@
             <input type="text" readonly ng-model="selectedArea.name" placeholder="{{'area_placeholder' | translate}}" ng-required="true">
             <a class="button button-small button-icon icon ion-arrow-down-b"></a>
           </div>
+          <div class="item item-input item-input-uppercase">
+            <input type="text" ng-model="registration.cf" placeholder="{{'cf_placeholder' | translate}}" ng-required="true">
+          </div>
+          <div class="item item-input item-input-uppercase">
+            <input type="text" ng-model="registration.piva" placeholder="{{'piva_placeholder' | translate}}" ng-required="false">
+          </div>
           <div class="cf_piva">
-            <div class="item item-input item-input-uppercase">
-              <input type="text" ng-model="registration.cf" placeholder="{{'cf_placeholder' | translate}}" ng-required="!registration.piva">
-            </div>
-            <p>{{'register_or' | translate}}</p>
-            <div class="item item-input item-input-uppercase">
-              <input type="text" ng-model="registration.piva" placeholder="{{'piva_placeholder' | translate}}" ng-required="!registration.cf">
-            </div>
           </div>
           <div class="item item-input">
             <input type="text" ng-model="registration.albo" ng-required="true" placeholder="{{'albo_placeholder' | translate}}">

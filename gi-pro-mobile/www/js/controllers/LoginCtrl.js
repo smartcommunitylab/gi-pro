@@ -90,7 +90,7 @@ angular.module('gi-pro.controllers.login', [])
     if (i.length === 0) {
       placedata.resolve(names)
     } else {
-      i = i.replace(/\ /g, '+')
+      i = i.replace(/ /g, '+')
       var url = Config.getGeocoderURL() + '/address?latlng=' + Config.getMapPosition().lat + ', ' + Config.getMapPosition().long + '&distance=' + Config.getDistanceForAutocomplete() + '&address=' + i
       $http.get(url, Config.getGeocoderConf()).then(function (response) {
         var docs = response.data.response.docs
@@ -140,7 +140,7 @@ angular.module('gi-pro.controllers.login', [])
         $scope.placesandcoordinates = geoCoderPlaces
         placedata.resolve(names)
       }, function (error) {
-        // $scope.error = true;
+        console.log(error)
       })
     }
     return placedata.promise
@@ -247,10 +247,13 @@ angular.module('gi-pro.controllers.login', [])
       return
     }
 
-    if (!$scope.registration.cf && !$scope.registration.piva) {
+    if (!$scope.registration.cf) {
       Utils.toast($filter('translate')('register_form_cf_empty'))
       return
     }
+
+    $scope.registration.cf = $scope.registration.cf.toUpperCase()
+
     /*
     else if (!Utils.checkFiscalCode($scope.registration.cf)) {
       Utils.toast($filter('translate')('register_form_cf_invalid'));
@@ -263,11 +266,7 @@ angular.module('gi-pro.controllers.login', [])
       return;
     }
     */
-
-    if ($scope.registration.cf) {
-      $scope.registration.cf = $scope.registration.cf.toUpperCase()
-    }
-
+    
     // console.log($scope.registration);
 
     Utils.loading()

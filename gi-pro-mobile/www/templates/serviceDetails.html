@@ -16,12 +16,12 @@
           <span>{{service.address}}</span>
         </div>
         <div class="item item-icon-left" ng-if="cost">
-          <i class="icon ion-social-euro"></i>
-          <span>{{cost ? cost : ('cost_free' | translate)}}</span>
+          <i class="icon ion-pricetags"></i>
+          <span>{{cost ? cost : '0'}} {{(cost === 1 ? 'gipro_point' : 'gipro_points') | translate}}</span>
         </div>
         <div class="item item-icon-left" ng-if="!cost && serviceType.subtypes" ng-repeat="subtype in serviceType.subtypes">
-          <i class="icon ion-social-euro"></i>
-          <span>{{subtype.name}}</span>: <span class="cost">{{subtype.cost ? subtype.cost : ('cost_free' | translate)}}</span>
+          <i class="icon ion-pricetags"></i>
+          <span>{{subtype.name}}</span>: <span>{{subtype.cost ? subtype.cost : '0'}} {{(subtype.cost === 1 ? 'gipro_point' : 'gipro_points') | translate}}</span>
         </div>
       </div>
       <div class="row" ng-if="!isMine">
