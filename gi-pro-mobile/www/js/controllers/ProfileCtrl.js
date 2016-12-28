@@ -158,7 +158,7 @@ angular.module('gi-pro.controllers.profile', [])
       placedata.resolve(names)
     } else {
       i = i.replace(/ /g, '+')
-      var url = Config.getGeocoderURL() + '/address?latlng=' + Config.getMapPosition().lat + ', ' + Config.getMapPosition().long + '&distance=' + Config.getDistanceForAutocomplete() + '&address=' + i
+      var url = Config.getGeocoderURL() + '/address?latlng=' + Config.getMapPosition().lat + ', ' + Config.getMapPosition().lng + '&distance=' + Config.getDistanceForAutocomplete() + '&address=' + i
       $http.get(url, Config.getGeocoderConf()).then(function (response) {
         var docs = response.data.response.docs
 
@@ -621,7 +621,7 @@ angular.module('gi-pro.controllers.profile', [])
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,
-      lng: Config.getMapPosition().long,
+      lng: Config.getMapPosition().lng,
       zoom: 18
     },
     servicesMarkers: $scope.markers,
