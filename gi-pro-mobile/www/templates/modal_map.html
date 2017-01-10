@@ -1,0 +1,12 @@
+<ion-modal-view>
+  <ion-header-bar align-title="left" class="bar-positive-100">
+    <button class="button button-stable button-clear icon" ng-class="{'ion-android-arrow-back': platform.isAndroid(), 'ion-ios-arrow-back': !platform.isAndroid()}"
+      ng-click="closeMap()"></button>
+      <div class="title">{{'poi_select_map' | translate}}</div>
+  </ion-header-bar>
+  <ion-content scroll="false">
+    <div id="modal-map-container" data-tap-disabled="true">
+      <leaflet event-broadcast="events" center="center" markers="markers" paths="pathLine" ng-style="styles.modalMap" ng-init="initMap()" id="mapModal"></leaflet>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -10517,6 +10517,9 @@ placeautocomplete {
 .popup-regions .item {
   white-space: normal; }
 
+.popup-map {
+  text-align: center; }
+
 /*
  * LOGIN AND REGISTRATION
  */

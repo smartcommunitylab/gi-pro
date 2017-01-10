@@ -63,7 +63,7 @@
                 </div>
                 <div class="item-accordion-footer">
                   <button class="button button-clear button-small button-positive" ng-click="cancelModify('new')">{{'cancel' | translate}}</button>
-                  <button class="button button-clear button-small button-assertive" ng-click="saveService(newService)" ng-disabled="!newService.coordinates">{{'save' | translate}}</button>
+                  <button class="button button-clear button-small button-assertive" ng-click="saveService(newService)" ng-disabled="!newService.address || !newService.coordinates">{{'save' | translate}}</button>
                 </div>
               </ion-item>
             </div>
