@@ -99,7 +99,7 @@
               <div class="list results-list professionals-list">
                 <div class="card" ng-repeat="professional in professionalsList">
                   <a class="item item-avatar" ng-click="openProfessionalDetails(professional)">
-                    <img ng-src="{{professional.imageUrl}}" ng-class="{'placeholder': !professional.imageUrl}">
+                    <img ng-src="{{generateImageUrl(professional.imageUrl)}}" ng-class="{'placeholder': !professional.imageUrl}">
                     <div>
                       <span>{{professional.name}}</span> <span>{{professional.surname}}</span>
                     </div>
