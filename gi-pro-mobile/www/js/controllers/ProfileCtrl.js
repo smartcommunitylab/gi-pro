@@ -1,6 +1,7 @@
 /* global FileUploadOptions, FileTransfer, Camera */
 
 angular.module('gi-pro.controllers.profile', [])
+
   .controller('ProfileCtrl', function ($scope, $rootScope, $stateParams, $ionicModal, $ionicLoading, $ionicPopup, $filter, $q, $http, Config, Login, Utils, DataSrv, mapService) {
     const SEPARATOR = ';'
 
@@ -177,7 +178,6 @@ angular.module('gi-pro.controllers.profile', [])
         var url = Config.getGeocoderURL() + '/address?latlng=' + Config.getMapPosition().lat + ', ' + Config.getMapPosition().long + '&distance=' + Config.getDistanceForAutocomplete() + '&address=' + i
         $http.get(url, Config.getGeocoderConf()).then(function (response) {
           var docs = response.data.response.docs
-
           var geoCoderPlaces = []
           // places = data.response.docs
           // store the data

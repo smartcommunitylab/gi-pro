@@ -30,11 +30,13 @@
           <div class="selected-filters row">
             <!-- services -->
             <div class="col col-50 selected-service" ng-click="openFilter('services')">
+              <i class="icon ion-funnel"></i>
               <span ng-if="filters.selectedService">{{'selectedService_label' | translate}}: {{filters.selectedService.name}}</span>
               <span ng-if="!filters.selectedService">{{'allServices_label' | translate}}</span>
             </div>
             <!-- zones -->
             <div class="col col-50 selected-zone" ng-click="openFilter('zones')">
+              <i class="icon ion-funnel"></i>
               <span ng-if="filters.selectedZone">{{'selectedZone_label' | translate}}: {{filters.selectedZone.name}}</span>
               <span ng-if="!filters.selectedZone">{{'allZones_label' | translate}}</span>
             </div>
@@ -78,11 +80,13 @@
           <div class="row selected-filters">
             <!-- professions -->
             <div class="col col-50 selected-profession" ng-click="openFilter('professions')">
+              <i class="icon ion-funnel"></i>
               <span ng-if="filters.selectedProfession">{{'selectedProfession_label' | translate}}: {{filters.selectedProfession.name}}</span>
               <span ng-if="!filters.selectedProfession">{{'allProfession_label'|translate}}</span>
             </div>
             <!-- zones -->
             <div class="col col-50 selected-zone" ng-click="openFilter('zones')">
+              <i class="icon ion-funnel"></i>
               <span ng-if="filters.selectedZone">{{'selectedZone_label' | translate}}: {{filters.selectedZone.name}}</span>
               <span ng-if="!filters.selectedZone">{{'allZones_label' | translate}}</span>
             </div>

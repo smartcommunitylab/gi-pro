@@ -404,7 +404,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
   angular.extend($scope, {
     center: {
       lat: Config.getMapPosition().lat,
-      lng: Config.getMapPosition().long,
+      lng: Config.getMapPosition().lng,
       zoom: 18
     },
     servicesMarkers: $scope.servicesMarkers,
