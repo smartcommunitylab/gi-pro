@@ -301,20 +301,23 @@ input[readonly] {
     .tutorial-content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
       height: 100%;
       color: #fff;
       div {
-        padding: 0 20px;
-        min-height: 20%;
+        // padding: 0 20px;
+        padding: 0 10px 10px 10px;
+        // min-height: 20%;
       }
       img {
         display: block;
         border: 1px solid white;
         max-width: 80%;
       }
-      .button {}
+      .description {
+        font-size: 13px;
+      }
       .button:first-child {
         margin-bottom: 50px;
       }
@@ -335,11 +338,11 @@ input[readonly] {
       width: 14px;
       height: 14px;
       border: 2px solid white;
-      background: transparent;
+      background: $t_lightblue;
       opacity: 1;
     }
     .swiper-pagination .swiper-pagination-bullet-active {
-      background: white;
+      background: $t_red;
     }
   }
   .tutorial-footer {

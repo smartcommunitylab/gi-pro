@@ -10029,17 +10029,17 @@ input[readonly] {
     .tutorial ion-slides .tutorial-content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       height: 100%;
       color: #fff; }
       .tutorial ion-slides .tutorial-content div {
-        padding: 0 20px;
-        min-height: 20%; }
+        padding: 0 10px 10px 10px; }
       .tutorial ion-slides .tutorial-content img {
         display: block;
         border: 1px solid white;
         max-width: 80%; }
+      .tutorial ion-slides .tutorial-content .description {
+        font-size: 13px; }
       .tutorial ion-slides .tutorial-content .button:first-child {
         margin-bottom: 50px; }
     .tutorial ion-slides .swiper-slide {
@@ -10048,10 +10048,10 @@ input[readonly] {
       width: 14px;
       height: 14px;
       border: 2px solid white;
-      background: transparent;
+      background: #38a3dc;
       opacity: 1; }
     .tutorial ion-slides .swiper-pagination .swiper-pagination-bullet-active {
-      background: white; }
+      background: #ea5456; }
   .tutorial .tutorial-footer {
     display: flex;
     flex-direction: column;
