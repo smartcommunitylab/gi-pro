@@ -41,7 +41,7 @@
                   <i class="icon ion-ios-location"></i>
                   <placeautocomplete ng-model="newService.address" attr-placeholder="{{'service_address_placeholder' | translate}}" click-activation="false"
                     data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="selectServiceAddress"></placeautocomplete>
-                  <i class="icon ion-map" ng-click="openMap()"></i>
+                  <i class="icon ion-map" ng-click="openMap('service')"></i>
                 </div>
                 <div class="item item-icon-left" ng-if="newService.serviceType === 'sostituzioneudienza'">
                   <i class="icon ion-ios-location"></i>

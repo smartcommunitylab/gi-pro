@@ -10358,7 +10358,8 @@ placeautocomplete {
     height: 100%;
     font-size: 20px;
     color: #444;
-    background-color: #f8f8f8; }
+    background-color: #f8f8f8;
+    background-size: 80px 80px; }
     .profile-image-container .upload .icon {
       position: absolute;
       bottom: 0;

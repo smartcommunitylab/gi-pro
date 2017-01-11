@@ -28,7 +28,7 @@
           <div class="item item-input item-input">
             <placeautocomplete ng-model="registration.address" attr-placeholder="{{'address_placeholder' | translate}}" click-activation="false"
               data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}" on-select="selectAddress"></placeautocomplete>
-            <i class="icon ion-map plan-viaggia-fromto" ng-click="openMapPlan('from')"></i>
+            <i class="icon ion-map plan-viaggia-fromto" ng-click="openMap()"></i>
           </div>
           <div class="item item-input item-input-select" ng-click="openSelectProfessionPopup()">
             <input type="text" readonly ng-model="selectedProfession.name" placeholder="{{'profession_placeholder' | translate}}" ng-required="true">

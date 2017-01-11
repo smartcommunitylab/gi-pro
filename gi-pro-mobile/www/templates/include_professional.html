@@ -26,6 +26,7 @@
       <placeautocomplete ng-if="editingProfile" ng-model="edit.address" attr-placeholder="{{'address_placeholder' | translate}}"
         click-activation="false" data="places" on-type="typePlace" placeholder="{{'service_address_placeholder' | translate}}"
         on-select="selectProfessionalAddress"></placeautocomplete>
+      <button ng-if="editingProfile" class="button button-clear button-dark button-icon icon ion-map" ng-click="openMap('profile')"></button>
       <button ng-if="editingProfile" class="button button-clear button-stable button-icon icon ion-close-circled" ng-click="edit.address = ''"></button>
     </div>
     <!-- Phones -->

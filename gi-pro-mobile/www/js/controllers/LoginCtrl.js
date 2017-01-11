@@ -66,7 +66,7 @@ angular.module('gi-pro.controllers.login', [])
     }
   })
 
-  .controller('RegistrationSecondCtrl', function ($scope, $rootScope, $state, $stateParams, $http, $q, $ionicHistory, $ionicPopup, $filter, $window, Utils, Config, DataSrv, Login) {
+  .controller('RegistrationSecondCtrl', function ($scope, $rootScope, $state, $stateParams, $http, $q, $ionicHistory, $ionicPopup, $ionicModal, $ionicLoading, $filter, $window, Utils, Config, DataSrv, Login, mapService) {
     $scope.professions = null
     $scope.areas = null
     $scope.registration = {}
@@ -75,13 +75,111 @@ angular.module('gi-pro.controllers.login', [])
       $scope.registration = $stateParams.obj
     };
 
-    $scope.typePlace = function (typedthings) {
-      $scope.result = typedthings
+    $ionicModal.fromTemplateUrl('templates/modal_map.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      animation: 'slide-in-up'
+    }).then(function (modal) {
+      $scope.modalMap = modal
+    })
 
-      $scope.getTypedPlaces(typedthings).then(function (data) {
-        // merge with favorites and check no double values
-        $scope.places = data
+    $scope.styles = {
+      'modalMap': Utils.resizeElement(44)
+    }
+
+    $scope.openMap = function (place) {
+      $scope.place = place
+      $scope.refresh = false
+      if ($scope.modalMap) {
+        $scope.modalMap.show()
+      }
+    }
+
+    $scope.closeMap = function () {
+      $scope.refresh = true
+      if ($scope.modalMap) {
+        $scope.modalMap.hide()
+      }
+    }
+
+    var selectPlace = function (placeSelected, lat, lng) {
+      $scope.registration.address = placeSelected.name ? placeSelected.name : placeSelected.street + ', ' + placeSelected.housenumber + ', ' + placeSelected.city
+      $scope.registration.coordinates = [lat, lng]
+      console.log(placeSelected)
+      $scope.justSelectedFromMap = true
+      /* close map */
+      $scope.closeMap()
+    }
+
+    $scope.initMap = function () {
+      mapService.getMap('mapModal').then(function () {
+        $scope.$on('leafletDirectiveMap.mapModal.click', function (event, args) {
+          $ionicLoading.show()
+          // planService.setPosition($scope.place, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng)
+          // var placedata = $q.defer()
+          var url = Config.getGeocoderURL() + '/location?latlng=' + args.leafletEvent.latlng.lat + ',' + args.leafletEvent.latlng.lng
+          $http.get(encodeURI(url), Config.getGeocoderConf()).then(function (response) {
+            var data = response.data
+            $ionicLoading.hide()
+            $scope.nameNewAddress = ''
+            if (data.response.docs[0]) {
+              // planService.setName($scope.place, data.response.docs[0]);
+              $scope.clickedPoint = data.response.docs[0]
+              $scope.nameNewAddress = $scope.clickedPoint.name ? $scope.clickedPoint.name : $scope.clickedPoint.street + ', ' + $scope.clickedPoint.housenumber + ', ' + $scope.clickedPoint.city
+              $ionicPopup.show({
+                // templateUrl: 'templates/popup_map.html',
+                template: $scope.nameNewAddress,
+                scope: $scope,
+                title: $filter('translate')('popup_address'),
+                cssClass: 'popup-map',
+                buttons: [{
+                  text: $filter('translate')('btn_close')
+                }, {
+                  type: 'button-assertive',
+                  text: $filter('translate')('btn_conferma'),
+                  onTap: function (e) {
+                    selectPlace($scope.clickedPoint, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng)
+                  }
+                }]
+              })
+            } else {
+              /* confirm popup */
+              $scope.nameNewAddress = $filter('translate')('popup_lat') + args.leafletEvent.latlng.lat.toString().substring(0, 7) + ' ' + $filter('translate')('popup_long') + args.leafletEvent.latlng.lng.toString().substring(0, 7)
+              $ionicPopup.show({
+                // templateUrl: 'templates/popup_map.html',
+                template: $scope.nameNewAddress,
+                scope: $scope,
+                title: $filter('translate')('popup_address'),
+                cssClass: 'popup-map',
+                buttons: [{
+                  text: $filter('translate')('btn_close')
+                }, {
+                  type: 'button-assertive',
+                  text: '<i class="icon ion-navigate"></i>',
+                  onTap: function (e) {
+                    selectPlace(args.leafletEvent.latlng)
+                  }
+                }]
+              })
+            }
+          }, function () {
+            $ionicLoading.hide()
+            $scope.showNoConnection()
+          })
+        })
       })
+    }
+
+    $scope.typePlace = function (typedthings) {
+      if ($scope.justSelectedFromMap) {
+        $scope.justSelectedFromMap = !$scope.justSelectedFromMap
+      } else {
+        $scope.result = typedthings
+        $scope.getTypedPlaces(typedthings).then(function (data) {
+          // merge with favorites and check no double values
+          $scope.places = data
+        })
+      }
     }
 
     $scope.getTypedPlaces = function (i) {
@@ -291,4 +389,14 @@ angular.module('gi-pro.controllers.login', [])
     $scope.cancel = function () {
       $ionicHistory.goBack()
     }
+
+    angular.extend($scope, {
+      center: {
+        lat: Config.getMapPosition().lat,
+        lng: Config.getMapPosition().long,
+        zoom: 18
+      },
+      servicesMarkers: $scope.markers,
+      events: {}
+    })
   })

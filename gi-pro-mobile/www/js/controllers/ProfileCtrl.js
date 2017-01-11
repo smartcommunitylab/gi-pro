@@ -81,11 +81,19 @@ angular.module('gi-pro.controllers.profile', [])
       $scope.selectedTab = tabName
     }
 
+    var selectPlaceField = null
     var selectPlace = function (placeSelected, lat, lng) {
-      $scope.newService.address = placeSelected.name ? placeSelected.name : placeSelected.street + ', ' + placeSelected.housenumber + ', ' + placeSelected.city
-      $scope.newService.coordinates = [lat, lng]
+      if (selectPlaceField === 'profile') {
+        $scope.edit.address = placeSelected.name ? placeSelected.name : placeSelected.street + ', ' + placeSelected.housenumber + ', ' + placeSelected.city
+        $scope.edit.coordinates = [lat, lng]
+        $scope.justSelectedFromMap = true
+      } else if (selectPlaceField === 'service') {
+        $scope.newService.address = placeSelected.name ? placeSelected.name : placeSelected.street + ', ' + placeSelected.housenumber + ', ' + placeSelected.city
+        $scope.newService.coordinates = [lat, lng]
+        $scope.justSelectedFromMap = true
+      }
+
       console.log(placeSelected)
-      $scope.justSelectedFromMap = true
       /* close map */
       $scope.closeMap()
     }
@@ -472,11 +480,13 @@ angular.module('gi-pro.controllers.profile', [])
       'modalMap': Utils.resizeElement(44)
     }
 
-    $scope.openMap = function (place) {
-      $scope.place = place
-      $scope.refresh = false
-      if ($scope.modalMap) {
-        $scope.modalMap.show()
+    $scope.openMap = function (field) {
+      if (field) {
+        selectPlaceField = field
+        $scope.refresh = false
+        if ($scope.modalMap) {
+          $scope.modalMap.show()
+        }
       }
     }
 
