@@ -763,14 +763,10 @@ angular.module('gi-pro.services.data', [])
     httpConfWithParams.params = {}
     $http.put(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/profile/' + profile.objectId, profile, httpConfWithParams).then(
       function (response) {
-        var data = response.data
-        if (!data || data.status !== 'OK') {
-          deferred.reject()
-          return
-        }
-        localStorage.setItem(Config.getUserVar(), JSON.stringify(profile))
-        $rootScope.user = profile
-        deferred.resolve(profile)
+        var user = response.data
+        localStorage.setItem(Config.getUserVar(), JSON.stringify(user))
+        $rootScope.user = user
+        deferred.resolve(user)
       },
       function (reason) {
         // Login.logout()

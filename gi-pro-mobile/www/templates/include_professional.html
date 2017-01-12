@@ -73,8 +73,8 @@
       </div>
       <div class="item item-icon-left item-input" ng-if="editingProfile">
         <i class="icon ion-email"></i>
-        <input type="tel" ng-model="edit.newItems.mail">
-        <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('mail')" ng-disabled="edit.mail.indexOf(edit.newItems.email) > -1 || !edit.newItems.email.trim()"></button>
+        <input type="email" ng-model="edit.newItems.mail">
+        <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('mail')" ng-disabled="edit.mail.indexOf(edit.newItems.mail) > -1 || !edit.newItems.mail.trim()"></button>
       </div>
     </div>
     <!-- Fax -->
@@ -88,7 +88,7 @@
       <div class="item item-icon-left item-input" ng-if="editingProfile">
         <i class="icon ion-printer"></i>
         <input type="tel" ng-model="edit.newItems.fax">
-        <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('fax')" ng-disabled="edit.fax.indexOf(edit.newItems.phone) > -1 || !edit.newItems.phone.trim()"></button>
+        <button class="button button-clear button-balanced button-icon icon ion-checkmark-circled" ng-click="addItem('fax')" ng-disabled="edit.fax.indexOf(edit.newItems.fax) > -1 || !edit.newItems.fax.trim()"></button>
       </div>
     </div>
   </div>

@@ -1,6 +1,5 @@
 /* global angular */
 angular.module('gi-pro.controllers.serviceandprof', [])
-
   .controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, $ionicTabsDelegate, $ionicModal, $ionicPopup, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
     $scope.title = $filter('translate')('app')
     $scope.servicesList = null

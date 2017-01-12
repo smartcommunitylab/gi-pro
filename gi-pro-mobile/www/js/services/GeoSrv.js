@@ -1,6 +1,5 @@
 /* global device */
 angular.module('gi-pro.services.geo', [])
-
   .factory('GeoLocate', function ($q, $rootScope) {
     var localization
 

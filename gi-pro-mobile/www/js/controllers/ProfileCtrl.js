@@ -602,7 +602,7 @@ angular.module('gi-pro.controllers.profile', [])
               Utils.loaded()
               $scope.profile.imageUrl = user.imageUrl
               $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true)
-              //            $scope.$apply();
+              // $scope.$apply();
             }, Utils.commError)
           }
 

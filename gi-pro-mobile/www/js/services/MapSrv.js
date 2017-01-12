@@ -1,6 +1,5 @@
 /* global angular, L */
 angular.module('gi-pro.services.mapservice', [])
-
   .factory('mapService', function ($q, $http, $ionicPlatform, $filter, $timeout, leafletData, GeoLocate) {
     var cachedMap = {}
     var mapService = {}

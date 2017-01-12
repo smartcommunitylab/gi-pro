@@ -1,6 +1,5 @@
 /* global angular */
 angular.module('gi-pro.controllers.login', [])
-
   .controller('LoginCtrl', function ($scope, $state, $ionicHistory, $ionicPopup, $filter, Utils, Config, Login) {
     $scope.user = {}
     $scope.validityPassword = false

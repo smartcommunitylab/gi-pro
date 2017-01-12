@@ -1,7 +1,5 @@
 /* global angular, localStorage */
-angular.module('gi-pro.services.login', [])
-
-.factory('Login', function ($rootScope, $http, $q, Utils, Config, PushSrv) {
+angular.module('gi-pro.services.login', []).factory('Login', function ($rootScope, $http, $q, Utils, Config, PushSrv) {
   var loginService = {}
 
   var userVarName = Config.getUserVar()
@@ -64,32 +62,6 @@ angular.module('gi-pro.services.login', [])
     return $rootScope.user
   }
 
-  loginService.updateUser = function (skipRegistration) {
-    var deferred = $q.defer()
-    var httpConfWithParams = Config.getHTTPConfig()
-    $http.get(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/profile', httpConfWithParams)
-      .then(function (response) {
-        var user = response.data
-        if (!user || !user.objectId) {
-          deferred.reject(loginService.USER_ERRORS.NO_CONNECTION)
-          return
-        }
-        localStorage.setItem(userVarName, JSON.stringify(user))
-        $rootScope.user = user
-        if (!skipRegistration) {
-          PushSrv.init()
-        }
-        deferred.resolve(user)
-      }, function (reason) {
-        if (reason.status === 401 || reason.status === 403) {
-          deferred.reject(loginService.USER_ERRORS.NO_USER)
-        } else {
-          deferred.reject(loginService.USER_ERRORS.NO_CONNECTION)
-        }
-      })
-    return deferred.promise
-  }
-
   loginService.USER_ERRORS = {
     NO_CONNECTION: 1,
     NO_USER: 2,
@@ -135,9 +107,11 @@ angular.module('gi-pro.services.login', [])
     $rootScope.logged = false
     PushSrv.unreg()
   }
+
   loginService.userIsLogged = function () {
     return $rootScope.logged
   }
+
   loginService.checkUser = function (user) {
     return !!user.phone
   }
