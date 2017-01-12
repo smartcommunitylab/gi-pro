@@ -182,7 +182,7 @@ public class RepositoryManager {
 		}
 	}
 
-	public void updateProfessional(String applicationId, Professional professional) {
+	public Professional updateProfessional(String applicationId, Professional professional) throws EntityNotFoundException {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("objectId").is(professional.getObjectId());
 		Query query = new Query(criteria);
@@ -190,10 +190,19 @@ public class RepositoryManager {
 		if(dbProfessional != null) {
 			Date now = new Date();
 			Update update = new Update();
+			update.set("address", professional.getAddress());
+			update.set("area", professional.getArea());
+			update.set("coordinates", professional.getCoordinates());
+			update.set("customProperties", professional.getCustomProperties());
+			update.set("fax", professional.getFax());
+			update.set("mail", professional.getMail());
+			update.set("phone", professional.getPhone());
 			update.set("cellPhone", professional.getCellPhone());
 			update.set("lastUpdate", now);
 			mongoTemplate.updateFirst(query, update, Professional.class);
+			return mongoTemplate.findOne(query, Professional.class);
 		}
+		throw new EntityNotFoundException("Professional not found: "+professional.getObjectId());
 	}
 	
 	private void updateProfessionalPasswordByPEC(String applicationId, String pec, String passwordHash) {

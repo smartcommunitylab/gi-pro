@@ -629,17 +629,17 @@ public class EntityController {
 	}
 	
 	@RequestMapping(value = "/api/{applicationId}/profile/{professionalId}", method = RequestMethod.PUT)
-	public @ResponseBody String updateProfessional(@PathVariable String applicationId,
+	public @ResponseBody Professional updateProfessional(@PathVariable String applicationId,
 			@PathVariable String professionalId,
 			@RequestBody Professional professional,
 			HttpServletRequest request) throws Exception {
 		professionalId = Utils.getContextProfessionalId();
 		professional.setObjectId(professionalId);
-		storageManager.updateProfessional(applicationId, professional);
+		professional = storageManager.updateProfessional(applicationId, professional);
 		if(logger.isInfoEnabled()) {
 			logger.info(String.format("updateProfessional[%s]:%s", applicationId, professionalId));
 		}
-		return "{\"status\":\"OK\"}";
+		return professional;
 	}
 	
 	@ExceptionHandler(WrongRequestException.class)
