@@ -3,7 +3,7 @@
     <div class="service">
       <div class="card professional">
         <div class="item item-thumbnail-left">
-          <img ng-src="{{service.professional.imageUrl}}">
+          <img ng-src="{{generateImageUrl(service.professional.imageUrl)}}">
           <ul>
             <li class="name">{{service.professional.name}} {{service.professional.surname}}</li>
             <li class="toprofile"><a ng-click="openProfessionalDetails(service.professional)">{{'view_profile' | translate}}</a></li>

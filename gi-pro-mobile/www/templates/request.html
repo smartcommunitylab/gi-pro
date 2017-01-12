@@ -5,7 +5,7 @@
     <div ng-if="request">
       <div class="card professional" ng-click="openProfessionalDetails(professional)">
         <div class="item item-thumbnail-left">
-          <img ng-src="{{professional.imageUrl}}">
+          <img ng-src="{{generateImageUrl(professional.imageUrl)}}">
           <p>{{isToMe() ? 'request_detail_by' : 'request_detail_to' | translate}}</p>
           <h2 class="name">{{professional.name}} {{professional.surname}}</h2>
           <p><a ng-click="openProfessionalDetails(professional)">{{'view_profile' | translate}}</a></p>
