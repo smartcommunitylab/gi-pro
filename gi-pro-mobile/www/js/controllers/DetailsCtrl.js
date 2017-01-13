@@ -211,6 +211,8 @@ angular.module('gi-pro.controllers.details', [])
     }
 
     /* new request */
+    $scope.myBalance = Login.getUser().balance
+
     $scope.newRequest = {
       offerId: $scope.service.objectId,
       serviceType: $scope.service ? $scope.service.serviceType : null,
@@ -287,7 +289,8 @@ angular.module('gi-pro.controllers.details', [])
         },
         function (reason) {
           console.log(reason)
-          Utils.commError(reason)
+          // Utils.commError(reason)
+          Utils.toast($filter('translate')('error_' + reason.data.errorType))
         }
       )
     }

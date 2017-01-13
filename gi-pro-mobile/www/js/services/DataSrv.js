@@ -551,7 +551,7 @@ angular.module('gi-pro.services.data', [])
         deferred.resolve(response.data)
       },
       function (reason) {
-        deferred.reject(reason.data ? reason.data.errorMessage : reason)
+        deferred.reject(reason)
       }
     )
 

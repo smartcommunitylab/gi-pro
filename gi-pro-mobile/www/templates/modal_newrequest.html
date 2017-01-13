@@ -11,7 +11,7 @@
       <ion-item class="item-input" ng-click="openTimePicker()">
         <span class="input-label">{{'newrequest_time' | translate}}:</span> <span class="input-value">{{newRequestForm.startTime | date:'HH:mm':'UTC'}}</span>
       </ion-item>
-    <div class="subtitle" ng-if="subtypes">{{'newrequest_subtypes' | translate}}:</div>
+      <div class="subtitle" ng-if="subtypes">{{'newrequest_subtypes' | translate}}:</div>
     </ion-list>
     <ion-list type="list-inset">
       <ion-radio class="subtype" ng-repeat="subtype in subtypes" ng-model="newRequestForm.subtype" ng-value="subtype">
@@ -23,8 +23,11 @@
         <button class="button button-block button-calm" ng-click="closeNewRequestModal()">{{'cancel' | translate}}</button>
       </div>
       <div class="col col-50">
-        <button class="button button-block button-energized" ng-click="sendNewRequest()">{{'newrequest_send' | translate}}</button>
+        <button class="button button-block button-energized" ng-click="sendNewRequest()" ng-disabled="subtypes ? myBalance < newRequestForm.subtype.cost : myBalance < cost">{{'newrequest_send' | translate}}</button>
       </div>
+    </div>
+    <div class="item item-icon-left error" ng-if="subtypes ? myBalance < newRequestForm.subtype.cost : myBalance < cost">
+      <i class="icon ion-alert-circled"></i> {{'error_InsufficientBalanceException' | translate}}
     </div>
   </ion-content>
 </ion-modal-view>

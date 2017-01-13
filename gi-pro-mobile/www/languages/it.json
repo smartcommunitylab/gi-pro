@@ -215,5 +215,6 @@
   "state_REJECTED": "rifiutata",
   "state_long_REJECTED": "rifiutata dall'offerente",
   "state_DELETED": "cancellata",
-  "state_long_DELETED": "cancellata dall'offerente"
+  "state_long_DELETED": "cancellata dall'offerente",
+  "error_InsufficientBalanceException": "Il tuo credito è insufficiente. Attendi il rinnovo mensile."
 }

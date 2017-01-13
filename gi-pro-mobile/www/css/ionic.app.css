@@ -10505,6 +10505,9 @@ placeautocomplete {
   float: right;
   font-style: italic; }
 
+.modal-newrequest .error.item.item-icon-left {
+  white-space: normal; }
+
 .popup-types .popup-head,
 .popup-regions .popup-head {
   display: none; }
