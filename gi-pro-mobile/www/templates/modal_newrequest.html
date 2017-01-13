@@ -15,7 +15,7 @@
     </ion-list>
     <ion-list type="list-inset">
       <ion-radio class="subtype" ng-repeat="subtype in subtypes" ng-model="newRequestForm.subtype" ng-value="subtype">
-        {{subtype.name}} <span class="cost" ng-if="subtype.cost">€ {{subtype.cost}}</span>
+        {{subtype.name}} <span class="cost" ng-if="subtype.cost">{{subtype.cost}} {{subtype.cost === 1 ? 'gipro_point' : 'gipro_points' | translate}}</span>
       </ion-radio>
     </ion-list>
     <div class="row">

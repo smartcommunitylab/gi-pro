@@ -68,6 +68,9 @@
               </ion-item>
             </div>
             <!-- Services list -->
+            <div class="row" ng-if="services && !services.length">
+              <div class="col">{{'services_empty' | translate}}</div>
+            </div>
             <div class="item-accordion" ng-repeat="service in services" ng-click="toggleService(service.objectId)">
               <ion-item class="item-accordion-header item-icon-right" ng-click="toggleService(service)">
                 <div class="title">{{getServiceNameByID(service.serviceType)}}</div>
