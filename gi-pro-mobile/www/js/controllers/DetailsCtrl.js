@@ -7,7 +7,7 @@ angular.module('gi-pro.controllers.details', [])
 
     $scope.isToMe = function () {
       // return !!$scope.request && $scope.request.requester.objectId !== Login.getUser().objectId
-      return !!$scope.request && !!$scope.request.requester && ($scope.request.requester.objectId !== Login.getUser().objectId)
+      return $scope.request && $scope.request.requester && ($scope.request.requester.objectId !== Login.getUser().objectId)
     }
 
     $scope.isFuture = function () {

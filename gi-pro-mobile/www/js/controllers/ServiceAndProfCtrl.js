@@ -1,7 +1,6 @@
 /* global angular */
 angular.module('gi-pro.controllers.serviceandprof', [])
-  .controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $ionicScrollDelegate, $ionicTabsDelegate, $ionicModal, $ionicPopup, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
-    $scope.title = $filter('translate')('app')
+  .controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $timeout, $ionicScrollDelegate, $ionicTabsDelegate, $ionicModal, $ionicPopup, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
     $scope.servicesList = null
     $scope.professionalsList = null
     $scope.viewAsList = true
@@ -11,6 +10,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
     // Search Bar
     $rootScope.searchBar = {
+      minLength: 3,
       show: false,
       searchString: ''
     }
@@ -26,6 +26,35 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
     $scope.toggleSearchBar = function () {
       $rootScope.searchBar.show = !$rootScope.searchBar.show
+      if (!$rootScope.searchBar.show && $rootScope.searchBar.searchString.trim()) {
+        // $scope.professionalsList = null
+        // $scope.loadMoreProfessional()
+        $scope.reload()
+      }
+    }
+
+    $scope.clearSearchBar = function () {
+      $rootScope.searchBar.searchString = ''
+      // $scope.professionalsList = null
+      // $scope.loadMoreProfessional()
+      $scope.reload()
+    }
+
+    $scope.searchProfessionals = function (query) {
+      // ignore short input
+      if (query.trim().length > 0 && query.trim().length < $rootScope.searchBar.minLength) {
+        // console.log('query string too short')
+        return
+      }
+      // wait 500ms before making a call
+      if ($scope.to != null) {
+        $timeout.cancel($scope.to)
+        // console.log('previous search canceled')
+      }
+      $scope.to = $timeout(function () {
+        $scope.to = null
+        $scope.loadMoreProfessional(query)
+      }, 500)
     }
 
     $scope.filters = {
@@ -377,18 +406,27 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     /*
      * This function loads more professionals using filters
      */
-    $scope.loadMoreProfessional = function () {
+    $scope.loadMoreProfessional = function (query) {
       var deferred = $q.defer()
 
-      /* type, area, page, limit, orderBy */
-      DataSrv.getProfessionals(
-        $scope.filters.selectedProfession == null ? null : $scope.filters.selectedProfession.id,
-        $scope.filters.selectedZone == null ? null : $scope.filters.selectedZone.id,
-        $scope.professionalsList == null ? 1 : Math.floor($scope.professionalsList.length / Config.getProfessionalsPageSize()) + 1,
-        Config.getProfessionalsPageSize(), 'surname').then(
+      var params = {
+        type: $scope.filters.selectedProfession == null ? null : $scope.filters.selectedProfession.id,
+        area: $scope.filters.selectedZone == null ? null : $scope.filters.selectedZone.id,
+        page: $scope.professionalsList == null ? 1 : Math.floor($scope.professionalsList.length / Config.getProfessionalsPageSize()) + 1,
+        limit: Config.getProfessionalsPageSize(),
+        orderBy: 'surname'
+      }
+
+      if (query && query.length >= $rootScope.searchBar.minLength) {
+        params.page = 1
+        params.query = query
+      }
+
+      /* type, area, page, limit, orderBy, query */
+      DataSrv.getProfessionals(params.type, params.area, params.page, params.limit, params.orderBy, params.query).then(
         function (professional) {
           if (professional) {
-            $scope.professionalsList = $scope.professionalsList ? $scope.professionalsList.concat(professional) : professional
+            $scope.professionalsList = params.page === 1 ? professional : $scope.professionalsList.concat(professional)
 
             if (!$scope.professionalsList.length) {
               $scope.emptylist = true
