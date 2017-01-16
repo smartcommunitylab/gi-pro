@@ -310,8 +310,8 @@ public class RepositoryManager {
 		}
 		if (StringUtils.hasText(q)) {
 			criteria.orOperator(
-					new Criteria("surname").regex("/"+q.toLowerCase()+"/i"),
-					new Criteria("customProperties.competences").regex("/"+q.toLowerCase()+"/i")
+					new Criteria("surname").regex(q.toLowerCase(),"i"),
+					new Criteria("customProperties.competences").regex(q.toLowerCase(),"i")
 			);
 		}
 		Query query = new Query(criteria);
@@ -327,7 +327,7 @@ public class RepositoryManager {
 			query.skip((page - 1) * limit);
 		}
 		filterProfessionalFields(query);
-		logger.info("Search query: "+query.getQueryObject());
+		logger.debug("Search query: "+query.getQueryObject());
 		List<Professional> result = mongoTemplate.find(query, Professional.class);
 		return result;
 	}
