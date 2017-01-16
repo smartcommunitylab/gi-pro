@@ -327,6 +327,7 @@ public class RepositoryManager {
 			query.skip((page - 1) * limit);
 		}
 		filterProfessionalFields(query);
+		logger.info("Search query: "+query.getQueryObject());
 		List<Professional> result = mongoTemplate.find(query, Professional.class);
 		return result;
 	}
