@@ -168,7 +168,7 @@
   "service_request": "Richiesta servizio",
   "prof_competences_label": "Competenze",
   "prof_descrizione_label": "Descrizione",
-  "search_professionals": "Ricerca professioni",
+  "search_placeholder": "Cerca cognome e competenze",
   "email_placeholder": "Inserisci la tua email",
   "pec_placeholder": "Inserisci la tua PEC *",
   "name_placeholder": "Nome *",
