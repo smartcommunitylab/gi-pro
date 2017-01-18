@@ -472,24 +472,41 @@ public class RepositoryManager {
 		if (StringUtils.hasText(area)) {
 			criteria.and("area").is(area);
 		}
+		List<ServiceOffer> result = new ArrayList<>();
 		if (pos != null) {
-			criteria.and("coordinates").near(new Point(pos[0], pos[1]));
-		}
+			Point location = new Point(pos[0], pos[1]);
+			NearQuery query = NearQuery.near(location);
+			Query basic = Query.query(criteria); 
+			filterProfessionalFields(basic);
+			query.query(basic);
+			if(limit != null) {
+				query.num(limit);
+			}
+			if(page != null) {
+				query.skip((page - 1) * limit);
+			}
+			logger.debug("Search geo query: "+query.toDBObject());
+			GeoResults<ServiceOffer> geoNear = mongoTemplate.geoNear(query, ServiceOffer.class);
+			for(GeoResult<ServiceOffer> geoResult : geoNear.getContent()) {
+				result.add(geoResult.getContent());
+			}
 
-		Query query = new Query(criteria);
-		if (pos != null && orderBy != null && orderBy.length > 0) {
-			query.with(new Sort(Sort.Direction.ASC, orderBy));
-		} else if (pos != null) {
-			query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		} else {
+			Query query = new Query(criteria);
+			if (orderBy != null && orderBy.length > 0) {
+				query.with(new Sort(Sort.Direction.ASC, orderBy));
+			} else {
+				query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+			}
+	
+			if(limit != null) {
+				query.limit(limit);
+			}
+			if(page != null) {
+				query.skip((page - 1) * limit);
+			}
+			result = mongoTemplate.find(query, ServiceOffer.class);
 		}
-
-		if(limit != null) {
-			query.limit(limit);
-		}
-		if(page != null) {
-			query.skip((page - 1) * limit);
-		}
-		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
 		return result;
 	}
 
