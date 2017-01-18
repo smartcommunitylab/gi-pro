@@ -65,7 +65,7 @@
             <div class="empty" ng-show="servicesList && !servicesList.length ">{{'services_empty' | translate}}</div>
           </div>
           <!-- Map view -->
-          <div class="map-visualization" ng-if="!viewAsList">
+          <div class="map-visualization" ng-init="refreshMap('servicesMap')" ng-if="!viewAsList">
             <div id="modal-map-container" data-tap-disabled="true">
               <leaflet event-broadcast="events" center="center" markers="servicesMarkers" ng-style="styles.container" ng-init="initServicesTab()"
                 id="servicesMap"></leaflet>
@@ -115,7 +115,7 @@
             <div class="empty" ng-show="professionalsList && !professionalsList.length">{{'professional_empty' | translate}}</div>
           </div>
           <!-- Map view -->
-          <div class="map-visualization" ng-if="!viewAsList">
+          <div class="map-visualization" ng-init="refreshMap('professionalsMap')" ng-if="!viewAsList">
             <div id="modal-map-container" data-tap-disabled="true">
               <leaflet event-broadcast="events" center="center" markers="professionalMarkers" ng-style="styles.container" ng-init="initProfessionalsTab()"
                 id="professionalsMap"></leaflet>

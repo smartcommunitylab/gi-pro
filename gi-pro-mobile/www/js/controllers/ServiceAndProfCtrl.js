@@ -191,8 +191,30 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       $ionicScrollDelegate.resize()
     }
 
+    $scope.$on('$ionicView.afterEnter', function (event, args) {
+      if (!$scope.viewAsList) {
+        $scope.refreshMap()
+      }
+    })
+
     $scope.switchToMap = function () {
       $scope.viewAsList = !$scope.viewAsList
+      if (!$scope.viewAsList) {
+        $scope.refreshMap()
+      }
+    }
+
+    $scope.refreshMap = function () {
+      var ref = function () {
+        if ($scope.activeTab === 'professionals') {
+          mapService.refresh('professionalsMap')
+        } else if ($scope.activeTab === 'services') {
+          mapService.refresh('servicesMap')
+        }
+      }
+
+      $timeout(ref, 500)
+      // ref()
     }
 
     $scope.initServicesTab = function () {
@@ -236,10 +258,13 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             })
 
             $scope.servicesMarkers = mapService.getPoints($scope.servicesList, 'app.servicedetails')
-            mapService.refresh('servicesMap')
           }, function () {
             // $scope.filterMarkers(false)
           })
+
+          if (!$scope.viewAsList) {
+            $scope.refreshMap('servicesMap')
+          }
         })
       }
     }
@@ -284,10 +309,13 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             })
 
             $scope.professionalMarkers = mapService.getPoints($scope.professionalsList, 'app.profdetails')
-            mapService.refresh('professionalsMap')
           }, function () {
             // $scope.filterMarkers(false)
           })
+
+          if (!$scope.viewAsList) {
+            $scope.refreshMap('professionalsMap')
+          }
         })
       }
     }
