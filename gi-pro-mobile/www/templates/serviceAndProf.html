@@ -54,7 +54,7 @@
                     <div>
                       <span>{{service.service}}</span>
                     </div>
-                    <p>{{service.professional.name}} {{service.professional.surname}}</p>
+                    <p>{{service.professional.name}} {{service.professional.surname}}, {{service.professional.profession}}</p>
                     <p class="list-service-cost">{{service.cost}}</p>
                   </a>
                 </div>
@@ -105,7 +105,12 @@
                     <div>
                       <span>{{professional.name}}</span> <span>{{professional.surname}}</span>
                     </div>
-                    <p>{{professional.profession}}</p>
+                    <p>
+                      {{professional.profession}}
+                      <span ng-if="professional.customProperties.competences && professional.customProperties.competences.length">
+                        (<span ng-repeat="comp in professional.customProperties.competences">{{$index > 0 ? ', ' : ''}}{{comp}}</span>)
+                      </span>
+                    </p>
                   </a>
                 </div>
               </div>

@@ -107,7 +107,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
               console.log(error)
             })
 
-            addExtraDataToProf()
+            enrichData()
             deferred.resolve()
           }, function (error) {
             deferred.reject(error)
@@ -121,7 +121,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       return deferred.promise
     }
 
-    var addExtraDataToProf = function () {
+    var enrichData = function () {
       if ($scope.professionalsList) {
         for (var i = 0; i < $scope.professionalsList.length; i++) {
           $scope.professionalsList[i]['profession'] = professionsMap[$scope.professionalsList[i].type].name
@@ -132,6 +132,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       // if logged add also service meta info
       if (Login.userIsLogged() && $scope.servicesList) {
         for (var j = 0; j < $scope.servicesList.length; j++) {
+          $scope.servicesList[j].professional['profession'] = professionsMap[$scope.servicesList[j].professional.type].name
           $scope.servicesList[j]['service'] = servicesMap[$scope.servicesList[j].serviceType].name
           $scope.servicesList[j]['zone'] = zonesMap[$scope.servicesList[j].area] ? zonesMap[$scope.servicesList[j].area].name : ''
         }
@@ -205,16 +206,13 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
 
     $scope.refreshMap = function () {
-      var ref = function () {
+      $timeout(function () {
         if ($scope.activeTab === 'professionals') {
           mapService.refresh('professionalsMap')
         } else if ($scope.activeTab === 'services') {
           mapService.refresh('servicesMap')
         }
-      }
-
-      $timeout(ref, 500)
-      // ref()
+      }, 500)
     }
 
     $scope.initServicesTab = function () {
@@ -231,7 +229,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             $scope.center = {
               lat: pos[0],
               lng: pos[1],
-              zoom: 18
+              zoom: 16
             }
 
             map.locate({
@@ -401,7 +399,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             if (!$scope.servicesList.length) {
               $scope.emptylist = true
             } else {
-              addExtraDataToProf()
+              enrichData()
             }
 
             $scope.$broadcast('scroll.infiniteScrollComplete')
@@ -462,7 +460,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
               if (!$scope.filters.allZones.length) {
                 loadFilters()
               } else {
-                addExtraDataToProf()
+                enrichData()
               }
             }
 
