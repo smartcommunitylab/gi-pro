@@ -189,7 +189,7 @@ angular.module('gi-pro.services.data', [])
   }
 
   /* get list with all professionals */
-  dataService.getProfessionals = function (type, area, page, limit, orderBy, query) {
+  dataService.getProfessionals = function (type, area, page, limit, orderBy, query, pos) {
     var deferred = $q.defer()
     var httpConfWithParams = Config.getHTTPConfig()
     httpConfWithParams.params = {}
@@ -210,6 +210,9 @@ angular.module('gi-pro.services.data', [])
     }
     if (query) {
       httpConfWithParams.params['q'] = query
+    }
+    if (pos) {
+      httpConfWithParams.params['pos'] = pos
     }
 
     // $http.get('data/profiles_temp.json')
