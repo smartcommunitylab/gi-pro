@@ -1,5 +1,6 @@
 package it.smartcommunitylab.gipro.storage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,10 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.StringUtils;
@@ -35,9 +39,9 @@ import it.smartcommunitylab.gipro.model.Poi;
 import it.smartcommunitylab.gipro.model.Professional;
 import it.smartcommunitylab.gipro.model.Registration;
 import it.smartcommunitylab.gipro.model.Service;
+import it.smartcommunitylab.gipro.model.Service.ServiceSubtype;
 import it.smartcommunitylab.gipro.model.ServiceOffer;
 import it.smartcommunitylab.gipro.model.ServiceRequest;
-import it.smartcommunitylab.gipro.model.Service.ServiceSubtype;
 import it.smartcommunitylab.gipro.push.NotificationManager;
 import it.smartcommunitylab.gipro.security.DataSetInfo;
 import it.smartcommunitylab.gipro.security.Token;
@@ -317,25 +321,43 @@ public class RepositoryManager {
 					new Criteria("customProperties.competences").regex(q.toLowerCase(),"i")
 			);
 		}
+		List<Professional> result = new ArrayList<>();
 		if (pos != null) {
-			criteria.and("coordinates").near(new Point(pos[0], pos[1]));
+			Point location = new Point(pos[0], pos[1]);
+			NearQuery query = NearQuery.near(location);
+			Query basic = Query.query(criteria); 
+			filterProfessionalFields(basic);
+			query.query(basic);
+			if(limit != null) {
+				query.num(limit);
+			}
+			if(page != null) {
+				query.skip((page - 1) * limit);
+			}
+			logger.debug("Search geo query: "+query.toDBObject());
+			GeoResults<Professional> geoNear = mongoTemplate.geoNear(query, Professional.class);
+			for(GeoResult<Professional> geoResult : geoNear.getContent()) {
+				result.add(geoResult.getContent());
+			}
+
+		} else {
+			Query query = new Query(criteria);
+			if (orderBy != null && orderBy.length > 0 && orderBy[0] != null) {
+				query.with(new Sort(Sort.Direction.ASC, orderBy));
+			} else {
+				query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
+			}
+			if(limit != null) {
+				query.limit(limit);
+			}
+			if(page != null) {
+				query.skip((page - 1) * limit);
+			}
+			filterProfessionalFields(query);
+			logger.debug("Search query: "+query.getQueryObject());
+			result = mongoTemplate.find(query, Professional.class);
 		}
 		
-		Query query = new Query(criteria);
-		if (pos == null && orderBy != null && orderBy.length > 0 && orderBy[0] != null) {
-			query.with(new Sort(Sort.Direction.ASC, orderBy));
-		} else if (pos == null) {
-			query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
-		}
-		if(limit != null) {
-			query.limit(limit);
-		}
-		if(page != null) {
-			query.skip((page - 1) * limit);
-		}
-		filterProfessionalFields(query);
-		logger.debug("Search query: "+query.getQueryObject());
-		List<Professional> result = mongoTemplate.find(query, Professional.class);
 		return result;
 	}
 
@@ -450,24 +472,41 @@ public class RepositoryManager {
 		if (StringUtils.hasText(area)) {
 			criteria.and("area").is(area);
 		}
+		List<ServiceOffer> result = new ArrayList<>();
 		if (pos != null) {
-			criteria.and("coordinates").near(new Point(pos[0], pos[1]));
-		}
+			Point location = new Point(pos[0], pos[1]);
+			NearQuery query = NearQuery.near(location);
+			Query basic = Query.query(criteria); 
+			filterProfessionalFields(basic);
+			query.query(basic);
+			if(limit != null) {
+				query.num(limit);
+			}
+			if(page != null) {
+				query.skip((page - 1) * limit);
+			}
+			logger.debug("Search geo query: "+query.toDBObject());
+			GeoResults<ServiceOffer> geoNear = mongoTemplate.geoNear(query, ServiceOffer.class);
+			for(GeoResult<ServiceOffer> geoResult : geoNear.getContent()) {
+				result.add(geoResult.getContent());
+			}
 
-		Query query = new Query(criteria);
-		if (pos != null && orderBy != null && orderBy.length > 0) {
-			query.with(new Sort(Sort.Direction.ASC, orderBy));
-		} else if (pos != null) {
-			query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+		} else {
+			Query query = new Query(criteria);
+			if (orderBy != null && orderBy.length > 0) {
+				query.with(new Sort(Sort.Direction.ASC, orderBy));
+			} else {
+				query.with(new Sort(Sort.Direction.DESC, "creationDate"));
+			}
+	
+			if(limit != null) {
+				query.limit(limit);
+			}
+			if(page != null) {
+				query.skip((page - 1) * limit);
+			}
+			result = mongoTemplate.find(query, ServiceOffer.class);
 		}
-
-		if(limit != null) {
-			query.limit(limit);
-		}
-		if(page != null) {
-			query.skip((page - 1) * limit);
-		}
-		List<ServiceOffer> result = mongoTemplate.find(query, ServiceOffer.class);
 		return result;
 	}
 
