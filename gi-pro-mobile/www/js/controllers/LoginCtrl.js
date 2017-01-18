@@ -91,6 +91,7 @@ angular.module('gi-pro.controllers.login', [])
       $scope.refresh = false
       if ($scope.modalMap) {
         $scope.modalMap.show()
+        mapService.refresh('mapModal')
       }
     }
 
@@ -329,7 +330,7 @@ angular.module('gi-pro.controllers.login', [])
         return
       }
 
-      if (!$scope.registration.address) {
+      if (!$scope.registration.address || !$scope.registration.coordinates || $scope.registration.coordinates.length !== 2) {
         Utils.toast($filter('translate')('register_form_address_empty'))
         return
       }

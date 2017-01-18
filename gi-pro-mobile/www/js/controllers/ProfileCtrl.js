@@ -302,7 +302,7 @@ angular.module('gi-pro.controllers.profile', [])
       profile2edit(profile, $scope.edit)
     })
 
-    var validate = function () {
+    var validateProfile = function () {
       var cleanArray = function (arr) {
         var newArr = []
         for (var i = 0; i < arr.length; i++) {
@@ -311,6 +311,11 @@ angular.module('gi-pro.controllers.profile', [])
           }
         }
         return newArr
+      }
+
+      if (!$scope.edit.address || !$scope.edit.coordinates || $scope.edit.coordinates.length !== 2) {
+        Utils.toast($filter('translate')('profile_form_address_empty'))
+        return false
       }
 
       $scope.profile.address = $scope.edit.address
@@ -330,7 +335,7 @@ angular.module('gi-pro.controllers.profile', [])
           $scope.profile.customProperties.competences = []
         }
       } else {
-        if (validate()) {
+        if (validateProfile()) {
           Utils.loading()
           DataSrv.updateProfile($scope.profile).then(function () {
             $scope.profile = angular.copy(Login.getUser())
@@ -486,6 +491,7 @@ angular.module('gi-pro.controllers.profile', [])
         $scope.refresh = false
         if ($scope.modalMap) {
           $scope.modalMap.show()
+          mapService.refresh('mapModal')
         }
       }
     }

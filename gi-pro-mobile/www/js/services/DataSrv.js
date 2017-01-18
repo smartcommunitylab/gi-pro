@@ -1,7 +1,7 @@
 /* global angular, localStorage */
 angular.module('gi-pro.services.data', [])
 
-.factory('DataSrv', function ($rootScope, $http, $q, Utils, Config) {
+.factory('DataSrv', function ($rootScope, $http, $q, Utils, Config, GeoLocate) {
   var dataService = {
     internalCache: {
       'app.requests': null // reload, tab
@@ -189,7 +189,7 @@ angular.module('gi-pro.services.data', [])
   }
 
   /* get list with all professionals */
-  dataService.getProfessionals = function (type, area, page, limit, orderBy, query, pos) {
+  dataService.getProfessionals = function (type, area, page, limit, orderBy, query) {
     var deferred = $q.defer()
     var httpConfWithParams = Config.getHTTPConfig()
     httpConfWithParams.params = {}
@@ -211,8 +211,9 @@ angular.module('gi-pro.services.data', [])
     if (query) {
       httpConfWithParams.params['q'] = query
     }
-    if (pos) {
-      httpConfWithParams.params['pos'] = pos
+
+    if ($rootScope.myPosition && $rootScope.myPosition.length === 2) {
+      httpConfWithParams.params['pos'] = $rootScope.myPosition[0] + ',' + $rootScope.myPosition[1]
     }
 
     // $http.get('data/profiles_temp.json')
@@ -270,6 +271,10 @@ angular.module('gi-pro.services.data', [])
     }
     if (orderBy) {
       httpConfWithParams.params['orderBy'] = orderBy
+    }
+
+    if ($rootScope.myPosition && $rootScope.myPosition.length === 2) {
+      httpConfWithParams.params['pos'] = $rootScope.myPosition[0] + ',' + $rootScope.myPosition[1]
     }
 
     // $http.get('data/services_temp.json')

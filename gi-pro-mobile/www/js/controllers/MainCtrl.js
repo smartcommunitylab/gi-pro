@@ -4,7 +4,7 @@ angular.module('gi-pro.controllers.main', [])
   /*
    * App generic controller
    */
-  .controller('AppCtrl', function ($scope, $rootScope, $state, $ionicSideMenuDelegate, $location, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login, NotifDB) {
+  .controller('AppCtrl', function ($scope, $rootScope, $state, $ionicSideMenuDelegate, $location, $ionicHistory, $ionicModal, $ionicPopup, $timeout, $filter, Config, Utils, Prefs, DataSrv, Login, NotifDB, GeoLocate) {
     /* This function is useful for forcing reload and other similar stuff */
     $scope.goTo = function (state, params, disableAnimate, disableBack, historyRoot, internalCache) {
       var options = {
@@ -247,6 +247,9 @@ angular.module('gi-pro.controllers.main', [])
         // $state.go('app.tutorial');
       })
     }
+
+    /* start geolocalization */
+    GeoLocate.locate()
   })
 
   /*

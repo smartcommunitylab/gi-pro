@@ -105,55 +105,55 @@
       "offices": [{
         "name": "Giudice di Pace Borgo Valsugana",
         "address": "Via della Fossa, 5 - Borgo Valsugana",
-        "coordinates": [11.453857, 46.052012]
+        "coordinates": [46.052012, 11.453857]
       }, {
         "name": "Giudice di Pace Cavalese",
         "address": "Piazza Verdi, 5 - Cavalese",
-        "coordinates": [11.46056, 46.290918]
+        "coordinates": [46.290918, 11.46056]
       }, {
         "name": "Giudice di Pace Cles",
         "address": "Piazza Municipio, 3 - Cles",
-        "coordinates": [11.03422, 46.364969]
+        "coordinates": [46.364969, 11.03422]
       }, {
         "name": "Giudice di Pace Mezzolombardo",
         "address": "Corso del Popolo, 35 - Mezzolombardo",
-        "coordinates": [11.091599, 46.21404]
+        "coordinates": [46.21404, 11.091599]
       }, {
         "name": "Giudice di Pace Pergine Valsugana",
         "address": "Via Crivelli, 55 - Pergine Valsugana",
-        "coordinates": [11.242193, 46.061806]
+        "coordinates": [46.061806, 11.242193]
       }, {
         "name": "Giudice di Pace Riva del Garda",
         "address": "Via Bastione, 3 - Riva del Garda",
-        "coordinates": [10.839493, 45.886734]
+        "coordinates": [45.886734, 10.839493]
       }, {
         "name": "Giudice di Pace Rovereto",
         "address": "Piazza Leoni, 22 - Rovereto",
-        "coordinates": [11.03752, 45.887836]
+        "coordinates": [45.887836, 11.03752]
       }, {
         "name": "Giudice di Pace Tione di Trento",
         "address": "Viale Mons. Donato Perli, 2 - Tione di Trento",
-        "coordinates": [10.726628, 46.034684]
+        "coordinates": [46.034684, 10.726628]
       }, {
         "name": "Giudice di Pace Trento",
         "address": "Via Diaz, 15 - Trento",
-        "coordinates": [11.123255, 46.069189]
+        "coordinates": [46.069189, 11.123255]
       }, {
         "name": "Tribunale Trento",
         "address": "Largo Pigarelli, 1 - Trento",
-        "coordinates": [11.125821, 46.066088]
+        "coordinates": [46.066088, 11.125821]
       }, {
         "name": "Tribunale Rovereto",
         "address": "Corso Antonio Rosmini, 65 - Rovereto",
-        "coordinates": [11.036057, 45.891218]
+        "coordinates": [45.891218, 11.036057]
       }, {
         "name": "Commissione Tributaria Trento",
         "address": "Via Vannetti, 15 - Trento",
-        "coordinates": [11.12281, 46.073646]
+        "coordinates": [46.073646, 11.12281]
       }, {
         "name": "TAR Trento",
         "address": "Via Calepina, 50 - Trento",
-        "coordinates": [11.125223, 46.067147]
+        "coordinates": [46.067147, 11.125223]
       }]
     }
   }, {
