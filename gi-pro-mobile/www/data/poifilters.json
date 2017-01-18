@@ -1,5 +1,5 @@
 {
-  "professions": [{
+  "professions_old": [{
     "id": "idpro_1",
     "name": "Architetto"
   }, {
@@ -8,6 +8,94 @@
   }, {
     "id": "idpro_3",
     "name": "Penalista"
+  }],
+  "professions": [{
+    "id": "agente_di_cambio",
+    "name": "Agente di cambio"
+  }, {
+    "id": "agronomo_e_forestale",
+    "name": "Agronomo e forestale"
+  }, {
+    "id": "agrotecnico",
+    "name": "Agrotecnico"
+  }, {
+    "id": "architetto",
+    "name": "Architetto"
+  }, {
+    "id": "assistente_sociale",
+    "name": "Assistente sociale"
+  }, {
+    "id": "attuario",
+    "name": "Attuario"
+  }, {
+    "id": "avvocato",
+    "name": "Avvocato"
+  }, {
+    "id": "biologo",
+    "name": "Biologo"
+  }, {
+    "id": "chimico",
+    "name": "Chimico"
+  }, {
+    "id": "commercialista_ed_esperto_contabili",
+    "name": "Commercialista ed esperto contabili"
+  }, {
+    "id": "consulente_del_lavoro",
+    "name": "Consulente del lavoro"
+  }, {
+    "id": "consulente_in_brevetti_e_marchi",
+    "name": "Consulente in brevetti e marchi"
+  }, {
+    "id": "doganalista",
+    "name": "Doganalista"
+  }, {
+    "id": "farmacista",
+    "name": "Farmacista"
+  }, {
+    "id": "geologo",
+    "name": "Geologo"
+  }, {
+    "id": "geometra",
+    "name": "Geometra"
+  }, {
+    "id": "giornalista",
+    "name": "Giornalista"
+  }, {
+    "id": "guida_alpina",
+    "name": "Guida Alpina"
+  }, {
+    "id": "infermiere",
+    "name": "Infermiere"
+  }, {
+    "id": "ingegnere",
+    "name": "Ingegnere"
+  }, {
+    "id": "medico_e_odontoiatra",
+    "name": "Medico e odontoiatra"
+  }, {
+    "id": "notaio",
+    "name": "Notaio"
+  }, {
+    "id": "ostetrica",
+    "name": "Ostetrica"
+  }, {
+    "id": "perito_agrario",
+    "name": "Perito agrario"
+  }, {
+    "id": "perito_industriale",
+    "name": "Perito industriale"
+  }, {
+    "id": "psicologo",
+    "name": "Psicologo"
+  }, {
+    "id": "tecnico_radiologo",
+    "name": "Tecnico radiologo"
+  }, {
+    "id": "tecnologo_alimentare",
+    "name": "Tecnologo alimentare"
+  }, {
+    "id": "veterinario",
+    "name": "Veterinario"
   }],
   "services": [{
     "id": "sostituzioneudienza",
