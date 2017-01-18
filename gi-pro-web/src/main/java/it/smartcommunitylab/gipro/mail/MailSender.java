@@ -110,7 +110,7 @@ public class MailSender {
 		String lang = reg.getLang();
 		Map<String, Object> vars = new HashMap<String, Object>();
 		vars.put("user", reg);
-		vars.put("url", applicationURL + "/changepwd?cf=" + reg.getCf() + "&confirmationCode=" + reg.getConfirmationKey());
+		vars.put("url", applicationURL + "/changepwd?pec=" + reg.getPec() + "&confirmationCode=" + reg.getConfirmationKey());
 		String subject = messageProps.getProperty("reset.subject");
 		sendEmail(reg.getPec(), "reset_" + lang, subject, vars);
 	}

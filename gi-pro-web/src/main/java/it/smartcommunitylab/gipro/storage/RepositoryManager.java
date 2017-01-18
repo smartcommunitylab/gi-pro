@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -60,6 +61,8 @@ public class RepositoryManager {
 		this.mongoTemplate = template;
 		this.defaultLang = defaultLang;
 		this.mongoTemplate.indexOps(Poi.class).ensureIndex(new GeospatialIndex("coordinates"));
+		this.mongoTemplate.indexOps(Professional.class).ensureIndex(new GeospatialIndex("coordinates"));
+		this.mongoTemplate.indexOps(ServiceOffer.class).ensureIndex(new GeospatialIndex("coordinates"));
 	}
 	
 	public String getDefaultLang() {
@@ -300,7 +303,7 @@ public class RepositoryManager {
 		mongoTemplate.remove(query, Professional.class);
 	}
 	
-	public List<Professional> findProfessional(String applicationId, String type, String area, String q, Integer page, Integer limit, String ... orderBy) {
+	public List<Professional> findProfessional(String applicationId, String type, String area, String q, double[] pos, Integer page, Integer limit, String ... orderBy) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId);
 		if (StringUtils.hasText(type)) {
 			criteria.and("type").is(type);
@@ -314,10 +317,14 @@ public class RepositoryManager {
 					new Criteria("customProperties.competences").regex(q.toLowerCase(),"i")
 			);
 		}
+		if (pos != null) {
+			criteria.and("coordinates").near(new Point(pos[0], pos[1]));
+		}
+		
 		Query query = new Query(criteria);
-		if (orderBy != null && orderBy.length > 0 && orderBy[0] != null) {
+		if (pos == null && orderBy != null && orderBy.length > 0 && orderBy[0] != null) {
 			query.with(new Sort(Sort.Direction.ASC, orderBy));
-		} else {
+		} else if (pos == null) {
 			query.with(new Sort(Sort.Direction.ASC, "surname", "name"));
 		}
 		if(limit != null) {
@@ -425,7 +432,7 @@ public class RepositoryManager {
 
 	public List<ServiceOffer> searchServiceOffer(String applicationId, 
 			String professionalId, String serviceType, String poiId,
-			String area, Long startTime, Integer page,	Integer limit, String ... orderBy) {
+			String area, Long startTime, double[] pos, Integer page,	Integer limit, String ... orderBy) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 //				.and("poiId").is(poiId)
 //				.and("serviceType").is(serviceType)
@@ -443,10 +450,14 @@ public class RepositoryManager {
 		if (StringUtils.hasText(area)) {
 			criteria.and("area").is(area);
 		}
+		if (pos != null) {
+			criteria.and("coordinates").near(new Point(pos[0], pos[1]));
+		}
+
 		Query query = new Query(criteria);
-		if (orderBy != null && orderBy.length > 0) {
+		if (pos != null && orderBy != null && orderBy.length > 0) {
 			query.with(new Sort(Sort.Direction.ASC, orderBy));
-		} else {
+		} else if (pos != null) {
 			query.with(new Sort(Sort.Direction.DESC, "creationDate"));
 		}
 
