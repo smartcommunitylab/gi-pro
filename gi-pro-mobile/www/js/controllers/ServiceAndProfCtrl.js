@@ -220,7 +220,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       $rootScope.searchBar.show = false
 
       if (!$scope.servicesList) {
-        $scope.loadMoreServices()
+        GeoLocate.locate().finally(function () {
+          $scope.loadMoreServices()
+        })
       }
 
       if ($ionicTabsDelegate.selectedIndex() === 1) { // 1 is the second
@@ -261,7 +263,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           })
 
           if (!$scope.viewAsList) {
-            $scope.refreshMap('servicesMap')
+            $scope.refreshMap()
           }
         })
       }
@@ -271,7 +273,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       $scope.activeTab = 'professionals'
 
       if (!$scope.professionalsList) {
-        $scope.loadMoreProfessional()
+        GeoLocate.locate().finally(function () {
+          $scope.loadMoreProfessional()
+        })
       }
 
       if ($ionicTabsDelegate.selectedIndex() === 0) { // 0 is the first
@@ -312,7 +316,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           })
 
           if (!$scope.viewAsList) {
-            $scope.refreshMap('professionalsMap')
+            $scope.refreshMap()
           }
         })
       }
@@ -516,7 +520,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       center: {
         lat: Config.getMapPosition().lat,
         lng: Config.getMapPosition().lng,
-        zoom: 18
+        zoom: 16
       },
       servicesMarkers: $scope.servicesMarkers,
       professionalMarkers: $scope.professionalMarkers,

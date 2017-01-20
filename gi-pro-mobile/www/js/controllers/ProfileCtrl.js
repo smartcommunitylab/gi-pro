@@ -48,6 +48,7 @@ angular.module('gi-pro.controllers.profile', [])
 
       $ionicModal.fromTemplateUrl('templates/modal_map.html', {
         scope: $scope,
+        id: 'map',
         backdropClickToClose: false,
         animation: 'slide-in-up'
       }).then(function (modal) {
@@ -491,7 +492,6 @@ angular.module('gi-pro.controllers.profile', [])
         $scope.refresh = false
         if ($scope.modalMap) {
           $scope.modalMap.show()
-          mapService.refresh('mapModal')
         }
       }
     }
@@ -502,6 +502,12 @@ angular.module('gi-pro.controllers.profile', [])
         $scope.modalMap.hide()
       }
     }
+
+    $scope.$on('modal.shown', function (event, modal) {
+      if (modal.id && modal.id === 'map') {
+        mapService.refresh('mapModal')
+      }
+    })
 
     $scope.openAreaSelection = function (mode) {
       if (mode === 'edit' && !$scope.editMode) {
@@ -638,8 +644,8 @@ angular.module('gi-pro.controllers.profile', [])
     angular.extend($scope, {
       center: {
         lat: Config.getMapPosition().lat,
-        lng: Config.getMapPosition().long,
-        zoom: 18
+        lng: Config.getMapPosition().lng,
+        zoom: 16
       },
       servicesMarkers: $scope.markers,
       events: {}

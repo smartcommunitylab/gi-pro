@@ -76,6 +76,7 @@ angular.module('gi-pro.controllers.login', [])
 
     $ionicModal.fromTemplateUrl('templates/modal_map.html', {
       scope: $scope,
+      id: 'map',
       backdropClickToClose: false,
       animation: 'slide-in-up'
     }).then(function (modal) {
@@ -101,6 +102,12 @@ angular.module('gi-pro.controllers.login', [])
         $scope.modalMap.hide()
       }
     }
+
+    $scope.$on('modal.shown', function (event, modal) {
+      if (modal.id && modal.id === 'map') {
+        mapService.refresh('mapModal')
+      }
+    })
 
     var selectPlace = function (placeSelected, lat, lng) {
       $scope.registration.address = placeSelected.name ? placeSelected.name : placeSelected.street + ', ' + placeSelected.housenumber + ', ' + placeSelected.city
@@ -393,8 +400,8 @@ angular.module('gi-pro.controllers.login', [])
     angular.extend($scope, {
       center: {
         lat: Config.getMapPosition().lat,
-        lng: Config.getMapPosition().long,
-        zoom: 18
+        lng: Config.getMapPosition().lng,
+        zoom: 16
       },
       servicesMarkers: $scope.markers,
       events: {}
