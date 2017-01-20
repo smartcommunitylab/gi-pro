@@ -11,7 +11,7 @@ angular.module('gi-pro.services.config', [])
   configService.PAGESIZE_PROFESSIONAL = 10
   configService.PAGESIZE_SERVICES = 10
   configService.DISTANCE_AUTOCOMPLETE = '25'
-  configService.PROBLEMLINK = 'mailto:tecnotoga@smartcommunitylab.it?subject=TECNOTOGA:%20segnalazione%20problema'
+  configService.PROBLEMLINK = 'mailto:smartgipro@smartcommunitylab.it?subject=Smart%20GiPro:%20segnalazione%20problema'
   configService.HELPLINK = 'http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/'
   configService.PRIVACYLINK = 'http://www.consiglionazionaleforense.it/web/cnf/tecnotoga/'
   configService.GEOCODER_URL = 'https://os.smartcommunitylab.it/core.geocoder/spring'
