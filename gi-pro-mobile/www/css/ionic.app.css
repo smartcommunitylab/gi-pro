@@ -9818,6 +9818,12 @@ a.button {
   transition-duration: 0s; }
 
 /*
+ * Ionic stuff
+ */
+.platform-ios.platform-cordova:not(.fullscreen) .search-bar {
+  margin-top: 20px; }
+
+/*
  * IonicDatePicker, IonicTimePicker
  */
 .gi-pro .ionic_datepicker_popup .today {

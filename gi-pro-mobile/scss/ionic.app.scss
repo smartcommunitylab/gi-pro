@@ -35,6 +35,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
 /*
+ * Ionic stuff
+ */
+
+.platform-ios.platform-cordova:not(.fullscreen) .search-bar {
+  margin-top: 20px;
+}
+
+
+/*
  * IonicDatePicker, IonicTimePicker
  */
 
