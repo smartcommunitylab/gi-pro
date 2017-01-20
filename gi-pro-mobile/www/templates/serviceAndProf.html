@@ -1,26 +1,26 @@
 <ion-view class="serviceandprofessional" hide-back-button="true">
   <ion-nav-title>{{(searchBar.show ? '' : 'app') | translate}}</ion-nav-title>
-  <ion-nav-bar class="bar bar-header bar-calm" ng-class="{'item-input-inset': searchBar.show}">
-    <ion-nav-back-button>
-    </ion-nav-back-button>
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-hide="searchBar.show"></button>
-      <button ng-class="{'ion-android-arrow-back': !isIOS, 'ion-ios-arrow-back': isIOS}" class="button button-icon button-clear"
-        ng-show="searchBar.show" ng-click="toggleSearchBar()"></button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <div class="item-input-wrapper" ng-if="searchBar.show">
-        <input type="search" ng-model="searchBar.searchString" ng-change="searchProfessionals(searchBar.searchString)" placeholder="{{'search_placeholder' | translate}}">
-      </div>
-      <button class="button button-clear button-icon ion-close" ng-click="clearSearchBar()" ng-show="searchBar.show"></button>
-      <button class="button button-clear button-icon ion-search" ng-click="toggleSearchBar()" ng-show="!searchBar.show && (activeTab == 'professionals')"
-        ng-disabled="false"></button>
-        <!-- not in this phase -->
-        <!--<button class="button button-icon button-clear ion-android-funnel" ng-click="orderServices()" ng-hide="professionalTab"></button>-->
-        <button class="button button-clear button-icon" ng-class="{'ion-map': viewAsList, 'ion-ios-list-outline': !viewAsList}" ng-click="switchToMap()"
-          ng-hide="searchBar.show"></button>
-    </ion-nav-buttons>
-  </ion-nav-bar>
+  <!--<ion-nav-bar class="bar bar-header bar-calm" ng-class="{'item-input-inset': searchBar.show}">-->
+  <ion-nav-back-button>
+  </ion-nav-back-button>
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-hide="searchBar.show"></button>
+    <button ng-class="{'ion-android-arrow-back': !isIOS, 'ion-ios-arrow-back': isIOS}" class="button button-icon button-clear"
+      ng-show="searchBar.show" ng-click="toggleSearchBar()"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <div class="item-input-wrapper" ng-if="searchBar.show">
+      <input type="search" ng-model="searchBar.searchString" ng-change="searchProfessionals(searchBar.searchString)" placeholder="{{'search_placeholder' | translate}}">
+    </div>
+    <button class="button button-clear button-icon ion-close" ng-click="clearSearchBar()" ng-show="searchBar.show"></button>
+    <button class="button button-clear button-icon ion-search" ng-click="toggleSearchBar()" ng-show="!searchBar.show && (activeTab == 'professionals')"
+      ng-disabled="false"></button>
+      <!-- not in this phase -->
+      <!--<button class="button button-icon button-clear ion-android-funnel" ng-click="orderServices()" ng-hide="professionalTab"></button>-->
+      <button class="button button-clear button-icon" ng-class="{'ion-map': viewAsList, 'ion-ios-list-outline': !viewAsList}" ng-click="switchToMap()"
+        ng-hide="searchBar.show"></button>
+  </ion-nav-buttons>
+  <!--</ion-nav-bar>-->
   <!-- TABS -->
   <ion-tabs class="tabs-calm" ng-class="{'tabs-item-hide': !logged}">
     <!-- Tabs order inverted due to Ionic bug on tabs with ng-if -->
