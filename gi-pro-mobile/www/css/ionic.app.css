@@ -10097,9 +10097,6 @@ input[readonly] {
 /*
  * SERVICES AND PROFESSIONALS TABS
  */
-.serviceandprofessional .tabs {
-  top: 44px !important; }
-
 .serviceandprofessional .scroll,
 .serviceandprofessional .scroll .list {
   height: 100%; }

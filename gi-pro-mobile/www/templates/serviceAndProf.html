@@ -1,6 +1,5 @@
 <ion-view class="serviceandprofessional" hide-back-button="true">
   <ion-nav-title>{{(searchBar.show ? '' : 'app') | translate}}</ion-nav-title>
-  <!--<ion-nav-bar class="bar bar-header bar-calm" ng-class="{'item-input-inset': searchBar.show}">-->
   <ion-nav-back-button>
   </ion-nav-back-button>
   <ion-nav-buttons side="left">
@@ -20,7 +19,6 @@
       <button class="button button-clear button-icon" ng-class="{'ion-map': viewAsList, 'ion-ios-list-outline': !viewAsList}" ng-click="switchToMap()"
         ng-hide="searchBar.show"></button>
   </ion-nav-buttons>
-  <!--</ion-nav-bar>-->
   <!-- TABS -->
   <ion-tabs class="tabs-calm" ng-class="{'tabs-item-hide': !logged}">
     <!-- Tabs order inverted due to Ionic bug on tabs with ng-if -->
