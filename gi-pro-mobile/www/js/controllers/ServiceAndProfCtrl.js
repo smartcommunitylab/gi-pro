@@ -141,7 +141,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
     // header 44px, tabs 49px, filters 40px
     $scope.styles = {
-      'container': Utils.resizeElement((ionic.Platform.isIOS() ? 64 : 44) + (Login.userIsLogged() ? 49 : 0) + 40)
+      'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + 40)
     }
 
     $scope.openFilter = function (type) {
