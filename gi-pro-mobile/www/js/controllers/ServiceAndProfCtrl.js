@@ -141,8 +141,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
     // header 44px, tabs 49px, filters 40px
     $scope.styles = {
-      // 'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + 40)
-      'container': Utils.resizeElement((ionic.Platform.isIOS() ? 64 : 44) + (Login.userIsLogged() ? 49 : 0) + 40)
+      'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + 40)
     }
 
     $scope.openFilter = function (type) {
@@ -245,15 +244,19 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             map.on('locationfound', function (e) {
               $scope.myloc = e
               var radius = e.accuracy / 2
-              // L.marker(e.latlng).addTo(map)
-              /* accuracy circle */
+
+              // Standard marker
+              /* L.marker(e.latlng).addTo(map) */
+
+              // accuracy circle
               L.circle(e.latlng, radius, {
                 color: '#ea5456'
               }).addTo(map)
 
-              /* fixed circle
+              // fixed circle
+              /*
               L.circleMarker(e.latlng, {
-                color: '#ea5456'
+                 color: '#ea5456'
               }).addTo(map)
               */
             })
@@ -266,6 +269,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           if (!$scope.viewAsList) {
             $scope.refreshMap()
           }
+        }, function () {
+          console.log('List view')
         })
       }
     }
@@ -298,15 +303,19 @@ angular.module('gi-pro.controllers.serviceandprof', [])
             map.on('locationfound', function (e) {
               $scope.myloc = e
               var radius = e.accuracy / 2
-              // L.marker(e.latlng).addTo(map)
-              /* accuracy circle */
+
+              // Standard marker
+              /* L.marker(e.latlng).addTo(map) */
+
+              // accuracy circle
               L.circle(e.latlng, radius, {
                 color: '#ea5456'
               }).addTo(map)
 
-              /* fixed circle
+              // fixed circle
+              /*
               L.circleMarker(e.latlng, {
-                color: '#ea5456'
+                 color: '#ea5456'
               }).addTo(map)
               */
             })
@@ -319,71 +328,11 @@ angular.module('gi-pro.controllers.serviceandprof', [])
           if (!$scope.viewAsList) {
             $scope.refreshMap()
           }
+        }, function () {
+          console.log('List view')
         })
       }
     }
-
-    // Currently commented because I can't order by alpha or price because they are fixed
-    /*
-    var orderList = function (orderBy) {
-      $ionicLoading.show();
-      listPathsService.getPathsByCategoryIdAndOrder($stateParams, $scope.data.actualOrder, length).then(function (paths) {
-        $scope.emptylist = false;
-        $scope.paths = paths;
-
-        if ($scope.paths.length == 0) {
-          $scope.emptylist = true;
-        } else {
-          $scope.emptylist = false;
-        }
-        $ionicLoading.hide();
-      }, function () {
-        $ionicLoading.hide();
-      });
-    }
-
-    $scope.orderServices = function () {
-      $scope.data = {
-        actualOrder: 'alpha'
-      }
-
-      $scope.orderList = [
-        {
-          text: $filter('translate')('orderby_alphabetically'),
-          value: "alpha"
-        },
-        {
-          text: $filter('translate')('orderby_price'),
-          value: "price"
-        }
-      ];
-
-      var orderPopup = $ionicPopup.confirm({
-        //      cssClass: 'order-popup',
-        title: $filter('translate')('oder_popup_title'),
-        templateUrl: 'templates/order-popover.html',
-        scope: $scope,
-        buttons: [
-          { // Array[Object] (optional). Buttons to place in the popup footer.
-            text: $filter('translate')('close'),
-          },
-          {
-            text: $filter('translate')('ok'),
-            onTap: function (e) {
-              return $scope.data.actualOrder;
-            }
-          }
-        ]
-      });
-
-      orderPopup.then(function (res) {
-        if (res) {
-          //orderList(res);
-          loadMoreServices
-        }
-      });
-    }
-    */
 
     /*
      * This function loads more services using filters

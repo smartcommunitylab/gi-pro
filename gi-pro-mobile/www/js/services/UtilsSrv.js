@@ -117,7 +117,7 @@ angular.module('gi-pro.services.utils', [])
     }
 
     utilsService.resizeElement = function (diff) {
-      var height = $window.innerHeight - diff
+      var height = $window.innerHeight - diff - (ionic.Platform.isIOS() ? 20 : 0)
       return {
         'height': height + 'px'
       }
