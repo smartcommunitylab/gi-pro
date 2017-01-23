@@ -854,6 +854,11 @@ placeautocomplete {
  * SEARCH
  */
 
+#searchbar input {
+  background: transparent;
+  height: 16px;
+}
+
 .search {
   .row,
   .col {

@@ -8,7 +8,7 @@
       ng-show="searchBar.show" ng-click="toggleSearchBar()"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <div class="item-input-wrapper" ng-if="searchBar.show">
+    <div class="item-input-wrapper" id="searchbar" ng-if="searchBar.show">
       <input type="search" ng-model="searchBar.searchString" ng-change="searchProfessionals(searchBar.searchString)" placeholder="{{'search_placeholder' | translate}}">
     </div>
     <button class="button button-clear button-icon ion-close" ng-click="clearSearchBar()" ng-show="searchBar.show"></button>
