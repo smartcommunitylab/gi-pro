@@ -101,12 +101,12 @@ angular.module('gi-pro.services.push', [])
             forceShow: true
           },
           ios: {
+            gcmSandbox: true,
             alert: true,
             badge: true,
             sound: true,
             senderID: Config.SENDER_ID,
             forceShow: true
-            // gcmSandbox: true
           },
           windows: {}
         })

@@ -544,13 +544,13 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.saveService = function (serviceToSave) {
       // send service and update array
       DataSrv.createOffer(serviceToSave).then(function (result) {
+        $scope.toggleEditingServices(false)
+        $scope.toggleAddingNewService(false)
         // save toast;
         Utils.toast($filter('translate')('saved_new_service_toast'))
         DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
           $scope.services = services
         })
-        $scope.toggleEditingServices(false)
-        $scope.toggleAddingNewService(false)
       })
     }
 
@@ -564,13 +564,13 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.deleteService = function (service) {
       // delete this service and update list
       DataSrv.deleteMyService(service.objectId, $scope.profile.objectId).then(function (result) {
+        $scope.toggleEditingServices(false)
+        $scope.toggleAddingNewService(false)
         // save toast;
         Utils.toast($filter('translate')('service_deleted_toast'))
         DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
           $scope.services = services
         })
-        $scope.toggleEditingServices(false)
-        $scope.toggleAddingNewService(false)
       })
     }
 
