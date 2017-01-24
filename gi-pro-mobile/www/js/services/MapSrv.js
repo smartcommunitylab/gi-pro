@@ -68,7 +68,10 @@ angular.module('gi-pro.services.mapservice', [])
           accuracy: $rootScope.myPositionAccuracy
         }
         drawMarker(mapId, e)
-        cachedMap[mapId].map.setView(e.latlng)
+        // cachedMap[mapId].map.setView(e.latlng)
+        leafletData.getMap(mapId).then(function (map) {
+          map.setView(e.latlng)
+        })
       })
 
       /*
@@ -106,7 +109,7 @@ angular.module('gi-pro.services.mapservice', [])
           cachedMap[mapId] = {
             map: map
           }
-          
+
           L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             type: 'map',
             attribution: '',

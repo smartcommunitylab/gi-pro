@@ -42,7 +42,7 @@
             </div>
           </div>
           <!-- List view -->
-          <div ng-if="viewAsList">
+          <div ng-show="viewAsList">
             <ion-scroll ng-style="styles.container" ng-show="servicesList && servicesList.length">
               <ion-refresher on-refresh="reload()">
               </ion-refresher>
@@ -63,7 +63,7 @@
             <div class="empty" ng-show="servicesList && !servicesList.length ">{{'services_empty' | translate}}</div>
           </div>
           <!-- Map view -->
-          <div class="map-visualization" ng-if="!viewAsList">
+          <div class="map-visualization" ng-show="!viewAsList">
             <div id="modal-map-container" data-tap-disabled="true">
               <leaflet event-broadcast="events" center="center" markers="servicesMarkers" ng-style="styles.container" id="servicesMap"></leaflet>
             </div>
@@ -91,7 +91,7 @@
             </div>
           </div>
           <!-- List view -->
-          <div ng-if="viewAsList">
+          <div ng-show="viewAsList">
             <ion-scroll ng-style="styles.container" ng-show="professionalsList && professionalsList.length">
               <ion-refresher on-refresh="reload()">
               </ion-refresher>
@@ -117,7 +117,7 @@
             <div class="empty" ng-show="professionalsList && !professionalsList.length">{{'professional_empty' | translate}}</div>
           </div>
           <!-- Map view -->
-          <div class="map-visualization" ng-if="!viewAsList">
+          <div class="map-visualization" ng-show="!viewAsList">
             <div id="modal-map-container" data-tap-disabled="true">
               <leaflet event-broadcast="events" center="center" markers="professionalMarkers" ng-style="styles.container" id="professionalsMap"></leaflet>
             </div>
