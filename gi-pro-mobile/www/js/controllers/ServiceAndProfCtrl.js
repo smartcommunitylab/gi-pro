@@ -284,6 +284,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         })
       }
 
+      // mapService.getMap('professionalsMap').then(function (map) {})
+
       if ($ionicTabsDelegate.selectedIndex() === 0) { // 0 is the first
         mapService.initMap('professionalsMap').then(function (map) {
           GeoLocate.locate().then(function (pos) {
