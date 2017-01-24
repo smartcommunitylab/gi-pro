@@ -31,34 +31,37 @@ angular.module('gi-pro.services.mapservice', [])
 
         if (cachedMap[mapId].myPosMarker && cachedMap[mapId].map.hasLayer(cachedMap[mapId].myPosMarker)) {
           // delete
+          /*
           cachedMap[mapId].map.removeLayer(cachedMap[mapId].myPosMarker)
           console.log(TAG + 'myPosMarker deleted')
           recreate = true
+          */
           // move
-          /* cachedMap[mapId].myPosMarker.setLatLng(e.latlng) */
+          cachedMap[mapId].myPosMarker.setLatLng(e.latlng)
+          console.log(TAG + 'myPosMarker moved')
+        } else {
+          cachedMap[mapId].myPosMarker = L.circleMarker(e.latlng, {
+            color: '#ea5456'
+          }).addTo(cachedMap[mapId].map)
+          console.log(TAG + 'myPosMarker ' + (recreate ? 're' : '') + 'created')
+
+          // Standard marker
+          /* L.marker(e.latlng).addTo(map) */
+
+          // accuracy circle
+          /*
+          L.circle(e.latlng, e.accuracy / 2, {
+            color: '#ea5456'
+          }).addTo(map)
+          */
+
+          // fixed circle
+          /*
+          L.circleMarker(e.latlng, {
+             color: '#ea5456'
+          }).addTo(map)
+          */
         }
-
-        cachedMap[mapId].myPosMarker = L.circleMarker(e.latlng, {
-          color: '#ea5456'
-        }).addTo(cachedMap[mapId].map)
-        console.log(TAG + 'myPosMarker ' + (recreate ? 're' : '') + 'created')
-
-        // Standard marker
-        /* L.marker(e.latlng).addTo(map) */
-
-        // accuracy circle
-        /*
-        L.circle(e.latlng, e.accuracy / 2, {
-          color: '#ea5456'
-        }).addTo(map)
-        */
-
-        // fixed circle
-        /*
-        L.circleMarker(e.latlng, {
-           color: '#ea5456'
-        }).addTo(map)
-        */
       }
 
       GeoLocate.locate().then(function () {
