@@ -1,6 +1,7 @@
 /* global angular, L */
 angular.module('gi-pro.services.mapservice', [])
-  .factory('mapService', function ($q, $http, $ionicPlatform, $filter, $timeout, leafletData, GeoLocate) {
+  .factory('mapService', function ($rootScope, $q, $http, $ionicPlatform, $filter, $timeout, leafletData, GeoLocate) {
+    const TAG = '[mapService] '
     var cachedMap = {}
     var mapService = {}
     var myLocation = {}
@@ -9,15 +10,82 @@ angular.module('gi-pro.services.mapservice', [])
     mapService.getMap = function (mapId) {
       var deferred = $q.defer()
 
-      if (cachedMap[mapId] == null) {
+      if (!cachedMap[mapId] || !cachedMap[mapId].map) {
         mapService.initMap(mapId).then(function () {
-          deferred.resolve(cachedMap[mapId])
+          console.log(TAG + 'init map')
+          mapService.handleMyPosMarker(mapId)
+          deferred.resolve(cachedMap[mapId].map)
         })
       } else {
-        deferred.resolve(cachedMap[mapId])
+        console.log(TAG + 'get map')
+        mapService.handleMyPosMarker(mapId)
+        deferred.resolve(cachedMap[mapId].map)
       }
 
       return deferred.promise
+    }
+
+    mapService.handleMyPosMarker = function (mapId) {
+      var drawMarker = function (mapId, e) {
+        var recreate = false
+
+        if (cachedMap[mapId].myPosMarker && cachedMap[mapId].map.hasLayer(cachedMap[mapId].myPosMarker)) {
+          // delete
+          cachedMap[mapId].map.removeLayer(cachedMap[mapId].myPosMarker)
+          console.log(TAG + 'myPosMarker deleted')
+          recreate = true
+          // move
+          /* cachedMap[mapId].myPosMarker.setLatLng(e.latlng) */
+        }
+
+        cachedMap[mapId].myPosMarker = L.circleMarker(e.latlng, {
+          color: '#ea5456'
+        }).addTo(cachedMap[mapId].map)
+        console.log(TAG + 'myPosMarker ' + (recreate ? 're' : '') + 'created')
+
+        // Standard marker
+        /* L.marker(e.latlng).addTo(map) */
+
+        // accuracy circle
+        /*
+        L.circle(e.latlng, e.accuracy / 2, {
+          color: '#ea5456'
+        }).addTo(map)
+        */
+
+        // fixed circle
+        /*
+        L.circleMarker(e.latlng, {
+           color: '#ea5456'
+        }).addTo(map)
+        */
+      }
+
+      GeoLocate.locate().then(function () {
+        console.log(TAG + 'geolocated!')
+        var e = {
+          latlng: L.latLng($rootScope.myPosition[0], $rootScope.myPosition[1]),
+          accuracy: $rootScope.myPositionAccuracy
+        }
+        drawMarker(mapId, e)
+        cachedMap[mapId].map.setView(e.latlng)
+      })
+
+      /*
+      cachedMap[mapId].map.locate({
+        setView: true,
+        watch: false,
+        enableHighAccuracy: true
+      })
+
+      cachedMap[mapId].map.on('locationfound', function (e) {
+        drawMarker(mapId, e)
+      })
+
+      cachedMap[mapId].map.on('locationerror', function (e) {
+        console.log('(' + e.code + ') ' + e.message)
+      })
+      */
     }
 
     /* set my location on the map */
@@ -35,20 +103,15 @@ angular.module('gi-pro.services.mapservice', [])
       var deferred = $q.defer()
       leafletData.getMap(mapId).then(
         function (map) {
-          cachedMap[mapId] = map
+          cachedMap[mapId] = {
+            map: map
+          }
+          
           L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             type: 'map',
             attribution: '',
             maxZoom: 18
           }).addTo(map)
-
-          $ionicPlatform.ready(function () {
-            GeoLocate.locate().then(function (e) {
-              var myPos = L.marker(L.latLng(e[0], e[1]))
-              // .addTo(map)
-              cachedMap[mapId].myPos = myPos
-            })
-          })
 
           deferred.resolve(map)
         },
@@ -56,6 +119,7 @@ angular.module('gi-pro.services.mapservice', [])
           console.log('error creation')
           deferred.reject(error)
         })
+
       return deferred.promise
     }
 

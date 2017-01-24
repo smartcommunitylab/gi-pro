@@ -225,53 +225,12 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         })
       }
 
-      if ($ionicTabsDelegate.selectedIndex() === 1) { // 1 is the second
-        mapService.initMap('servicesMap').then(function (map) {
-          GeoLocate.locate().then(function (pos) {
-            $scope.center = {
-              lat: pos[0],
-              lng: pos[1],
-              zoom: 16
-            }
+      mapService.getMap('professionalsMap').then(function (map) {
+        $scope.servicesMarkers = mapService.getPoints($scope.servicesList, 'app.servicedetails')
+      })
 
-            map.locate({
-              setView: false,
-              maxZoom: 8,
-              watch: false,
-              enableHighAccuracy: true
-            })
-
-            map.on('locationfound', function (e) {
-              $scope.myloc = e
-              var radius = e.accuracy / 2
-
-              // Standard marker
-              /* L.marker(e.latlng).addTo(map) */
-
-              // accuracy circle
-              L.circle(e.latlng, radius, {
-                color: '#ea5456'
-              }).addTo(map)
-
-              // fixed circle
-              /*
-              L.circleMarker(e.latlng, {
-                 color: '#ea5456'
-              }).addTo(map)
-              */
-            })
-
-            $scope.servicesMarkers = mapService.getPoints($scope.servicesList, 'app.servicedetails')
-          }, function () {
-            // $scope.filterMarkers(false)
-          })
-
-          if (!$scope.viewAsList) {
-            $scope.refreshMap()
-          }
-        }, function () {
-          console.log('List view')
-        })
+      if (!$scope.viewAsList) {
+        $scope.refreshMap()
       }
     }
 
@@ -284,55 +243,12 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         })
       }
 
-      // mapService.getMap('professionalsMap').then(function (map) {})
+      mapService.getMap('professionalsMap').then(function (map) {
+        $scope.professionalMarkers = mapService.getPoints($scope.professionalsList, 'app.profdetails')
+      })
 
-      if ($ionicTabsDelegate.selectedIndex() === 0) { // 0 is the first
-        mapService.initMap('professionalsMap').then(function (map) {
-          GeoLocate.locate().then(function (pos) {
-            $scope.center = {
-              lat: pos[0],
-              lng: pos[1],
-              zoom: 16
-            }
-
-            map.locate({
-              setView: false,
-              maxZoom: 8,
-              watch: false,
-              enableHighAccuracy: true
-            })
-
-            map.on('locationfound', function (e) {
-              $scope.myloc = e
-              var radius = e.accuracy / 2
-
-              // Standard marker
-              /* L.marker(e.latlng).addTo(map) */
-
-              // accuracy circle
-              L.circle(e.latlng, radius, {
-                color: '#ea5456'
-              }).addTo(map)
-
-              // fixed circle
-              /*
-              L.circleMarker(e.latlng, {
-                 color: '#ea5456'
-              }).addTo(map)
-              */
-            })
-
-            $scope.professionalMarkers = mapService.getPoints($scope.professionalsList, 'app.profdetails')
-          }, function () {
-            // $scope.filterMarkers(false)
-          })
-
-          if (!$scope.viewAsList) {
-            $scope.refreshMap()
-          }
-        }, function () {
-          console.log('List view')
-        })
+      if (!$scope.viewAsList) {
+        $scope.refreshMap()
       }
     }
 

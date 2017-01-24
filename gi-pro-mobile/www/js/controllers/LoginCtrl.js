@@ -106,6 +106,7 @@ angular.module('gi-pro.controllers.login', [])
     $scope.$on('modal.shown', function (event, modal) {
       if (modal.id && modal.id === 'map') {
         mapService.refresh('mapModal')
+        $scope.styles['modalMap'] = Utils.resizeElement(44)
       }
     })
 
