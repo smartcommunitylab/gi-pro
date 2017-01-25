@@ -141,12 +141,13 @@ angular.module('gi-pro.services.login', []).factory('Login', function ($rootScop
         'name': profile.name,
         'surname': profile.surname,
         'address': profile.address,
+        'coordinates': profile.coordinates,
         'type': profile.type,
         'area': profile.area,
         'cf': profile.cf,
         'piva': profile.piva,
-        // cellPhone: cell || "",
-        lang: Utils.getLang()
+        'albo': profile.albo,
+        'lang': Utils.getLang()
       }
     }).then(
       function (response) {
