@@ -136,6 +136,7 @@ public class Converter {
 		professional.setPec(registration.getPec());
 		professional.setPhone(registration.getPhone());
 		professional.setPiva(registration.getPiva());
+		professional.setAlbo(registration.getAlbo());
 		professional.setUsername(registration.getUsername());
 		professional.setAddress(registration.getAddress());
 		professional.setArea(registration.getArea());
