@@ -21,6 +21,7 @@ public class Professional extends BaseObject {
 	private String passwordHash;
 	private String type;
 	private String lang;
+	private String albo;
 	
 	private int balance;
 	private Date nextBalanceUpdate;
@@ -155,6 +156,12 @@ public class Professional extends BaseObject {
 	}
 	public void setNextBalanceUpdate(Date nextBalanceUpdate) {
 		this.nextBalanceUpdate = nextBalanceUpdate;
+	}
+	public String getAlbo() {
+		return albo;
+	}
+	public void setAlbo(String albo) {
+		this.albo = albo;
 	}
 	
 }

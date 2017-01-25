@@ -40,7 +40,8 @@ public class Registration extends BaseObject {
 	private String type;
 	private String area, address;
 	private double[] coordinates;
-
+	private String albo;
+	
 	private String cellPhone;
 	
 	private int balance;
@@ -165,6 +166,12 @@ public class Registration extends BaseObject {
 	}
 	public void setNextBalanceUpdate(Date nextBalanceUpdate) {
 		this.nextBalanceUpdate = nextBalanceUpdate;
+	}
+	public String getAlbo() {
+		return albo;
+	}
+	public void setAlbo(String albo) {
+		this.albo = albo;
 	}
 
 	
