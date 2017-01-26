@@ -1132,7 +1132,7 @@ public class RepositoryManager {
 		}
 		Update update = new Update();
 		update.set("confirmed", Boolean.TRUE);
-		update.set("confirmationKey", null);
+//		update.set("confirmationKey", null);
 		update.set("confirmationDeadline", null);
 		update.set("balance", Const.INIT_BALANCE);
 		update.set("balanceNextUpdate", Const.nextBalanceUpdate(new Date()));
