@@ -280,6 +280,8 @@ angular.module('gi-pro.controllers.details', [])
         $scope.newRequest.serviceSubtype = $scope.newRequestForm.subtype.subtype
         $scope.newRequest.cost = $scope.newRequestForm.subtype.cost
       }
+
+      console.log('Sending new request... ' + $scope.newRequest)
       console.log($scope.newRequest)
 
       DataSrv.createRequest($scope.newRequest).then(

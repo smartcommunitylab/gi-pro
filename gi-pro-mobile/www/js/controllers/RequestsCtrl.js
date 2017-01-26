@@ -45,7 +45,9 @@ angular.module('gi-pro.controllers.requests', [])
 
     $scope.$on('$ionicView.enter', function (event, args) {
       var params = DataSrv.internalCache['app.requests']
-      console.log('DataSrv.internalCache[\'app.requests\']: ' + params)
+      if (params) {
+        console.log('DataSrv.internalCache[\'app.requests\']: ' + JSON.stringify(params))
+      }
 
       if (!params || params.reload) {
         reload()
@@ -55,7 +57,7 @@ angular.module('gi-pro.controllers.requests', [])
         $ionicTabsDelegate.select(params.tab)
       }
 
-      DataSrv.internalCache['app.requests'] = {}
+      DataSrv.internalCache['app.requests'] = null
     })
 
     $scope.selectedTab = function () {

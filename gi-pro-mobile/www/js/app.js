@@ -45,7 +45,7 @@ angular.module('gi-pro', [
 
     if (Login.getUser()) {
       console.log('user logged: ' + Login.getUser().objectId + ' (' + Login.getUser().name + ' ' + Login.getUser().surname + ')')
-      PushSrv.init()
+      PushSrv.init(Login.getUser().objectId)
     }
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {

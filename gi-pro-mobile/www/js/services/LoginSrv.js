@@ -28,7 +28,7 @@ angular.module('gi-pro.services.login', []).factory('Login', function ($rootScop
         localStorage.setItem(userVarToken, user.passwordHash)
         $rootScope.user = user
         $rootScope.logged = true
-        PushSrv.init()
+        PushSrv.init(user.objectId)
         deferred.resolve(user)
       },
       function (reason) {
@@ -83,7 +83,7 @@ angular.module('gi-pro.services.login', []).factory('Login', function ($rootScop
         $rootScope.user = user
         $rootScope.logged = true
         if (!skipRegistration) {
-          PushSrv.init()
+          PushSrv.init(user.objectId)
         }
         deferred.resolve(user)
       }, function (reason) {

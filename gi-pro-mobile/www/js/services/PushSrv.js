@@ -4,8 +4,8 @@ angular.module('gi-pro.services.push', [])
   .factory('PushSrv', function ($rootScope, $ionicPlatform, $http, $q, $state, Utils, Config, NotifDB, DataSrv) {
     var pushService = {}
     var push = null
-
-    var fgListener
+    var userId = null
+    // var fgListener = null
 
     var register = function (data) {
       var httpConfWithParams = Config.getHTTPConfig()
@@ -25,6 +25,7 @@ angular.module('gi-pro.services.push', [])
       $http.post(Config.SERVER_URL + '/api/' + Config.APPLICATION_ID + '/pushregister', {}, httpConfWithParams).then(
         function (response) {
           console.log('push registration ok: ', response)
+          $rootScope.updateUnreadCount()
         },
         function (reason) {
           console.error('push registration failed', reason)
@@ -38,13 +39,8 @@ angular.module('gi-pro.services.push', [])
 
       // in foreground save data to DB and call the UI function if defined in current scope
       if (data.additionalData.foreground) {
-        NotifDB.insert(n)
+        NotifDB.insert(n, userId)
         $rootScope.updateUnreadCount()
-
-        DataSrv.internalCache['app.requests'] = {
-          'reload': true
-        }
-
         /*
         if (fgListener) {
           fgListener(n);
@@ -55,8 +51,7 @@ angular.module('gi-pro.services.push', [])
           console.log('found', nDB)
           // first call, do only insertion
           if (!nDB) {
-            NotifDB.insert(n)
-            $rootScope.updateUnreadCount()
+            NotifDB.insert(n, userId)
             // second call, open the link
             $state.go('app.notifications')
           } else {
@@ -65,6 +60,10 @@ angular.module('gi-pro.services.push', [])
         }, function (err) {
           console.error('Error reading from DB', err)
         })
+      }
+
+      DataSrv.internalCache['app.requests'] = {
+        'reload': true
       }
 
       push.finish(function () {
@@ -83,7 +82,9 @@ angular.module('gi-pro.services.push', [])
       return n
     }
 
-    pushService.init = function () {
+    pushService.init = function (uId) {
+      userId = uId
+
       $ionicPlatform.ready(function () {
         try {
           if (PushNotification) {
@@ -92,6 +93,8 @@ angular.module('gi-pro.services.push', [])
         } catch (error) {
           return
         }
+
+        $rootScope.updateUnreadCount()
 
         push = PushNotification.init({
           android: {
@@ -148,15 +151,13 @@ angular.module('gi-pro.services.push', [])
       }
     }
 
-
     pushService.fgOn = function (listener) {
-      fgListener = listener
+      // fgListener = listener
     }
 
     pushService.fgOf = function () {
-      fgListener = null
+      // fgListener = null
     }
-
 
     return pushService
   })
