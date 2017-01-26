@@ -48,6 +48,7 @@
   "register_form_area_empty": "Scegliere la provincia",
   "register_form_cf_empty": "Inserire il Codice Fiscale",
   "register_form_cf_invalid": "Codice Fiscale non valido",
+  "register_form_albo_empty": "Inserire il  numero di iscrizione all'albo",
   "register_form_pwd_empty": "Compilare entrambi i campi password",
   "register_form_pwd_different": "Le password non corrispondono",
   "register_done_title": "La registrazione è avvenuta con successo.",

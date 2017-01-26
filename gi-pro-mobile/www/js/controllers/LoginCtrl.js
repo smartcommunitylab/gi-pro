@@ -358,6 +358,11 @@ angular.module('gi-pro.controllers.login', [])
         return
       }
 
+      if (!$scope.registration.albo) {
+        Utils.toast($filter('translate')('register_form_albo_empty'))
+        return
+      }
+
       $scope.registration.cf = $scope.registration.cf.toUpperCase()
 
       /*

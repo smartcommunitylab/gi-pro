@@ -9966,6 +9966,8 @@ input[readonly] {
 /* Menu */
 .menu {
   background-color: #1786c8; }
+  .menu .bar.bar-header {
+    background-image: none; }
   .menu .list .item {
     color: white;
     border-color: transparent;

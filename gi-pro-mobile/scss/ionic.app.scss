@@ -228,6 +228,9 @@ input[readonly] {
 
 .menu {
   background-color: $t_blue;
+  .bar.bar-header {
+    background-image: none;
+  }
   .list {
     .item {
       color: white;
