@@ -209,7 +209,7 @@ angular.module('gi-pro.services.notifications', [])
       var deferred = $q.defer()
       db.transaction(function (tx) {
         tx.executeSql('SELECT COUNT(*) FROM notification WHERE read = ?', [false], function (tx, results) {
-          deferred.resolve(results.rows[0]['COUNT(*)'])
+          deferred.resolve(results.rows.item(0)['COUNT(*)'])
         }, function () {
           deferred.reject()
         })
