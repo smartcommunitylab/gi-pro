@@ -1,4 +1,4 @@
-/* global angular */
+/* global cordova, angular */
 angular.module('gi-pro.controllers.login', [])
   .controller('LoginCtrl', function ($scope, $state, $ionicHistory, $ionicPopup, $filter, Utils, Config, Login) {
     $scope.user = {}
@@ -91,8 +91,8 @@ angular.module('gi-pro.controllers.login', [])
       $scope.place = place
       $scope.refresh = false
       if ($scope.modalMap) {
+        cordova.plugins.Keyboard.close()
         $scope.modalMap.show()
-        mapService.refresh('mapModal')
       }
     }
 
@@ -105,8 +105,8 @@ angular.module('gi-pro.controllers.login', [])
 
     $scope.$on('modal.shown', function (event, modal) {
       if (modal.id && modal.id === 'map') {
-        mapService.refresh('mapModal')
         $scope.styles['modalMap'] = Utils.resizeElement(44)
+        mapService.refresh('mapModal')
       }
     })
 

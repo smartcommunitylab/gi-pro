@@ -266,7 +266,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         $scope.servicesList == null ? 1 : Math.floor($scope.servicesList.length / Config.getServicesPageSize()) + 1,
         Config.getServicesPageSize(), 'objectId').then(
         function (services) {
-          if (services && services.length) {
+          if (services) {
             $scope.servicesList = $scope.servicesList ? $scope.servicesList.concat(services) : services
             if (!$scope.servicesList.length) {
               $scope.emptylist = true

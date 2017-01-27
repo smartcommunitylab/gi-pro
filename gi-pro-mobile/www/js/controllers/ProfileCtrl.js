@@ -1,7 +1,6 @@
-/* global FileUploadOptions, FileTransfer, Camera */
+/* global cordova, FileUploadOptions, FileTransfer, Camera */
 
 angular.module('gi-pro.controllers.profile', [])
-
   .controller('ProfileCtrl', function ($scope, $rootScope, $stateParams, $ionicModal, $ionicLoading, $ionicPopup, $filter, $q, $http, Config, Login, Utils, DataSrv, mapService) {
     const SEPARATOR = ';'
 
@@ -491,6 +490,7 @@ angular.module('gi-pro.controllers.profile', [])
         selectPlaceField = field
         $scope.refresh = false
         if ($scope.modalMap) {
+          cordova.plugins.Keyboard.close()
           $scope.modalMap.show()
         }
       }
@@ -505,6 +505,7 @@ angular.module('gi-pro.controllers.profile', [])
 
     $scope.$on('modal.shown', function (event, modal) {
       if (modal.id && modal.id === 'map') {
+        $scope.styles['modalMap'] = Utils.resizeElement(44)
         mapService.refresh('mapModal')
       }
     })
