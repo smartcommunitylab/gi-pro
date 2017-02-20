@@ -1,6 +1,6 @@
-/* global angular */
+/* global angular, ionic */
 angular.module('gi-pro.controllers.serviceandprof', [])
-  .controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $timeout, $ionicScrollDelegate, $ionicTabsDelegate, $ionicModal, $ionicPopup, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
+  .controller('ServiceAndProfCtrl', function ($scope, $rootScope, $stateParams, $q, $state, $filter, $timeout, $ionicActionSheet, $ionicScrollDelegate, $ionicTabsDelegate, $ionicModal, $ionicPopup, DataSrv, mapService, Utils, Login, GeoLocate, Config) {
     $scope.servicesList = null
     $scope.professionalsList = null
     $scope.viewAsList = true
@@ -139,9 +139,56 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       }
     }
 
-    // header 44px, tabs 49px, filters 40px
+    // statusBar header 44px, tabs 49px, filters 54px, footer 44px
     $scope.styles = {
-      'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + 40)
+      'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + (ionic.Platform.isIOS() ? 20 : 44))
+    }
+
+    $scope.updateStyles = function () {
+      $scope.styles['container'] = Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + ((($scope.activeTab === 'professionals' && ($scope.filters.selectedProfession || $scope.filters.selectedZone)) || ($scope.activeTab === 'services' && ($scope.filters.selectedService || $scope.filters.selectedZone))) ? 54 : 0) + (ionic.Platform.isIOS() ? 20 : 44))
+    }
+
+    $scope.showFilterActionSheet = function () {
+      var buttons = [{
+        text: $scope.activeTab === 'professionals' ? $filter('translate')('selectedProfession_label') : $filter('translate')('selectedService_label')
+      }, {
+        text: $filter('translate')('selectedZone_label')
+      }]
+
+      if ($scope.activeTab === 'professionals' && $scope.filters.selectedProfession) {
+        buttons[0].text = $filter('translate')('selectedProfession_label') + ': <b>' + $scope.filters.selectedProfession.name + '</b>'
+      } else if ($scope.activeTab === 'services' && $scope.filters.selectedService) {
+        buttons[0].text = $filter('translate')('selectedService_label') + ': <b>' + $scope.filters.selectedService.name + '</b>'
+      }
+
+      if ($scope.filters.selectedZone) {
+        buttons[1].text = $filter('translate')('selectedZone_label') + ': <b>' + $scope.filters.selectedZone.name + '</b>'
+      }
+
+      // Show the action sheet
+      $scope.hideFilterActionSheet = $ionicActionSheet.show({
+        buttons: buttons,
+        cancelText: $filter('translate')('filter_close'),
+        cancel: function () {
+          // add cancel code..
+        },
+        buttonClicked: function (index) {
+          switch (index) {
+            case 0:
+              if ($scope.activeTab === 'professionals') {
+                $scope.openFilter('professions')
+              } else if ($scope.activeTab === 'services') {
+                $scope.openFilter('services')
+              }
+              break
+            case 1:
+              $scope.openFilter('zones')
+              break
+            default:
+          }
+          $scope.hideFilterActionSheet()
+        }
+      })
     }
 
     $scope.openFilter = function (type) {
@@ -189,7 +236,18 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
       $scope.closeFilter(type)
 
+      $scope.updateStyles()
       $ionicScrollDelegate.resize()
+    }
+
+    $scope.clearFilters = function () {
+      if ($scope.activeTab === 'professionals') {
+        $scope.selectFilter('professions', null)
+        $scope.selectFilter('zones', null)
+      } else if ($scope.activeTab === 'services') {
+        $scope.selectFilter('services', null)
+        $scope.selectFilter('zones', null)
+      }
     }
 
     $scope.$on('$ionicView.afterEnter', function (event, args) {

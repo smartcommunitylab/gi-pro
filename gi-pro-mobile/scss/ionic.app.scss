@@ -285,6 +285,36 @@ input[readonly] {
 }
 
 
+/* Action sheets */
+
+.platform-ios {
+  .action-sheet {
+    .button {
+      font-size: inherit;
+      /* background-color: $t_blue; */
+      /* color: white; */
+    }
+    .button:first-child {
+      /* border-width: 0px; */
+    }
+  }
+}
+
+.platform-android {
+  .action-sheet {
+    color: white;
+    .button {
+      text-align: center;
+      background-color: $t_blue;
+    }
+    .action-sheet-cancel {
+      display: block;
+      border-top: 1px solid white;
+    }
+  }
+}
+
+
 /*
  * TUTORIAL
  */
@@ -413,25 +443,15 @@ input[readonly] {
  */
 
 .serviceandprofessional {
+  .scroll-list,
   .scroll,
   .scroll .list {
     height: 100%;
   }
   .selected-filters {
-    text-align: center;
+    /* text-align: center; */
     color: white;
     background-color: $t_blue;
-    .col:first-child {
-      border-right: 1px solid white;
-    }
-    .col:last-child {
-      border-left: 1px solid white;
-    }
-    .selected-service {
-      .selected-zone {}
-      .selected-service {}
-      .selected-profession {}
-    }
   }
   div.empty {
     text-align: center;

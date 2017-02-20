@@ -10007,6 +10007,24 @@ input[readonly] {
   border-width: 0px 0px 3px 0px !important;
   border-color: white; }
 
+/* Action sheets */
+.platform-ios .action-sheet .button {
+  font-size: inherit;
+  /* background-color: $t_blue; */
+  /* color: white; */ }
+
+.platform-ios .action-sheet .button:first-child {
+  /* border-width: 0px; */ }
+
+.platform-android .action-sheet {
+  color: white; }
+  .platform-android .action-sheet .button {
+    text-align: center;
+    background-color: #1786c8; }
+  .platform-android .action-sheet .action-sheet-cancel {
+    display: block;
+    border-top: 1px solid white; }
+
 /*
  * TUTORIAL
  */
@@ -10099,18 +10117,15 @@ input[readonly] {
 /*
  * SERVICES AND PROFESSIONALS TABS
  */
+.serviceandprofessional .scroll-list,
 .serviceandprofessional .scroll,
 .serviceandprofessional .scroll .list {
   height: 100%; }
 
 .serviceandprofessional .selected-filters {
-  text-align: center;
+  /* text-align: center; */
   color: white;
   background-color: #1786c8; }
-  .serviceandprofessional .selected-filters .col:first-child {
-    border-right: 1px solid white; }
-  .serviceandprofessional .selected-filters .col:last-child {
-    border-left: 1px solid white; }
 
 .serviceandprofessional div.empty {
   text-align: center;
