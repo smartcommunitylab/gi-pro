@@ -139,13 +139,16 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       }
     }
 
-    // statusBar header 44px, tabs 49px, filters 54px, footer 44px
+    // statusBar 20px, header 44px, tabs 49px, filters 54px, footer 44px
     $scope.styles = {
       'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + (ionic.Platform.isIOS() ? 44 : 64))
     }
 
     $scope.updateStyles = function () {
+      console.log('isIOS(): ' + ionic.Platform.isIOS())
+      console.log('isFullScreen: ' + ionic.Platform.isFullScreen)
       $scope.styles['container'] = Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + ((($scope.activeTab === 'professionals' && ($scope.filters.selectedProfession || $scope.filters.selectedZone)) || ($scope.activeTab === 'services' && ($scope.filters.selectedService || $scope.filters.selectedZone))) ? 54 : 0) + (ionic.Platform.isIOS() ? 44 : 64))
+      $scope.refreshMap()
     }
 
     $scope.showFilterActionSheet = function () {
