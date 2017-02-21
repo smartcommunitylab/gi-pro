@@ -145,9 +145,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     }
 
     $scope.updateStyles = function () {
-      console.log('isIOS(): ' + ionic.Platform.isIOS())
-      console.log('isFullScreen: ' + ionic.Platform.isFullScreen)
-      $scope.styles['container'] = Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + ((($scope.activeTab === 'professionals' && ($scope.filters.selectedProfession || $scope.filters.selectedZone)) || ($scope.activeTab === 'services' && ($scope.filters.selectedService || $scope.filters.selectedZone))) ? 54 : 0) + (ionic.Platform.isIOS() ? 44 : 64))
+      $scope.styles['container'] = Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + ((($scope.activeTab === 'professionals' && ($scope.filters.selectedProfession || $scope.filters.selectedZone)) || ($scope.activeTab === 'services' && ($scope.filters.selectedService || $scope.filters.selectedZone))) ? 54 : 0) + 44 + (ionic.Platform.isIOS() && ionic.Platform.isFullScreen ? 20 : 0))
       $scope.refreshMap()
     }
 
