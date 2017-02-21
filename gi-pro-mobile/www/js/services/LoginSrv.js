@@ -102,7 +102,11 @@ angular.module('gi-pro.services.login', []).factory('Login', function ($rootScop
   }
 
   loginService.logout = function () {
+    // keep profile completion popup choice from clearing
+    var hideProfileCompletionPopup = loginService.hideProfileCompletionPopup()
     localStorage.clear()
+    loginService.setHideProfileCompletionPopup(hideProfileCompletionPopup)
+
     $rootScope.user = null
     $rootScope.logged = false
     PushSrv.unreg()
@@ -163,6 +167,14 @@ angular.module('gi-pro.services.login', []).factory('Login', function ($rootScop
     )
 
     return deferred.promise
+  }
+
+  loginService.hideProfileCompletionPopup = function () {
+    return localStorage.getItem('gi-pro-app-hideprofilecompletionpopup') === 'true'
+  }
+
+  loginService.setHideProfileCompletionPopup = function (value) {
+    localStorage.setItem('gi-pro-app-hideprofilecompletionpopup', value)
   }
 
   return loginService

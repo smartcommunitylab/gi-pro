@@ -17,7 +17,36 @@ angular.module('gi-pro.controllers.login', [])
           historyRoot: true,
           disableBack: true
         })
-        $state.go('app.serviceAndProf')
+
+        var hide = Login.hideProfileCompletionPopup()
+        if (!hide) {
+          $scope.profileCompletion = {
+            hide: hide
+          }
+
+          $ionicPopup.show({
+            templateUrl: 'templates/profileCompletionPopup.html',
+            scope: $scope,
+            title: $filter('translate')('popup_address'),
+            cssClass: 'popup-profilecompletion',
+            buttons: [{
+              text: $filter('translate')('btn_close'),
+              onTap: function (e) {
+                Login.setHideProfileCompletionPopup($scope.profileCompletion.hide)
+                $state.go('app.serviceAndProf')
+              }
+            }, {
+              type: 'button-assertive',
+              text: $filter('translate')('profile_completion_fill'),
+              onTap: function (e) {
+                Login.setHideProfileCompletionPopup($scope.profileCompletion.hide)
+                $state.go('app.profile')
+              }
+            }]
+          })
+        } else {
+          $state.go('app.serviceAndProf')
+        }
       }, function () {
         $ionicPopup.alert({
           title: $filter('translate')('error_popup_title'),

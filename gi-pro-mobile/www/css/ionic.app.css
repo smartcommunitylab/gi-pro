@@ -10542,6 +10542,10 @@ placeautocomplete {
 .popup-map {
   text-align: center; }
 
+.popup-profilecompletion .item-checkbox {
+  background-color: transparent;
+  border: 0px; }
+
 /*
  * LOGIN AND REGISTRATION
  */

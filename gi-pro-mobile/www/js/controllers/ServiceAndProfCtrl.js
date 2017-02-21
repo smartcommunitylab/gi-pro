@@ -139,9 +139,9 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       }
     }
 
-    // statusBar 20px, header 44px, tabs 49px, filters 54px, footer 44px
+    // header 44px, tabs 49px, filters 54px, footer 44px, iOS fullScreen statusBar 20px
     $scope.styles = {
-      'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + (ionic.Platform.isIOS() ? 44 : 64))
+      'container': Utils.resizeElement(44 + (Login.userIsLogged() ? 49 : 0) + 44 + (ionic.Platform.isIOS() && ionic.Platform.isFullScreen ? 20 : 0))
     }
 
     $scope.updateStyles = function () {
