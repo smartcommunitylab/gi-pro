@@ -102,11 +102,10 @@ angular.module('gi-pro.services.login', []).factory('Login', function ($rootScop
   }
 
   loginService.logout = function () {
-    // keep profile completion popup choice from clearing
-    var hideProfileCompletionPopup = loginService.hideProfileCompletionPopup()
+    /* keep profile completion popup choice from clearing */
+    // var hideProfileCompletionPopup = loginService.hideProfileCompletionPopup()
     localStorage.clear()
-    loginService.setHideProfileCompletionPopup(hideProfileCompletionPopup)
-
+    // loginService.setHideProfileCompletionPopup(hideProfileCompletionPopup)
     $rootScope.user = null
     $rootScope.logged = false
     PushSrv.unreg()

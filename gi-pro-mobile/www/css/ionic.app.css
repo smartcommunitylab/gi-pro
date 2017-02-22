@@ -10625,6 +10625,9 @@ placeautocomplete {
     border-top: 3px solid #1786c8;
     padding-top: 20px;
     font-size: larger; }
+  .login .privacy,
+  .registration .privacy {
+    text-align: center; }
 
 /*
 .matches {
