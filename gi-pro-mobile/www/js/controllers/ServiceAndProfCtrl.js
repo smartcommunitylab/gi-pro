@@ -35,8 +35,8 @@ angular.module('gi-pro.controllers.serviceandprof', [])
 
     $scope.clearSearchBar = function () {
       $rootScope.searchBar.searchString = ''
-      // $scope.professionalsList = null
-      // $scope.loadMoreProfessional()
+        // $scope.professionalsList = null
+        // $scope.loadMoreProfessional()
       $scope.reload()
     }
 
@@ -49,7 +49,7 @@ angular.module('gi-pro.controllers.serviceandprof', [])
       // wait 500ms before making a call
       if ($scope.to != null) {
         $timeout.cancel($scope.to)
-        // console.log('previous search canceled')
+          // console.log('previous search canceled')
       }
       $scope.to = $timeout(function () {
         $scope.to = null
@@ -175,17 +175,17 @@ angular.module('gi-pro.controllers.serviceandprof', [])
         },
         buttonClicked: function (index) {
           switch (index) {
-            case 0:
-              if ($scope.activeTab === 'professionals') {
-                $scope.openFilter('professions')
-              } else if ($scope.activeTab === 'services') {
-                $scope.openFilter('services')
-              }
-              break
-            case 1:
-              $scope.openFilter('zones')
-              break
-            default:
+          case 0:
+            if ($scope.activeTab === 'professionals') {
+              $scope.openFilter('professions')
+            } else if ($scope.activeTab === 'services') {
+              $scope.openFilter('services')
+            }
+            break
+          case 1:
+            $scope.openFilter('zones')
+            break
+          default:
           }
           $scope.hideFilterActionSheet()
         }
@@ -455,13 +455,16 @@ angular.module('gi-pro.controllers.serviceandprof', [])
     })
 
     $scope.$on('leafletDirectiveMarker.professionalsMap.click', function (e, args) {
-      e.stopPropagation()
+      e.stopPropagation();
+      var p = $scope.professionalMarkers[args.modelName].object;
       // args.model.object is object
-      $scope.openProfessionalDetails(args.model.object)
+      $scope.openProfessionalDetails(p);
     })
 
     $scope.$on('leafletDirectiveMarker.servicesMap.click', function (e, args) {
       e.preventDefault()
+      var p = $scope.servicesMarkers[args.modelName].object;
+
       // args.model.object is object
       $scope.openServiceDetails(args.model.object)
     })
