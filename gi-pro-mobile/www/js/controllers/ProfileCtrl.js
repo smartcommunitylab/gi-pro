@@ -94,7 +94,7 @@ angular.module('gi-pro.controllers.profile', [])
       }
 
       console.log(placeSelected)
-      /* close map */
+        /* close map */
       $scope.closeMap()
     }
 
@@ -102,8 +102,8 @@ angular.module('gi-pro.controllers.profile', [])
       mapService.getMap('mapModal').then(function () {
         $scope.$on('leafletDirectiveMap.mapModal.click', function (event, args) {
           $ionicLoading.show()
-          // planService.setPosition($scope.place, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng)
-          // var placedata = $q.defer()
+            // planService.setPosition($scope.place, args.leafletEvent.latlng.lat, args.leafletEvent.latlng.lng)
+            // var placedata = $q.defer()
           var url = Config.getGeocoderURL() + '/location?latlng=' + args.leafletEvent.latlng.lat + ',' + args.leafletEvent.latlng.lng
           $http.get(encodeURI(url), Config.getGeocoderConf()).then(function (response) {
             var data = response.data
@@ -187,9 +187,9 @@ angular.module('gi-pro.controllers.profile', [])
         $http.get(url, Config.getGeocoderConf()).then(function (response) {
           var docs = response.data.response.docs
           var geoCoderPlaces = []
-          // places = data.response.docs
-          // store the data
-          // return the labels
+            // places = data.response.docs
+            // store the data
+            // return the labels
           var k = 0
           for (var i = 0; i < docs.length; i++) {
             var temp = ''
@@ -279,7 +279,7 @@ angular.module('gi-pro.controllers.profile', [])
     $scope.$on('$ionicView.leave', function (event, args) {
       $scope.editingProfile = false
       profile2edit($scope.profile, $scope.edit)
-      // localStorage.setItem(Config.getUserVarProfileCheck(), 'true')
+        // localStorage.setItem(Config.getUserVarProfileCheck(), 'true')
     })
 
     $scope.edit = {
@@ -302,6 +302,11 @@ angular.module('gi-pro.controllers.profile', [])
       profile2edit(profile, $scope.edit)
     })
 
+    function mailIsValid(mail) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(mail);
+    }
+
     var validateProfile = function () {
       var cleanArray = function (arr) {
         var newArr = []
@@ -317,11 +322,36 @@ angular.module('gi-pro.controllers.profile', [])
         Utils.toast($filter('translate')('profile_form_address_empty'))
         return false
       }
-
+      if ($scope.edit.newItems.phone) {
+        $scope.addItem('phone');
+      }
+      if ($scope.edit.newItems.cellPhone) {
+        $scope.addItem('cellPhone');
+      }
+      if ($scope.edit.newItems.mail) {
+        if (mailIsValid($scope.edit.newItems.mail))
+          $scope.addItem('mail');
+        else {
+          $scope.mailNotValid = true;
+          return false;
+        }
+      }
+      if ($scope.edit.newItems.fax) {
+        $scope.addItem('fax');
+      }
+      if ($scope.edit.newItems.competence) {
+        $scope.addCompetence();
+      }
       $scope.profile.address = $scope.edit.address
       $scope.profile.coordinates = $scope.edit.coordinates
       $scope.profile.phone = cleanArray($scope.edit.phone).join(SEPARATOR)
       $scope.profile.cellPhone = cleanArray($scope.edit.cellPhone).join(SEPARATOR)
+      for (var i = 0; i < $scope.edit.mail.length; i++) {
+        if (!mailIsValid($scope.edit.mail[i])) {
+          $scope.mailNotValid = true;
+          return false;
+        }
+      }
       $scope.profile.mail = cleanArray($scope.edit.mail).join(SEPARATOR)
       $scope.profile.fax = cleanArray($scope.edit.fax).join(SEPARATOR)
       return true
@@ -343,10 +373,23 @@ angular.module('gi-pro.controllers.profile', [])
           }, Utils.commError).finally(function () {
             Utils.loaded()
           })
+        } else {
+          if ($scope.mailNotValid) {
+            Utils.toast($filter('translate')('mail_not_valid'));
+          } else {
+            Utils.toast($filter('translate')('profile_not_valid'));
+          }
         }
       }
     }
 
+    $scope.checkAndAddItem = function () {
+      if (mailIsValid($scope.edit.newItems['mail'])) {
+        $scope.addItem('mail');
+      } else {
+        Utils.toast($filter('translate')('mail_not_valid'));
+      }
+    }
     $scope.addItem = function (type) {
       $scope.edit[type].push($scope.edit.newItems[type])
       $scope.edit.newItems[type] = ''
@@ -547,7 +590,7 @@ angular.module('gi-pro.controllers.profile', [])
       DataSrv.createOffer(serviceToSave).then(function (result) {
         $scope.toggleEditingServices(false)
         $scope.toggleAddingNewService(false)
-        // save toast;
+          // save toast;
         Utils.toast($filter('translate')('saved_new_service_toast'))
         DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
           $scope.services = services
@@ -557,7 +600,7 @@ angular.module('gi-pro.controllers.profile', [])
 
     $scope.addService = function (serviceType) {
       $scope.newServiceModal.hide()
-      // add an empty Service
+        // add an empty Service
       $scope.addNewService(serviceType)
       $scope.toggleAddingNewService(true)
     }
@@ -567,7 +610,7 @@ angular.module('gi-pro.controllers.profile', [])
       DataSrv.deleteMyService(service.objectId, $scope.profile.objectId).then(function (result) {
         $scope.toggleEditingServices(false)
         $scope.toggleAddingNewService(false)
-        // save toast;
+          // save toast;
         Utils.toast($filter('translate')('service_deleted_toast'))
         DataSrv.getServicesOfferByProfessional($scope.profile.objectId).then(function (services) {
           $scope.services = services
@@ -615,7 +658,7 @@ angular.module('gi-pro.controllers.profile', [])
               Utils.loaded()
               $scope.profile.imageUrl = user.imageUrl
               $scope.imageUrl = $rootScope.generateImageUrl($scope.profile.imageUrl, true)
-              // $scope.$apply();
+                // $scope.$apply();
             }, Utils.commError)
           }
 

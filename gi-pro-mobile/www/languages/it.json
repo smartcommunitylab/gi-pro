@@ -171,7 +171,7 @@
   "allProfession_label": "Tutte le professioni",
   "allZones_label": "Tutte le province",
   "allServices_label": "Tutti i servizi",
-  "selectedZone_full_label": "Provincia di {{zone}}", 
+  "selectedZone_full_label": "Provincia di {{zone}}",
   "selectedZone_mid_label": " di {{zone}}",
   "services_empty": "Nessun servizio trovato",
   "view_profile": "Vedi profilo",
@@ -233,5 +233,7 @@
   "state_DELETED": "cancellata",
   "state_long_DELETED": "cancellata dall'offerente",
   "error_InsufficientBalanceException": "Il tuo credito è insufficiente. Attendi il rinnovo mensile.",
-  "pop_up_error_server_template": "Errore di comunicazione con il server"
+  "pop_up_error_server_template": "Errore di comunicazione con il server",
+  "mail_not_valid": "L\'indirizzo email inserito non risulta valido",
+  "profile_not_valid": "Le modifiche al profilo non risultano valide"
 }
