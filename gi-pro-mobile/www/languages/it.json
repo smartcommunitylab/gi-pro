@@ -234,6 +234,6 @@
   "state_long_DELETED": "cancellata dall'offerente",
   "error_InsufficientBalanceException": "Il tuo credito è insufficiente. Attendi il rinnovo mensile.",
   "pop_up_error_server_template": "Errore di comunicazione con il server",
-  "mail_not_valid": "L\'indirizzo email inserito non risulta valido",
+  "mail_not_valid": "L'indirizzo email inserito non risulta valido",
   "profile_not_valid": "Le modifiche al profilo non risultano valide"
 }

@@ -70,6 +70,9 @@
     "id": "ingegnere",
     "name": "Ingegnere"
   }, {
+    "id": "maestri_di_sci",
+    "name": "Maestro di sci"
+  }, {
     "id": "medico_e_odontoiatra",
     "name": "Medico e odontoiatra"
   }, {
